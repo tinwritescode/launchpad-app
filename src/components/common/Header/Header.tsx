@@ -1,15 +1,21 @@
 import { Web3Button } from "@web3modal/react";
-import React from "react";
-import AppButton from "../AppButton";
-import ConnectWalletButton from "../ConnectWalletButton";
+import * as S from "./Header.style";
+import { Layout } from "antd";
+import style from "./Header.module.scss";
+import Link from "next/link";
 
 type Props = {};
 
 function Header({}: Props) {
   return (
-    <div>
-      <Web3Button />
-    </div>
+    <Layout.Header className={style.header}>
+      <S.Container>
+        <Link href="/">
+          <S.Heading>Home</S.Heading>
+        </Link>
+        <Web3Button />
+      </S.Container>
+    </Layout.Header>
   );
 }
 

@@ -7,6 +7,7 @@ import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { arbitrum, mainnet, polygon } from "wagmi/chains";
 import { env } from "../env.mjs";
+import SignClient from "@walletconnect/sign-client";
 
 const chains = [arbitrum, mainnet, polygon];
 
