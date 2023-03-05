@@ -36,7 +36,7 @@ model Chain {
     Project Project[]
 }
 
-model TokennomicsItem {
+model TokenomicsItem {
     id      String    @id @default(uuid())
     name    String
     Value   Int
@@ -44,7 +44,7 @@ model TokennomicsItem {
 }
 
 model Project {
-    id                 String           @id @default(cuid())
+    id                 String           @id @default(uuid())
     createdAt          DateTime         @default(now())
     updatedAt          DateTime         @updatedAt
     pricePerToken      Int
@@ -67,8 +67,7 @@ model Project {
     scheduleOpenDate   DateTime
     scheduleCloseDate  DateTime
     comparisionContent String
-    TokennomicsItem    TokennomicsItem? @relation(fields: [tokenomicsItemId], references: [id])
-    tokenomicsItemId   String?
+    TokenomicsItem     TokenomicsItem[]
     roundmapContent    String
 }
 
