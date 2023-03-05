@@ -39,7 +39,7 @@ model Chain {
 model TokenomicsItem {
     id        String  @id @default(uuid())
     name      String
-    Value     Int
+    value     Int
     Project   Project @relation(fields: [projectId], references: [id])
     projectId String
 }
@@ -62,7 +62,7 @@ model Project {
     allocation         String?
     participants       Int?
     Token              Token[]
-    sumaryContent      String
+    summaryContent     String
     videoURL           String
     ScheduleRound      ScheduleRound[]
     scheduleOpenDate   DateTime
