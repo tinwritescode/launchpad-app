@@ -10,7 +10,88 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id   String @id @default(uuid())
-    name String
+enum AccessType {
+    PUBLIC
+    PRIVATE
+    COMMUNITY
+}
+
+enum Status {
+    ACTIVE
+    INACTIVE
+    DELETED
+}
+
+model User {
+    id            String   @id @default(uuid())
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    walletAddress String   @unique
+}
+
+model Chain {
+    id      String    @id @default(uuid())
+    name    String
+    image   String
+    Project Project[]
+}
+
+model TokennomicsItem {
+    id      String    @id @default(uuid())
+    name    String
+    Value   Int
+    Project Project[]
+}
+
+model Project {
+    id                 String           @id @default(cuid())
+    createdAt          DateTime         @default(now())
+    updatedAt          DateTime         @updatedAt
+    pricePerToken      Int
+    tokenSymbol        String
+    name               String
+    Chain              Chain            @relation(fields: [chainId], references: [id])
+    chainId            String
+    progress           String
+    status             Status           @default(INACTIVE)
+    startTime          DateTime
+    endTime            DateTime
+    totalRaise         Int?
+    targetRaise        Int?
+    allocation         String?
+    participants       Int?
+    Token              Token[]
+    sumaryContent      String
+    videoURL           String
+    ScheduleRound      ScheduleRound[]
+    scheduleOpenDate   DateTime
+    scheduleCloseDate  DateTime
+    comparisionContent String
+    TokennomicsItem    TokennomicsItem? @relation(fields: [tokenomicsItemId], references: [id])
+    tokenomicsItemId   String?
+    roundmapContent    String
+}
+
+model Token {
+    id          String   @id @default(uuid())
+    Project     Project? @relation(fields: [projectId], references: [id])
+    projectId   String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String
+    symbol      String
+    decimals    Int
+    totalSupply Int
+    address     String
+}
+
+model ScheduleRound {
+    id        String   @id @default(uuid())
+    Project   Project? @relation(fields: [projectId], references: [id])
+    projectId String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    startTime DateTime
+    endTime   DateTime
 }

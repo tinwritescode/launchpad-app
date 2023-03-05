@@ -12,6 +12,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "@prisma/client": "^4.9.0",
     "@tanstack/react-query": "^4.20.2",
     "@trpc/client": "^10.9.0",
@@ -27,6 +28,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-is": "^18.2.0",
+    "react-sticky-box": "^2.0.0",
     "styled-components": "^5.3.8",
     "superjson": "1.9.1",
     "trpc-openapi": "^1.1.2",
