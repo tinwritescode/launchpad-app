@@ -37,10 +37,11 @@ model Chain {
 }
 
 model TokenomicsItem {
-    id      String    @id @default(uuid())
-    name    String
-    Value   Int
-    Project Project[]
+    id        String  @id @default(uuid())
+    name      String
+    Value     Int
+    Project   Project @relation(fields: [projectId], references: [id])
+    projectId String
 }
 
 model Project {
@@ -73,8 +74,8 @@ model Project {
 
 model Token {
     id          String   @id @default(uuid())
-    Project     Project? @relation(fields: [projectId], references: [id])
-    projectId   String?
+    Project     Project  @relation(fields: [projectId], references: [id])
+    projectId   String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     name        String
@@ -86,8 +87,8 @@ model Token {
 
 model ScheduleRound {
     id        String   @id @default(uuid())
-    Project   Project? @relation(fields: [projectId], references: [id])
-    projectId String?
+    Project   Project  @relation(fields: [projectId], references: [id])
+    projectId String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
