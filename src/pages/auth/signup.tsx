@@ -1,22 +1,21 @@
 import Head from 'next/head';
-import React from 'react';
-import SignIn from '~/components/containers/auth/SignIn';
+import SignUp from '~/components/containers/auth/SignUp';
 import PageLayout from '~/components/templates/PageLayout';
 
 type Props = {};
 
-function signin({}: Props) {
+const signup = (props: Props) => {
   return (
     <>
       <Head>
-        <title>Sign In</title>
+        <title>Sign Up</title>
       </Head>
 
       <PageLayout>
-        <SignIn />
+        <SignUp />
       </PageLayout>
     </>
   );
-}
+};
 
-export default signin;
+export default signup;
