@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 type Props = {};
 
-function SignOut({}: Props) {
-  return <div>SignOut</div>;
+function signout({}: Props) {
+  return <div>sign out</div>;
 }
 
-export default SignOut;
+export default signout;

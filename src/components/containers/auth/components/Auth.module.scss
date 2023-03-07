@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-form {
+  max-width: 300px;
+}
+
+.login_form_forgot {
+  float: right;
+  color: #1890ff;
+}
+
+.ant_col_rtl .login_form_forgot {
+  float: left;
+}
+
+.login_form_button {
+  width: 100%;
+}
+
+.link {
+  color: #1890ff;
+}
