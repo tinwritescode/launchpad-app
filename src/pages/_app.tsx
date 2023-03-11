@@ -8,7 +8,7 @@ import { Providers } from "../components/providers";
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <Providers>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </Providers>
   );
 };

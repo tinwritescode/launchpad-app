@@ -1,18 +1,37 @@
-import { Button } from "antd";
+import { Button, Space } from "antd";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import AppButton from "../components/common/AppButton";
 import PageLayout from "../components/templates/PageLayout";
 
 type Props = {};
 
 function Home({}: Props) {
+  const links = useMemo(
+    () => [
+      {
+        href: "/ido-list",
+        label: "IDO List screen",
+      },
+      {
+        href: "/ido/create",
+        label: "IDO Create screen",
+      },
+    ],
+    []
+  );
+
   return (
     <PageLayout>
       <p>Home</p>
-      <AppButton>
-        <Link href="/ido-list">IDO List screen</Link>
-      </AppButton>
+
+      <Space direction="vertical">
+        {links.map((link) => (
+          <AppButton key={link.href}>
+            <Link href={link.href}>{link.label}</Link>
+          </AppButton>
+        ))}
+      </Space>
     </PageLayout>
   );
 }

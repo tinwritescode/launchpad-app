@@ -12,7 +12,9 @@ function PageLayout({ children }: Props) {
     <Layout>
       <Header />
 
-      <S.Container>{children}</S.Container>
+      <Layout.Content>
+        <S.Container>{children}</S.Container>
+      </Layout.Content>
       <Layout.Footer>
         <Footer />
       </Layout.Footer>

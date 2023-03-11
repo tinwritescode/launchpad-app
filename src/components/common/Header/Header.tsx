@@ -1,8 +1,8 @@
-import { Web3Button } from "@web3modal/react";
-import * as S from "./Header.style";
+import { ConnectWallet } from "@thirdweb-dev/react";
 import { Layout } from "antd";
-import style from "./Header.module.scss";
 import Link from "next/link";
+import style from "./Header.module.scss";
+import * as S from "./Header.style";
 
 type Props = {};
 
@@ -13,7 +13,8 @@ function Header({}: Props) {
         <Link href="/">
           <S.Heading>Home</S.Heading>
         </Link>
-        <Web3Button />
+
+        <ConnectWallet />
       </S.Container>
     </Layout.Header>
   );
