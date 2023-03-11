@@ -15,8 +15,6 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
-  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.string().min(1),
-  NEXT_PUBLIC_RELAY_URL: z.string(),
 });
 
 /**
@@ -29,11 +27,7 @@ const processEnv = {
   DATABASE_URL: process.env.DATABASE_URL,
   NODE_ENV: process.env.NODE_ENV,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
-  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID:
-    process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-  NEXT_PUBLIC_RELAY_URL: process.env.NEXT_PUBLIC_RELAY_URL,
 };
-
 // Don't touch the part below
 // --------------------------
 

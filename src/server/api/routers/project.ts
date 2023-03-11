@@ -10,7 +10,18 @@ export const projectRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.example.findMany();
-  }),
+
+  // TODO: should be protectedProcedure
+  createOne: publicProcedure
+    .input(z.object({ name: z.string() }))
+    .mutation(async ({ input, ctx: { prisma } }) => {
+      const project = await prisma.project.create({
+        // TODO: Change this
+        data: {
+          name: input.name,
+        } as any,
+      });
+
+      return project;
+    }),
 });
