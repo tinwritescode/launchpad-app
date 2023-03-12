@@ -1,6 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { exampleRouter } from "~/server/api/routers/example";
 import { projectRouter } from "./routers/project";
+import { idoRouter } from "./routers/ido";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +11,7 @@ import { projectRouter } from "./routers/project";
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
   project: projectRouter,
+  ido: idoRouter,
 });
 
 // export type definition of API
