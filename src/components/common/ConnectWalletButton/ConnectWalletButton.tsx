@@ -1,75 +1,47 @@
-import { useDisconnect, useSigner } from "@thirdweb-dev/react";
-import { message } from "antd";
-import { ethers } from "ethers";
-import React, { useCallback } from "react";
-import { api } from "../../../utils/api";
-import { getSigner, isWalletInstalled } from "../../../utils/ethereum";
-import AppButton from "../AppButton";
+import { Button } from "antd";
+import React from "react";
 
 import * as S from "./ConnectWalletButton.style";
+import { hooks, metaMask } from "./connectors/metamask";
 
 interface Props {}
 
-const LoginButton: React.FC<Props> = ({ ...props }) => {
-  // trpc
-  const utils = api.useContext();
-  const userSession = api.auth.getSession.useQuery(undefined, {});
-  const { mutateAsync } = api.auth.login.useMutation({
-    onSuccess: () => {
-      message.success("Login successful");
-      utils.auth.invalidate();
-    },
-  });
-  const sessionMessage = api.auth.getMessage.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-    refetchInterval: 1000 * 60 * 5,
-  });
-  const logout = api.auth.logout.useMutation({
-    onSettled: async () => {
-      message.success("Logout successful");
-      await utils.auth.invalidate();
-    },
-  });
+const { useIsActive, useIsActivating } = hooks;
+const { activate, deactivate, resetState } = metaMask;
 
-  // callbacks
-  const onLoginClicked = useCallback(() => {
-    if (!isWalletInstalled()) return message.error("No wallet detected");
-    if (!sessionMessage.data) return message.error("No session message");
-    if (userSession.data?.isLoggedIn) return message.error("Already logged in");
-
-    const signer = getSigner();
-
-    signer
-      ?.signMessage(sessionMessage.data)
-      .then(async (res) => {
-        mutateAsync({
-          message: sessionMessage.data,
-          signature: res,
-          walletAddress: await signer.getAddress(),
-        });
-      })
-      .catch((err) => {
-        message.error("User denied signing");
-      });
-  }, []);
-
-  //
-  const isLoggedIn = userSession.data?.isLoggedIn;
+const ConnectWalletButton: React.FC<Props> = () => {
+  const isActive = useIsActive();
+  const isActivating = useIsActivating();
 
   return (
-    <S.Container {...props}>
-      <AppButton
-        style={{ width: "100%" }}
-        onClick={!isLoggedIn ? onLoginClicked : () => logout.mutateAsync()}
-        type="primary"
-        loading={
-          sessionMessage.isLoading || userSession.isLoading || logout.isLoading
+    <Button
+      onClick={() => {
+        if (isActive) {
+          console.log("deactivate", deactivate);
+          if (metaMask?.deactivate) {
+            metaMask.deactivate();
+          } else {
+            metaMask.resetState();
+          }
+          return;
         }
-      >
-        {isLoggedIn ? "Connected" : "Sign"}
-      </AppButton>
-    </S.Container>
+        metaMask.activate({
+          chainId: 80001,
+          chainName: "Mumbai Testnet",
+          nativeCurrency: {
+            name: "MATIC",
+            symbol: "MATIC",
+            decimals: 18,
+          },
+          rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+        });
+      }}
+      style={{ width: "100%" }}
+      loading={isActivating}
+    >
+      {isActive ? "Disconnect" : "Connect"}
+    </Button>
   );
 };
 
-export default LoginButton;
+export default ConnectWalletButton;

@@ -1,15 +1,14 @@
-import { ConnectWallet, useConnect } from "@thirdweb-dev/react";
 import { Button, Layout, Modal } from "antd";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import LoginButton from "../ConnectWalletButton";
+import ConnectWalletButton from "../ConnectWalletButton";
+import LoginButton from "../LoginButton";
 import style from "./Header.module.scss";
 import * as S from "./Header.style";
 
 type Props = {};
 
 function Header({}: Props) {
-  const [data] = useConnect();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = useCallback(() => {
@@ -27,7 +26,7 @@ function Header({}: Props) {
         </Link>
 
         <Button type="primary" onClick={showModal}>
-          Open Modal
+          Login wallet
         </Button>
         <Modal
           title="Login"
@@ -37,7 +36,8 @@ function Header({}: Props) {
         >
           <div>
             <h4>Step 1</h4>
-            <ConnectWallet />
+
+            <ConnectWalletButton />
           </div>
           <div>
             <h4>Step 2</h4>

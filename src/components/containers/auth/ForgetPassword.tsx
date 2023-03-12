@@ -1,12 +1,12 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
-import Link from 'next/link';
-import React from 'react';
-import styles from './components/Auth.module.scss';
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input } from "antd";
+import Link from "next/link";
+import React from "react";
+import styles from "./components/Auth.module.scss";
 
 const ForgetPassword: React.FC = () => {
   const onFinish = (values: any) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
   };
 
   return (
@@ -22,7 +22,7 @@ const ForgetPassword: React.FC = () => {
           <Form.Item
             name="email-address"
             rules={[
-              { required: true, message: 'Please input your email address!' },
+              { required: true, message: "Please input your email address!" },
             ]}
           >
             <Input
