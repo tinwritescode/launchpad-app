@@ -17,9 +17,13 @@ enum AccessType {
 }
 
 enum Status {
-    ACTIVE
-    INACTIVE
-    DELETED
+    DRAFT
+    SUBMITTED
+    PENDING_APPROVAL
+    APPROVED
+    REJECTED
+    ONGOING
+    COMPLETED
 }
 
 model User {
@@ -45,31 +49,34 @@ model TokenomicsItem {
 }
 
 model Project {
-    id                 String           @id @default(uuid())
-    createdAt          DateTime         @default(now())
-    updatedAt          DateTime         @updatedAt
-    pricePerToken      Int
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    pricePerToken      Float
+    paymentTokenSymbol String
     tokenSymbol        String
     name               String
-    Chain              Chain            @relation(fields: [chainId], references: [id])
-    chainId            String
-    progress           String
-    status             Status           @default(INACTIVE)
-    startTime          DateTime
-    endTime            DateTime
-    totalRaise         Int?
-    targetRaise        Int?
+    tokenTicker        String? @default("https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930")
+
+    status         Status   @default(DRAFT)
+    startTime      DateTime
+    duration       Int
+    targettedRaise Int
+
     allocation         String?
     participants       Int?
     Token              Token[]
-    summaryContent     String
-    videoURL           String
+    summaryContent     String?
+    videoURL           String?
     ScheduleRound      ScheduleRound[]
-    scheduleOpenDate   DateTime
-    scheduleCloseDate  DateTime
-    comparisionContent String
+    scheduleOpenDate   DateTime?
+    scheduleCloseDate  DateTime?
+    comparisionContent String?
     TokenomicsItem     TokenomicsItem[]
-    roundmapContent    String
+    roadmapContent     String?
+    Chain              Chain?           @relation(fields: [chainId], references: [id])
+    chainId            String?
 }
 
 model Token {
