@@ -2,8 +2,8 @@ import React from 'react';
 
 type Props = {};
 
-function signout({}: Props) {
+function Index({}: Props) {
   return <div>sign out</div>;
 }
 
-export default signout;
+export default Index;

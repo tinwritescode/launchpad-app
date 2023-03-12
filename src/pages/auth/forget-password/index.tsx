@@ -1,22 +1,21 @@
 import Head from 'next/head';
-import React from 'react';
-import SignIn from '~/components/containers/auth/SignIn';
+import ForgetPassword from '~/components/containers/auth/ForgetPassword';
 import PageLayout from '~/components/templates/PageLayout';
 
 type Props = {};
 
-function signin({}: Props) {
+const Index = (props: Props) => {
   return (
     <>
       <Head>
-        <title>Sign In</title>
+        <title>Forget Password</title>
       </Head>
 
       <PageLayout>
-        <SignIn />
+        <ForgetPassword />
       </PageLayout>
     </>
   );
-}
+};
 
-export default signin;
+export default Index;
