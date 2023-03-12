@@ -1,99 +1,90 @@
-import styled from 'styled-components';
-import { DownOutlined } from '@ant-design/icons';
-import {Tabs,Dropdown,Menu} from 'antd'
+import styled from "styled-components";
+import { DownOutlined } from "@ant-design/icons";
+import { Tabs, Dropdown, Menu } from "antd";
 
 export const Container = styled.div`
-    margin:0 auto;
-    width:65%
+  margin: 0 auto;
 `;
 
 export const NavContainer = styled.div`
-display: flex;
-padding-bottom: 20px;
-justify-content: space-between;
+  display: flex;
+  padding-bottom: 20px;
+  justify-content: space-between;
 `;
 
 export const NavTabItem = styled.div`
-min-wigdth: 50%;
+  min-wigdth: 50%;
 `;
 
 export const NavDropDownItem = styled.div`
-display: flex;
-align-items: center;
-gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
 type CustomComponentProps = {
-    name:string,
+  name: string;
   items: {
     key: string;
     label: string;
     link: string;
   }[];
-}
-
-
+};
 
 //custom Dropdown antd component
-export const MyDropdown = function ({name,items}: CustomComponentProps) {
-    const menu = (
-        <Menu>
-            {items.map(item => (
-                
-                <Menu.Item key={item.key}>
-                    <a href={item.link}>
-                        {item.label}
-                    </a>
-                </Menu.Item>
-            ))}
-        </Menu>
-    );
-    return (
-        <Dropdown overlay={menu}>
-            <a href="#">{name} <DownOutlined /></a>
-        </Dropdown>
-    );
+export const MyDropdown = function ({ name, items }: CustomComponentProps) {
+  const menu = (
+    <Menu>
+      {items.map((item) => (
+        <Menu.Item key={item.key}>
+          <a href={item.link}>{item.label}</a>
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+  return (
+    <Dropdown overlay={menu}>
+      <a href="#">
+        {name} <DownOutlined />
+      </a>
+    </Dropdown>
+  );
 };
 
 type CustomProjectInfoProps = {
   item: {
-    name:string;
+    name: string;
     pricePerToken: number;
     tokenSymbol: string;
     img: string;
-    link:string;
+    link: string;
   };
-}
+};
 
-export const ProjectInfo = function({item}: CustomProjectInfoProps) {
-    return (
-        <a href={item.link}>
-            <div style={{ display: 'flex', color: 'black', alignItems:'center'}}>
-            <StyledImage src={item.img}/>
-            <div>
-                <p>{item.name}</p>
-                <p>{`Price(${item.tokenSymbol}) : ${item.pricePerToken} BUSD`}</p>
-            </div>
+export const ProjectInfo = function ({ item }: CustomProjectInfoProps) {
+  return (
+    <a href={item.link}>
+      <div style={{ display: "flex", color: "black", alignItems: "center" }}>
+        <StyledImage src={item.img} />
+        <div>
+          <p>{item.name}</p>
+          <p>{`Price(${item.tokenSymbol}) : ${item.pricePerToken} BUSD`}</p>
         </div>
-        </a>
-        
-    );
-}
+      </div>
+    </a>
+  );
+};
 const StyledImage = styled.img`
-    width: 50px;
-    height: 50px;
-    margin-right: 20px;
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
 `;
 export const StyledChainImage = styled.img`
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin-left: 15px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 15px;
 `;
-
-
-
-                
 
 // custom Tabs antd component
 export const StyledTabs = styled(Tabs)`
@@ -124,4 +115,3 @@ export const StyledTabs = styled(Tabs)`
             background-color: #fff;
         }
     `;
-

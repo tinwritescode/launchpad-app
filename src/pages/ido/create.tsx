@@ -9,17 +9,19 @@ type Props = {};
 function Create({}: Props) {
   const [form] = Form.useForm();
   const utils = api.useContext();
-  const { isLoading, mutate } = api.demoProject.createOne.useMutation({
-    onSuccess: (data) => {
-      console.log("onSuccess", data);
-    },
-    onSettled: async (data, error) => {
-      console.log("onSettled", data, error);
-      await utils.demoProject.invalidate();
-    },
-  });
+  // const { isLoading, mutate } = api.demoProject.createOne.useMutation({
+  //   onSuccess: (data) => {
+  //     console.log("onSuccess", data);
+  //   },
+  //   onSettled: async (data, error) => {
+  //     console.log("onSettled", data, error);
+  //     await utils.demoProject.invalidate();
+  //   },
+  // });
+  // TODO: remove
+  const isLoading = false;
 
-  const onFormFinish = useCallback(async (values) => {
+  const onFormFinish = useCallback(async (values: any) => {
     console.table(values);
 
     const key = "create-project";
@@ -30,7 +32,7 @@ function Create({}: Props) {
     });
 
     try {
-      const res = mutate({ name: values.name });
+      // const res = mutate({ name: values.name });
 
       // TODO: Should navigate to the project page
 
@@ -79,16 +81,17 @@ export const Main = () => {
 export default Main;
 
 const List = () => {
-  const { data, isLoading } = api.demoProject.getAllWithPagination.useQuery({
-    skip: 0,
-    take: 1000,
-  });
+  // const { data, isLoading } = api.demoProject.getAllWithPagination.useQuery({
+  //   skip: 0,
+  //   take: 1000,
+  // });
+  const isLoading = false;
 
   return (
     <Spin spinning={isLoading}>
-      {data?.map((project) => {
+      {/* {data?.map((project) => {
         return <div key={project.id}>{project.name}</div>;
-      })}
+      })} */}
     </Spin>
   );
 };
