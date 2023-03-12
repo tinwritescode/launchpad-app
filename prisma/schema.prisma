@@ -36,15 +36,16 @@ model Chain {
     Project Project[]
 }
 
-model TokennomicsItem {
-    id      String    @id @default(uuid())
-    name    String
-    Value   Int
-    Project Project[]
+model TokenomicsItem {
+    id        String  @id @default(uuid())
+    name      String
+    value     Int
+    Project   Project @relation(fields: [projectId], references: [id])
+    projectId String
 }
 
 model Project {
-    id                 String           @id @default(cuid())
+    id                 String           @id @default(uuid())
     createdAt          DateTime         @default(now())
     updatedAt          DateTime         @updatedAt
     pricePerToken      Int
@@ -61,21 +62,20 @@ model Project {
     allocation         String?
     participants       Int?
     Token              Token[]
-    sumaryContent      String
+    summaryContent     String
     videoURL           String
     ScheduleRound      ScheduleRound[]
     scheduleOpenDate   DateTime
     scheduleCloseDate  DateTime
     comparisionContent String
-    TokennomicsItem    TokennomicsItem? @relation(fields: [tokenomicsItemId], references: [id])
-    tokenomicsItemId   String?
+    TokenomicsItem     TokenomicsItem[]
     roundmapContent    String
 }
 
 model Token {
     id          String   @id @default(uuid())
-    Project     Project? @relation(fields: [projectId], references: [id])
-    projectId   String?
+    Project     Project  @relation(fields: [projectId], references: [id])
+    projectId   String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     name        String
@@ -87,8 +87,8 @@ model Token {
 
 model ScheduleRound {
     id        String   @id @default(uuid())
-    Project   Project? @relation(fields: [projectId], references: [id])
-    projectId String?
+    Project   Project  @relation(fields: [projectId], references: [id])
+    projectId String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
