@@ -1,9 +1,9 @@
-import { createTRPCRouter } from "~/server/api/trpc";
-import { exampleRouter } from "~/server/api/routers/example";
-import { projectRouter } from "./routers/project";
-import { idoRouter } from "./routers/ido";
-import { authRouter } from "./routers/auth";
-import { demoProjectRouter } from "./routers/demoProject";
+import { createTRPCRouter } from '~/server/api/trpc';
+import { exampleRouter } from '~/server/api/routers/example';
+import { projectRouter } from './routers/project';
+//import { idoRouter } from "./routers/ido";
+import { authRouter } from './routers/auth';
+import { demoProjectRouter } from './routers/demoProject';
 
 /**
  * This is the primary router for your server.
@@ -13,7 +13,7 @@ import { demoProjectRouter } from "./routers/demoProject";
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
   project: projectRouter,
-  ido: idoRouter,
+  //  ido: idoRouter,
   auth: authRouter,
   demoProject: demoProjectRouter,
 });

@@ -58,6 +58,7 @@ model Project {
     pricePerToken      Int
     tokenSymbol        String
     name               String
+    image              String
     Chain              Chain            @relation(fields: [chainId], references: [id])
     chainId            String
     progress           String
@@ -68,7 +69,8 @@ model Project {
     targetRaise        Int?
     allocation         String?
     participants       Int?
-    Token              Token[]
+    Token              Token           @relation(fields: [tokenId], references: [id])
+    tokenId            String
     summaryContent     String
     videoURL           String
     ScheduleRound      ScheduleRound[]
@@ -81,8 +83,7 @@ model Project {
 
 model Token {
     id          String   @id @default(uuid())
-    Project     Project  @relation(fields: [projectId], references: [id])
-    projectId   String
+    Project     Project[]
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     name        String

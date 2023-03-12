@@ -1,9 +1,10 @@
-import styled from "styled-components";
-import { DownOutlined } from "@ant-design/icons";
-import { Tabs, Dropdown, Menu } from "antd";
+import styled from 'styled-components';
+import { DownOutlined } from '@ant-design/icons';
+import { Tabs, Dropdown, Menu } from 'antd';
 
 export const Container = styled.div`
   margin: 0 auto;
+  width: 65%;
 `;
 
 export const NavContainer = styled.div`
@@ -44,7 +45,7 @@ export const MyDropdown = function ({ name, items }: CustomComponentProps) {
   );
   return (
     <Dropdown overlay={menu}>
-      <a href="#">
+      <a href='#'>
         {name} <DownOutlined />
       </a>
     </Dropdown>
@@ -64,7 +65,7 @@ type CustomProjectInfoProps = {
 export const ProjectInfo = function ({ item }: CustomProjectInfoProps) {
   return (
     <a href={item.link}>
-      <div style={{ display: "flex", color: "black", alignItems: "center" }}>
+      <div style={{ display: 'flex', color: 'black', alignItems: 'center' }}>
         <StyledImage src={item.img} />
         <div>
           <p>{item.name}</p>
