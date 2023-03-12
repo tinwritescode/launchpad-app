@@ -17,6 +17,10 @@ function Home({}: Props) {
         href: "/ido/create",
         label: "IDO Create screen",
       },
+      {
+        href: "/farming",
+        label: "Farming screen",
+      },
     ],
     []
   );
