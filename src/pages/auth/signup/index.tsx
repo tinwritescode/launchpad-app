@@ -4,7 +4,7 @@ import PageLayout from '~/components/templates/PageLayout';
 
 type Props = {};
 
-const signup = (props: Props) => {
+const Index = (props: Props) => {
   return (
     <>
       <Head>
@@ -18,4 +18,4 @@ const signup = (props: Props) => {
   );
 };
 
-export default signup;
+export default Index;
