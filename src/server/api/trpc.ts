@@ -15,6 +15,7 @@
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { getIronSession } from "iron-session";
 
 import { prisma } from "~/server/db";
 
@@ -42,8 +43,14 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
+  const innerContext = createInnerTRPCContext({});
+  const session = await getIronSession(_opts.req, _opts.res, sessionOptions);
+
+  return {
+    ...innerContext,
+    session,
+  };
 };
 
 /**
@@ -53,6 +60,7 @@ export const createTRPCContext = (_opts: CreateNextContextOptions) => {
  */
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
+import { sessionOptions } from "../../utils/session";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
