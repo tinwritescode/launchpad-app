@@ -16,6 +16,8 @@ const server = z.object({
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
   NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS: z.string(),
+  NEXT_PUBLIC_STAKING_TOKEN_ADDRESS: z.string(),
+  NEXT_PUBLIC_REWARD_TOKEN_ADDRESS: z.string(),
 });
 
 /**
@@ -30,6 +32,10 @@ const processEnv = {
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS:
     process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS,
+  NEXT_PUBLIC_STAKING_TOKEN_ADDRESS:
+    process.env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS,
+  NEXT_PUBLIC_REWARD_TOKEN_ADDRESS:
+    process.env.NEXT_PUBLIC_REWARD_TOKEN_ADDRESS,
 };
 // Don't touch the part below
 // --------------------------
