@@ -4,7 +4,8 @@ import {
   MiddleDetailInfo,
   ProjectSummary,
   TopDetailInfo,
-} from '../../components/containers/ido-details/components';
+} from "../../components/containers/ido-details/components";
+import PageLayout from "../../components/templates/PageLayout";
 
 import { api } from '~/utils/api';
 
@@ -25,11 +26,11 @@ function IDODetail({}: Props) {
   }
 
   return (
-    <div>
+    <PageLayout>
       <TopDetailInfo />
       <MiddleDetailInfo />
       <ProjectSummary />
-    </div>
+    </PageLayout>
   );
 }
 

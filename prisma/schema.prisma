@@ -95,3 +95,8 @@ model ScheduleRound {
     startTime DateTime
     endTime   DateTime
 }
+
+model DemoProject {
+    id   String @id @default(uuid())
+    name String
+}

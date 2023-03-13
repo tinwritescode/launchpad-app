@@ -8,13 +8,20 @@ type Props = {};
 
 function Create({}: Props) {
   const [form] = Form.useForm();
-  const {
-    data: project,
-    isLoading,
-    mutateAsync,
-  } = api.project.createOne.useMutation();
+  const utils = api.useContext();
+  const { isLoading, mutate } = api.demoProject.createOne.useMutation({
+    onSuccess: (data) => {
+      console.log("onSuccess", data);
+    },
+    onSettled: async (data, error) => {
+      console.log("onSettled", data, error);
+      await utils.demoProject.invalidate();
+    },
+  });
 
-  const onFormFinish = useCallback(async () => {
+  const onFormFinish = useCallback(async (values) => {
+    console.table(values);
+
     const key = "create-project";
     message.open({
       content: "Creating project...",
@@ -23,7 +30,7 @@ function Create({}: Props) {
     });
 
     try {
-      const res = await mutateAsync({ name: "test" });
+      const res = mutate({ name: values.name });
 
       // TODO: Should navigate to the project page
 
@@ -39,24 +46,49 @@ function Create({}: Props) {
       });
     } finally {
       message.destroy(key);
+
+      utils.invalidate();
     }
   }, []);
 
   return (
-    <PageLayout>
-      <Spin spinning={isLoading}>
-        <Form form={form} onFinish={onFormFinish}>
-          <Form.Item name="name" label="Name">
-            <Input placeholder="Basic usage" />
-          </Form.Item>
+    <Spin spinning={isLoading}>
+      <Form form={form} onFinish={onFormFinish}>
+        <Form.Item name="name" label="Name">
+          <Input placeholder="Basic usage" />
+        </Form.Item>
 
-          <Button htmlType="submit" disabled={isLoading} type="primary">
-            Submit
-          </Button>
-        </Form>
-      </Spin>
-    </PageLayout>
+        <Button htmlType="submit" disabled={isLoading} type="primary">
+          Submit
+        </Button>
+      </Form>
+    </Spin>
   );
 }
 
-export default Create;
+export const Main = () => {
+  return (
+    <PageLayout>
+      <Create />
+
+      <List />
+    </PageLayout>
+  );
+};
+
+export default Main;
+
+const List = () => {
+  const { data, isLoading } = api.demoProject.getAllWithPagination.useQuery({
+    skip: 0,
+    take: 1000,
+  });
+
+  return (
+    <Spin spinning={isLoading}>
+      {data?.map((project) => {
+        return <div key={project.id}>{project.name}</div>;
+      })}
+    </Spin>
+  );
+};
