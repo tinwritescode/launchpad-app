@@ -13,7 +13,7 @@ function Home({}: Props) {
         href: "/ido-list",
         label: "IDO List screen",
       },
-      {
+   {
         href: "/ido/create",
         label: "IDO Create screen",
       },

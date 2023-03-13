@@ -1,27 +1,21 @@
+import { CoinbaseWallet } from "@web3-react/coinbase-wallet";
+import { Web3ReactHooks } from "@web3-react/core";
+import { MetaMask } from "@web3-react/metamask";
 import { create } from "zustand";
-import ethers from "ethers";
+import { hooks, metaMask } from "./connectors/metamask";
 
-type ConnectWalletButtonStore = {
-  state: "idle" | "loading" | "error";
-  connectWallet: () => void;
-  disconnectWallet: () => void;
+export type SupportedWallets = MetaMask | CoinbaseWallet;
+
+type Web3React = {
+  connector: SupportedWallets;
+  hooks: Web3ReactHooks;
+  setConnector: (connector: SupportedWallets) => void;
+  setHooks: (hooks: Web3ReactHooks) => void;
 };
 
-export const useConnectWalletButtonStore = create<ConnectWalletButtonStore>(
-  (set) => ({
-    // intial state only
-    state: "idle",
-
-    // functions
-    connectWallet: () => {
-      set({ state: "loading" });
-
-      set({ state: "idle" });
-    },
-    disconnectWallet: () => {
-      set({ state: "loading" });
-      // Disconnect wallet logic
-      set({ state: "idle" });
-    },
-  })
-);
+export const useWeb3App = create<Web3React>((set, get) => ({
+  connector: metaMask,
+  hooks: hooks,
+  setConnector: (connector: SupportedWallets) => set(() => ({ connector })),
+  setHooks: (hooks: Web3ReactHooks) => set(() => ({ hooks })),
+}));
