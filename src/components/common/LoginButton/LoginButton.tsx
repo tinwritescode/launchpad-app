@@ -17,9 +17,7 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
       utils.auth.invalidate();
     },
   });
-  const sessionMessage = api.auth.getMessage.useQuery(undefined, {
-    refetchInterval: 1000 * 60 * 5,
-  });
+  const sessionMessage = api.auth.getMessage.useQuery(undefined);
   const logout = api.auth.logout.useMutation({
     onSettled: async () => {
       message.success("Logout successful");
@@ -47,7 +45,7 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
       .catch((err) => {
         message.error("User denied signing");
       });
-  }, []);
+  }, [sessionMessage.data, userSession.data]);
 
   //
   const isLoggedIn = userSession.data?.isLoggedIn;
