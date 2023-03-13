@@ -1,9 +1,9 @@
 import { message } from "antd";
-import { ethers } from "ethers";
 import React, { useCallback } from "react";
 import { api } from "../../../utils/api";
 import { getSigner, isWalletInstalled } from "../../../utils/ethereum";
 import AppButton from "../AppButton";
+import { useWeb3App } from "../ConnectWalletButton/store";
 
 interface Props {}
 
@@ -17,7 +17,7 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
       utils.auth.invalidate();
     },
   });
-  const sessionMessage = api.auth.getMessage.useQuery(undefined);
+  const sessionMessage = api.auth.getMessage.useQuery();
   const logout = api.auth.logout.useMutation({
     onSettled: async () => {
       message.success("Logout successful");
@@ -50,16 +50,20 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
   //
   const isLoggedIn = userSession.data?.isLoggedIn;
 
+  const { hooks } = useWeb3App();
+  const { useAccount } = hooks;
+  const walletAddress = useAccount();
+
   return (
     <AppButton
       style={{ width: "100%" }}
       onClick={!isLoggedIn ? onLoginClicked : () => logout.mutateAsync()}
       type="primary"
-      loading={
-        sessionMessage.isLoading || userSession.isLoading || logout.isLoading
-      }
+      loading={logout.isLoading}
+      disabled={!sessionMessage.data || !walletAddress}
+      size="large"
     >
-      {isLoggedIn ? "Connected" : "Sign"}
+      {isLoggedIn ? "Logout" : "Sign"}
     </AppButton>
   );
 };

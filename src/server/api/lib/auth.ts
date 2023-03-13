@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import { ethers } from "ethers";
 
 export const safeVerifyMessage = async ({
