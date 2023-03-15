@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import * as S from './IDOList.style';
 import type { TabsProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
@@ -34,128 +34,37 @@ const IDOList: React.FC<Props> = () => {
     { key: '5', label: 'Item 6', link: 'http://localhost:3000/' },
     { key: '6', label: 'Item 7', link: 'http://localhost:3000/' },
   ];
-  const dataSource2 = [
-    {
-      key: '1',
-      project: {
-        name: 'John Brown',
-        pricePerToken: 100,
-        tokenSymbol: 'PSC',
-        img: 'https://picsum.photos/200/300',
-        link: 'http://localhost:3000/',
-      },
-      chain: 'https://picsum.photos/200/300',
-      endTime: '0D 12H 15M 58S',
-      totalRaise: 32,
-      progress: '56%',
-    },
-    {
-      key: '2',
-      project: {
-        name: 'John Brown',
-        pricePerToken: 100,
-        tokenSymbol: 'PSC',
-        img: 'https://picsum.photos/200/300',
-        link: 'http://localhost:3000/',
-      },
-      chain: 'https://picsum.photos/200/300',
-      endTime: '0D 12H 15M 58S',
-      totalRaise: 32,
-      progress: '56%',
-    },
-  ];
 
-  const dataSource1 = [
-    {
-      key: '1',
-      project: {
-        name: 'John Brown',
-        pricePerToken: 100,
-        tokenSymbol: 'PSC',
-        img: 'https://picsum.photos/200/300',
-        link: 'http://localhost:3000/',
-      },
-      chain: 'https://picsum.photos/200/300',
-      endTime: '0D 12H 15M 58S',
-      totalRaise: 32,
-      progress: '56%',
-    },
-    {
-      key: '2',
-      project: {
-        name: 'John Brown',
-        pricePerToken: 100,
-        tokenSymbol: 'PSC',
-        img: 'https://picsum.photos/200/300',
-        link: 'http://localhost:3000/',
-      },
-      chain: 'https://picsum.photos/200/300',
-      endTime: '0D 12H 15M 58S',
-      totalRaise: 32,
-      progress: '56%',
-    },
-    {
-      key: '3',
-      project: {
-        name: 'John Brown',
-        pricePerToken: 100,
-        tokenSymbol: 'PSC',
-        img: 'https://picsum.photos/200/300',
-        link: 'http://localhost:3000/',
-      },
-      chain: 'https://picsum.photos/200/300',
-      endTime: '0D 12H 15M 58S',
-      totalRaise: 32,
-      progress: '56%',
-    },
-    {
-      key: '3',
-      project: {
-        name: 'John Brown',
-        pricePerToken: 100,
-        tokenSymbol: 'PSC',
-        img: 'https://picsum.photos/200/300',
-        link: 'http://localhost:3000/',
-      },
-      chain: 'https://picsum.photos/200/300',
-      endTime: '0D 12H 15M 58S',
-      totalRaise: 32,
-      progress: '56%',
-    },
-    {
-      key: '3',
-      project: {
-        name: 'John Brown',
-        pricePerToken: 100,
-        tokenSymbol: 'PSC',
-        img: 'https://picsum.photos/200/300',
-        link: 'http://localhost:3000/',
-      },
-      chain: 'https://picsum.photos/200/300',
-      endTime: '0D 12H 15M 58S',
-      totalRaise: 32,
-      progress: '56%',
-    },
-  ];
+  interface Row {
+    key: string;
+    project: {
+      name: string;
+      pricePerToken: number;
+      tokenSymbol: string;
+      img: string;
+      link: string;
+    };
+    chain: string;
+    endTime: string;
+    totalRaise: number;
+    progress: string;
+  }
+  interface Response {
+    id: string;
+    name: string;
+    image: string;
+    pricePerToken: number;
+    Chain: { id: string; image: string; name: string };
+    endTime: Date;
+    totalRaise: number;
+    progress: string;
+  }
 
-  const [dataSource, setDataSource] = useState<
-    {
-      key: string;
-      project: {
-        name: string;
-        pricePerToken: number;
-        tokenSymbol: string;
-        img: string;
-        link: string;
-      };
-      chain: string;
-      endTime: string;
-      totalRaise: number;
-      progress: string;
-    }[]
-  >(dataSource1);
-
-  const { data, isLoading } = api.project.getAll.useQuery({
+  const [status, setStatus] = useState<
+    'ACTIVE' | 'INACTIVE' | 'DELETED' | undefined
+  >('ACTIVE');
+  const { data, isLoading, error, refetch } = api.project.getAll.useQuery({
+    status,
     offset: 0,
     limit: 10,
   });
@@ -163,18 +72,13 @@ const IDOList: React.FC<Props> = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  //(data as any).map((item: any) => {});
+  if (error) {
+    return <div>Error...</div>;
+  }
 
   const onChange = (key: string) => {
-    if (key === '1') {
-      setDataSource(dataSource1);
-    }
-    if (key === '2') {
-      setDataSource(dataSource2);
-    }
-    if (key === '3') {
-      setDataSource(dataSource1);
-    }
+    setStatus(key === '1' ? 'ACTIVE' : key === '2' ? 'INACTIVE' : 'DELETED');
+    refetch();
   };
   const columns = [
     {
@@ -214,9 +118,9 @@ const IDOList: React.FC<Props> = () => {
       render: (text: string) => <a href='http://localhost:3000/'>{text}</a>,
     },
   ];
+
   return (
     <div>
-      <div>{JSON.stringify(data)}</div>
       <S.Container>
         <S.NavContainer>
           <S.NavTabItem>
@@ -231,7 +135,25 @@ const IDOList: React.FC<Props> = () => {
             <S.MyDropdown name='All Block Chain' items={menuItems2} />
           </S.NavDropDownItem>
         </S.NavContainer>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table
+          dataSource={data?.map((project, index) => {
+            return {
+              key: index + '',
+              project: {
+                name: project.name,
+                pricePerToken: project.pricePerToken,
+                tokenSymbol: project.Chain.name,
+                img: project.image,
+                link: 'http://localhost:3000/',
+              },
+              chain: project.Chain.image,
+              endTime: project.endTime.toISOString(),
+              totalRaise: project.totalRaise,
+              progress: project.progress,
+            };
+          })}
+          columns={columns}
+        />
       </S.Container>
     </div>
   );

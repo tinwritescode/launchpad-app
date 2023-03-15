@@ -73,19 +73,25 @@ export const projectRouter = createTRPCRouter({
       return project;
     }),
   getAll: publicProcedure
+
     .input(
-      z.object({ offset: z.number().default(0), limit: z.number().default(10) })
+      z.object({
+        status: z.enum(['ACTIVE', 'INACTIVE', 'DELETED']).default('ACTIVE'),
+        offset: z.number().default(0),
+        limit: z.number().default(10),
+      })
     )
     .query(({ ctx, input }) => {
-      return {
-        aa: 'asdasd',
-        sd: 'qqqqq',
-      };
+      //fake data
+      if (input.status === 'ACTIVE') return data;
+      if (input.status === 'INACTIVE') return data.slice(0, 3);
+      if (input.status === 'DELETED') return data.slice(0, 5);
       // return ctx.prisma.project.findMany({
       //   skip: input.offset,
       //   take: input.limit,
       //   select: {
       //     id: true,
+      //     status: input.status,
       //     name: true,
       //     pricePerToken: true,
       //     tokenSymbol: true,
@@ -119,3 +125,116 @@ export const projectRouter = createTRPCRouter({
       });
     }),
 });
+
+const data = [
+  {
+    id: 'prId123451',
+    name: 'KyberDyne',
+    image: 'https://picsum.photos/200/300',
+    pricePerToken: 0.59,
+    Chain: {
+      id: 'chainid111323',
+      image: 'https://picsum.photos/200/300',
+      name: 'ABC',
+    },
+    endTime: new Date(),
+    totalRaise: 100000000000,
+    progress: '90%',
+  },
+  {
+    id: 'prId123452',
+    name: 'KyberDyne',
+    image: 'https://picsum.photos/200/300',
+    pricePerToken: 0.59,
+    Chain: {
+      id: 'chainid111323',
+      image: 'https://picsum.photos/200/300',
+      name: 'ABC',
+    },
+    endTime: new Date(),
+    totalRaise: 100000000000,
+    progress: '90%',
+  },
+  {
+    id: 'prId123453',
+    name: 'KyberDyne',
+    image: 'https://picsum.photos/200/300',
+    pricePerToken: 0.59,
+    Chain: {
+      id: 'chainid111323',
+      image: 'https://picsum.photos/200/300',
+      name: 'ABC',
+    },
+    endTime: new Date(),
+    totalRaise: 100000000000,
+    progress: '90%',
+  },
+  {
+    id: 'prId123454',
+    name: 'KyberDyne',
+    image: 'https://picsum.photos/200/300',
+    pricePerToken: 0.59,
+    Chain: {
+      id: 'chainid111323',
+      image: 'https://picsum.photos/200/300',
+      name: 'ABC',
+    },
+    endTime: new Date(),
+    totalRaise: 100000000000,
+    progress: '90%',
+  },
+  {
+    id: 'prId123454',
+    name: 'KyberDyne',
+    image: 'https://picsum.photos/200/300',
+    pricePerToken: 0.59,
+    Chain: {
+      id: 'chainid111323',
+      image: 'https://picsum.photos/200/300',
+      name: 'ABC',
+    },
+    endTime: new Date(),
+    totalRaise: 100000000000,
+    progress: '90%',
+  },
+  {
+    id: 'prId123454',
+    name: 'KyberDyne',
+    image: 'https://picsum.photos/200/300',
+    pricePerToken: 0.59,
+    Chain: {
+      id: 'chainid111323',
+      image: 'https://picsum.photos/200/300',
+      name: 'ABC',
+    },
+    endTime: new Date(),
+    totalRaise: 100000000000,
+    progress: '90%',
+  },
+  {
+    id: 'prId123454',
+    name: 'KyberDyne',
+    image: 'https://picsum.photos/200/300',
+    pricePerToken: 0.59,
+    Chain: {
+      id: 'chainid111323',
+      image: 'https://picsum.photos/200/300',
+      name: 'ABC',
+    },
+    endTime: new Date(),
+    totalRaise: 100000000000,
+    progress: '90%',
+  },
+];
+//  id: "1234",
+//       name: true,
+//        pricePerToken: true,
+//        tokenSymbol: true,
+//        endTime: true,
+//        totalRaise: true,
+//        progress: true,
+//        Chain: {
+//          select: {
+//            id: true,
+//            image: true,
+//          },
