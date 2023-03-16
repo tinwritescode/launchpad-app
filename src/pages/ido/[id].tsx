@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
-import React from "react";
+import { useRouter } from 'next/router';
+import React from 'react';
 import {
   MiddleDetailInfo,
   ProjectSummary,
   TopDetailInfo,
-} from "../../components/containers/ido-details/components";
-import PageLayout from "../../components/templates/PageLayout";
+} from '../../components/containers/ido-details/components';
+import PageLayout from '../../components/templates/PageLayout';
 
-import { api } from "~/utils/api";
+import { api } from '~/utils/api';
 
 type Props = {};
 
@@ -19,7 +19,7 @@ function IDODetail({}: Props) {
     return <div>Loading...</div>;
   }
 
-  const { data, isLoading } = api.ido.getIdo.useQuery({ id });
+  const { data, isLoading } = api.project.getOne.useQuery({ id });
 
   if (isLoading) {
     return <div>Loading...</div>;
