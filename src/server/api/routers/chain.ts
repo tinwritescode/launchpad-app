@@ -31,9 +31,27 @@ export const chainRouter = createTRPCRouter({
       });
     }),
 
-  getAll: publicProcedure.query(async () => {
-    return await prisma.chain.findMany();
-  }),
+  getAll: publicProcedure
+    .input(
+      z
+        .object({
+          offset: z.number().default(0),
+          limit: z.number().default(10),
+        })
+        .refine((input) => input.offset >= 0 && input.limit > 0, {
+          message:
+            "Offset must be greater than or equal to 0 and limit must be greater than 0",
+        })
+        .refine((input) => input.limit <= 100, {
+          message: "Limit must be less than or equal to 100",
+        })
+    )
+    .query(async ({ input }) => {
+      return await prisma.chain.findMany({
+        skip: input.offset,
+        take: input.limit,
+      });
+    }),
 
   /*
     mutation
