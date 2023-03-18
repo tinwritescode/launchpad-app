@@ -89,6 +89,7 @@ export const projectRouter = createTRPCRouter({
           )
           .default([]),
         name: z.string(),
+        image: z.string().optional(),
         startTime: z.number(),
         endTime: z.number(),
         scheduleOpenDate: z.number().optional(),
@@ -105,6 +106,7 @@ export const projectRouter = createTRPCRouter({
       return await prisma.project.create({
         data: {
           name: input.name,
+          image: input.image || null,
           startTime: new Date(input.startTime),
           endTime: new Date(input.endTime),
           scheduleOpenDate: input.scheduleOpenDate
