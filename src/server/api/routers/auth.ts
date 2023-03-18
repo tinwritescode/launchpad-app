@@ -5,9 +5,13 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { safeVerifyMessage } from "./../lib/auth";
 
 export const authRouter = createTRPCRouter({
+  /*
+    query
+  */
   getMessage: publicProcedure.query(() => {
     return `By signing this message, you are agreeing to the terms of service. ${Date.now()}`;
   }),
+
   login: publicProcedure
     .input(
       z
@@ -54,10 +58,12 @@ export const authRouter = createTRPCRouter({
 
       return user;
     }),
+
   logout: publicProcedure.mutation(async ({ ctx }) => {
     ctx.session.user = undefined;
     await ctx.session.save();
   }),
+
   getSession: publicProcedure.query(({ ctx }) => {
     return (
       ctx.session.user ||
