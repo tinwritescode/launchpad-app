@@ -87,7 +87,7 @@ model Token {
     symbol      String   @unique
     decimals    Int
     totalSupply Int
-    address     String
+    address     String   @unique
 }
 
 model ScheduleRound {
