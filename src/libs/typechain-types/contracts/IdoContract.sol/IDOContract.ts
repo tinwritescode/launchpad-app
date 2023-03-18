@@ -27,7 +27,7 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
-export declare namespace IDOSale {
+export declare namespace IDOContract {
   export type PermitRequestStruct = {
     nonce: PromiseOrValue<BigNumberish>;
     deadline: PromiseOrValue<BigNumberish>;
@@ -61,13 +61,13 @@ export declare namespace IDOSale {
   };
 }
 
-export interface IDOSaleInterface extends utils.Interface {
+export interface IDOContractInterface extends utils.Interface {
   functions: {
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
     "OPERATOR_ROLE()": FunctionFragment;
     "acceptOwnership()": FunctionFragment;
     "addOperator(address)": FunctionFragment;
-    "addWhitelist(address[])": FunctionFragment;
+    "addWhitelistFromStaking()": FunctionFragment;
     "checkOperator(address)": FunctionFragment;
     "claim(uint256)": FunctionFragment;
     "claimedAmounts(address)": FunctionFragment;
@@ -78,6 +78,7 @@ export interface IDOSaleInterface extends utils.Interface {
     "hasRole(bytes32,address)": FunctionFragment;
     "ido()": FunctionFragment;
     "idoPrice()": FunctionFragment;
+    "minStakingRequired()": FunctionFragment;
     "owner()": FunctionFragment;
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
@@ -96,6 +97,7 @@ export interface IDOSaleInterface extends utils.Interface {
     "revokeRole(bytes32,address)": FunctionFragment;
     "setIdoPrice(uint256)": FunctionFragment;
     "setPurchaseCap(uint256)": FunctionFragment;
+    "stakingContract()": FunctionFragment;
     "startTime()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "sweep(address)": FunctionFragment;
@@ -112,7 +114,7 @@ export interface IDOSaleInterface extends utils.Interface {
       | "OPERATOR_ROLE"
       | "acceptOwnership"
       | "addOperator"
-      | "addWhitelist"
+      | "addWhitelistFromStaking"
       | "checkOperator"
       | "claim"
       | "claimedAmounts"
@@ -123,6 +125,7 @@ export interface IDOSaleInterface extends utils.Interface {
       | "hasRole"
       | "ido"
       | "idoPrice"
+      | "minStakingRequired"
       | "owner"
       | "pause"
       | "paused"
@@ -141,6 +144,7 @@ export interface IDOSaleInterface extends utils.Interface {
       | "revokeRole"
       | "setIdoPrice"
       | "setPurchaseCap"
+      | "stakingContract"
       | "startTime"
       | "supportsInterface"
       | "sweep"
@@ -168,8 +172,8 @@ export interface IDOSaleInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "addWhitelist",
-    values: [PromiseOrValue<string>[]]
+    functionFragment: "addWhitelistFromStaking",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "checkOperator",
@@ -202,6 +206,10 @@ export interface IDOSaleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "ido", values?: undefined): string;
   encodeFunctionData(functionFragment: "idoPrice", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "minStakingRequired",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
@@ -211,11 +219,11 @@ export interface IDOSaleInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "permitAndDepositTokens",
-    values: [PromiseOrValue<BigNumberish>, IDOSale.PermitRequestStruct]
+    values: [PromiseOrValue<BigNumberish>, IDOContract.PermitRequestStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "permitAndPurchase",
-    values: [PromiseOrValue<BigNumberish>, IDOSale.PermitRequestStruct]
+    values: [PromiseOrValue<BigNumberish>, IDOContract.PermitRequestStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "purchase",
@@ -265,6 +273,10 @@ export interface IDOSaleInterface extends utils.Interface {
     functionFragment: "setPurchaseCap",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "stakingContract",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "startTime", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -309,7 +321,7 @@ export interface IDOSaleInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "addWhitelist",
+    functionFragment: "addWhitelistFromStaking",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -334,6 +346,10 @@ export interface IDOSaleInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ido", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "idoPrice", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "minStakingRequired",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
@@ -389,6 +405,10 @@ export interface IDOSaleInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "setPurchaseCap",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "stakingContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "startTime", data: BytesLike): Result;
@@ -602,12 +622,12 @@ export type WhitelistRemovedEvent = TypedEvent<
 export type WhitelistRemovedEventFilter =
   TypedEventFilter<WhitelistRemovedEvent>;
 
-export interface IDOSale extends BaseContract {
+export interface IDOContract extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: IDOSaleInterface;
+  interface: IDOContractInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -642,8 +662,7 @@ export interface IDOSale extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    addWhitelist(
-      accounts: PromiseOrValue<string>[],
+    addWhitelistFromStaking(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -690,6 +709,8 @@ export interface IDOSale extends BaseContract {
 
     idoPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    minStakingRequired(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     pause(
@@ -702,13 +723,13 @@ export interface IDOSale extends BaseContract {
 
     permitAndDepositTokens(
       amount: PromiseOrValue<BigNumberish>,
-      permitOptions: IDOSale.PermitRequestStruct,
+      permitOptions: IDOContract.PermitRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     permitAndPurchase(
       amount: PromiseOrValue<BigNumberish>,
-      permitOptions: IDOSale.PermitRequestStruct,
+      permitOptions: IDOContract.PermitRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -721,7 +742,7 @@ export interface IDOSale extends BaseContract {
 
     purchaseHistory(
       overrides?: CallOverrides
-    ): Promise<[IDOSale.PurchaseStructOutput[]]>;
+    ): Promise<[IDOContract.PurchaseStructOutput[]]>;
 
     purchaseToken(overrides?: CallOverrides): Promise<[string]>;
 
@@ -765,6 +786,8 @@ export interface IDOSale extends BaseContract {
       _purchaseCap: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    stakingContract(overrides?: CallOverrides): Promise<[string]>;
 
     startTime(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -810,8 +833,7 @@ export interface IDOSale extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  addWhitelist(
-    accounts: PromiseOrValue<string>[],
+  addWhitelistFromStaking(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -858,6 +880,8 @@ export interface IDOSale extends BaseContract {
 
   idoPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
+  minStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
+
   owner(overrides?: CallOverrides): Promise<string>;
 
   pause(
@@ -870,13 +894,13 @@ export interface IDOSale extends BaseContract {
 
   permitAndDepositTokens(
     amount: PromiseOrValue<BigNumberish>,
-    permitOptions: IDOSale.PermitRequestStruct,
+    permitOptions: IDOContract.PermitRequestStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   permitAndPurchase(
     amount: PromiseOrValue<BigNumberish>,
-    permitOptions: IDOSale.PermitRequestStruct,
+    permitOptions: IDOContract.PermitRequestStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -889,7 +913,7 @@ export interface IDOSale extends BaseContract {
 
   purchaseHistory(
     overrides?: CallOverrides
-  ): Promise<IDOSale.PurchaseStructOutput[]>;
+  ): Promise<IDOContract.PurchaseStructOutput[]>;
 
   purchaseToken(overrides?: CallOverrides): Promise<string>;
 
@@ -934,6 +958,8 @@ export interface IDOSale extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  stakingContract(overrides?: CallOverrides): Promise<string>;
+
   startTime(overrides?: CallOverrides): Promise<BigNumber>;
 
   supportsInterface(
@@ -976,10 +1002,7 @@ export interface IDOSale extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    addWhitelist(
-      accounts: PromiseOrValue<string>[],
-      overrides?: CallOverrides
-    ): Promise<void>;
+    addWhitelistFromStaking(overrides?: CallOverrides): Promise<void>;
 
     checkOperator(
       account: PromiseOrValue<string>,
@@ -1024,6 +1047,8 @@ export interface IDOSale extends BaseContract {
 
     idoPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
+    minStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<string>;
 
     pause(overrides?: CallOverrides): Promise<void>;
@@ -1034,13 +1059,13 @@ export interface IDOSale extends BaseContract {
 
     permitAndDepositTokens(
       amount: PromiseOrValue<BigNumberish>,
-      permitOptions: IDOSale.PermitRequestStruct,
+      permitOptions: IDOContract.PermitRequestStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
     permitAndPurchase(
       amount: PromiseOrValue<BigNumberish>,
-      permitOptions: IDOSale.PermitRequestStruct,
+      permitOptions: IDOContract.PermitRequestStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1053,7 +1078,7 @@ export interface IDOSale extends BaseContract {
 
     purchaseHistory(
       overrides?: CallOverrides
-    ): Promise<IDOSale.PurchaseStructOutput[]>;
+    ): Promise<IDOContract.PurchaseStructOutput[]>;
 
     purchaseToken(overrides?: CallOverrides): Promise<string>;
 
@@ -1095,6 +1120,8 @@ export interface IDOSale extends BaseContract {
       _purchaseCap: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    stakingContract(overrides?: CallOverrides): Promise<string>;
 
     startTime(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1253,8 +1280,7 @@ export interface IDOSale extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    addWhitelist(
-      accounts: PromiseOrValue<string>[],
+    addWhitelistFromStaking(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1301,6 +1327,8 @@ export interface IDOSale extends BaseContract {
 
     idoPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
+    minStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     pause(
@@ -1313,13 +1341,13 @@ export interface IDOSale extends BaseContract {
 
     permitAndDepositTokens(
       amount: PromiseOrValue<BigNumberish>,
-      permitOptions: IDOSale.PermitRequestStruct,
+      permitOptions: IDOContract.PermitRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     permitAndPurchase(
       amount: PromiseOrValue<BigNumberish>,
-      permitOptions: IDOSale.PermitRequestStruct,
+      permitOptions: IDOContract.PermitRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1375,6 +1403,8 @@ export interface IDOSale extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    stakingContract(overrides?: CallOverrides): Promise<BigNumber>;
+
     startTime(overrides?: CallOverrides): Promise<BigNumber>;
 
     supportsInterface(
@@ -1422,8 +1452,7 @@ export interface IDOSale extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    addWhitelist(
-      accounts: PromiseOrValue<string>[],
+    addWhitelistFromStaking(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1470,6 +1499,10 @@ export interface IDOSale extends BaseContract {
 
     idoPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    minStakingRequired(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pause(
@@ -1482,13 +1515,13 @@ export interface IDOSale extends BaseContract {
 
     permitAndDepositTokens(
       amount: PromiseOrValue<BigNumberish>,
-      permitOptions: IDOSale.PermitRequestStruct,
+      permitOptions: IDOContract.PermitRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     permitAndPurchase(
       amount: PromiseOrValue<BigNumberish>,
-      permitOptions: IDOSale.PermitRequestStruct,
+      permitOptions: IDOContract.PermitRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1543,6 +1576,8 @@ export interface IDOSale extends BaseContract {
       _purchaseCap: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    stakingContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     startTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

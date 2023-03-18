@@ -35,6 +35,7 @@ export interface Erc20Interface extends utils.Interface {
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
+    "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
@@ -50,6 +51,7 @@ export interface Erc20Interface extends utils.Interface {
       | "decimals"
       | "decreaseAllowance"
       | "increaseAllowance"
+      | "mint"
       | "name"
       | "symbol"
       | "totalSupply"
@@ -76,6 +78,10 @@ export interface Erc20Interface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mint",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
@@ -109,6 +115,7 @@ export interface Erc20Interface extends utils.Interface {
     functionFragment: "increaseAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
@@ -212,6 +219,12 @@ export interface Erc20 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    mint(
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     name(overrides?: CallOverrides): Promise<[string]>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
@@ -260,6 +273,12 @@ export interface Erc20 extends BaseContract {
   increaseAllowance(
     spender: PromiseOrValue<string>,
     addedValue: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  mint(
+    _to: PromiseOrValue<string>,
+    _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -313,6 +332,12 @@ export interface Erc20 extends BaseContract {
       addedValue: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    mint(
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -390,6 +415,12 @@ export interface Erc20 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    mint(
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
@@ -439,6 +470,12 @@ export interface Erc20 extends BaseContract {
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    mint(
+      _to: PromiseOrValue<string>,
+      _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

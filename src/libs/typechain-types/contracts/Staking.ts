@@ -35,6 +35,8 @@ export interface StakingInterface extends utils.Interface {
     "getRewardRatio()": FunctionFragment;
     "getRewardTokenBalance()": FunctionFragment;
     "getStakeInfo(address)": FunctionFragment;
+    "getStakerAtIndex(uint256)": FunctionFragment;
+    "getStakersLength()": FunctionFragment;
     "getTimeUnit()": FunctionFragment;
     "lockTime()": FunctionFragment;
     "lockTimeOf(address)": FunctionFragment;
@@ -58,6 +60,8 @@ export interface StakingInterface extends utils.Interface {
       | "getRewardRatio"
       | "getRewardTokenBalance"
       | "getStakeInfo"
+      | "getStakerAtIndex"
+      | "getStakersLength"
       | "getTimeUnit"
       | "lockTime"
       | "lockTimeOf"
@@ -90,6 +94,14 @@ export interface StakingInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getStakeInfo",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getStakerAtIndex",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getStakersLength",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getTimeUnit",
@@ -160,6 +172,14 @@ export interface StakingInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getStakeInfo",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getStakerAtIndex",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getStakersLength",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -344,6 +364,13 @@ export interface Staking extends BaseContract {
       [BigNumber, BigNumber] & { _tokensStaked: BigNumber; _rewards: BigNumber }
     >;
 
+    getStakerAtIndex(
+      _index: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    getStakersLength(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getTimeUnit(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { _timeUnit: BigNumber }>;
@@ -425,6 +452,13 @@ export interface Staking extends BaseContract {
     [BigNumber, BigNumber] & { _tokensStaked: BigNumber; _rewards: BigNumber }
   >;
 
+  getStakerAtIndex(
+    _index: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  getStakersLength(overrides?: CallOverrides): Promise<BigNumber>;
+
   getTimeUnit(overrides?: CallOverrides): Promise<BigNumber>;
 
   lockTime(overrides?: CallOverrides): Promise<BigNumber>;
@@ -504,6 +538,13 @@ export interface Staking extends BaseContract {
     ): Promise<
       [BigNumber, BigNumber] & { _tokensStaked: BigNumber; _rewards: BigNumber }
     >;
+
+    getStakerAtIndex(
+      _index: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    getStakersLength(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTimeUnit(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -639,6 +680,13 @@ export interface Staking extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getStakerAtIndex(
+      _index: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getStakersLength(overrides?: CallOverrides): Promise<BigNumber>;
+
     getTimeUnit(overrides?: CallOverrides): Promise<BigNumber>;
 
     lockTime(overrides?: CallOverrides): Promise<BigNumber>;
@@ -707,6 +755,13 @@ export interface Staking extends BaseContract {
       _staker: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getStakerAtIndex(
+      _index: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getStakersLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getTimeUnit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
