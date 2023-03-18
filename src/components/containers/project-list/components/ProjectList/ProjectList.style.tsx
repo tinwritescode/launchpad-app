@@ -1,55 +1,14 @@
 import styled from 'styled-components';
 import { DownOutlined } from '@ant-design/icons';
-import { Tabs, Dropdown, Menu } from 'antd';
+import { Tabs, Dropdown, Menu, Avatar } from 'antd';
+import { Col, Row, Card } from 'antd';
 
-export const Container = styled.div`
-  margin: 0 auto;
-  width: 65%;
-`;
-
-export const NavContainer = styled.div`
-  display: flex;
-  padding-bottom: 20px;
-  justify-content: space-between;
-`;
-
-export const NavTabItem = styled.div`
-  min-wigdth: 50%;
-`;
-
-export const NavDropDownItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`;
-
-type CustomComponentProps = {
+type CustomUserInfoCardProps = {
   name: string;
-  items: {
-    key: string;
-    label: string;
-    link: string;
-  }[];
-};
-
-//custom Dropdown antd component
-export const MyDropdown = function ({ name, items }: CustomComponentProps) {
-  const menu = (
-    <Menu>
-      {items.map((item) => (
-        <Menu.Item key={item.key}>
-          <a href={item.link}>{item.label}</a>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
-  return (
-    <Dropdown overlay={menu}>
-      <a href='#'>
-        {name} <DownOutlined />
-      </a>
-    </Dropdown>
-  );
+  role: string;
+  description: string;
+  img: string;
+  link: string;
 };
 
 type CustomProjectInfoProps = {
@@ -61,6 +20,31 @@ type CustomProjectInfoProps = {
     link: string;
   };
 };
+export const UserInfoCard = (props: CustomUserInfoCardProps) => {
+  return (
+    <Card style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)', width: '100%' }}>
+      <Row>
+        <Col span={8}>
+          <div style={{ padding: '0 0 0 50px' }}>
+            <Avatar size={120} src={props.img} shape='circle' />
+          </div>
+        </Col>
+        <Col span={8}>
+          <p>name:</p>
+          <p>role:</p>
+          <p>description:</p>
+        </Col>
+        <Col span={8}>
+          <p>{props.name}</p>
+          <p>{props.role}</p>
+          <p>{props.description}</p>
+        </Col>
+      </Row>
+    </Card>
+  );
+};
+
+//custom Dropdown antd component
 
 export const ProjectInfo = function ({ item }: CustomProjectInfoProps) {
   return (
@@ -80,6 +64,10 @@ const StyledImage = styled.img`
   height: 50px;
   margin-right: 20px;
 `;
+export const Container = styled.div`
+  margin: 30px auto;
+`;
+
 export const StyledChainImage = styled.img`
   width: 20px;
   height: 20px;
@@ -88,31 +76,3 @@ export const StyledChainImage = styled.img`
 `;
 
 // custom Tabs antd component
-export const StyledTabs = styled(Tabs)`
-.ant-tabs-nav {
-    margin: 0;
-    padding: 0;
-    border-bottom: 1px solid #e8e8e8;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 50px;
-    // background-color: #fff;
-    // border-radius: 10px;
-    // box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
-    .ant-tabs-tab {
-        margin: 10px;
-        padding: 10px 0px 25px 0px;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        font-size: 14px;
-        font-weight: 500;
-        color: #000;
-        border: none;
-        background-color: #fff;
-        &:hover {
-            color: #000;
-            background-color: #fff;
-        }
-    `;
