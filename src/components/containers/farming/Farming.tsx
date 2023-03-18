@@ -25,8 +25,6 @@ const Farming = () => {
       provider
     );
 
-    console.log(stakingContract);
-
     stakingContract.getRewardRatio().then((result) => {
       message.info(`Reward ratio: ${result}`);
     });
