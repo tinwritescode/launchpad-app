@@ -81,9 +81,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.CurrencyTransferLib__factory>;
     getContractFactory(
-      name: "IDOSale",
+      name: "IDOContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IDOSale__factory>;
+    ): Promise<Contracts.IDOContract__factory>;
+    getContractFactory(
+      name: "IStaking",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IStaking__factory>;
     getContractFactory(
       name: "Erc20",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -179,10 +183,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.CurrencyTransferLib>;
     getContractAt(
-      name: "IDOSale",
+      name: "IDOContract",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IDOSale>;
+    ): Promise<Contracts.IDOContract>;
+    getContractAt(
+      name: "IStaking",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IStaking>;
     getContractAt(
       name: "Erc20",
       address: string,
