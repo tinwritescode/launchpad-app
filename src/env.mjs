@@ -8,6 +8,8 @@ const server = z.object({
   DATABASE_URL: z.string().url(),
   NODE_ENV: z.enum(["development", "test", "production"]),
   SESSION_SECRET: z.string().min(1),
+  ADMIN_PRIVATE_KEY: z.string().min(1),
+  BLOCKCHAIN_RPC: z.string().url(),
 });
 
 /**
@@ -39,6 +41,8 @@ const processEnv = {
   NEXT_PUBLIC_REWARD_TOKEN_ADDRESS:
     process.env.NEXT_PUBLIC_REWARD_TOKEN_ADDRESS,
   NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,
+  ADMIN_PRIVATE_KEY: process.env.ADMIN_PRIVATE_KEY,
+  BLOCKCHAIN_RPC: process.env.BLOCKCHAIN_RPC,
 };
 // Don't touch the part below
 // --------------------------

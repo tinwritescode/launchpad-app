@@ -1,6 +1,8 @@
-import { z } from 'zod';
+import { idoContractDto } from "./../../services/ido-contract.dto";
+import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { IDOContract } from "../../services/ido-contract";
 
 export const projectRouter = createTRPCRouter({
   hello: publicProcedure
@@ -53,20 +55,20 @@ export const projectRouter = createTRPCRouter({
           endTime: input.endTime,
           // fill all required fields
           pricePerToken: 0,
-          tokenSymbol: '',
-          image: '',
-          progress: '',
+          tokenSymbol: "",
+          image: "",
+          progress: "",
           //status: Status.PENDING,
           startTime: new Date(),
           totalRaise: 0,
           targetRaise: 0,
-          allocation: '',
+          allocation: "",
           participants: 0,
-          summaryContent: '',
-          videoURL: '',
+          summaryContent: "",
+          videoURL: "",
           scheduleOpenDate: new Date(),
           scheduleCloseDate: new Date(),
-          roundmapContent: '',
+          roundmapContent: "",
         } as any,
       });
 
@@ -76,16 +78,16 @@ export const projectRouter = createTRPCRouter({
 
     .input(
       z.object({
-        status: z.enum(['ACTIVE', 'INACTIVE', 'DELETED']).default('ACTIVE'),
+        status: z.enum(["ACTIVE", "INACTIVE", "DELETED"]).default("ACTIVE"),
         offset: z.number().default(0),
         limit: z.number().default(10),
       })
     )
     .query(({ ctx, input }) => {
       //fake data
-      if (input.status === 'ACTIVE') return data;
-      if (input.status === 'INACTIVE') return data.slice(0, 3);
-      if (input.status === 'DELETED') return data.slice(0, 5);
+      if (input.status === "ACTIVE") return data;
+      if (input.status === "INACTIVE") return data.slice(0, 3);
+      if (input.status === "DELETED") return data.slice(0, 5);
       // return ctx.prisma.project.findMany({
       //   skip: input.offset,
       //   take: input.limit,
@@ -124,106 +126,119 @@ export const projectRouter = createTRPCRouter({
         },
       });
     }),
+
+  deployIdoContract: publicProcedure
+    .input(idoContractDto)
+    .mutation(async ({ ctx, input }) => {
+      const instance = IDOContract.getInstance();
+      const contract = await instance.deployIDOContract(input);
+
+      return contract.deployed().then((contract) => {
+        console.log("contract deployed at ", contract.address);
+
+        return contract;
+      });
+    }),
 });
 
 const data = [
   {
-    id: 'prId123451',
-    name: 'KyberDyne',
-    image: 'https://picsum.photos/200/300',
+    id: "prId123451",
+    name: "KyberDyne",
+    image: "https://picsum.photos/200/300",
     pricePerToken: 0.59,
     Chain: {
-      id: 'chainid111323',
-      image: 'https://picsum.photos/200/300',
-      name: 'ABC',
+      id: "chainid111323",
+      image: "https://picsum.photos/200/300",
+      name: "ABC",
     },
     endTime: new Date(),
     totalRaise: 100000000000,
-    progress: '90%',
+    progress: "90%",
   },
   {
-    id: 'prId123452',
-    name: 'KyberDyne',
-    image: 'https://picsum.photos/200/300',
+    id: "prId123452",
+    name: "KyberDyne",
+    image: "https://picsum.photos/200/300",
     pricePerToken: 0.59,
     Chain: {
-      id: 'chainid111323',
-      image: 'https://picsum.photos/200/300',
-      name: 'ABC',
+      id: "chainid111323",
+      image: "https://picsum.photos/200/300",
+      name: "ABC",
     },
     endTime: new Date(),
     totalRaise: 100000000000,
-    progress: '90%',
+    progress: "90%",
   },
   {
-    id: 'prId123453',
-    name: 'KyberDyne',
-    image: 'https://picsum.photos/200/300',
+    id: "prId123453",
+    name: "KyberDyne",
+    image: "https://picsum.photos/200/300",
     pricePerToken: 0.59,
     Chain: {
-      id: 'chainid111323',
-      image: 'https://picsum.photos/200/300',
-      name: 'ABC',
+      id: "chainid111323",
+      image: "https://picsum.photos/200/300",
+      name: "ABC",
     },
     endTime: new Date(),
     totalRaise: 100000000000,
-    progress: '90%',
+    progress: "90%",
   },
   {
-    id: 'prId123454',
-    name: 'KyberDyne',
-    image: 'https://picsum.photos/200/300',
+    id: "prId123454",
+    name: "KyberDyne",
+    image: "https://picsum.photos/200/300",
     pricePerToken: 0.59,
     Chain: {
-      id: 'chainid111323',
-      image: 'https://picsum.photos/200/300',
-      name: 'ABC',
+      id: "chainid111323",
+      image: "https://picsum.photos/200/300",
+      name: "ABC",
     },
     endTime: new Date(),
     totalRaise: 100000000000,
-    progress: '90%',
+    progress: "90%",
   },
   {
-    id: 'prId123454',
-    name: 'KyberDyne',
-    image: 'https://picsum.photos/200/300',
+    id: "prId123454",
+    name: "KyberDyne",
+    image: "https://picsum.photos/200/300",
     pricePerToken: 0.59,
     Chain: {
-      id: 'chainid111323',
-      image: 'https://picsum.photos/200/300',
-      name: 'ABC',
+      id: "chainid111323",
+      image: "https://picsum.photos/200/300",
+      name: "ABC",
     },
     endTime: new Date(),
     totalRaise: 100000000000,
-    progress: '90%',
+    progress: "90%",
   },
   {
-    id: 'prId123454',
-    name: 'KyberDyne',
-    image: 'https://picsum.photos/200/300',
+    id: "prId123454",
+    name: "KyberDyne",
+    image: "https://picsum.photos/200/300",
     pricePerToken: 0.59,
     Chain: {
-      id: 'chainid111323',
-      image: 'https://picsum.photos/200/300',
-      name: 'ABC',
+      id: "chainid111323",
+      image: "https://picsum.photos/200/300",
+      name: "ABC",
     },
     endTime: new Date(),
     totalRaise: 100000000000,
-    progress: '90%',
+    progress: "90%",
   },
   {
-    id: 'prId123454',
-    name: 'KyberDyne',
-    image: 'https://picsum.photos/200/300',
+    id: "prId123454",
+    name: "KyberDyne",
+    image: "https://picsum.photos/200/300",
     pricePerToken: 0.59,
     Chain: {
-      id: 'chainid111323',
-      image: 'https://picsum.photos/200/300',
-      name: 'ABC',
+      id: "chainid111323",
+      image: "https://picsum.photos/200/300",
+      name: "ABC",
     },
     endTime: new Date(),
     totalRaise: 100000000000,
-    progress: '90%',
+    progress: "90%",
   },
 ];
 //  id: "1234",

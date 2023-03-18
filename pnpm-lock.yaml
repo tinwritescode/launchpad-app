@@ -4,6 +4,7 @@ specifiers:
   '@ant-design/icons': ^5.0.1
   '@coinbase/wallet-sdk': ^3.6.4
   '@ethersproject/abi': ^5.7.0
+  '@ethersproject/experimental': ^5.7.0
   '@ethersproject/providers': ^5.7.2
   '@prisma/client': ^4.9.0
   '@tanstack/react-query': ^4.20.2
@@ -49,6 +50,7 @@ dependencies:
   '@ant-design/icons': 5.0.1_biqbaboplfbrettd7655fr4n2y
   '@coinbase/wallet-sdk': 3.6.4
   '@ethersproject/abi': 5.7.0
+  '@ethersproject/experimental': 5.7.0
   '@ethersproject/providers': 5.7.2
   '@prisma/client': 4.11.0_prisma@4.11.0
   '@tanstack/react-query': 4.24.10_biqbaboplfbrettd7655fr4n2y
@@ -487,6 +489,17 @@ packages:
       '@ethersproject/logger': 5.7.0
       '@ethersproject/properties': 5.7.0
       '@ethersproject/transactions': 5.7.0
+    dev: false
+
+  /@ethersproject/experimental/5.7.0:
+    resolution: {integrity: sha512-DWvhuw7Dg8JPyhMbh/CNYOwsTLjXRx/HGkacIL5rBocG8jJC0kmixwoK/J3YblO4vtcyBLMa+sV74RJZK2iyHg==}
+    dependencies:
+      '@ethersproject/web': 5.7.1
+      ethers: 5.7.2
+      scrypt-js: 3.0.1
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
     dev: false
 
   /@ethersproject/hash/5.7.0:

@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as interface from "./interface";
+export { Multicall__factory } from "./Multicall__factory";
 export { Staking20__factory } from "./Staking20__factory";

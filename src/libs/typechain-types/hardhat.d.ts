@@ -65,9 +65,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Metadata__factory>;
     getContractFactory(
+      name: "IMulticall",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IMulticall__factory>;
+    getContractFactory(
       name: "IStaking20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IStaking20__factory>;
+    getContractFactory(
+      name: "Multicall",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Multicall__factory>;
     getContractFactory(
       name: "Staking20",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -163,10 +171,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20Metadata>;
     getContractAt(
+      name: "IMulticall",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IMulticall>;
+    getContractAt(
       name: "IStaking20",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IStaking20>;
+    getContractAt(
+      name: "Multicall",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Multicall>;
     getContractAt(
       name: "Staking20",
       address: string,

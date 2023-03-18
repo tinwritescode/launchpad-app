@@ -30,8 +30,12 @@ export type { ERC165 } from "./@openzeppelin/contracts/utils/introspection/ERC16
 export { ERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/ERC165__factory";
 export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC165";
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
+export type { IMulticall } from "./@thirdweb-dev/contracts/extension/interface/IMulticall";
+export { IMulticall__factory } from "./factories/@thirdweb-dev/contracts/extension/interface/IMulticall__factory";
 export type { IStaking20 } from "./@thirdweb-dev/contracts/extension/interface/IStaking20";
 export { IStaking20__factory } from "./factories/@thirdweb-dev/contracts/extension/interface/IStaking20__factory";
+export type { Multicall } from "./@thirdweb-dev/contracts/extension/Multicall";
+export { Multicall__factory } from "./factories/@thirdweb-dev/contracts/extension/Multicall__factory";
 export type { Staking20 } from "./@thirdweb-dev/contracts/extension/Staking20";
 export { Staking20__factory } from "./factories/@thirdweb-dev/contracts/extension/Staking20__factory";
 export type { IWETH } from "./@thirdweb-dev/contracts/interfaces/IWETH";
