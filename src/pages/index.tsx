@@ -4,23 +4,14 @@ import React, { useMemo } from "react";
 import AppButton from "../components/common/AppButton";
 import PageLayout from "../components/templates/PageLayout";
 
-import { api } from "~/utils/api";
-import { importData } from "~/utils/fakeData";
-
 type Props = {};
 
 function Home({}: Props) {
-  importData();
-
   const links = useMemo(
     () => [
       {
         href: "/ido-list",
         label: "IDO List screen",
-      },
-      {
-        href: "/ido/create",
-        label: "IDO Create screen",
       },
       {
         href: "/ido/create",

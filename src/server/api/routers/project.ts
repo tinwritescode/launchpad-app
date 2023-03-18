@@ -4,17 +4,34 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { prisma } from "~/server/db";
 
 export const projectRouter = createTRPCRouter({
+  /*
+    query
+  */
+  count: publicProcedure.query(async () => {
+    return await prisma.project.count();
+  }),
+
   getOne: publicProcedure
     .input(
-      z.object({
-        id: z.string(),
-        allData: z.boolean().default(false),
-      })
+      z
+        .object({
+          id: z.string().uuid().optional(),
+          name: z.string().optional(),
+          tokenId: z.string().uuid().optional(),
+          allData: z.boolean().default(false),
+        })
+        .refine((input) => input.id || input.name || input.tokenId, {
+          message: "Must provide either id, name, or tokenId",
+        })
     )
     .query(async ({ input }) => {
       return await prisma.project.findUnique({
         where: {
-          id: input.id,
+          ...(input.id
+            ? { id: input.id }
+            : input.name
+            ? { name: input.name }
+            : { tokenId: input.tokenId }),
         },
         include: {
           Token: true,
@@ -29,12 +46,13 @@ export const projectRouter = createTRPCRouter({
     return await prisma.project.findMany();
   }),
 
+  /*
+    mutation
+  */
   createOne: publicProcedure
     .input(
       z.object({
-        Chain: z.object({
-          chainId: z.string().uuid(),
-        }),
+        chainId: z.string().uuid(),
         Token: z.object({
           name: z.string(),
           symbol: z.string(),
@@ -48,19 +66,21 @@ export const projectRouter = createTRPCRouter({
               name: z.string(),
               startTime: z.number(),
               endTime: z.number(),
+              pricePerToken: z.number().optional(),
             })
           )
-          .optional(),
+          .default([]),
         name: z.string(),
         startTime: z.number(),
         endTime: z.number(),
+        scheduleOpenDate: z.number().optional(),
+        scheduleCloseDate: z.number().optional(),
         targetRaise: z.number(),
         allocation: z.number(),
-        summaryContent: z.string(),
-        videoURL: z.string(),
-        comparisonContent: z.string(),
-        roadmapContent: z.string(),
-        pricePerToken: z.number(),
+        summaryContent: z.string().optional(),
+        videoURL: z.string().optional(),
+        comparisonContent: z.string().optional(),
+        roadmapContent: z.string().optional(),
       })
     )
     .mutation(async ({ input }) => {
@@ -69,16 +89,21 @@ export const projectRouter = createTRPCRouter({
           name: input.name,
           startTime: new Date(input.startTime),
           endTime: new Date(input.endTime),
+          scheduleOpenDate: input.scheduleOpenDate
+            ? new Date(input.scheduleOpenDate)
+            : null,
+          scheduleCloseDate: input.scheduleCloseDate
+            ? new Date(input.scheduleCloseDate)
+            : null,
           targetRaise: input.targetRaise,
           allocation: input.allocation,
-          summaryContent: input.summaryContent,
-          videoURL: input.videoURL,
-          comparisonContent: input.comparisonContent,
-          roadmapContent: input.roadmapContent,
-          pricePerToken: input.pricePerToken,
+          summaryContent: input.summaryContent || null,
+          videoURL: input.videoURL || null,
+          comparisonContent: input.comparisonContent || null,
+          roadmapContent: input.roadmapContent || null,
           Chain: {
             connect: {
-              id: input.Chain.chainId,
+              id: input.chainId,
             },
           },
           Token: {
@@ -91,10 +116,11 @@ export const projectRouter = createTRPCRouter({
             },
           },
           scheduleRounds: {
-            create: (input.scheduleRounds ?? []).map((round) => ({
+            create: input.scheduleRounds.map((round) => ({
               name: round.name,
               startTime: new Date(round.startTime),
               endTime: new Date(round.endTime),
+              pricePerToken: round.pricePerToken || null,
             })),
           },
         },

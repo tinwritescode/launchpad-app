@@ -52,30 +52,29 @@ model TokenomicsItem {
 }
 
 model Project {
-    id                 String           @id @default(uuid())
-    createdAt          DateTime         @default(now())
-    updatedAt          DateTime         @updatedAt
-    pricePerToken      Int
-    name               String           @unique
-    Chain              Chain            @relation(fields: [chainId], references: [id])
-    chainId            String
-    status             Status           @default(INACTIVE)
-    startTime          DateTime
-    endTime            DateTime
-    totalRaise         Int?
-    targetRaise        Int?
-    allocation         Int?
-    participants       Int?
-    Token              Token @relation(fields: [tokenId], references: [id])
-    tokenId            String @unique
-    summaryContent     String?
-    videoURL           String?
-    scheduleRounds     ScheduleRound[]
-    scheduleOpenDate   DateTime?
-    scheduleCloseDate  DateTime?
-    comparisonContent  String?
-    tokenomicsItems    TokenomicsItem[]
-    roadmapContent     String?
+    id                String           @id @default(uuid())
+    createdAt         DateTime         @default(now())
+    updatedAt         DateTime         @updatedAt
+    name              String           @unique
+    Chain             Chain            @relation(fields: [chainId], references: [id])
+    chainId           String
+    status            Status           @default(INACTIVE)
+    startTime         DateTime
+    endTime           DateTime
+    totalRaise        Int?
+    targetRaise       Int?
+    allocation        Int?
+    participants      Int?
+    Token             Token            @relation(fields: [tokenId], references: [id])
+    tokenId           String           @unique
+    summaryContent    String?
+    videoURL          String?
+    scheduleRounds    ScheduleRound[]
+    scheduleOpenDate  DateTime?
+    scheduleCloseDate DateTime?
+    comparisonContent String?
+    tokenomicsItems   TokenomicsItem[]
+    roadmapContent    String?
 }
 
 model Token {
@@ -91,14 +90,15 @@ model Token {
 }
 
 model ScheduleRound {
-    id        String   @id @default(uuid())
-    Project   Project  @relation(fields: [projectId], references: [id])
-    projectId String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    name      String
-    startTime DateTime
-    endTime   DateTime
+    id            String   @id @default(uuid())
+    Project       Project  @relation(fields: [projectId], references: [id])
+    projectId     String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    name          String
+    startTime     DateTime
+    endTime       DateTime
+    pricePerToken Int?
 }
 
 model DemoProject {

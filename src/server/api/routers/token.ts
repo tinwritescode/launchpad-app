@@ -4,16 +4,34 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { prisma } from "~/server/db";
 
 export const tokenRouter = createTRPCRouter({
+  /*
+   query
+  */
+  count: publicProcedure.query(async () => {
+    return await prisma.token.count();
+  }),
+
   getOne: publicProcedure
     .input(
-      z.object({
-        id: z.string(),
-      })
+      z
+        .object({
+          id: z.string().uuid(),
+          name: z.string(),
+          symbol: z.string(),
+        })
+        .partial()
+        .refine((input) => input.id || input.name || input.symbol, {
+          message: "Must provide either id, name, or symbol",
+        })
     )
     .query(async ({ input }) => {
       return await prisma.token.findUnique({
         where: {
-          id: input.id,
+          ...(input.id
+            ? { id: input.id }
+            : input.name
+            ? { name: input.name }
+            : { symbol: input.symbol }),
         },
       });
     }),
@@ -22,6 +40,9 @@ export const tokenRouter = createTRPCRouter({
     return await prisma.token.findMany();
   }),
 
+  /*
+    mutation
+  */
   createOne: publicProcedure
     .input(
       z.object({
