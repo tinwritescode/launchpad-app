@@ -19,6 +19,7 @@ const client = z.object({
   NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS: z.string(),
   NEXT_PUBLIC_STAKING_TOKEN_ADDRESS: z.string(),
   NEXT_PUBLIC_REWARD_TOKEN_ADDRESS: z.string(),
+  NEXT_PUBLIC_CHAIN_ID: z.string(),
 });
 
 /**
@@ -37,6 +38,7 @@ const processEnv = {
     process.env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS,
   NEXT_PUBLIC_REWARD_TOKEN_ADDRESS:
     process.env.NEXT_PUBLIC_REWARD_TOKEN_ADDRESS,
+  NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,
 };
 // Don't touch the part below
 // --------------------------
@@ -47,6 +49,7 @@ const merged = server.merge(client);
 /** @typedef {z.infer<typeof merged>} MergedOutput */
 /** @typedef {z.SafeParseReturnType<MergedInput, MergedOutput>} MergedSafeParseReturn */
 
+// @ts-ignore
 let env = /** @type {MergedOutput} */ (process.env);
 
 if (!!process.env.SKIP_ENV_VALIDATION == false) {

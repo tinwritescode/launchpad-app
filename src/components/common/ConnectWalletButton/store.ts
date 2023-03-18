@@ -19,3 +19,8 @@ export const useWeb3App = create<Web3React>((set, get) => ({
   setConnector: (connector: SupportedWallets) => set(() => ({ connector })),
   setHooks: (hooks: Web3ReactHooks) => set(() => ({ hooks })),
 }));
+
+export const useWeb3Hooks = () => {
+  const { hooks } = useWeb3App();
+  return hooks;
+};

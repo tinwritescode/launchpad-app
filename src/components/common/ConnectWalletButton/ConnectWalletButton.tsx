@@ -2,6 +2,7 @@ import { CoinbaseWallet } from "@web3-react/coinbase-wallet";
 import { Web3ReactHooks } from "@web3-react/core";
 import { MetaMask } from "@web3-react/metamask";
 import { ButtonProps } from "antd";
+import { env } from "../../../env.mjs";
 import { api } from "../../../utils/api";
 import { formatWalletAddress } from "../../../utils/ethereum";
 import AppButton from "../AppButton";
@@ -39,7 +40,7 @@ const ConnectWalletButton = ({ connector, text, hooks, ...props }: Props) => {
           return;
         }
         connector.activate({
-          chainId: 80001,
+          chainId: parseInt(env.NEXT_PUBLIC_CHAIN_ID, 16),
           chainName: "Mumbai Testnet",
           nativeCurrency: {
             name: "MATIC",
@@ -59,7 +60,7 @@ const ConnectWalletButton = ({ connector, text, hooks, ...props }: Props) => {
       {...props}
     >
       {isActive && account
-        ? `Connect with ${formatWalletAddress(account)}`
+        ? `Logout (as ${formatWalletAddress(account)})`
         : text}
     </AppButton>
   );

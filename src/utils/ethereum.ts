@@ -1,3 +1,4 @@
+import { ExternalProvider } from "@ethersproject/providers";
 import { ethers } from "ethers";
 
 export const isWalletInstalled = () => {
@@ -17,4 +18,15 @@ export const getSigner = () => {
 };
 export const formatWalletAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+export const switchNetwork = async (chainId: string) => {
+  if (!isWalletInstalled()) {
+    throw new Error("Wallet not installed");
+  }
+
+  await (window.ethereum as ExternalProvider).request?.({
+    method: "wallet_switchEthereumChain",
+    params: [{ chainId: chainId }],
+  });
 };
