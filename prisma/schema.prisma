@@ -37,10 +37,9 @@ model User {
 }
 
 model Chain {
-    id      String    @id @default(uuid())
-    name    String
-    image   String
-    Project Project[]
+    id    String @id @default(uuid())
+    name  String
+    image String
 }
 
 model TokenomicsItem {
@@ -52,38 +51,37 @@ model TokenomicsItem {
 }
 
 model Project {
-    id                 String           @id @default(uuid())
-    createdAt          DateTime         @default(now())
-    updatedAt          DateTime         @updatedAt
-    pricePerToken      Int
-    tokenSymbol        String
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    //  Main fields
+    IDOContract IDOContract[]
+
+    // Information fields
     name               String
     image              String
-    Chain              Chain            @relation(fields: [chainId], references: [id])
-    chainId            String
-    progress           String
     status             Status           @default(INACTIVE)
-    startTime          DateTime
-    endTime            DateTime
-    totalRaise         Int?
-    targetRaise        Int?
-    allocation         String?
-    participants       Int?
-    Token              Token           @relation(fields: [tokenId], references: [id])
-    tokenId            String
+    token              Token? // https://www.prisma.io/docs/concepts/components/prisma-schema/relations/one-to-one-relations
     summaryContent     String
     videoURL           String
     ScheduleRound      ScheduleRound[]
-    scheduleOpenDate   DateTime
-    scheduleCloseDate  DateTime
     comparisionContent String
     TokenomicsItem     TokenomicsItem[]
-    roundmapContent    String
+    roadmapContent     String
+}
+
+model IDOContract {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    address   String   @unique
+    Project   Project  @relation(fields: [projectId], references: [id])
+    projectId String
 }
 
 model Token {
     id          String   @id @default(uuid())
-    Project     Project[]
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     name        String
@@ -91,6 +89,8 @@ model Token {
     decimals    Int
     totalSupply Int
     address     String
+    Project     Project  @relation(fields: [projectId], references: [id])
+    projectId   String   @unique
 }
 
 model ScheduleRound {
