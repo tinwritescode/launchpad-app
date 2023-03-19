@@ -20,7 +20,6 @@ export const projectRouter = createTRPCRouter({
           id: z.string().uuid().optional(),
           name: z.string().optional(),
           tokenId: z.string().uuid().optional(),
-          allData: z.boolean().default(false),
         })
         .refine((input) => input.id || input.name || input.tokenId, {
           message: "Must provide either id, name, or tokenId",
@@ -37,9 +36,9 @@ export const projectRouter = createTRPCRouter({
         },
         include: {
           Token: true,
-          Chain: input.allData,
-          scheduleRounds: input.allData,
-          tokenomicsItems: input.allData,
+          Chain: true,
+          scheduleRounds: true,
+          tokenomicsItems: true,
         },
       });
     }),
@@ -72,7 +71,7 @@ export const projectRouter = createTRPCRouter({
   createOne: publicProcedure
     .input(
       z.object({
-        chainId: z.string().uuid(),
+        chainId: z.string().uuid().optional(),
         Token: z.object({
           name: z.string(),
           symbol: z.string(),
@@ -123,11 +122,7 @@ export const projectRouter = createTRPCRouter({
           videoURL: input.videoURL || null,
           comparisonContent: input.comparisonContent || null,
           roadmapContent: input.roadmapContent || null,
-          Chain: {
-            connect: {
-              id: input.chainId,
-            },
-          },
+          ...(input.chainId && { Chain: { connect: { id: input.chainId } } }),
           Token: {
             create: {
               name: input.Token.name,
