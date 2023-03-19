@@ -85,8 +85,8 @@ model Token {
     id          String   @id @default(uuid())
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-    name        String
-    symbol      String
+    name        String   @unique
+    symbol      String   @unique
     decimals    Int
     totalSupply Int
     address     String
@@ -95,14 +95,15 @@ model Token {
 }
 
 model ScheduleRound {
-    id        String   @id @default(uuid())
-    Project   Project  @relation(fields: [projectId], references: [id])
-    projectId String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    name      String
-    startTime DateTime
-    endTime   DateTime
+    id            String   @id @default(uuid())
+    Project       Project  @relation(fields: [projectId], references: [id])
+    projectId     String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    name          String
+    startTime     DateTime
+    endTime       DateTime
+    pricePerToken Int?
 }
 
 model DemoProject {
