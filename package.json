@@ -39,6 +39,7 @@
     "styled-components": "^5.3.8",
     "superjson": "1.9.1",
     "trpc-openapi": "^1.1.2",
+    "ts-node": "^10.9.1",
     "zod": "^3.20.6",
     "zustand": "^4.3.5"
   },
@@ -61,5 +62,8 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.5.9"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
