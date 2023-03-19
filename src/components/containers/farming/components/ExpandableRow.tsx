@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Input, Button } from "antd";
 import ExandableForm from "./ExandableForm";
+import { getERC20Contract, getStakingContract } from "~/utils/staking";
+import { ethers } from "ethers";
+import { env } from "~/env.mjs";
 
 const StyledForm = styled.div`
     display: flex;
@@ -60,6 +63,13 @@ const ExpandableRow = () => {
     console.log("claim");
   };
   const claimBtn1 = { name: "Claim", onClick: handleClaim };
+
+  useEffect(() => {
+    const contractErc20 = getERC20Contract();
+    const contractStaking = getStakingContract();
+    const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+    const signer = provider.getSigner().getAddress();
+  }, []);
 
   return (
     <>
