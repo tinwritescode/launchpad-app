@@ -1,11 +1,7 @@
 import { exampleRouter } from "~/server/api/routers/example";
 import { createTRPCRouter } from "~/server/api/trpc";
-import { projectRouter } from "./routers/project/project";
 import { authRouter } from "./routers/auth";
-import { chainRouter } from "./routers/chain";
 import { demoProjectRouter } from "./routers/demoProject";
-import { scheduleRoundRouter } from "./routers/scheduleRound";
-import { tokenRouter } from "./routers/token";
 
 /**
  * This is the primary router for your server.
@@ -15,13 +11,11 @@ import { tokenRouter } from "./routers/token";
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
   demoProject: demoProjectRouter,
-  //
   auth: authRouter,
-  //
-  chain: chainRouter,
-  project: projectRouter,
-  token: tokenRouter,
-  scheduleRound: scheduleRoundRouter,
+  // chain: chainRouter,
+  // project: projectRouter,
+  // token: tokenRouter,
+  // scheduleRound: scheduleRoundRouter,
 });
 
 // export type definition of API
