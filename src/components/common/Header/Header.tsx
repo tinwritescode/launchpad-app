@@ -11,10 +11,10 @@ type Props = {};
 function Header({}: Props) {
   return (
     <Space direction="vertical">
-      <Layout.Header className={style.header}>
+      <Layout.Header>
         <LoginModal />
-        <ChangeNetwork />
       </Layout.Header>
+      <ChangeNetwork />
     </Space>
   );
 }
@@ -27,7 +27,7 @@ const ChangeNetwork = () => {
     (chainId !== parseInt(env.NEXT_PUBLIC_CHAIN_ID, 16) && (
       <>
         <Alert
-          message="Demo Application"
+          message="You are not connected to the correct network."
           className={style.alert}
           action={
             <Button

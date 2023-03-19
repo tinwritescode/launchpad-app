@@ -58,7 +58,7 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
  *
  * This is where the tRPC API is initialized, connecting the context and transformer.
  */
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { sessionOptions } from "../../utils/session";
 
@@ -91,3 +91,14 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+export const protectedProcedure = publicProcedure.use(
+  t.middleware(({ next, ctx }) => {
+    if (!ctx.session.user?.isLoggedIn) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+      });
+    }
+    return next();
+  })
+);

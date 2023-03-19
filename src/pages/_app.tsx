@@ -1,5 +1,6 @@
-import { type AppType } from "next/app";
+import type { AppType } from "next/app";
 import NextNProgress from "nextjs-progressbar";
+import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
 import { api } from "~/utils/api";
 

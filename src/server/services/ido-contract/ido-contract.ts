@@ -1,7 +1,7 @@
 import { NonceManager } from "@ethersproject/experimental";
 import { ContractFactory, ethers, Wallet } from "ethers";
-import { env } from "../../env.mjs";
-import { IDOContract__factory } from "../../libs/typechain-types";
+import { env } from "~/env.mjs";
+import { IDOContract__factory } from "~/libs/typechain-types";
 import { IdoContractDto } from "./ido-contract.dto";
 
 export type ContractInfo = {};

@@ -1,8 +1,12 @@
-import { idoContractDto } from "./../../services/ido-contract.dto";
 import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { IDOContract } from "../../services/ido-contract";
+import { IDOContract } from "~/server/services/ido-contract";
+import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
+import {
+  buildContracts as buildContractPayloads,
+  getContractNameFromIndex,
+} from "./project.constant";
+import { createIdoProjectInputSchema } from "./project.schema";
 
 export const projectRouter = createTRPCRouter({
   hello: publicProcedure
@@ -75,7 +79,6 @@ export const projectRouter = createTRPCRouter({
       return project;
     }),
   getAll: publicProcedure
-
     .input(
       z.object({
         status: z.enum(["ACTIVE", "INACTIVE", "DELETED"]).default("ACTIVE"),
@@ -127,17 +130,57 @@ export const projectRouter = createTRPCRouter({
       });
     }),
 
-  deployIdoContract: publicProcedure
-    .input(idoContractDto)
+  createIdoProject: publicProcedure
+    .input(createIdoProjectInputSchema)
     .mutation(async ({ ctx, input }) => {
-      const instance = IDOContract.getInstance();
-      const contract = await instance.deployIDOContract(input);
+      // Initialize variables
+      const {
+        startTime,
+        endTime,
+        idoPrice,
+        idoTokenAddress,
+        purchaseCap,
+        ...rest
+      } = input;
 
-      return contract.deployed().then((contract) => {
-        console.log("contract deployed at ", contract.address);
-
-        return contract;
+      const contracts: IdoContractDto[] = buildContractPayloads({
+        startTime,
+        endTime,
+        idoPrice,
+        idoTokenAddress,
+        purchaseCap,
       });
+
+      const instance = IDOContract.getInstance();
+
+      // Deploy contract
+      const deployedContracts = await Promise.all(
+        contracts
+          .map(async (contract) => {
+            return instance.deployIDOContract(contract);
+          })
+          .map((p) => p.then((res) => res.deployed()))
+      );
+
+      // Create project
+      const project = await ctx.prisma.project.create({
+        data: {
+          ...rest,
+          IDOContract: {
+            createMany: {
+              data: deployedContracts.map((contract, i) => ({
+                address: contract.address,
+                name: getContractNameFromIndex(i),
+              })),
+            },
+          },
+        },
+        include: {
+          IDOContract: true,
+        },
+      });
+
+      return project;
     }),
 });
 
@@ -241,15 +284,3 @@ const data = [
     progress: "90%",
   },
 ];
-//  id: "1234",
-//       name: true,
-//        pricePerToken: true,
-//        tokenSymbol: true,
-//        endTime: true,
-//        totalRaise: true,
-//        progress: true,
-//        Chain: {
-//          select: {
-//            id: true,
-//            image: true,
-//          },

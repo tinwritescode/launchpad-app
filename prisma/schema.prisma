@@ -78,6 +78,7 @@ model IDOContract {
     address   String   @unique
     Project   Project  @relation(fields: [projectId], references: [id])
     projectId String
+    name      String
 }
 
 model Token {
