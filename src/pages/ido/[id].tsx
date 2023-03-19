@@ -1,13 +1,13 @@
-import { useRouter } from 'next/router';
-import React from 'react';
+import { useRouter } from "next/router";
+import React from "react";
 import {
   MiddleDetailInfo,
   ProjectSummary,
   TopDetailInfo,
-} from '../../components/containers/ido-details/components';
-import PageLayout from '../../components/templates/PageLayout';
+} from "../../components/containers/ido-details/components";
+import PageLayout from "../../components/templates/PageLayout";
 
-import { api } from '~/utils/api';
+import { api } from "~/utils/api";
 
 type Props = {};
 
@@ -27,6 +27,7 @@ function IDODetail({}: Props) {
 
   return (
     <PageLayout>
+      {JSON.stringify(data)}
       <TopDetailInfo />
       <MiddleDetailInfo />
       <ProjectSummary />
