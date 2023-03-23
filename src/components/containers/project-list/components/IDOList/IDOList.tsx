@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useMemo } from "react";
-import * as S from "./IDOList.style";
 import type { TabsProps } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Space, Menu, Dropdown, Table } from "antd";
+import { Table } from "antd";
+import React, { useState } from "react";
 import { api } from "~/utils/api";
+import * as S from "./IDOList.style";
 
 const navItems: TabsProps["items"] = [
   {
