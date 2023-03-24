@@ -52,6 +52,7 @@ export const authRouter = createTRPCRouter({
         address: walletAddress,
         isLoggedIn: true,
         roles: user.roles,
+        id: user.id,
       };
 
       await ctx.session.save();

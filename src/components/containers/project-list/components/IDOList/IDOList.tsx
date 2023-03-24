@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import type { TabsProps } from "antd";
 import { Table } from "antd";
 import React, { useState } from "react";
@@ -62,7 +63,7 @@ const IDOList: React.FC<Props> = () => {
     "ACTIVE" | "INACTIVE" | "DELETED" | undefined
   >("ACTIVE");
   const { data, isLoading, error, refetch } = api.project.getAll.useQuery({
-    status,
+    // status,
     offset: 0,
     limit: 10,
   });

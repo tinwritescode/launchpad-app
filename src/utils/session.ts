@@ -13,6 +13,7 @@ declare module "iron-session" {
       isLoggedIn: true;
       roles: Role[];
       address: string;
+      id: string;
     };
   }
 }
