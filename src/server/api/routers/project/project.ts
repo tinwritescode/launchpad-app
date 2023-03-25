@@ -63,13 +63,14 @@ export const projectRouter = createTRPCRouter({
         });
       });
 
-      if (!ctx.session.user) throw new TRPCError({ code: "UNAUTHORIZED" });
+      if (!ctx.session?.user?.isLoggedIn)
+        throw new TRPCError({ code: "UNAUTHORIZED" });
 
       // Create project
       const project = await ctx.prisma.project.create({
         data: {
           ...rest,
-          ownerId: ctx.session.user.address,
+          ownerId: ctx.session?.user?.id,
           IDOContract: {
             createMany: {
               data: deployedContracts.map((contract, i) => ({
