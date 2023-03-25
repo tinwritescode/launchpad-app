@@ -104,4 +104,27 @@ export const projectRouter = createTRPCRouter({
         },
       });
     }),
+
+  getMyProject: protectedProcedure
+    .input(
+      z.object({
+        offset: z.number().min(0).default(0),
+        limit: z.number().positive().max(100).default(10),
+      })
+    )
+    .query(async ({ input, ctx: { prisma, session } }) => {
+      if (!session?.user?.isLoggedIn)
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+
+      return await prisma.project.findMany({
+        skip: input.offset,
+        take: input.limit,
+        where: {
+          ownerId: session?.user?.id,
+        },
+        include: {
+          IDOContract: true,
+        },
+      });
+    }),
 });
