@@ -29,11 +29,12 @@ enum Role {
 }
 
 model User {
-    id            String   @id @default(uuid())
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
-    walletAddress String   @unique
+    id            String    @id @default(uuid())
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    walletAddress String    @unique
     roles         Role[]
+    projects      Project[]
 }
 
 model Chain {
@@ -69,6 +70,8 @@ model Project {
     comparisionContent String
     TokenomicsItem     TokenomicsItem[]
     roadmapContent     String
+    User               User?            @relation(fields: [ownerId], references: [id])
+    ownerId            String
 }
 
 model IDOContract {
@@ -104,9 +107,4 @@ model ScheduleRound {
     startTime     DateTime
     endTime       DateTime
     pricePerToken Int?
-}
-
-model DemoProject {
-    id   String @id @default(uuid())
-    name String
 }

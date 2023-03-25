@@ -11,7 +11,7 @@ export class IDOContract {
   signer = new NonceManager(
     new Wallet(
       env.ADMIN_PRIVATE_KEY,
-      new ethers.providers.JsonRpcProvider(env.BLOCKCHAIN_RPC)
+      new ethers.providers.JsonRpcProvider(env.NEXT_PUBLIC_BLOCKCHAIN_RPC)
     )
   );
 

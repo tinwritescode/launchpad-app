@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { TRPCClientError } from "@trpc/client";
 import {
   Alert,
@@ -18,29 +19,43 @@ import { api } from "../../../utils/api";
 
 type Props = {};
 
+type FormType = z.infer<typeof createIdoProjectInputSchema> & {
+  time: [Date, Date];
+};
+
 export function Create({}: Props) {
   const { mutateAsync } = api.project.createIdoProject.useMutation();
   const [form] = Form.useForm();
   const router = useRouter();
 
   // TODO: make type safety for this
-  const handleSubmit = useCallback(
-    async (values: z.infer<typeof createIdoProjectInputSchema>) => {
-      try {
-        const { id } = await mutateAsync({
-          ...values,
-          endTime: new Date(values.endTime * 1000),
-          startTime: new Date(values.startTime * 1000),
-        });
+  const handleSubmit = useCallback(async (values: FormType) => {
+    try {
+      console.log(values);
+      const startTime = values.time[0];
+      const endTime = values.time[1];
 
-        message.success("Created");
+      const { id } = await mutateAsync({
+        ...values,
+        endTime,
+        startTime,
+      });
 
-        form.resetFields();
-        router.push(`/ido/${id}`);
-      } catch (error: any) {
-        if (error instanceof TRPCClientError) {
+      message.success("Created");
+
+      form.resetFields();
+      router.push(`/ido/${id}`);
+    } catch (error: any) {
+      if (error instanceof TRPCClientError) {
+        if (error?.shape?.data?.code === "INTERNAL_SERVER_ERROR") {
+          message.error(error?.shape?.message);
+          return;
+        }
+
+        // if zod error
+        if (error?.shape?.data?.code === "INVALID_INPUT") {
           // map errors
-          const errors = JSON.parse(error.message);
+          const errors = JSON.parse(error?.message);
 
           errors.forEach((error: any) => {
             form.setFields([
@@ -50,19 +65,18 @@ export function Create({}: Props) {
               },
             ]);
           });
-
           return;
         }
-
-        message.error(error?.message || "Something went wrong");
       }
-    },
-    []
-  );
+
+      message.error(error?.message || "Something went wrong");
+    }
+  }, []);
 
   return (
     <>
       <Form
+        layout="vertical"
         form={form}
         onFinish={handleSubmit}
         onFieldsChange={(changedFields, allFields) => {
@@ -77,26 +91,19 @@ export function Create({}: Props) {
         }}
         // Remove mock later
         initialValues={{
-          startTime: dayjs(),
-          endTime: dayjs().add(1, "day"),
+          time: [dayjs(), dayjs().add(1, "day")],
           idoPrice: 1,
           purchaseCap: 100,
           idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
           // Fields that need to be filled
-          comparisionContent: " ",
-          image: "https://twst.io/",
-          roadmapContent: " ",
-          summaryContent: " ",
-          videoURL: "https://www.youtube.com/watch?v=",
-          name: " ",
+          comparisionContent: "lorem ipsum dolor",
+          image: "https://picsum.photos/200/300",
+          roadmapContent: "ipsum lorem",
+          summaryContent: "lorem ipsum",
+          videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
+          name: "Project Name",
         }}
       >
-        <Alert
-          message={JSON.stringify(form.getFieldsError().map((e) => e.errors))}
-          type="error"
-          showIcon
-        />
-
         {/* Fields that need to be filled */}
         <Form.Item
           label="Name"
@@ -131,13 +138,8 @@ export function Create({}: Props) {
           <Input.TextArea />
         </Form.Item>
 
-        {/* Find a way handle it better */}
-        <Form.Item label="Start Time" required name="startTime">
-          <DatePicker showTime />
-        </Form.Item>
-
-        <Form.Item label="End Time" required name="endTime">
-          <DatePicker showTime />
+        <Form.Item label="Time" required name="time">
+          <DatePicker.RangePicker showTime showNow />
         </Form.Item>
 
         <Form.Item label="IDO Price" required name="idoPrice">

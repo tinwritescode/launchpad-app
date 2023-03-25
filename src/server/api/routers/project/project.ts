@@ -1,3 +1,6 @@
+import { protectedProcedure } from "./../../trpc";
+import { TRPCError } from "@trpc/server";
+import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
@@ -23,7 +26,7 @@ export const projectRouter = createTRPCRouter({
       });
     }),
 
-  createIdoProject: publicProcedure
+  createIdoProject: protectedProcedure
     .input(createIdoProjectInputSchema)
     .mutation(async ({ ctx, input }) => {
       // Initialize variables
@@ -53,12 +56,20 @@ export const projectRouter = createTRPCRouter({
             return instance.deployIDOContract(contract);
           })
           .map((p) => p.then((res) => res.deployed()))
-      );
+      ).catch((err) => {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: err.message,
+        });
+      });
+
+      if (!ctx.session.user) throw new TRPCError({ code: "UNAUTHORIZED" });
 
       // Create project
       const project = await ctx.prisma.project.create({
         data: {
           ...rest,
+          ownerId: ctx.session.user.address,
           IDOContract: {
             createMany: {
               data: deployedContracts.map((contract, i) => ({
