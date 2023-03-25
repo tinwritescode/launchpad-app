@@ -1,10 +1,11 @@
+import { Button, InputNumber, Typography } from "antd";
+import { BigNumber, ethers } from "ethers";
+import moment from "moment";
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Input, Button, InputNumber } from "antd";
-import { useFarmingHook } from "../useFarming";
 import { env } from "../../../../env.mjs";
-import { BigNumber, ethers } from "ethers";
 import { formatNumber } from "../../../../utils/format";
+import { useFarmingHook } from "../useFarming";
 
 const StyledForm = styled.div`
     display: flex;
@@ -45,6 +46,8 @@ const ExpandableRow = () => {
     claimReward,
     unclaimedRewards,
     approveAmount,
+    withdraw,
+    unlockTime,
   } = useFarmingHook();
 
   const balanceInEther = useMemo(() => {
@@ -59,6 +62,9 @@ const ExpandableRow = () => {
 
   const inputRef = React.useRef<React.ElementRef<typeof InputNumber>>(null);
   const withdrawRef = React.useRef<React.ElementRef<typeof InputNumber>>(null);
+  const blockTimestamp = useMemo(() => {
+    return new Date().getTime() / 1000;
+  }, []);
 
   return (
     <>
@@ -112,6 +118,10 @@ const ExpandableRow = () => {
         </StyledForm>
         <StyledForm>
           <h3>Withdraw</h3>
+          <Typography.Text type="secondary">{`(unlock in ${moment(
+            unlockTime?.toNumber()
+          )})`}</Typography.Text>
+
           <StyledInput>
             <InputNumber ref={withdrawRef} />
             <Button
@@ -119,10 +129,25 @@ const ExpandableRow = () => {
                 if (withdrawRef.current)
                   withdrawRef.current.value = amountStakedInEther;
               }}
+              disabled={Number(amountStakedInEther) === 0}
             >
               MAX
             </Button>
-            <Button>Withdraw</Button>
+            <Button
+              onClick={() => {
+                return withdraw({
+                  amount: ethers.utils.parseEther(
+                    withdrawRef.current?.value || "0"
+                  ),
+                });
+              }}
+              disabled={
+                Number(amountStakedInEther) === 0 ||
+                Number(unlockTime) > blockTimestamp
+              }
+            >
+              Withdraw
+            </Button>
           </StyledInput>
           <span>
             deposited:{" "}

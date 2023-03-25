@@ -107,6 +107,27 @@ export const useFarmingHook = () => {
       message.error(`Claim reward failed: ${msg}`);
     }
   }, []);
+  const withdraw = useCallback(async (payload: { amount: BigNumber }) => {
+    const signer = getSigner();
+    try {
+      return await getStakingContract()
+        .connect(signer)
+        .withdraw(payload.amount);
+    } catch (e: any) {
+      const msg = e?.message?.split(` (`)[0];
+      const text = e?.reason || msg;
+
+      message.error(`Withdraw failed: ${text}`);
+    }
+  }, []);
+
+  const unlockTime = useQuery(
+    ["unlockTime", address],
+    ({ queryKey }) => getStakingContract().lockTimeOf(queryKey?.[1] as string),
+    {
+      enabled: !!address,
+    }
+  );
 
   return {
     amountStaked: stakeInfo?.amountStaked,
@@ -118,5 +139,7 @@ export const useFarmingHook = () => {
     approveAmount: approveAmount.data,
     stake,
     claimReward,
+    withdraw,
+    unlockTime: unlockTime.data,
   };
 };

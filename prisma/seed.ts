@@ -2,42 +2,34 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  // await prisma.project.create({
-  //   data: {
-  //     name: "Mi Fen",
-  //     startTime: new Date(Date.now()),
-  //     endTime: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-  //     targetRaise: 1000000,
-  //     allocation: 1000000,
-  //     Token: {
-  //       create: {
-  //         name: "Mi Fen",
-  //         symbol: "MIFEN",
-  //         address: "0x0000",
-  //         decimals: 18,
-  //         totalSupply: 1000000,
-  //       },
-  //     },
-  //   },
-  // });
-  // await prisma.project.create({
-  //   data: {
-  //     name: "Mike Fence",
-  //     startTime: new Date(Date.now()),
-  //     endTime: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-  //     targetRaise: 1000000,
-  //     allocation: 1000000,
-  //     Token: {
-  //       create: {
-  //         name: "Mike Fence",
-  //         symbol: "MIKEFENCE",
-  //         address: "0x00000",
-  //         decimals: 18,
-  //         totalSupply: 1000000,
-  //       },
-  //     },
-  //   },
-  // });
+  await prisma.project.createMany({
+    data: [
+      {
+        name: "Mi Fen",
+        comparisionContent: "lorem ipsum",
+        image: "https://picsum.photos/200",
+        roadmapContent: "lorem ipsum",
+        summaryContent: "lorem ipsum",
+        videoURL: "https://www.youtube.com/watch?v=QH2-TGUlwu4",
+      },
+      {
+        name: "Rex",
+        comparisionContent: "lorem ipsum",
+        image: "https://picsum.photos/200",
+        roadmapContent: "lorem ipsum",
+        summaryContent: "lorem ipsum",
+        videoURL: "https://www.youtube.com/watch?v=QH2-TGUlwu4",
+      },
+      {
+        name: "Panda",
+        comparisionContent: "lorem ipsum",
+        image: "https://picsum.photos/200",
+        roadmapContent: "lorem ipsum",
+        summaryContent: "lorem ipsum",
+        videoURL: "https://www.youtube.com/watch?v=QH2-TGUlwu4",
+      },
+    ],
+  });
 }
 
 main()
