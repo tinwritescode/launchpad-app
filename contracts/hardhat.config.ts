@@ -22,6 +22,8 @@ const config: HardhatUserConfig = {
     },
     hardhat: {
       accounts: accounts,
+      // https://hardhat.org/hardhat-network/docs/metamask-issue
+      chainId: 1337,
     },
   },
 };

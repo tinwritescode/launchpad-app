@@ -1,14 +1,14 @@
-import { Button, Modal, Space } from "antd";
-import Link from "next/link";
+import { Button } from "@mui/material";
+import { Modal, Space } from "antd";
 import { useCallback, useState } from "react";
 import { formatWalletAddress } from "../../../utils/ethereum";
+import AppButton from "../AppButton";
 import ConnectWalletButton from "../ConnectWalletButton";
+import * as coinbase from "../ConnectWalletButton/connectors/coinbaseWallet";
 import { hooks, metaMask } from "../ConnectWalletButton/connectors/metamask";
 import LoginButton from "../LoginButton";
 import { useSession } from "../LoginButton/lib";
 import * as S from "./LoginModal.style";
-import * as coinbase from "../ConnectWalletButton/connectors/coinbaseWallet";
-import AppButton from "../AppButton";
 
 type Props = {};
 
@@ -25,7 +25,7 @@ export function LoginModal({}: Props) {
 
   return (
     <S.Container>
-      <AppButton type="primary" onClick={showModal}>
+      <AppButton variant="contained" onClick={showModal}>
         {!!data?.isLoggedIn
           ? `Welcome ${formatWalletAddress(data?.address)}`
           : "Login"}
@@ -71,7 +71,7 @@ export function LoginModal({}: Props) {
         <div>
           <h4>Step 3</h4>
           <Button
-            type="primary"
+            variant="contained"
             disabled={!data?.isLoggedIn}
             onClick={hideModal}
             style={{ width: "100%" }}
