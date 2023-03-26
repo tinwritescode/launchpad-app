@@ -100,6 +100,9 @@ export const projectRouter = createTRPCRouter({
         },
         include: {
           IDOContract: true,
+          ScheduleRound: true,
+          TokenomicsItem: true,
+          token: true,
         },
       });
     }),

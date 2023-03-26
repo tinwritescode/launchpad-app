@@ -15,7 +15,9 @@
     "dev": "concurrently -p \"[{name}]\" -n \"D-App,Hardhat Node,Hardhat Deploy\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm:dev:dapp\" \"npm:contract:node\" \"sleep 3; npm run contract:deploy\""
   },
   "dependencies": {
-    "@ant-design/icons": "^5.0.1",
+    "@ant-design/charts": "^1.4.2",
+    "@ant-design/icons": "5.0.1",
+    "@antv/g-base": "0.5.11",
     "@babel/core": "^7.21.3",
     "@coinbase/wallet-sdk": "^3.6.4",
     "@ethersproject/abi": "^5.7.0",
@@ -32,8 +34,10 @@
     "@web3-react/metamask": "^8.1.2-beta.0",
     "@web3-react/types": "^8.1.2-beta.0",
     "antd": "^4.0.0",
+    "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "ethers": "^5.7.2",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "next": "^13.2.1",
     "nextjs-progressbar": "^0.0.16",

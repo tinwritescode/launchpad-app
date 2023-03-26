@@ -1,48 +1,77 @@
 import React from "react";
-import { Button, Progress } from "antd";
+import { useRouter } from "next/router";
 
+import { api } from "~/utils/api";
+import { Project, ScheduleRound } from "@prisma/client";
+
+import { Row, Col, Space, Card, Progress, Button } from "antd";
 import * as S from "./TopDetailInfo.style";
-import { ProjectOverview } from "../../lib/types";
 
 interface Props {}
 
 const TopDetailInfo: React.FC<Props> = () => {
-  const projectOverview: ProjectOverview = {
-    name: "ABC",
-    tokenSymbol: "https://via.placeholder.com/150",
-    pricePerToken: 0.1,
-    currency: "BUSD",
-    totalRaise: 1000,
-    targetRaise: 10000,
-    allocation: 100,
-    startTime: new Date("2021-01-01"),
-    endTime: new Date("2021-02-01"),
-    participants: 100,
-    targetParticipants: 1000,
-  };
+  const { id } = useRouter().query as { id: string };
+  const { data, isLoading } = api.project.getOne.useQuery({ id });
+
+  const project = data as Project;
+  const scheduleRounds = data?.ScheduleRound as ScheduleRound[];
+  const currentRound = scheduleRounds?.find(
+    (round) => round.startTime < new Date() && round.endTime > new Date()
+  );
+  const elapsedTime: number = currentRound
+    ? new Date().getTime() - new Date(currentRound.startTime).getTime()
+    : 0;
 
   return (
     <S.Container>
-      <div>
-        <img src={projectOverview.tokenSymbol} width={150} height={150} />
-        <div>{projectOverview.name}</div>
-        <div>PRICE (DDO) = {projectOverview.pricePerToken} BUSD</div>
-        <img
-          src="https://www.iconarchive.com/download/i109534/cjdowner/cryptocurrency-flat/Ethereum-ETH.1024.png"
-          width={50}
-          height={50}
-        />
-        <div>Total raise: {projectOverview.totalRaise} (x)%</div>
-        <div>Allocation: {projectOverview.targetRaise}</div>
+      <Card>
+        <Row>
+          <Col span={10}>
+            <Row>
+              <Space>
+                <img src={project?.image} width={150} height={150} />
+                <Col>
+                  <h1>{project?.name}</h1>
+                  <div>PRICE (DDO) = {currentRound?.pricePerToken} BUSD</div>
+                </Col>
+              </Space>
+            </Row>
+          </Col>
+          <Col span={4}>
+            <img
+              src="https://www.iconarchive.com/download/i109534/cjdowner/cryptocurrency-flat/Ethereum-ETH.1024.png"
+              width={50}
+              height={50}
+            />
+          </Col>
+          <Col span={10}>
+            {elapsedTime > 0 ? (
+              <>
+                <p>Sale ends in</p>
+                <h1>1d 2h 3m 4s</h1>
+              </>
+            ) : (
+              <p>Sale has ended</p>
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col span={10}>Total raise: 10000 BUSD 15%</Col>
+          <Col span={4}>Allocation: 10000 BUSD Max</Col>
+          <Col span={10}>Targeted raise: 100000 BUSD</Col>
+        </Row>
         <Progress
-          percent={projectOverview.totalRaise / projectOverview.targetRaise}
+          percent={50}
+          strokeColor={{ "0%": "#108ee9", "100%": "#87d068" }}
         />
-        <Button type="primary">Claim token</Button>
-        <div>
-          Participants {projectOverview.participants} /{" "}
-          {projectOverview.targetParticipants}
-        </div>
-      </div>
+        <Row>
+          <Col span={10}>
+            <Button type="primary">Claim token</Button>
+          </Col>
+          <Col span={4}>Participants 100 / 1000</Col>
+          <Col span={10}>Share this project</Col>
+        </Row>
+      </Card>
     </S.Container>
   );
 };
