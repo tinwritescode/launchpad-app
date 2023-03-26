@@ -1,10 +1,9 @@
-import { protectedProcedure } from "./../../trpc";
 import { TRPCError } from "@trpc/server";
-import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
+import { protectedProcedure } from "./../../trpc";
 import {
   buildContracts as buildContractPayloads,
   getContractNameFromIndex,
