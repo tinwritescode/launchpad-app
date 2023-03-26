@@ -1,52 +1,38 @@
-import { ExternalProvider } from "@ethersproject/providers";
-import { Alert, Button, Layout, Space } from "antd";
-import { env } from "../../../env.mjs";
-import { switchNetwork } from "../../../utils/ethereum";
-import { useWeb3Hooks } from "../ConnectWalletButton/store";
+import { Image, Layout, Space } from "antd";
+import Link from "next/link";
+import { useEffect } from "react";
 import { LoginModal } from "../LoginModal/LoginModal";
+import { ChangeNetwork } from "./ChangeNetwork";
 import style from "./Header.module.scss";
 
 type Props = {};
 
 function Header({}: Props) {
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      const header = document.querySelector(`.${style.header}`);
+      if (header) {
+        const scrollY = window.scrollY;
+        if (scrollY > 0) {
+          header.classList.add(style.header__scroll as string);
+        } else {
+          header.classList.remove(style.header__scroll as string);
+        }
+      }
+    });
+  }, [style.header, style.header__scroll]);
+
   return (
     <Space direction="vertical">
-      <Layout.Header>
+      <Layout.Header className={style.header}>
+        <Link href="/">
+          <Image src="/assets/logo.svg" width={190} height={40} />
+        </Link>
         <LoginModal />
       </Layout.Header>
       <ChangeNetwork />
     </Space>
   );
 }
-
-const ChangeNetwork = () => {
-  const { useChainId, useProvider } = useWeb3Hooks();
-  const chainId = useChainId();
-
-  return (
-    (chainId !== parseInt(env.NEXT_PUBLIC_CHAIN_ID, 16) && (
-      <>
-        <Alert
-          message="You are not connected to the correct network."
-          className={style.alert}
-          action={
-            <Button
-              type="primary"
-              onClick={() => {
-                if (typeof window !== "undefined" && window.ethereum) {
-                  const ethereum = window.ethereum as ExternalProvider;
-
-                  switchNetwork(env.NEXT_PUBLIC_CHAIN_ID);
-                }
-              }}
-            >
-              Change network
-            </Button>
-          }
-        />
-      </>
-    )) || <></>
-  );
-};
 
 export default Header;

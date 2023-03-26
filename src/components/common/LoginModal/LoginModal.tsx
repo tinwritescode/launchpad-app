@@ -8,6 +8,7 @@ import LoginButton from "../LoginButton";
 import { useSession } from "../LoginButton/lib";
 import * as S from "./LoginModal.style";
 import * as coinbase from "../ConnectWalletButton/connectors/coinbaseWallet";
+import AppButton from "../AppButton";
 
 type Props = {};
 
@@ -24,15 +25,11 @@ export function LoginModal({}: Props) {
 
   return (
     <S.Container>
-      <Link href="/">
-        <S.Heading>Home</S.Heading>
-      </Link>
-
-      <Button type="primary" onClick={showModal}>
+      <AppButton type="primary" onClick={showModal}>
         {!!data?.isLoggedIn
           ? `Welcome ${formatWalletAddress(data?.address)}`
           : "Login"}
-      </Button>
+      </AppButton>
       <Modal
         title="Login"
         open={isModalOpen}

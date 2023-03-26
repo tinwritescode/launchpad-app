@@ -1,8 +1,9 @@
-import { Button, Space } from "antd";
+import { Space, Typography } from "antd";
 import Link from "next/link";
 import React, { useMemo } from "react";
-import AppButton from "../components/common/AppButton";
+import { Button } from "@mui/material";
 import PageLayout from "../components/templates/PageLayout";
+import style from "./index.module.scss";
 
 type Props = {};
 
@@ -35,15 +36,23 @@ function Home({}: Props) {
 
   return (
     <PageLayout>
-      <p>Home</p>
+      <div style={{ height: "100px" }} />
+
+      <Typography.Title level={2} className={style.heroText}>
+        The fully decentralized protocol for launching new ideas
+      </Typography.Title>
 
       <Space direction="vertical">
         {links.map((link) => (
-          <AppButton key={link.href}>
-            <Link href={link.href}>{link.label}</Link>
-          </AppButton>
+          <Link href={link.href}>
+            <Button key={link.href} variant="contained">
+              {link.label}
+            </Button>
+          </Link>
         ))}
       </Space>
+
+      <div style={{ height: "700px" }} />
     </PageLayout>
   );
 }

@@ -24,7 +24,7 @@ cd ./launchpad-app
 Run `docker-compose`:
 
 ```bash
-docker compose-up
+docker-compose up
 ```
 
 2. Run local development server

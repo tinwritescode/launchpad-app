@@ -4,7 +4,8 @@
   "scripts": {
     "test": "hardhat test",
     "deploy": "hardhat run scripts/deploy.ts",
-    "compile": "hardhat compile"
+    "compile": "hardhat compile",
+    "hardhat": "hardhat"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
