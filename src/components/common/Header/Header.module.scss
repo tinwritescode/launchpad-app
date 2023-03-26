@@ -1,14 +1,12 @@
 .header {
   background: transparent;
-  position: fixed;
   display: flex;
-  width: 100%;
   justify-content: space-between;
   z-index: 999;
-  height: 80px;
+  padding-block: 0.25rem;
 
   &__scroll {
     background: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   }
 }

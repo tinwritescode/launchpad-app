@@ -10,8 +10,6 @@ import {
 import PageLayout from "../../components/templates/PageLayout";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>

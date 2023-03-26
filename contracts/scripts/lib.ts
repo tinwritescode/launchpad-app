@@ -12,7 +12,7 @@ export async function deployStakingContract() {
     numerator: 1,
     denominator: 10000,
   };
-  const totalSupply = BigNumber.from("1000000000");
+  const totalSupply = ethers.utils.parseEther("1000000000");
   const lockTime = ONE_YEAR_IN_SECS;
 
   const address: Record<string, string> = {};

@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "test": "hardhat test",
-    "deploy": "hardhat run scripts/deploy.ts",
+    "deploy": "hardhat run scripts/deploy.ts --network localhost",
     "compile": "hardhat compile",
     "hardhat": "hardhat"
   },

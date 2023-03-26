@@ -1,26 +1,18 @@
+import { Button, ButtonProps } from "@mui/material";
+import { ConfigProvider, theme } from "antd";
 import React from "react";
-import { ButtonProps, ConfigProvider, theme } from "antd";
-
-import * as S from "./AppButton.style";
 import style from "./AppButton.module.scss";
 
 interface Props extends ButtonProps {}
 
 const AppButton: React.FC<Props> = ({ children, ...rest }) => {
   return (
-    <ConfigProvider
-      theme={{
-        token: {},
-        algorithm: theme.compactAlgorithm,
-      }}
+    <Button
+      className={[...(rest?.className || []), style.button].join(" ")}
+      {...rest}
     >
-      <S.Container
-        className={[...(rest?.className || []), style.button].join(" ")}
-        {...rest}
-      >
-        {children}
-      </S.Container>
-    </ConfigProvider>
+      {children}
+    </Button>
   );
 };
 
