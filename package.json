@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
-    "postinstall": "prisma generate",
+    "dev:dapp": "next dev",
+    "postinstall": "prisma generate && cd contracts && pnpm install && cd ..",
     "lint": "next lint",
     "start": "next start",
     "script:create-components": "./scripts/create-components.sh",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "contract:node": "cd contracts && yarn hardhat node && cd ..",
+    "contract:deploy": "cd contracts && yarn hardhat run scripts/deploy.ts && cd ..",
+    "dev": "concurrently -p \"[{name}]\" -n \"D-App,Hardhat Node,Hardhat Deploy\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm:dev:dapp\" \"npm:contract:node\" \"sleep 3; npm run contract:deploy\""
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
@@ -54,6 +57,7 @@
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "babel-plugin-styled-components": "^2.0.7",
+    "concurrently": "^7.6.0",
     "eslint": "^8.34.0",
     "eslint-config-next": "^13.2.1",
     "git-cz": "^4.9.0",

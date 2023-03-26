@@ -1,0 +1,19 @@
+{
+  "name": "hardhat-project",
+  "license": "MIT",
+  "scripts": {
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "compile": "hardhat compile"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "hardhat": "^2.13.0"
+  },
+  "dependencies": {
+    "@ethersproject/experimental": "^5.7.0",
+    "@openzeppelin/contracts": "^4.8.2",
+    "@thirdweb-dev/contracts": "^3.4.3",
+    "zod": "^3.21.4"
+  }
+}
