@@ -41,3 +41,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 .vscode
+
+./contracts/node_modules
+../contracts/env
+./contracts/coverage
+./contracts/coverage.json
+./contracts/typechain
+./contracts/typechain-types
+
+# Hardhat files
+./contracts/cache
+./contracts/artifacts
