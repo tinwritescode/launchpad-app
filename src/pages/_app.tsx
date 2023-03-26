@@ -1,6 +1,10 @@
 import type { AppType } from "next/app";
 import NextNProgress from "nextjs-progressbar";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
+import "antd/dist/reset.css";
+import { Inter } from "next/font/google";
+
+// If loading a variable font, you don't need to specify the font weight
+const inter = Inter({ subsets: ["latin"] });
 
 import { api } from "~/utils/api";
 
@@ -9,10 +13,12 @@ import { Providers } from "../components/providers";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <Providers>
-      <NextNProgress />
-      <Component {...pageProps} />
-    </Providers>
+    <div className={inter.className}>
+      <Providers>
+        <NextNProgress />
+        <Component {...pageProps} />
+      </Providers>
+    </div>
   );
 };
 
