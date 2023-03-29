@@ -74,7 +74,7 @@ export const projectRouter = createTRPCRouter({
             createMany: {
               data: deployedContracts.map((contract, i) => ({
                 address: contract.address,
-                name: getContractNameFromIndex(i),
+                name: getContractNameFromIndex(i) as string,
               })),
             },
           },
