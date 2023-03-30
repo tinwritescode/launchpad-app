@@ -36,7 +36,10 @@ contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step {
 
     // Staking contract
     IStaking public stakingContract;
+
+    // Should >= min, <= max
     uint256 public minStakingRequired;
+    uint256 public maxStakingRequired;
 
     // Date timestamp when token sale start
     uint256 public startTime;
@@ -74,7 +77,8 @@ contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step {
         uint256 _startTime,
         uint256 _endTime,
         address _stakingContract,
-        uint256 _minStakingRequired
+        uint256 _minStakingRequired,
+        uint256 _maxStakingRequired
     ) {
         require(address(_ido) != address(0), "IDOSale: IDO_ADDRESS_INVALID");
         require(
@@ -99,6 +103,7 @@ contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step {
         endTime = _endTime;
         stakingContract = IStaking(_stakingContract);
         minStakingRequired = _minStakingRequired;
+        maxStakingRequired = _maxStakingRequired;
     }
 
     /**************************|
@@ -220,8 +225,17 @@ contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step {
         for (uint256 i = 0; i < length; i++) {
             address account = stakingContract.getStakerAtIndex(i);
             (uint amount, uint reward) = stakingContract.getStakeInfo(account);
+            address stakingTokenAddress = stakingContract.getStakingToken();
+            address rewardTokenAddress = stakingContract.getRewardToken();
+            uint total;
 
-            if (amount + reward >= minStakingRequired) {
+            if (stakingTokenAddress == rewardTokenAddress) {
+                total = amount + reward;
+            } else {
+                total = amount;
+            }
+
+            if (total >= minStakingRequired && total <= maxStakingRequired) {
                 if (!whitelist[account]) {
                     whitelist[account] = true;
                     _whitelistedUsers.push(account);

@@ -13,10 +13,10 @@ export const IDO_CONTRACT_STAKING_REQUIRED: Record<string, number> = {
 } as const;
 export const getContractNameFromIndex = (
   index: number
-): keyof typeof IDO_CONTRACT_STAKING_REQUIRED => {
+): keyof typeof IDO_CONTRACT_STAKING_REQUIRED | null => {
   const key = Object.keys(IDO_CONTRACT_STAKING_REQUIRED)[index];
   if (!key) {
-    throw new Error("Invalid index");
+    return null;
   }
   return key as keyof typeof IDO_CONTRACT_STAKING_REQUIRED;
 };
@@ -31,15 +31,25 @@ export const buildContracts = ({
   IdoContractDto,
   "startTime" | "endTime" | "idoPrice" | "idoTokenAddress" | "purchaseCap"
 >): IdoContractDto[] => {
-  return Object.keys(IDO_CONTRACT_STAKING_REQUIRED).map((key) => ({
-    stakingRequired: IDO_CONTRACT_STAKING_REQUIRED[key] as number,
-    startTime,
-    endTime,
-    idoPrice,
-    idoTokenAddress,
-    purchaseCap,
-    stakingContractAddress: env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS,
-    stakingTokenAddress: env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS,
-    name: key,
-  }));
+  return Object.keys(IDO_CONTRACT_STAKING_REQUIRED).map((key, index) => {
+    const nextKey = getContractNameFromIndex(index + 1);
+
+    const maxStakingRequired = nextKey
+      ? IDO_CONTRACT_STAKING_REQUIRED[nextKey]
+      : Number.MAX_VALUE;
+
+    // next key or max number
+    return {
+      minStakingRequired: IDO_CONTRACT_STAKING_REQUIRED[key] as number,
+      maxStakingRequired: maxStakingRequired as number,
+      startTime,
+      endTime,
+      idoPrice,
+      idoTokenAddress,
+      purchaseCap,
+      stakingContractAddress: env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS,
+      stakingTokenAddress: env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS,
+      name: key,
+    };
+  });
 };

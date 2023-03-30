@@ -31,9 +31,11 @@ import type {
 export interface IStakingInterface extends utils.Interface {
   functions: {
     "claimRewards()": FunctionFragment;
+    "getRewardToken()": FunctionFragment;
     "getStakeInfo(address)": FunctionFragment;
     "getStakerAtIndex(uint256)": FunctionFragment;
     "getStakersLength()": FunctionFragment;
+    "getStakingToken()": FunctionFragment;
     "stake(uint256)": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
   };
@@ -41,15 +43,21 @@ export interface IStakingInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "claimRewards"
+      | "getRewardToken"
       | "getStakeInfo"
       | "getStakerAtIndex"
       | "getStakersLength"
+      | "getStakingToken"
       | "stake"
       | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "claimRewards",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRewardToken",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -62,6 +70,10 @@ export interface IStakingInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getStakersLength",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getStakingToken",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -78,6 +90,10 @@ export interface IStakingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getRewardToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getStakeInfo",
     data: BytesLike
   ): Result;
@@ -87,6 +103,10 @@ export interface IStakingInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getStakersLength",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getStakingToken",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
@@ -210,6 +230,8 @@ export interface IStaking extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getRewardToken(overrides?: CallOverrides): Promise<[string]>;
+
     getStakeInfo(
       staker: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -223,6 +245,8 @@ export interface IStaking extends BaseContract {
     ): Promise<[string]>;
 
     getStakersLength(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getStakingToken(overrides?: CallOverrides): Promise<[string]>;
 
     stake(
       amount: PromiseOrValue<BigNumberish>,
@@ -239,6 +263,8 @@ export interface IStaking extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getRewardToken(overrides?: CallOverrides): Promise<string>;
+
   getStakeInfo(
     staker: PromiseOrValue<string>,
     overrides?: CallOverrides
@@ -253,6 +279,8 @@ export interface IStaking extends BaseContract {
 
   getStakersLength(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getStakingToken(overrides?: CallOverrides): Promise<string>;
+
   stake(
     amount: PromiseOrValue<BigNumberish>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -265,6 +293,8 @@ export interface IStaking extends BaseContract {
 
   callStatic: {
     claimRewards(overrides?: CallOverrides): Promise<void>;
+
+    getRewardToken(overrides?: CallOverrides): Promise<string>;
 
     getStakeInfo(
       staker: PromiseOrValue<string>,
@@ -279,6 +309,8 @@ export interface IStaking extends BaseContract {
     ): Promise<string>;
 
     getStakersLength(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getStakingToken(overrides?: CallOverrides): Promise<string>;
 
     stake(
       amount: PromiseOrValue<BigNumberish>,
@@ -356,6 +388,8 @@ export interface IStaking extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getRewardToken(overrides?: CallOverrides): Promise<BigNumber>;
+
     getStakeInfo(
       staker: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -367,6 +401,8 @@ export interface IStaking extends BaseContract {
     ): Promise<BigNumber>;
 
     getStakersLength(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getStakingToken(overrides?: CallOverrides): Promise<BigNumber>;
 
     stake(
       amount: PromiseOrValue<BigNumberish>,
@@ -384,6 +420,8 @@ export interface IStaking extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    getRewardToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getStakeInfo(
       staker: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -395,6 +433,8 @@ export interface IStaking extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getStakersLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getStakingToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     stake(
       amount: PromiseOrValue<BigNumberish>,

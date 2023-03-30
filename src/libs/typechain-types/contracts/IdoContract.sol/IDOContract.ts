@@ -78,6 +78,7 @@ export interface IDOContractInterface extends utils.Interface {
     "hasRole(bytes32,address)": FunctionFragment;
     "ido()": FunctionFragment;
     "idoPrice()": FunctionFragment;
+    "maxStakingRequired()": FunctionFragment;
     "minStakingRequired()": FunctionFragment;
     "owner()": FunctionFragment;
     "pause()": FunctionFragment;
@@ -125,6 +126,7 @@ export interface IDOContractInterface extends utils.Interface {
       | "hasRole"
       | "ido"
       | "idoPrice"
+      | "maxStakingRequired"
       | "minStakingRequired"
       | "owner"
       | "pause"
@@ -206,6 +208,10 @@ export interface IDOContractInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "ido", values?: undefined): string;
   encodeFunctionData(functionFragment: "idoPrice", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "maxStakingRequired",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "minStakingRequired",
     values?: undefined
@@ -346,6 +352,10 @@ export interface IDOContractInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ido", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "idoPrice", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "maxStakingRequired",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "minStakingRequired",
     data: BytesLike
@@ -709,6 +719,8 @@ export interface IDOContract extends BaseContract {
 
     idoPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    maxStakingRequired(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     minStakingRequired(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
@@ -880,6 +892,8 @@ export interface IDOContract extends BaseContract {
 
   idoPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
+  maxStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
+
   minStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
 
   owner(overrides?: CallOverrides): Promise<string>;
@@ -1046,6 +1060,8 @@ export interface IDOContract extends BaseContract {
     ido(overrides?: CallOverrides): Promise<string>;
 
     idoPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
 
     minStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1327,6 +1343,8 @@ export interface IDOContract extends BaseContract {
 
     idoPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
+    maxStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
+
     minStakingRequired(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1498,6 +1516,10 @@ export interface IDOContract extends BaseContract {
     ido(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     idoPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    maxStakingRequired(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     minStakingRequired(
       overrides?: CallOverrides

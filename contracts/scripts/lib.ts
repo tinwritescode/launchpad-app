@@ -88,7 +88,8 @@ export async function deployIdoContract(
   const startTime = currentTimestampInSeconds + 60;
   const endTime = currentTimestampInSeconds + 60 * 60;
   const purchaseCap = ethers.utils.parseEther("1000");
-  const stakingRequired = ethers.utils.parseEther("100");
+  const minStakingRequired = ethers.utils.parseEther("100");
+  const maxStakingRequired = ethers.utils.parseEther("1000");
 
   const IdoContract = await ethers.getContractFactory("IDOContract");
   const idoContract = await IdoContract.deploy(
@@ -99,7 +100,8 @@ export async function deployIdoContract(
     startTime,
     endTime,
     stakingContract.address,
-    stakingRequired
+    minStakingRequired,
+    maxStakingRequired
   );
 
   await idoContract.deployed();

@@ -33,7 +33,8 @@ export class IDOContract {
       startTime,
       stakingContractAddress,
       stakingTokenAddress,
-      stakingRequired,
+      minStakingRequired,
+      maxStakingRequired,
     } = payload;
 
     const factory = new ContractFactory(
@@ -50,7 +51,8 @@ export class IDOContract {
       startTime,
       endTime,
       stakingContractAddress,
-      stakingRequired
+      minStakingRequired,
+      maxStakingRequired
     );
 
     return contractInstance;

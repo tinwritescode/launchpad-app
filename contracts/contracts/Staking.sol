@@ -112,4 +112,12 @@ contract Staking is IStaking, Staking20 {
     ) external view override returns (address) {
         return stakersArray[_index];
     }
+
+    function getStakingToken() external view override returns (address) {
+        return stakingToken;
+    }
+
+    function getRewardToken() external view override returns (address) {
+        return rewardToken;
+    }
 }
