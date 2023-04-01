@@ -18,7 +18,8 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@contracts/*": ["./contracts/*"]
     }
   },
   "exclude": ["**/node_modules", "**/dist", "./contracts/**/*.ts"],
