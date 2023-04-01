@@ -23,6 +23,10 @@ contract Dividend is Ownable {
         for (uint256 i = 0; i < items.length; i++) {
             totalAmount += items[i].amount;
         }
+        
+        if (totalAmount > IERC20(token).balanceOf(address(this))) {
+            revert("Not enough tokens");
+        }
 
         for (uint256 i = 0; i < items.length; i++) {
             IERC20(token).transferFrom(msg.sender, items[i].to, items[i].amount);

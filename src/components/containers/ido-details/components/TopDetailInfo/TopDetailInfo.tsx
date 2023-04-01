@@ -1,10 +1,9 @@
-import React from "react";
-import { useRouter } from "next/router";
-
-import { api } from "~/utils/api";
+import { Button } from "@mui/material";
 import { Project, ScheduleRound } from "@prisma/client";
-
-import { Row, Col, Space, Card, Progress, Button } from "antd";
+import { Card, Col, Progress, Row, Space } from "antd";
+import { useRouter } from "next/router";
+import React from "react";
+import { api } from "~/utils/api";
 import * as S from "./TopDetailInfo.style";
 
 interface Props {}
@@ -12,7 +11,6 @@ interface Props {}
 const TopDetailInfo: React.FC<Props> = () => {
   const { id } = useRouter().query as { id: string };
   const { data, isLoading } = api.project.getOne.useQuery({ id });
-
   const project = data as Project;
   const scheduleRounds = data?.ScheduleRound as ScheduleRound[];
   const currentRound = scheduleRounds?.find(
@@ -66,7 +64,7 @@ const TopDetailInfo: React.FC<Props> = () => {
         />
         <Row>
           <Col span={10}>
-            <Button type="primary">Claim token</Button>
+            <Button variant="contained">Claim token</Button>
           </Col>
           <Col span={4}>Participants 100 / 1000</Col>
           <Col span={10}>Share this project</Col>

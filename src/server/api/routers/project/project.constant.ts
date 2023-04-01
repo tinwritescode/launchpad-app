@@ -20,7 +20,6 @@ export const getContractNameFromIndex = (
   }
   return key as keyof typeof IDO_CONTRACT_STAKING_REQUIRED;
 };
-
 export const buildContracts = ({
   startTime,
   endTime,
@@ -52,4 +51,33 @@ export const buildContracts = ({
       name: key,
     };
   });
+};
+
+/** Specs: 
+- Bronze tier: 5% (500 tokens)
+- Silver tier: 10% (1000 tokens)
+- Gold tier: 20% (2000 tokens)
+- Platinum tier: 25% (2500 tokens)
+- Diamond tier: 30% (3000 tokens)
+- Blue Diamond tier: 10% (1000 tokens)
+   */
+export const getContractDividendInPercent = (
+  contractName: keyof typeof IDO_CONTRACT_STAKING_REQUIRED
+): number => {
+  const dividend: Record<keyof typeof IDO_CONTRACT_STAKING_REQUIRED, number> = {
+    BRONZE: 5,
+    SILVER: 10,
+    GOLD: 20,
+    PLATINUM: 25,
+    DIAMOND: 30,
+    BLUE_DIAMOND: 10,
+  };
+
+  // fast test: sum all and check if it's 1
+  const sum = Object.values(dividend).reduce((acc, cur) => acc + cur, 0);
+  if (sum.toString().slice(0, 3) !== "100") {
+    throw new Error("Dividend sum is not 100%");
+  }
+
+  return dividend[contractName] as number;
 };

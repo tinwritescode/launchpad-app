@@ -1,4 +1,3 @@
-import { ExternalProvider } from "@ethersproject/providers";
 import { Alert, AlertTitle, Button } from "@mui/material";
 import { toast } from "react-hot-toast";
 import { env } from "../../../env.mjs";
@@ -6,11 +5,12 @@ import { switchNetwork } from "../../../utils/ethereum";
 import { useWeb3Hooks } from "../ConnectWalletButton/store";
 
 export const ChangeNetwork = () => {
-  const { useChainId, useProvider } = useWeb3Hooks();
+  const { useChainId, useAccount } = useWeb3Hooks();
   const chainId = useChainId();
+  const account = useAccount();
 
   return (
-    (chainId !== parseInt(env.NEXT_PUBLIC_CHAIN_ID, 16) && (
+    (account && chainId !== parseInt(env.NEXT_PUBLIC_CHAIN_ID, 16) && (
       <Alert
         severity="error"
         sx={{ width: "100%" }}
@@ -20,7 +20,6 @@ export const ChangeNetwork = () => {
             variant="contained"
             onClick={async () => {
               try {
-                toast.loading("Switching network...");
                 await switchNetwork(env.NEXT_PUBLIC_CHAIN_ID);
               } catch (error: any) {
                 toast.error(error?.message || "Failed to switch network.");

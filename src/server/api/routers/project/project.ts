@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { ethers } from "ethers";
 import { z } from "zod";
 import {
   adminProcedure,
@@ -6,10 +7,14 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
+import { env } from "../../../../env.mjs";
+import { getErc20Contract, getRpcProvider } from "../../../../libs/blockchain";
+import { Dividend__factory } from "./../../../../../contracts/typechain-types/factories/contracts/Dividend__factory";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 import { protectedProcedure } from "./../../trpc";
 import {
   buildContracts as buildContractPayloads,
+  getContractDividendInPercent,
   getContractNameFromIndex,
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
@@ -134,7 +139,53 @@ export const projectRouter = createTRPCRouter({
       });
     }),
 
-  divideTokenForProjectContracts: adminProcedure.mutation(
-    async ({ ctx, input }) => {}
-  ),
+  divideTokenForProjectContracts: adminProcedure
+    .input(
+      z.object({
+        projectId: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const dividendContract = Dividend__factory.connect(
+        env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
+        new ethers.providers.JsonRpcProvider(env.NEXT_PUBLIC_BLOCKCHAIN_RPC)
+      );
+
+      const data = await ctx.prisma.project
+        .findUniqueOrThrow({
+          where: {
+            id: input.projectId,
+          },
+          select: {
+            IDOContract: true,
+            token: true,
+          },
+        })
+        .catch((err) => {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Project id you provided is not found",
+          });
+        });
+
+      const tokenAddress = data.token?.address as string;
+      const tokenBalance = await getErc20Contract(tokenAddress).balanceOf(
+        dividendContract.address
+      );
+
+      const tx = await dividendContract
+        .connect(ctx.signer)
+        .distribute(
+          tokenAddress,
+          data.IDOContract.map((contract) => ({
+            to: contract.address,
+            amount: tokenBalance
+              .mul(getContractDividendInPercent(contract.name))
+              .div(100),
+          }))
+        )
+        .then((res) => res.wait());
+
+      return tx;
+    }),
 });

@@ -32,8 +32,12 @@ type CreateContextOptions = Record<string, never>;
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+  const provider = getRpcProvider();
+  const signer = new ethers.Wallet(env.ADMIN_PRIVATE_KEY, provider);
+
   return {
     prisma,
+    signer,
   };
 };
 
@@ -61,6 +65,9 @@ export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { sessionOptions } from "../../utils/session";
+import { ethers } from "ethers";
+import { env } from "../../env.mjs";
+import { getRpcProvider } from "../../libs/blockchain";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
