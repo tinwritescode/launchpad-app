@@ -1,12 +1,6 @@
 .header {
-  background: transparent;
+  background: white;
   display: flex;
   justify-content: space-between;
-  z-index: 999;
   padding-block: 0.25rem;
-
-  &__scroll {
-    background: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  }
 }

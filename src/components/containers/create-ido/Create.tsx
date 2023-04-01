@@ -12,6 +12,7 @@ import {
 import dayjs from "dayjs";
 import { useRouter } from "next/router.js";
 import { useCallback } from "react";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import { env } from "../../../env.mjs";
 import { createIdoProjectInputSchema } from "../../../server/api/routers/project/project.schema";
@@ -41,14 +42,14 @@ export function Create({}: Props) {
         startTime,
       });
 
-      message.success("Created");
+      toast.success("Created");
 
       form.resetFields();
       router.push(`/ido/${id}`);
     } catch (error: any) {
       if (error instanceof TRPCClientError) {
         if (error?.shape?.data?.code === "INTERNAL_SERVER_ERROR") {
-          message.error(error?.shape?.message);
+          toast.error(error?.shape?.message);
           return;
         }
 
@@ -69,7 +70,7 @@ export function Create({}: Props) {
         }
       }
 
-      message.error(error?.message || "Something went wrong");
+      toast.error(error?.message || "Something went wrong");
     }
   }, []);
 

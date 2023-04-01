@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Box } from "@mui/material";
 import React from "react";
 import { Footer, Header } from "../common";
 import * as S from "./PageLayout.style";
@@ -9,16 +9,12 @@ type Props = {
 
 function PageLayout({ children }: Props) {
   return (
-    <Layout>
+    <Box sx={{ position: "relative", height: "calc(100vh)", overflow: "auto" }}>
       <Header />
 
-      <Layout.Content>
-        <S.Container>{children}</S.Container>
-      </Layout.Content>
-      <Layout.Footer>
-        <Footer />
-      </Layout.Footer>
-    </Layout>
+      <S.Container>{children}</S.Container>
+      <Footer />
+    </Box>
   );
 }
 
