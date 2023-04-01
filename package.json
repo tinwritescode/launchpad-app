@@ -12,7 +12,9 @@
     "commit": "git-cz",
     "contract:node": "cd contracts && npm run hardhat node && cd ..",
     "contract:deploy": "cd contracts && npm run deploy && cd ..",
-    "dev": "concurrently -p \"[{name}]\" -n \"D-App,Hardhat Node,Hardhat Deploy\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm:dev:dapp\" \"npm:contract:node\" \"sleep 3; npm run contract:deploy\" --kill-others-on-fail"
+    "dev": "concurrently -p \"[{name}]\" -n \"D-App,Hardhat Node,Hardhat Deploy\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm:dev:dapp\" \"npm:contract:node\" \"sleep 3; npm run contract:deploy\" --kill-others-on-fail",
+    "seed": "esbuild prisma/seed.ts --outfile=node_modules/tmp-seed.cjs --bundle --format=cjs --external:prisma --external:@prisma/client && node node_modules/tmp-seed.cjs --preview-feature",
+    "prisma:reset": "prisma migrate reset && npm run seed"
   },
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
@@ -25,6 +27,7 @@
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/experimental": "^5.7.0",
     "@ethersproject/providers": "^5.7.2",
+    "@mui/icons-material": "^5.11.11",
     "@mui/lab": "5.0.0-alpha.124",
     "@mui/material": "^5.11.14",
     "@prisma/client": "^4.9.0",
@@ -71,6 +74,7 @@
     "@typescript-eslint/parser": "^5.53.0",
     "babel-plugin-styled-components": "^2.0.7",
     "concurrently": "^7.6.0",
+    "esbuild": "^0.17.14",
     "eslint": "^8.34.0",
     "eslint-config-next": "^13.2.1",
     "git-cz": "^4.9.0",
@@ -81,8 +85,5 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.5.9"
-  },
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }

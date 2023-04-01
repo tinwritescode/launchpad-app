@@ -1,4 +1,10 @@
-import { Box, Button, Modal, Stack } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  Stack,
+} from "@mui/material";
 import { useCallback, useState } from "react";
 import { formatWalletAddress } from "../../../utils/ethereum";
 import AppButton from "../AppButton";
@@ -34,9 +40,14 @@ export function LoginModal({}: Props) {
           ? `Welcome ${formatWalletAddress(data?.address)}`
           : "Login"}
       </AppButton>
-      <Modal title="Login" open={isModalOpen} onClose={hideModal}>
-        <>
-          <Box>
+      <Dialog
+        title="Login"
+        open={isModalOpen}
+        onClose={hideModal}
+        maxWidth="xl"
+      >
+        <DialogContent>
+          <DialogContentText>
             <h4>Step 1</h4>
             <Stack
               sx={{
@@ -60,13 +71,13 @@ export function LoginModal({}: Props) {
                 disabled={!!data?.isLoggedIn}
               />
             </Stack>
-          </Box>
-          <Box>
+          </DialogContentText>
+          <DialogContentText>
             <h4>Step 2</h4>
             <LoginButton />
-          </Box>
+          </DialogContentText>
 
-          <Box>
+          <DialogContentText>
             <h4>Step 3</h4>
             <Button
               variant="contained"
@@ -77,9 +88,9 @@ export function LoginModal({}: Props) {
             >
               Go to your profile
             </Button>
-          </Box>
-        </>
-      </Modal>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
     </Flex>
   );
 }

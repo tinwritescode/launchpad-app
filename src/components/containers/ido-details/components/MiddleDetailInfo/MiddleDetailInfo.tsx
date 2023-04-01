@@ -1,10 +1,8 @@
-import React from "react";
-import { useRouter } from "next/router";
-
-import { api } from "~/utils/api";
 import { Token } from "@prisma/client";
-
 import { Card } from "antd";
+import { useRouter } from "next/router";
+import React from "react";
+import { api } from "~/utils/api";
 import * as S from "./MiddleDetailInfo.style";
 
 interface Props {}

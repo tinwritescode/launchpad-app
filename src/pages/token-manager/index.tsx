@@ -1,12 +1,11 @@
 import { Alert, AlertTitle, Button, Stack } from "@mui/material";
 import { Field, Formik } from "formik";
 import { TextField } from "formik-mui";
-import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { TokenInfo } from "../../components/containers/token-manager/";
 import PageLayout from "../../components/templates/PageLayout";
 import { env } from "../../env.mjs";
-import { TokenInfo } from "../../components/containers/token-manager/";
 
 export const formikSchema = z.object({
   // ethereum address

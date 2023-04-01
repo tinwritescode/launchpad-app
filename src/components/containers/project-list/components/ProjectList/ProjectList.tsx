@@ -1,9 +1,9 @@
-import * as S from "./ProjectList.style";
-import { Button, Col, Modal, Row, Table } from "antd";
-interface Props {}
+import { Button, Modal, Table } from "antd";
+import { create } from "zustand";
 import { api } from "~/utils/api";
 import { Create } from "../../../create-ido";
-import { create } from "zustand";
+import * as S from "./ProjectList.style";
+interface Props {}
 
 const projectListStore = create<{ open: boolean; toggleModal: () => void }>(
   (set) => ({
@@ -101,13 +101,13 @@ const ProjectList: React.FC<Props> = () => {
       <Table
         dataSource={data?.map((project, index) => {
           return {
-            key: index + "",
+            key: project.id,
             project: {
               name: project.name,
               pricePerToken,
               tokenSymbol,
               img: project.image,
-              link: "http://localhost:3000/",
+              link: `/ido/${project.id}`,
             },
             chain: "https://picsum.photos/200/300",
             endTime,

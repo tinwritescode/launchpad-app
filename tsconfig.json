@@ -21,13 +21,13 @@
       "~/*": ["./src/*"]
     }
   },
+  "exclude": ["**/node_modules", "**/dist", "./contracts/**/*.ts"],
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
     "**/*.mjs"
-  ],
-  "exclude": ["node_modules", "contracts"]
+  ]
 }
