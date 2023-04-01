@@ -1,17 +1,17 @@
 // import { DownOutlined } from "@ant-design/icons";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 // import { Table } from "antd";
 // import type { ColumnsType } from "antd/es/table";
-import { useFarmingHook } from '../useFarming';
-import ExpandableRow from './ExpandableRow';
+import { useFarmingHook } from "../useFarming";
+import ExpandableRow from "./ExpandableRow";
 
 const data = [
   {
-    key: '1',
-    pools: 'Pools',
-    apy: 'APY',
-    staked: 'STAKED',
-    totalValueLocked: 'TOTAL VALUE LOCKED',
+    key: "1",
+    pools: "Pools",
+    apy: "APY",
+    staked: "STAKED",
+    totalValueLocked: "TOTAL VALUE LOCKED",
   },
 ];
 
@@ -38,6 +38,7 @@ const data = [
 
 const FarmingTable = () => {
   return (
+    <h1>Table Farming</h1>
     // <Table
     //   columns={columns}
     //   dataSource={data}
@@ -52,7 +53,6 @@ const FarmingTable = () => {
     //       ),
     //   }}
     // />
-    <h1>Table farming</h1>
   );
 };
 
