@@ -35,7 +35,7 @@ export const buildContracts = ({
 
     const maxStakingRequired = nextKey
       ? IDO_CONTRACT_STAKING_REQUIRED[nextKey]
-      : Number.MAX_VALUE;
+      : BigNumber.from(2).pow(256).sub(1);
 
     // next key or max number
     return {

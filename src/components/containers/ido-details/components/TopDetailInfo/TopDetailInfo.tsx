@@ -1,10 +1,8 @@
-import { Button } from '@mui/material';
-import { Project, ScheduleRound } from '@prisma/client';
-
-import { useRouter } from 'next/router';
-import React from 'react';
-import { api } from '~/utils/api';
-import * as S from './TopDetailInfo.style';
+import { Project, ScheduleRound } from "@prisma/client";
+import { useRouter } from "next/router";
+import React from "react";
+import { api } from "~/utils/api";
+import * as S from "./TopDetailInfo.style";
 
 interface Props {}
 

@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
+import { toast } from "react-hot-toast";
 import { api } from "../../../utils/api";
 import { getSigner, isWalletInstalled } from "../../../utils/ethereum";
 import AppButton from "../AppButton";
 import { useWeb3App } from "../ConnectWalletButton/store";
-import { toast } from "react-hot-toast";
 
 interface Props {}
 
@@ -52,7 +52,6 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
 
   const { hooks } = useWeb3App();
   const { useAccount } = hooks;
-  const walletAddress = useAccount();
 
   return (
     <AppButton
@@ -60,7 +59,7 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
       onClick={!isLoggedIn ? onLoginClicked : () => logout.mutateAsync()}
       variant="contained"
       loading={logout.isLoading}
-      disabled={!sessionMessage.data || !walletAddress}
+      disabled={!sessionMessage.data}
       size="large"
     >
       {isLoggedIn ? "Logout" : "Sign"}

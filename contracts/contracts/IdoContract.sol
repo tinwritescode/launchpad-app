@@ -215,7 +215,7 @@ contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step {
     /**
      * @dev Add wallet to whitelist from staking contract
      * If wallet is added, removed and added to whitelist, the account is repeated
-     * Only add wallet if staking amount >= minStakingRequired
+     * Only add wallet if staking amount >= minStakingRequired and staking amount < maxStakingRequired
      * Only add wallet if wallet is not in whitelist
      * Only add wallet if wallet is not in _whitelistedUsers
      */
@@ -235,7 +235,7 @@ contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step {
                 total = amount;
             }
 
-            if (total >= minStakingRequired && total <= maxStakingRequired) {
+            if (total >= minStakingRequired && total < maxStakingRequired) {
                 if (!whitelist[account]) {
                     whitelist[account] = true;
                     _whitelistedUsers.push(account);
