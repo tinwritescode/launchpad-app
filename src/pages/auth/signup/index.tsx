@@ -1,6 +1,6 @@
-import Head from 'next/head';
-import SignUp from '~/components/containers/auth/SignUp';
-import PageLayout from '~/components/templates/PageLayout';
+import Head from "next/head";
+import SignUp from "~/components/containers/auth/SignUp";
+import PageLayout from "~/components/templates/PageLayout";
 
 type Props = {};
 

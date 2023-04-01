@@ -6,7 +6,7 @@ import { env } from "../../../env.mjs";
 import { getErc20Contract, getStakingContract } from "../../../libs/blockchain";
 import { useWeb3Hooks } from "../../common/ConnectWalletButton/store";
 import { getSigner } from "../../../utils/ethereum";
-import { message } from "antd";
+
 import toast from "react-hot-toast";
 
 export class FarmingHelper {

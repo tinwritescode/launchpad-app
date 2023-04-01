@@ -1,8 +1,8 @@
-import { Divider } from "antd";
-import styled from "styled-components";
-import PageLayout from "../../templates/PageLayout";
-import FarmingFilterBar from "./components/FarmingFilterBar";
-import FarmingTable from "./components/FarmingTable";
+//import { Divider } from "antd";
+import styled from 'styled-components';
+import PageLayout from '../../templates/PageLayout';
+import FarmingFilterBar from './components/FarmingFilterBar';
+import FarmingTable from './components/FarmingTable';
 
 const FarmingContainer = styled.div`
   max-width: 1200px;
@@ -16,7 +16,7 @@ const Farming = () => {
       <PageLayout>
         <FarmingContainer>
           <FarmingFilterBar />
-          <Divider />
+          {/* <Divider /> */}
           <FarmingTable />
         </FarmingContainer>
       </PageLayout>

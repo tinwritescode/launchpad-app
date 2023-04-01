@@ -1,9 +1,10 @@
-import { Button, Modal, Table } from "antd";
-import { create } from "zustand";
+import * as S from "./ProjectList.style";
+//import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Modal } from "@mui/material";
+interface Props {}
 import { api } from "~/utils/api";
 import { Create } from "../../../create-ido";
-import * as S from "./ProjectList.style";
-interface Props {}
+import { create } from "zustand";
 
 const projectListStore = create<{ open: boolean; toggleModal: () => void }>(
   (set) => ({
@@ -87,18 +88,18 @@ const ProjectList: React.FC<Props> = () => {
         link="http://localhost:3000/"
       />
       <Modal
-        title="Create IDO"
         open={open}
-        onCancel={toggleModal}
-        footer={null}
-        width={1000}
+        onClose={toggleModal}
+        //footer={null}
+        //width={1000}
+        //title="Create IDO"
       >
         <Create />
       </Modal>
       <S.TopAction>
         <Button onClick={toggleModal}>Create IDO</Button>
       </S.TopAction>
-      <Table
+      {/* <Table
         dataSource={data?.map((project, index) => {
           return {
             key: project.id,
@@ -117,7 +118,7 @@ const ProjectList: React.FC<Props> = () => {
           };
         })}
         columns={columns}
-      />
+      /> */}
     </S.Container>
   );
 };

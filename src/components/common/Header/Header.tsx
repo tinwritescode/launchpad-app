@@ -48,7 +48,7 @@ function Header({}: Props) {
       >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Link href="/">
-            <img src="/assets/logo.svg" width={190} height={40} />
+            <img src="/assets/logo.svg" alt="logo" width={190} height={40} />
           </Link>
           <Box>
             {links.map((link) => (
@@ -66,6 +66,31 @@ function Header({}: Props) {
       </Stack>
     </>
   );
+  // return (
+  //   <>
+  //     <Space direction="vertical">
+  //       <AppBar position="fixed" className={style.header}>
+  //         <Toolbar sx={{ justifyContent: "space-between" }}>
+  //           <Link href="/">
+  //             <img src="/assets/logo.svg" width={190} height={40} />
+  //           </Link>
+  //           <Box>
+  //             {links.map((link) => (
+  //               <Button key={link.href} variant="text">
+  //                 <Link href={link.href}>{link.label}</Link>
+  //               </Button>
+  //             ))}
+  //           </Box>
+
+  //           <LoginModal />
+  //         </Toolbar>
+  //       </AppBar>
+  //       <ChangeNetwork />
+  //     </Space>
+
+  //     <Box sx={{ height: "100px" }} />
+  //   </>
+  // );
 }
 
 export default Header;

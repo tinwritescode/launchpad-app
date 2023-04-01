@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button } from "antd";
+import { Button } from "@mui/material";
 
 export const Container = styled(Button)`
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);

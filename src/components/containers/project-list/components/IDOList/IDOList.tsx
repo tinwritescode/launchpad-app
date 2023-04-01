@@ -1,24 +1,24 @@
 import { Prisma } from "@prisma/client";
-import type { TabsProps } from "antd";
-import { Table } from "antd";
+//import type { TabsProps } from 'antd';
+//import { Table } from 'antd';
 import React, { useState } from "react";
 import { api } from "~/utils/api";
 import * as S from "./IDOList.style";
 
-const navItems: TabsProps["items"] = [
-  {
-    key: "1",
-    label: `OPEN IGO`,
-  },
-  {
-    key: "2",
-    label: `UPCOMING`,
-  },
-  {
-    key: "3",
-    label: `PAST IGO`,
-  },
-];
+// const navItems: TabsProps['items'] = [
+//   {
+//     key: '1',
+//     label: `OPEN IGO`,
+//   },
+//   {
+//     key: '2',
+//     label: `UPCOMING`,
+//   },
+//   {
+//     key: '3',
+//     label: `PAST IGO`,
+//   },
+// ];
 
 interface Props {}
 
@@ -79,48 +79,50 @@ const IDOList: React.FC<Props> = () => {
     setStatus(key === "1" ? "ACTIVE" : key === "2" ? "INACTIVE" : "DELETED");
     refetch();
   };
-  const columns = [
-    {
-      title: "PROJECT NAME",
-      dataIndex: "project",
-      key: "project",
-      render: (project: {
-        name: string;
-        pricePerToken: number;
-        tokenSymbol: string;
-        img: string;
-        link: string;
-      }) => <S.ProjectInfo item={project} />,
-    },
-    {
-      title: "CHAIN",
-      dataIndex: "chain",
-      key: "chain",
-      render: (imageUrl: string) => (
-        <S.StyledChainImage src={imageUrl}></S.StyledChainImage>
-      ),
-    },
-    {
-      title: "END IN",
-      dataIndex: "endTime",
-      key: "endTime",
-    },
-    {
-      title: "TOTAL RAISE",
-      dataIndex: "totalRaise",
-      key: "totalRaise",
-    },
-    {
-      title: "PROGRESS",
-      dataIndex: "progress",
-      key: "progress",
-      render: (text: string) => <a href="http://localhost:3000/">{text}</a>,
-    },
-  ];
+  // const columns = [
+  //   {
+  //     title: "PROJECT NAME",
+  //     dataIndex: "project",
+  //     key: "project",
+  //     render: (project: {
+  //       name: string;
+  //       pricePerToken: number;
+  //       tokenSymbol: string;
+  //       img: string;
+  //       link: string;
+  //     }) => <S.ProjectInfo item={project} />,
+  //   },
+  //   {
+  //     title: "CHAIN",
+  //     dataIndex: "chain",
+  //     key: "chain",
+  //     render: (imageUrl: string) => (
+  //       <S.StyledChainImage src={imageUrl}></S.StyledChainImage>
+  //     ),
+  //   },
+  //   {
+  //     title: "END IN",
+  //     dataIndex: "endTime",
+  //     key: "endTime",
+  //   },
+  //   {
+  //     title: "TOTAL RAISE",
+  //     dataIndex: "totalRaise",
+  //     key: "totalRaise",
+  //   },
+  //   {
+  //     title: "PROGRESS",
+  //     dataIndex: "progress",
+  //     key: "progress",
+  //     render: (text: string) => <a href="http://localhost:3000/">{text}</a>,
+  //   },
+  // ];
 
   return (
     <div>
-      <S.Container>
+      project List
+      {JSON.stringify(data)}
+      {/* <S.Container>
         <S.NavContainer>
           <S.NavTabItem>
             <S.StyledTabs
@@ -153,7 +155,7 @@ const IDOList: React.FC<Props> = () => {
           })}
           columns={columns}
         />
-      </S.Container>
+      </S.Container> */}
     </div>
   );
 };

@@ -17,9 +17,6 @@
     "prisma:reset": "prisma migrate reset && npm run seed"
   },
   "dependencies": {
-    "@ant-design/charts": "^1.4.2",
-    "@ant-design/icons": "5.0.1",
-    "@antv/g-base": "0.5.11",
     "@babel/core": "^7.21.3",
     "@coinbase/wallet-sdk": "^3.6.4",
     "@emotion/react": "^11.10.6",
@@ -40,7 +37,6 @@
     "@web3-react/core": "^8.1.2-beta.0",
     "@web3-react/metamask": "^8.1.2-beta.0",
     "@web3-react/types": "^8.1.2-beta.0",
-    "antd": "^5.0.0",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "ethers": "^5.7.2",

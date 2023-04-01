@@ -1,5 +1,4 @@
 import { Token } from "@prisma/client";
-import { Card } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
 import { api } from "~/utils/api";
@@ -15,7 +14,7 @@ const MiddleDetailInfo: React.FC<Props> = () => {
 
   return (
     <S.Container>
-      <Card title="TOKEN INFO">
+      {/* <Card title="TOKEN INFO">
         <div>
           <span>Token Name: </span>
           <span>{token?.name}</span>
@@ -36,7 +35,8 @@ const MiddleDetailInfo: React.FC<Props> = () => {
           <span>Total Supply: </span>
           <span>{token?.totalSupply}</span>
         </div>
-      </Card>
+      </Card> */}
+      <h1>Card TOKEN INFO</h1>
     </S.Container>
   );
 };

@@ -1,1 +1,1 @@
-export { default } from './ApplyForIDOHeading';
+export { default } from "./ApplyForIDOHeading";
