@@ -1,10 +1,10 @@
-import * as S from "./ProjectList.style";
-//import { Button, Col, Modal, Row, Table } from "antd";
-import { Button, Modal } from "@mui/material";
-interface Props {}
+import { Button, Modal } from "antd";
+import { create } from "zustand";
 import { api } from "~/utils/api";
 import { Create } from "../../../create-ido";
-import { create } from "zustand";
+import * as S from "./ProjectList.style";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+interface Props {}
 
 const projectListStore = create<{ open: boolean; toggleModal: () => void }>(
   (set) => ({
@@ -87,15 +87,17 @@ const ProjectList: React.FC<Props> = () => {
         img="https://picsum.photos/200/300"
         link="http://localhost:3000/"
       />
-      <Modal
+      <Dialog
         open={open}
         onClose={toggleModal}
-        //footer={null}
         //width={1000}
         //title="Create IDO"
       >
-        <Create />
-      </Modal>
+        <DialogTitle>Create IDO</DialogTitle>
+        <DialogContent>
+          <Create />
+        </DialogContent>
+      </Dialog>
       <S.TopAction>
         <Button onClick={toggleModal}>Create IDO</Button>
       </S.TopAction>
