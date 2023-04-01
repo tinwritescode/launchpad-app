@@ -1,10 +1,10 @@
-import { Button } from "@mui/material";
-import { Project, ScheduleRound } from "@prisma/client";
-import { Card, Col, Progress, Row, Space } from "antd";
-import { useRouter } from "next/router";
-import React from "react";
-import { api } from "~/utils/api";
-import * as S from "./TopDetailInfo.style";
+import { Button } from '@mui/material';
+import { Project, ScheduleRound } from '@prisma/client';
+
+import { useRouter } from 'next/router';
+import React from 'react';
+import { api } from '~/utils/api';
+import * as S from './TopDetailInfo.style';
 
 interface Props {}
 
@@ -22,7 +22,8 @@ const TopDetailInfo: React.FC<Props> = () => {
 
   return (
     <S.Container>
-      <Card>
+      <h1>Card detail</h1>
+      {/* <Card>
         <Row>
           <Col span={10}>
             <Row>
@@ -69,7 +70,7 @@ const TopDetailInfo: React.FC<Props> = () => {
           <Col span={4}>Participants 100 / 1000</Col>
           <Col span={10}>Share this project</Col>
         </Row>
-      </Card>
+      </Card> */}
     </S.Container>
   );
 };

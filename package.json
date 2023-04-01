@@ -43,7 +43,6 @@
     "formik": "^2.2.9",
     "formik-mui": "5.0.0-alpha.0",
     "formik-mui-x-date-pickers": "^0.0.1",
-    "hardhat": "^2.13.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "next": "^13.2.1",
