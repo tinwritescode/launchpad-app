@@ -1,15 +1,15 @@
-import React from "react";
-import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
+import React from 'react';
+import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-import { api } from "~/utils/api";
-import { Project, ScheduleRound, TokenomicsItem } from "@prisma/client";
+import { api } from '~/utils/api';
+import { Project, ScheduleRound, TokenomicsItem } from '@prisma/client';
 
-import { Anchor, Table, Col, Row, Card } from "antd";
-import * as S from "./ProjectSummary.style";
-const Pie = dynamic(() => import("@ant-design/charts").then((mod) => mod.Pie), {
-  ssr: false,
-});
+//import { Anchor, Table, Col, Row, Card } from "antd";
+import * as S from './ProjectSummary.style';
+// const Pie = dynamic(() => import("@ant-design/charts").then((mod) => mod.Pie), {
+//   ssr: false,
+// });
 
 interface Props {}
 
@@ -17,26 +17,26 @@ type Column = {
   title: string;
   dataIndex: string;
   key: string;
-  align?: "left" | "right" | "center";
+  align?: 'left' | 'right' | 'center';
   render?: (text: string) => string;
 };
 
 const scheduleColumn: Column[] = [
   {
-    title: "Round",
-    dataIndex: "name",
-    key: "name",
+    title: 'Round',
+    dataIndex: 'name',
+    key: 'name',
   },
   {
-    title: "Opens",
-    dataIndex: "startTime",
-    key: "startTime",
+    title: 'Opens',
+    dataIndex: 'startTime',
+    key: 'startTime',
     render: (text: string) => new Date(text).toLocaleString(),
   },
   {
-    title: "Closes",
-    dataIndex: "endTime",
-    key: "endTime",
+    title: 'Closes',
+    dataIndex: 'endTime',
+    key: 'endTime',
     render: (text: string) => new Date(text).toLocaleString(),
   },
 ];
@@ -56,7 +56,7 @@ const ProjectSummary: React.FC<Props> = () => {
 
   return (
     <S.Container>
-      <Row>
+      {/* <Row>
         <Col span={8}>
           <Card>
             <Anchor>
@@ -120,7 +120,8 @@ const ProjectSummary: React.FC<Props> = () => {
             <p>{project?.roadmapContent}</p>
           </div>
         </Col>
-      </Row>
+      </Row> */}
+      <h1>Pie Chart</h1>
     </S.Container>
   );
 };

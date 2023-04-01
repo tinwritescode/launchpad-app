@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { DownOutlined } from "@ant-design/icons";
-import { Tabs, Dropdown, Menu, Avatar } from "antd";
-import { Col, Row, Card } from "antd";
+import styled from 'styled-components';
+//import { DownOutlined } from '@ant-design/icons';
+//import { Tabs, Dropdown, Menu, Avatar } from "antd";
+//import { Col, Row, Card } from "antd";
 
 type CustomUserInfoCardProps = {
   name: string;
@@ -22,25 +22,26 @@ type CustomProjectInfoProps = {
 };
 export const UserInfoCard = (props: CustomUserInfoCardProps) => {
   return (
-    <Card style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)", width: "100%" }}>
-      <Row>
-        <Col span={8}>
-          <div style={{ padding: "0 0 0 50px" }}>
-            <Avatar size={120} src={props.img} shape="circle" />
-          </div>
-        </Col>
-        <Col span={8}>
-          <p>name:</p>
-          <p>role:</p>
-          <p>description:</p>
-        </Col>
-        <Col span={8}>
-          <p>{props.name}</p>
-          <p>{props.role}</p>
-          <p>{props.description}</p>
-        </Col>
-      </Row>
-    </Card>
+    <h1>UserInfoCard</h1>
+    // <Card style={{ boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)", width: "100%" }}>
+    //   <Row>
+    //     <Col span={8}>
+    //       <div style={{ padding: "0 0 0 50px" }}>
+    //         <Avatar size={120} src={props.img} shape="circle" />
+    //       </div>
+    //     </Col>
+    //     <Col span={8}>
+    //       <p>name:</p>
+    //       <p>role:</p>
+    //       <p>description:</p>
+    //     </Col>
+    //     <Col span={8}>
+    //       <p>{props.name}</p>
+    //       <p>{props.role}</p>
+    //       <p>{props.description}</p>
+    //     </Col>
+    //   </Row>
+    // </Card>
   );
 };
 
@@ -49,7 +50,7 @@ export const UserInfoCard = (props: CustomUserInfoCardProps) => {
 export const ProjectInfo = function ({ item }: CustomProjectInfoProps) {
   return (
     <a href={item.link}>
-      <div style={{ display: "flex", color: "black", alignItems: "center" }}>
+      <div style={{ display: 'flex', color: 'black', alignItems: 'center' }}>
         <StyledImage src={item.img} />
         <div>
           <p>{item.name}</p>

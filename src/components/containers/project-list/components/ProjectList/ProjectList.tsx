@@ -1,9 +1,10 @@
-import { Button, Modal, Table } from "antd";
-import { create } from "zustand";
-import { api } from "~/utils/api";
-import { Create } from "../../../create-ido";
-import * as S from "./ProjectList.style";
+import * as S from './ProjectList.style';
+//import { Button, Col, Modal, Row, Table } from "antd";
+import { Button, Modal } from '@mui/material';
 interface Props {}
+import { api } from '~/utils/api';
+import { Create } from '../../../create-ido';
+import { create } from 'zustand';
 
 const projectListStore = create<{ open: boolean; toggleModal: () => void }>(
   (set) => ({
@@ -15,9 +16,9 @@ const projectListStore = create<{ open: boolean; toggleModal: () => void }>(
 const ProjectList: React.FC<Props> = () => {
   const columns = [
     {
-      title: "PROJECT NAME",
-      dataIndex: "project",
-      key: "project",
+      title: 'PROJECT NAME',
+      dataIndex: 'project',
+      key: 'project',
       render: (project: {
         name: string;
         pricePerToken: number;
@@ -27,34 +28,34 @@ const ProjectList: React.FC<Props> = () => {
       }) => <S.ProjectInfo item={project} />,
     },
     {
-      title: "CHAIN",
-      dataIndex: "chain",
-      key: "chain",
+      title: 'CHAIN',
+      dataIndex: 'chain',
+      key: 'chain',
       render: (imageUrl: string) => (
         <S.StyledChainImage src={imageUrl}></S.StyledChainImage>
       ),
     },
     {
-      title: "END IN",
-      dataIndex: "endTime",
-      key: "endTime",
+      title: 'END IN',
+      dataIndex: 'endTime',
+      key: 'endTime',
     },
     {
-      title: "TOTAL RAISE",
-      dataIndex: "totalRaise",
-      key: "totalRaise",
+      title: 'TOTAL RAISE',
+      dataIndex: 'totalRaise',
+      key: 'totalRaise',
     },
     {
-      title: "PROGRESS",
-      dataIndex: "progress",
-      key: "progress",
-      render: (text: string) => <a href="http://localhost:3000/">{text}</a>,
+      title: 'PROGRESS',
+      dataIndex: 'progress',
+      key: 'progress',
+      render: (text: string) => <a href='http://localhost:3000/'>{text}</a>,
     },
     {
-      title: "STATUS",
-      dataIndex: "status",
-      key: "status",
-      render: (text: string) => <a href="http://localhost:3000/">{text}</a>,
+      title: 'STATUS',
+      dataIndex: 'status',
+      key: 'status',
+      render: (text: string) => <a href='http://localhost:3000/'>{text}</a>,
     },
   ];
   const { data, isLoading, error } = api.project.getAll.useQuery({
@@ -62,10 +63,10 @@ const ProjectList: React.FC<Props> = () => {
     limit: 10,
   });
   const pricePerToken = 100;
-  const tokenSymbol = "ETH";
+  const tokenSymbol = 'ETH';
   const endTime = new Date().toLocaleDateString();
-  const totalRaise = "1000 ETH";
-  const progress = "50%";
+  const totalRaise = '1000 ETH';
+  const progress = '50%';
 
   const { open, toggleModal } = projectListStore();
 
@@ -80,25 +81,25 @@ const ProjectList: React.FC<Props> = () => {
   return (
     <S.Container>
       <S.UserInfoCard
-        name="User Name"
-        role="User Role"
-        description="User Description"
-        img="https://picsum.photos/200/300"
-        link="http://localhost:3000/"
+        name='User Name'
+        role='User Role'
+        description='User Description'
+        img='https://picsum.photos/200/300'
+        link='http://localhost:3000/'
       />
       <Modal
-        title="Create IDO"
         open={open}
-        onCancel={toggleModal}
-        footer={null}
-        width={1000}
+        onClose={toggleModal}
+        //footer={null}
+        //width={1000}
+        //title="Create IDO"
       >
         <Create />
       </Modal>
       <S.TopAction>
         <Button onClick={toggleModal}>Create IDO</Button>
       </S.TopAction>
-      <Table
+      {/* <Table
         dataSource={data?.map((project, index) => {
           return {
             key: project.id,
@@ -117,7 +118,7 @@ const ProjectList: React.FC<Props> = () => {
           };
         })}
         columns={columns}
-      />
+      /> */}
     </S.Container>
   );
 };

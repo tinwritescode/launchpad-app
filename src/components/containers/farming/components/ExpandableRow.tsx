@@ -1,11 +1,12 @@
-import { Button, InputNumber, Typography } from "antd";
-import { BigNumber, ethers } from "ethers";
-import moment from "moment";
-import React, { useMemo } from "react";
-import styled from "styled-components";
-import { env } from "../../../../env.mjs";
-import { formatNumber } from "../../../../utils/format";
-import { useFarmingHook } from "../useFarming";
+//import { Button, InputNumber, Typography } from "antd";
+import { Button, TextField, Input, Typography } from '@mui/material';
+import { BigNumber, ethers } from 'ethers';
+import moment from 'moment';
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
+import { env } from '../../../../env.mjs';
+import { formatNumber } from '../../../../utils/format';
+import { useFarmingHook } from '../useFarming';
 
 const StyledForm = styled.div`
     display: flex;
@@ -51,29 +52,30 @@ const ExpandableRow = () => {
   } = useFarmingHook();
 
   const balanceInEther = useMemo(() => {
-    return ethers.utils.formatEther(stakingTokenBalance || "0");
+    return ethers.utils.formatEther(stakingTokenBalance || '0');
   }, [stakingTokenBalance]);
   const amountStakedInEther = useMemo(() => {
-    return ethers.utils.formatEther(amountStaked || "0");
+    return ethers.utils.formatEther(amountStaked || '0');
   }, [amountStaked]);
   const unclaimedRewardsInEther = useMemo(() => {
-    return ethers.utils.formatEther(unclaimedRewards || "0");
+    return ethers.utils.formatEther(unclaimedRewards || '0');
   }, [unclaimedRewards]);
 
-  const inputRef = React.useRef<React.ElementRef<typeof InputNumber>>(null);
-  const withdrawRef = React.useRef<React.ElementRef<typeof InputNumber>>(null);
+  const inputRef = React.useRef<React.ElementRef<typeof Input>>(null);
+  const withdrawRef = React.useRef<React.ElementRef<typeof Input>>(null);
   const blockTimestamp = useMemo(() => {
     return new Date().getTime() / 1000;
   }, []);
 
   return (
     <>
-      <StyledExpandableRow>
+      {/* <StyledExpandableRow>
         <StyledForm>
           <h3>Deposit</h3>
           <StyledInput>
-            <InputNumber
+            <TextField
               max={Number(balanceInEther)}
+              type="number"
               ref={inputRef}
               step={1}
               min={0}
@@ -90,7 +92,7 @@ const ExpandableRow = () => {
                 onClick={() => {
                   return stake({
                     amount: ethers.utils.parseEther(
-                      inputRef.current?.value || "0"
+                      inputRef.current?.value || '0'
                     ),
                   });
                 }}
@@ -99,7 +101,7 @@ const ExpandableRow = () => {
               </Button>
             ) : (
               <Button
-                disabled={balanceInEther === "0"}
+                disabled={balanceInEther === '0'}
                 onClick={() =>
                   approve({
                     amount: ethers.constants.MaxUint256,
@@ -112,13 +114,13 @@ const ExpandableRow = () => {
             )}
           </StyledInput>
           <span>
-            Your balance:{" "}
+            Your balance:{' '}
             {`${formatNumber(balanceInEther)} ${stakingTokenName}`}
           </span>
         </StyledForm>
         <StyledForm>
           <h3>Withdraw</h3>
-          <Typography.Text type="secondary">{`(unlock in ${moment(
+          <Typography.Text type='secondary'>{`(unlock in ${moment(
             unlockTime?.toNumber()
           )})`}</Typography.Text>
 
@@ -137,7 +139,7 @@ const ExpandableRow = () => {
               onClick={() => {
                 return withdraw({
                   amount: ethers.utils.parseEther(
-                    withdrawRef.current?.value || "0"
+                    withdrawRef.current?.value || '0'
                   ),
                 });
               }}
@@ -150,7 +152,7 @@ const ExpandableRow = () => {
             </Button>
           </StyledInput>
           <span>
-            deposited:{" "}
+            deposited:{' '}
             {`${formatNumber(amountStakedInEther)} ${stakingTokenName}`}
           </span>
         </StyledForm>
@@ -170,7 +172,7 @@ const ExpandableRow = () => {
             </Button>
           </StyledInput>
         </StyledForm>
-      </StyledExpandableRow>
+      </StyledExpandableRow> */}
       <div>
         <span>Get ${stakingTokenName}-BNB</span>
         <span>Get ${stakingTokenName}-BNB</span>

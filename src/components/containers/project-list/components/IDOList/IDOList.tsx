@@ -1,37 +1,37 @@
-import { Prisma } from "@prisma/client";
-import type { TabsProps } from "antd";
-import { Table } from "antd";
-import React, { useState } from "react";
-import { api } from "~/utils/api";
-import * as S from "./IDOList.style";
+import { Prisma } from '@prisma/client';
+//import type { TabsProps } from 'antd';
+//import { Table } from 'antd';
+import React, { useState } from 'react';
+import { api } from '~/utils/api';
+import * as S from './IDOList.style';
 
-const navItems: TabsProps["items"] = [
-  {
-    key: "1",
-    label: `OPEN IGO`,
-  },
-  {
-    key: "2",
-    label: `UPCOMING`,
-  },
-  {
-    key: "3",
-    label: `PAST IGO`,
-  },
-];
+// const navItems: TabsProps['items'] = [
+//   {
+//     key: '1',
+//     label: `OPEN IGO`,
+//   },
+//   {
+//     key: '2',
+//     label: `UPCOMING`,
+//   },
+//   {
+//     key: '3',
+//     label: `PAST IGO`,
+//   },
+// ];
 
 interface Props {}
 
 const IDOList: React.FC<Props> = () => {
   const menuItems1 = [
-    { key: "1", label: "Item 1", link: "http://localhost:3000/" },
-    { key: "2", label: "Item 2", link: "http://localhost:3000/" },
-    { key: "3", label: "Item 3", link: "http://localhost:3000/" },
+    { key: '1', label: 'Item 1', link: 'http://localhost:3000/' },
+    { key: '2', label: 'Item 2', link: 'http://localhost:3000/' },
+    { key: '3', label: 'Item 3', link: 'http://localhost:3000/' },
   ];
   const menuItems2 = [
-    { key: "4", label: "Item 5", link: "http://localhost:3000/" },
-    { key: "5", label: "Item 6", link: "http://localhost:3000/" },
-    { key: "6", label: "Item 7", link: "http://localhost:3000/" },
+    { key: '4', label: 'Item 5', link: 'http://localhost:3000/' },
+    { key: '5', label: 'Item 6', link: 'http://localhost:3000/' },
+    { key: '6', label: 'Item 7', link: 'http://localhost:3000/' },
   ];
 
   interface Row {
@@ -60,8 +60,8 @@ const IDOList: React.FC<Props> = () => {
   }
 
   const [status, setStatus] = useState<
-    "ACTIVE" | "INACTIVE" | "DELETED" | undefined
-  >("ACTIVE");
+    'ACTIVE' | 'INACTIVE' | 'DELETED' | undefined
+  >('ACTIVE');
   const { data, isLoading, error, refetch } = api.project.getAll.useQuery({
     // status,
     offset: 0,
@@ -76,51 +76,53 @@ const IDOList: React.FC<Props> = () => {
   }
 
   const onChange = (key: string) => {
-    setStatus(key === "1" ? "ACTIVE" : key === "2" ? "INACTIVE" : "DELETED");
+    setStatus(key === '1' ? 'ACTIVE' : key === '2' ? 'INACTIVE' : 'DELETED');
     refetch();
   };
-  const columns = [
-    {
-      title: "PROJECT NAME",
-      dataIndex: "project",
-      key: "project",
-      render: (project: {
-        name: string;
-        pricePerToken: number;
-        tokenSymbol: string;
-        img: string;
-        link: string;
-      }) => <S.ProjectInfo item={project} />,
-    },
-    {
-      title: "CHAIN",
-      dataIndex: "chain",
-      key: "chain",
-      render: (imageUrl: string) => (
-        <S.StyledChainImage src={imageUrl}></S.StyledChainImage>
-      ),
-    },
-    {
-      title: "END IN",
-      dataIndex: "endTime",
-      key: "endTime",
-    },
-    {
-      title: "TOTAL RAISE",
-      dataIndex: "totalRaise",
-      key: "totalRaise",
-    },
-    {
-      title: "PROGRESS",
-      dataIndex: "progress",
-      key: "progress",
-      render: (text: string) => <a href="http://localhost:3000/">{text}</a>,
-    },
-  ];
+  // const columns = [
+  //   {
+  //     title: "PROJECT NAME",
+  //     dataIndex: "project",
+  //     key: "project",
+  //     render: (project: {
+  //       name: string;
+  //       pricePerToken: number;
+  //       tokenSymbol: string;
+  //       img: string;
+  //       link: string;
+  //     }) => <S.ProjectInfo item={project} />,
+  //   },
+  //   {
+  //     title: "CHAIN",
+  //     dataIndex: "chain",
+  //     key: "chain",
+  //     render: (imageUrl: string) => (
+  //       <S.StyledChainImage src={imageUrl}></S.StyledChainImage>
+  //     ),
+  //   },
+  //   {
+  //     title: "END IN",
+  //     dataIndex: "endTime",
+  //     key: "endTime",
+  //   },
+  //   {
+  //     title: "TOTAL RAISE",
+  //     dataIndex: "totalRaise",
+  //     key: "totalRaise",
+  //   },
+  //   {
+  //     title: "PROGRESS",
+  //     dataIndex: "progress",
+  //     key: "progress",
+  //     render: (text: string) => <a href="http://localhost:3000/">{text}</a>,
+  //   },
+  // ];
 
   return (
     <div>
-      <S.Container>
+      project List
+      {JSON.stringify(data)}
+      {/* <S.Container>
         <S.NavContainer>
           <S.NavTabItem>
             <S.StyledTabs
@@ -153,7 +155,7 @@ const IDOList: React.FC<Props> = () => {
           })}
           columns={columns}
         />
-      </S.Container>
+      </S.Container> */}
     </div>
   );
 };
