@@ -1,45 +1,35 @@
-import { Prisma } from "@prisma/client";
+import { Button, Grid, Stack } from "@mui/material";
 import { TRPCClientError } from "@trpc/client";
-// import {
-//   Alert,
-//   Button,
-//   DatePicker,
-//   Form,
-//   Input,
-//   InputNumber,
-//   message,
-// } from "antd";
-import dayjs from "dayjs";
-import toast from "react-hot-toast";
+import { Field, Formik } from "formik";
+import { TextField } from "formik-mui";
 import { useRouter } from "next/router.js";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
 import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 import { env } from "../../../env.mjs";
 import { createIdoProjectInputSchema } from "../../../server/api/routers/project/project.schema";
 import { api } from "../../../utils/api";
+import { DateRangePicker, DateRange } from "mui-daterange-picker";
 
 type Props = {};
 
-type FormType = z.infer<typeof createIdoProjectInputSchema> & {
-  time: [Date, Date];
-};
+type FormType = z.infer<typeof createIdoProjectInputSchema>;
 
 export function Create({}: Props) {
   const { mutateAsync } = api.project.createIdoProject.useMutation();
-  //const [form] = Form.useForm();
   const router = useRouter();
+  const [timeOpen, setTimeOpen] = useState(false);
 
   // TODO: make type safety for this
   const handleSubmit = useCallback(async (values: FormType) => {
     try {
       console.log(values);
-      const startTime = values.time[0];
-      const endTime = values.time[1];
 
       const { id } = await mutateAsync({
         ...values,
-        endTime,
-        startTime,
+        startTime: new Date(values.startTime),
+        endTime: new Date(values.endTime),
       });
 
       toast.success("Created");
@@ -75,94 +65,135 @@ export function Create({}: Props) {
   }, []);
 
   return (
-    <h1>form create</h1>
-    // <>
-    //   <Form
-    //     layout="vertical"
-    //     form={form}
-    //     onFinish={handleSubmit}
-    //     onFieldsChange={(changedFields, allFields) => {
-    //       if (changedFields.length > 0) {
-    //         form.setFields(
-    //           changedFields.map((field) => ({
-    //             name: field.name,
-    //             errors: [],
-    //           }))
-    //         );
-    //       }
-    //     }}
-    //     // Remove mock later
-    //     initialValues={{
-    //       time: [dayjs(), dayjs().add(1, "day")],
-    //       idoPrice: 1,
-    //       purchaseCap: 100,
-    //       idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
-    //       // Fields that need to be filled
-    //       comparisionContent: "lorem ipsum dolor",
-    //       image: "https://picsum.photos/200/300",
-    //       roadmapContent: "ipsum lorem",
-    //       summaryContent: "lorem ipsum",
-    //       videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
-    //       name: "Project Name",
-    //     }}
-    //   >
-    //     {/* Fields that need to be filled */}
-    //     <Form.Item
-    //       label="Name"
-    //       required
-    //       name="name"
-    //       rules={[{ required: true, message: "Please input your name!" }]}
-    //     >
-    //       <Input />
-    //     </Form.Item>
+    <Formik
+      initialValues={{
+        startTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 1,
+        endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10,
+        idoPrice: 1,
+        purchaseCap: 100,
+        idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
+        // Fields that need to be filled
+        comparisionContent: "lorem ipsum dolor",
+        image: "https://picsum.photos/200/300",
+        roadmapContent: "ipsum lorem",
+        summaryContent: "lorem ipsum",
+        videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
+        name: "Project Name",
+      }}
+      onSubmit={handleSubmit}
+      validationSchema={toFormikValidationSchema(
+        createIdoProjectInputSchema as any
+      )}
+    >
+      {({ values, handleSubmit, getFieldProps, setFieldValue }) => (
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={2} width={"min(700px, calc(100vw - 32px))"} mt={2}>
+            <Field
+              component={TextField}
+              label="Name"
+              {...getFieldProps("name")}
+            />
+            <Field
+              component={TextField}
+              label="Image"
+              {...getFieldProps("image")}
+            />
+            <Field
+              component={TextField}
+              label="Video URL"
+              {...getFieldProps("videoURL")}
+            />
+            <Field
+              component={TextField}
+              label="Summary Content"
+              multiline
+              rows={4}
+              {...getFieldProps("summaryContent")}
+            />
+            <Field
+              component={TextField}
+              label="Roadmap Content"
+              multiline
+              rows={4}
+              {...getFieldProps("roadmapContent")}
+            />
+            <Field
+              component={TextField}
+              multiline
+              rows={4}
+              label="Comparision Content"
+              {...getFieldProps("comparisionContent")}
+            />
 
-    //     <Form.Item label="Image" required name="image">
-    //       <Input />
-    //     </Form.Item>
+            <Grid container>
+              <Grid item xs={6}>
+                <Stack>
+                  <Field
+                    component={TextField}
+                    label="Start Time"
+                    disabled
+                    {...getFieldProps("startTime")}
+                    value={new Date(values.startTime).toLocaleString()}
+                  />
+                </Stack>
+              </Grid>
+              <Grid item xs={6}>
+                <Stack>
+                  <Field
+                    component={TextField}
+                    label="End Time"
+                    disabled
+                    {...getFieldProps("endTime")}
+                    value={new Date(values.endTime).toLocaleString()}
+                  />
+                </Stack>
+              </Grid>
+              <Button
+                onClick={() => {
+                  setTimeOpen(!timeOpen);
+                }}
+              >
+                Change Time
+              </Button>
+            </Grid>
 
-    //     <Form.Item label="Video URL" required name="videoURL">
-    //       <Input />
-    //     </Form.Item>
+            <Field
+              component={DateRangePicker}
+              label="Time"
+              open={timeOpen}
+              minDate={values.startTime}
+              maxDate={values.endTime}
+              toggle={() => setTimeOpen(!timeOpen)}
+              onChange={(value: DateRange) => {
+                setFieldValue("time", [value.startDate, value.endDate]);
+                setFieldValue("startTime", value.startDate?.getTime());
+                setFieldValue("endTime", value.endDate?.getTime());
 
-    //     <Form.Item label="Summary Content" required name="summaryContent">
-    //       <Input.TextArea />
-    //     </Form.Item>
+                setTimeOpen(!timeOpen);
+              }}
+            />
 
-    //     <Form.Item label="Roadmap Content" required name="roadmapContent">
-    //       <Input.TextArea />
-    //     </Form.Item>
-
-    //     <Form.Item
-    //       label="Comparision Content"
-    //       required
-    //       name="comparisionContent"
-    //     >
-    //       <Input.TextArea />
-    //     </Form.Item>
-
-    //     <Form.Item label="Time" required name="time">
-    //       <DatePicker.RangePicker showTime showNow />
-    //     </Form.Item>
-
-    //     <Form.Item label="IDO Price" required name="idoPrice">
-    //       <InputNumber />
-    //     </Form.Item>
-
-    //     <Form.Item label="IDO Token Address" required name="idoTokenAddress">
-    //       <Input />
-    //     </Form.Item>
-
-    //     <Form.Item label="Purchase Cap" required name="purchaseCap">
-    //       <InputNumber />
-    //     </Form.Item>
-
-    //     {/* Submit */}
-    //     <Form.Item>
-    //       <Button htmlType="submit" type="primary">
-    //         Submit
-    //       </Button>
-    //     </Form.Item>
-    //   </Form>
-    // </>
+            <Field
+              component={TextField}
+              label="IDO Price"
+              {...getFieldProps("idoPrice")}
+            />
+            <Field
+              component={TextField}
+              label="IDO Token Address"
+              {...getFieldProps("idoTokenAddress")}
+            />
+            <Field
+              component={TextField}
+              label="Purchase Cap"
+              {...getFieldProps("purchaseCap")}
+            />
+            <Button type="submit" variant="contained">
+              Submit
+            </Button>
+          </Stack>
+        </form>
+      )}
+    </Formik>
   );
 }

@@ -55,6 +55,11 @@ export class IDOContract {
       maxStakingRequired
     );
 
+    contractInstance.then((contract) => {
+      // reset nonce
+      this.signer.setTransactionCount(contract.deployTransaction.nonce);
+    });
+
     return contractInstance;
   }
 }

@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { z } from "zod";
 
 const ethereumAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/);
-const parseToEthers = z.number().superRefine((val, ctx) => {
+const parseToEthers = z.coerce.number().superRefine((val, ctx) => {
   try {
     ethers.utils.parseEther(`${val}`);
     return true;
