@@ -78,6 +78,19 @@ export async function deployUSDCToken() {
   };
 }
 
+export async function deployDividendContract() {
+  const Dividend = await ethers.getContractFactory("Dividend");
+  const dividendContract = await Dividend.deploy();
+
+  await dividendContract.deployed();
+
+  console.log("Dividend deployed to:", dividendContract.address);
+
+  return {
+    dividendContract,
+  };
+}
+
 export async function deployIdoContract(
   idoToken: Erc20,
   stakingTokenAddress: string,

@@ -92,13 +92,32 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-export const protectedProcedure = publicProcedure.use(
+const protectedMiddleware = t.middleware(({ next, ctx }) => {
+  if (!ctx.session.user?.isLoggedIn) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+  }
+  return next();
+});
+
+export const protectedProcedure = publicProcedure.use(protectedMiddleware);
+
+export const adminProcedure = protectedProcedure.use(
   t.middleware(({ next, ctx }) => {
-    if (!ctx.session.user?.isLoggedIn) {
+    const roles = ["ADMIN", "SUPER_ADMIN"];
+    const userRoleArr = ctx.session.user?.roles || [];
+
+    // check if user is admin or super admin
+    const isAdmin = userRoleArr.some((role) => roles.includes(role));
+
+    if (!isAdmin) {
       throw new TRPCError({
         code: "UNAUTHORIZED",
+        message: "You are not authorized to perform this action",
       });
     }
+
     return next();
   })
 );
