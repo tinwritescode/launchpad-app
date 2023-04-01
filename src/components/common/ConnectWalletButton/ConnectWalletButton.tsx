@@ -1,7 +1,6 @@
 import { CoinbaseWallet } from "@web3-react/coinbase-wallet";
 import { Web3ReactHooks } from "@web3-react/core";
 import { MetaMask } from "@web3-react/metamask";
-import { ButtonProps } from "antd";
 import { env } from "../../../env.mjs";
 import { api } from "../../../utils/api";
 import { formatWalletAddress } from "../../../utils/ethereum";
@@ -12,7 +11,7 @@ type Props = {
   connector: SupportedWallets;
   text: string;
   hooks: Web3ReactHooks;
-} & ButtonProps;
+} & React.ComponentProps<typeof AppButton>;
 
 const ConnectWalletButton = ({ connector, text, hooks, ...props }: Props) => {
   const { useAccount, useIsActive, useIsActivating } = hooks;
@@ -56,7 +55,6 @@ const ConnectWalletButton = ({ connector, text, hooks, ...props }: Props) => {
       style={{ width: "100%" }}
       loading={isActivating}
       size="large"
-      type="primary"
       {...props}
     >
       {isActive && account

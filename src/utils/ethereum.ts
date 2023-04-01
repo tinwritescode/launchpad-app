@@ -25,7 +25,7 @@ export const switchNetwork = async (chainId: string) => {
     throw new Error("Wallet not installed");
   }
 
-  await (window.ethereum as ExternalProvider).request?.({
+  await (window.ethereum as ExternalProvider)?.request?.({
     method: "wallet_switchEthereumChain",
     params: [{ chainId: chainId }],
   });

@@ -1,7 +1,6 @@
-import { AppBar, Box, Button, List, ListItem, Toolbar } from "@mui/material";
-import { Image, Layout, Space } from "antd";
+import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
 import Link from "next/link";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { LoginModal } from "../LoginModal/LoginModal";
 import { ChangeNetwork } from "./ChangeNetwork";
 import style from "./Header.module.scss";
@@ -34,43 +33,33 @@ function Header({}: Props) {
     ],
     []
   );
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      const header = document.querySelector(`.${style.header}`);
-      if (header) {
-        const scrollY = window.scrollY;
-        if (scrollY > 0) {
-          header.classList.add(style.header__scroll as string);
-        } else {
-          header.classList.remove(style.header__scroll as string);
-        }
-      }
-    });
-  }, [style.header, style.header__scroll]);
 
   return (
     <>
-      <Space direction="vertical">
-        <AppBar position="fixed" className={style.header}>
-          <Toolbar sx={{ justifyContent: "space-between" }}>
-            <Link href="/">
-              <img src="/assets/logo.svg" width={190} height={40} />
-            </Link>
-            <Box>
-              {links.map((link) => (
-                <Button key={link.href} variant="text">
-                  <Link href={link.href}>{link.label}</Link>
-                </Button>
-              ))}
-            </Box>
+      <AppBar
+        position="sticky"
+        className={style.header}
+        sx={{ top: 0, zIndex: 999 }}
+        color={"transparent"}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Link href="/">
+            <img src="/assets/logo.svg" width={190} height={40} />
+          </Link>
+          <Box>
+            {links.map((link) => (
+              <Button key={link.href} variant="text">
+                <Link href={link.href}>{link.label}</Link>
+              </Button>
+            ))}
+          </Box>
 
-            <LoginModal />
-          </Toolbar>
-        </AppBar>
+          <LoginModal />
+        </Toolbar>
+      </AppBar>
+      <Stack spacing={2} sx={{ position: "sticky", top: 0, zIndex: 100 }}>
         <ChangeNetwork />
-      </Space>
-
-      <Box sx={{ height: "100px" }} />
+      </Stack>
     </>
   );
 }

@@ -7,6 +7,7 @@ import { getErc20Contract, getStakingContract } from "../../../libs/blockchain";
 import { useWeb3Hooks } from "../../common/ConnectWalletButton/store";
 import { getSigner } from "../../../utils/ethereum";
 import { message } from "antd";
+import toast from "react-hot-toast";
 
 export class FarmingHelper {
   static instance: FarmingHelper;
@@ -71,7 +72,7 @@ export const useFarmingHook = () => {
       } catch (e: any) {
         const msg = e?.message?.split(` (`)[0];
 
-        message.error(`Approve failed: ${msg}`);
+        toast.error(`Approve failed: ${msg}`);
       }
     },
     []
@@ -94,7 +95,7 @@ export const useFarmingHook = () => {
     } catch (e: any) {
       const msg = e?.message?.split(` (`)[0];
 
-      message.error(`Stake failed: ${msg}`);
+      toast.error(`Stake failed: ${msg}`);
     }
   }, []);
   const claimReward = useCallback(async () => {
@@ -104,7 +105,7 @@ export const useFarmingHook = () => {
     } catch (e: any) {
       const msg = e?.message?.split(` (`)[0];
 
-      message.error(`Claim reward failed: ${msg}`);
+      toast.error(`Claim reward failed: ${msg}`);
     }
   }, []);
   const withdraw = useCallback(async (payload: { amount: BigNumber }) => {
@@ -117,7 +118,7 @@ export const useFarmingHook = () => {
       const msg = e?.message?.split(` (`)[0];
       const text = e?.reason || msg;
 
-      message.error(`Withdraw failed: ${text}`);
+      toast.error(`Withdraw failed: ${text}`);
     }
   }, []);
 

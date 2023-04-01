@@ -1,7 +1,7 @@
 import { ExternalProvider } from "@ethersproject/providers";
-import { message } from "antd";
 import { ethers } from "ethers";
 import React, { useEffect } from "react";
+import toast from "react-hot-toast";
 import { isWalletInstalled } from "../../utils/ethereum";
 import { useWeb3App } from "../common/ConnectWalletButton/store";
 
@@ -17,7 +17,7 @@ export function Web3Provider({ children }: Props) {
       const ethereum = window.ethereum as ExternalProvider;
 
       if (!ethereum?.request) {
-        message.error("Please install MetaMask");
+        toast.error("Please install MetaMask");
         return;
       }
 

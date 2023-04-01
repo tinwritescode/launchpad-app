@@ -1,18 +1,17 @@
-import { Button, ButtonProps } from "@mui/material";
-import { ConfigProvider, theme } from "antd";
+import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import React from "react";
 import style from "./AppButton.module.scss";
 
-interface Props extends ButtonProps {}
+interface Props extends LoadingButtonProps {}
 
 const AppButton: React.FC<Props> = ({ children, ...rest }) => {
   return (
-    <Button
+    <LoadingButton
       className={[...(rest?.className || []), style.button].join(" ")}
       {...rest}
     >
       {children}
-    </Button>
+    </LoadingButton>
   );
 };
 
