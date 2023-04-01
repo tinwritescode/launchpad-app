@@ -1,9 +1,9 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from "@prisma/client";
 //import type { TabsProps } from 'antd';
 //import { Table } from 'antd';
-import React, { useState } from 'react';
-import { api } from '~/utils/api';
-import * as S from './IDOList.style';
+import React, { useState } from "react";
+import { api } from "~/utils/api";
+import * as S from "./IDOList.style";
 
 // const navItems: TabsProps['items'] = [
 //   {
@@ -24,14 +24,14 @@ interface Props {}
 
 const IDOList: React.FC<Props> = () => {
   const menuItems1 = [
-    { key: '1', label: 'Item 1', link: 'http://localhost:3000/' },
-    { key: '2', label: 'Item 2', link: 'http://localhost:3000/' },
-    { key: '3', label: 'Item 3', link: 'http://localhost:3000/' },
+    { key: "1", label: "Item 1", link: "http://localhost:3000/" },
+    { key: "2", label: "Item 2", link: "http://localhost:3000/" },
+    { key: "3", label: "Item 3", link: "http://localhost:3000/" },
   ];
   const menuItems2 = [
-    { key: '4', label: 'Item 5', link: 'http://localhost:3000/' },
-    { key: '5', label: 'Item 6', link: 'http://localhost:3000/' },
-    { key: '6', label: 'Item 7', link: 'http://localhost:3000/' },
+    { key: "4", label: "Item 5", link: "http://localhost:3000/" },
+    { key: "5", label: "Item 6", link: "http://localhost:3000/" },
+    { key: "6", label: "Item 7", link: "http://localhost:3000/" },
   ];
 
   interface Row {
@@ -60,8 +60,8 @@ const IDOList: React.FC<Props> = () => {
   }
 
   const [status, setStatus] = useState<
-    'ACTIVE' | 'INACTIVE' | 'DELETED' | undefined
-  >('ACTIVE');
+    "ACTIVE" | "INACTIVE" | "DELETED" | undefined
+  >("ACTIVE");
   const { data, isLoading, error, refetch } = api.project.getAll.useQuery({
     // status,
     offset: 0,
@@ -76,7 +76,7 @@ const IDOList: React.FC<Props> = () => {
   }
 
   const onChange = (key: string) => {
-    setStatus(key === '1' ? 'ACTIVE' : key === '2' ? 'INACTIVE' : 'DELETED');
+    setStatus(key === "1" ? "ACTIVE" : key === "2" ? "INACTIVE" : "DELETED");
     refetch();
   };
   // const columns = [

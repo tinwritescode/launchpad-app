@@ -1,1 +1,1 @@
-export { default } from './FindUsInSocial';
+export { default } from "./FindUsInSocial";

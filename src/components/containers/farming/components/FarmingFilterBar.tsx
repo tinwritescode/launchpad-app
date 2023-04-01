@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 //import { Switch, Select } from "antd";
-import { Switch, Select, MenuItem } from '@mui/material';
+import { Switch, Select, MenuItem } from "@mui/material";
 
 const FilterBar = styled.div`
   display: flex;
@@ -57,10 +57,10 @@ const FarmingFilterBar = () => {
         </li>
       </ul>
 
-      <StyledSelect defaultValue='All Pools'>
-        <MenuItem value='All'>All</MenuItem>
-        <MenuItem value='BTC'>BTC</MenuItem>
-        <MenuItem value='ETH'>ETH</MenuItem>
+      <StyledSelect defaultValue="All Pools">
+        <MenuItem value="All">All</MenuItem>
+        <MenuItem value="BTC">BTC</MenuItem>
+        <MenuItem value="ETH">ETH</MenuItem>
       </StyledSelect>
     </FilterBar>
   );

@@ -1,1 +1,1 @@
-export { default } from './IDOList';
+export { default } from "./IDOList";

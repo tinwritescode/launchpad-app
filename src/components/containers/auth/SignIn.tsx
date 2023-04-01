@@ -1,12 +1,12 @@
-import { LockOutlined, PersonOutline } from '@mui/icons-material';
+import { LockOutlined, PersonOutline } from "@mui/icons-material";
 //import { Button, Checkbox, Form, Input } from 'antd';
-import Link from 'next/link';
-import React from 'react';
-import styles from './components/Auth.module.scss';
+import Link from "next/link";
+import React from "react";
+import styles from "./components/Auth.module.scss";
 
 const SignIn: React.FC = () => {
   const onFinish = (values: any) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
   };
 
   return (

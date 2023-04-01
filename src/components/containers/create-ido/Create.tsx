@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client';
-import { TRPCClientError } from '@trpc/client';
+import { Prisma } from "@prisma/client";
+import { TRPCClientError } from "@trpc/client";
 // import {
 //   Alert,
 //   Button,
@@ -9,14 +9,14 @@ import { TRPCClientError } from '@trpc/client';
 //   InputNumber,
 //   message,
 // } from "antd";
-import dayjs from 'dayjs';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/router.js';
-import { useCallback } from 'react';
-import { z } from 'zod';
-import { env } from '../../../env.mjs';
-import { createIdoProjectInputSchema } from '../../../server/api/routers/project/project.schema';
-import { api } from '../../../utils/api';
+import dayjs from "dayjs";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router.js";
+import { useCallback } from "react";
+import { z } from "zod";
+import { env } from "../../../env.mjs";
+import { createIdoProjectInputSchema } from "../../../server/api/routers/project/project.schema";
+import { api } from "../../../utils/api";
 
 type Props = {};
 
@@ -42,19 +42,19 @@ export function Create({}: Props) {
         startTime,
       });
 
-      toast.success('Created');
+      toast.success("Created");
 
       //form.resetFields();
       router.push(`/ido/${id}`);
     } catch (error: any) {
       if (error instanceof TRPCClientError) {
-        if (error?.shape?.data?.code === 'INTERNAL_SERVER_ERROR') {
+        if (error?.shape?.data?.code === "INTERNAL_SERVER_ERROR") {
           toast.error(error?.shape?.message);
           return;
         }
 
         // if zod error
-        if (error?.shape?.data?.code === 'INVALID_INPUT') {
+        if (error?.shape?.data?.code === "INVALID_INPUT") {
           // map errors
           const errors = JSON.parse(error?.message);
 
@@ -70,7 +70,7 @@ export function Create({}: Props) {
         }
       }
 
-      toast.error(error?.message || 'Something went wrong');
+      toast.error(error?.message || "Something went wrong");
     }
   }, []);
 

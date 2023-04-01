@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 //import { DownOutlined } from '@ant-design/icons';
 //import { Tabs, Dropdown, Menu, Avatar } from "antd";
 //import { Col, Row, Card } from "antd";
@@ -50,7 +50,7 @@ export const UserInfoCard = (props: CustomUserInfoCardProps) => {
 export const ProjectInfo = function ({ item }: CustomProjectInfoProps) {
   return (
     <a href={item.link}>
-      <div style={{ display: 'flex', color: 'black', alignItems: 'center' }}>
+      <div style={{ display: "flex", color: "black", alignItems: "center" }}>
         <StyledImage src={item.img} />
         <div>
           <p>{item.name}</p>

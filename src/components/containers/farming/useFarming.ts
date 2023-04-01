@@ -1,13 +1,13 @@
-import { useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { BigNumber } from 'ethers';
-import { create } from 'zustand';
-import { env } from '../../../env.mjs';
-import { getErc20Contract, getStakingContract } from '../../../libs/blockchain';
-import { useWeb3Hooks } from '../../common/ConnectWalletButton/store';
-import { getSigner } from '../../../utils/ethereum';
+import { useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { BigNumber } from "ethers";
+import { create } from "zustand";
+import { env } from "../../../env.mjs";
+import { getErc20Contract, getStakingContract } from "../../../libs/blockchain";
+import { useWeb3Hooks } from "../../common/ConnectWalletButton/store";
+import { getSigner } from "../../../utils/ethereum";
 
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 export class FarmingHelper {
   static instance: FarmingHelper;
@@ -43,17 +43,17 @@ export const useFarmingHook = () => {
   const { useAccount } = useWeb3Hooks();
   const address = useAccount();
   const { data: stakeInfo, isLoading: isLoadingStakeInfo } = useQuery(
-    ['stakeInfo'],
+    ["stakeInfo"],
     () => FarmingHelper.getInstance().getAmountStaked(address),
     {
       enabled: !!address,
     }
   );
-  const { data: stakingTokenName } = useQuery(['stakingTokenName'], () =>
+  const { data: stakingTokenName } = useQuery(["stakingTokenName"], () =>
     getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).symbol()
   );
   const { data: stakingTokenBalance } = useQuery(
-    ['stakingTokenBalance', address],
+    ["stakingTokenBalance", address],
     ({ queryKey }) =>
       getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).balanceOf(
         queryKey?.[1] as string
@@ -78,7 +78,7 @@ export const useFarmingHook = () => {
     []
   );
   const approveAmount = useQuery(
-    ['approveAmount', address],
+    ["approveAmount", address],
     ({ queryKey }) =>
       getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).allowance(
         queryKey?.[1] as string,
@@ -123,7 +123,7 @@ export const useFarmingHook = () => {
   }, []);
 
   const unlockTime = useQuery(
-    ['unlockTime', address],
+    ["unlockTime", address],
     ({ queryKey }) => getStakingContract().lockTimeOf(queryKey?.[1] as string),
     {
       enabled: !!address,

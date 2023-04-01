@@ -1,12 +1,12 @@
 //import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 //import { Button, Form, Input } from 'antd';
-import Link from 'next/link';
-import React from 'react';
-import styles from './components/Auth.module.scss';
+import Link from "next/link";
+import React from "react";
+import styles from "./components/Auth.module.scss";
 
 const SignUp: React.FC = () => {
   const onFinish = (values: any) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
   };
 
   return (

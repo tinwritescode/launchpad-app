@@ -1,15 +1,15 @@
 //import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { LockOutlined, PersonOutline } from '@mui/icons-material';
+import { LockOutlined, PersonOutline } from "@mui/icons-material";
 //import PersonOutline from '@mui/icons-material/PersonOutline';
 //import { Button, Checkbox, Form, Input } from 'antd';
-import { Button, Checkbox, Input } from '@mui/material';
-import Link from 'next/link';
-import React from 'react';
-import styles from './components/Auth.module.scss';
+import { Button, Checkbox, Input } from "@mui/material";
+import Link from "next/link";
+import React from "react";
+import styles from "./components/Auth.module.scss";
 
 const ForgetPassword: React.FC = () => {
   const onFinish = (values: any) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
   };
 
   return (
@@ -18,7 +18,7 @@ const ForgetPassword: React.FC = () => {
         <h1>RESET PASSWORD</h1>
         <form
           name={styles.normal_login}
-          className='login-form'
+          className="login-form"
           //initialValues={{ remember: true }}
           onSubmit={onFinish}
         >
@@ -30,13 +30,13 @@ const ForgetPassword: React.FC = () => {
           > */}
           <Input
             //prefix={<PersonOutline className='site-form-item-icon' />}
-            placeholder='Enter your email address'
+            placeholder="Enter your email address"
           />
           {/* </Form.Item> */}
           {/* <Form.Item> */}
           <Button
-            color='primary'
-            type='submit'
+            color="primary"
+            type="submit"
             className={styles.login_form_button}
           >
             GET RESET LINK
