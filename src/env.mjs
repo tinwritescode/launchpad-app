@@ -24,6 +24,7 @@ const client = z.object({
   NEXT_PUBLIC_USDC_TOKEN_ADDRESS: z.string(),
   NEXT_PUBLIC_IDO_CONTRACT_ADDRESS: z.string(),
   NEXT_PUBLIC_IDO_TOKEN_ADDRESS: z.string(),
+  NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS: z.string(),
 
   NEXT_PUBLIC_CHAIN_ID: z.string(),
 });
@@ -51,6 +52,8 @@ const processEnv = {
   NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,
   ADMIN_PRIVATE_KEY: process.env.ADMIN_PRIVATE_KEY,
   NEXT_PUBLIC_BLOCKCHAIN_RPC: process.env.NEXT_PUBLIC_BLOCKCHAIN_RPC,
+  NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS:
+    process.env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
 };
 // Don't touch the part below
 // --------------------------

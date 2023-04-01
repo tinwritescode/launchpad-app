@@ -1,14 +1,13 @@
-import { Button } from "@mui/material";
-import { Modal, Space } from "antd";
+import { Box, Button, Modal, Stack } from "@mui/material";
 import { useCallback, useState } from "react";
 import { formatWalletAddress } from "../../../utils/ethereum";
 import AppButton from "../AppButton";
 import ConnectWalletButton from "../ConnectWalletButton";
 import * as coinbase from "../ConnectWalletButton/connectors/coinbaseWallet";
 import { hooks, metaMask } from "../ConnectWalletButton/connectors/metamask";
+import Flex from "../Flex/Flex";
 import LoginButton from "../LoginButton";
 import { useSession } from "../LoginButton/lib";
-import * as S from "./LoginModal.style";
 
 type Props = {};
 
@@ -24,63 +23,63 @@ export function LoginModal({}: Props) {
   }, []);
 
   return (
-    <S.Container>
+    <Flex
+      sx={{
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
       <AppButton variant="contained" onClick={showModal}>
         {!!data?.isLoggedIn
           ? `Welcome ${formatWalletAddress(data?.address)}`
           : "Login"}
       </AppButton>
-      <Modal
-        title="Login"
-        open={isModalOpen}
-        footer={null}
-        onCancel={hideModal}
-      >
-        <div>
-          <h4>Step 1</h4>
-          <Space
-            direction="vertical"
-            align="center"
-            style={{
-              width: "100%",
-              alignItems: "stretch",
-            }}
-          >
-            <ConnectWalletButton
-              connector={metaMask}
-              hooks={hooks}
-              text="Connect with MetaMask"
-              size="large"
-              disabled={!!data?.isLoggedIn}
-            />
+      <Modal title="Login" open={isModalOpen} onClose={hideModal}>
+        <>
+          <Box>
+            <h4>Step 1</h4>
+            <Stack
+              sx={{
+                width: "100%",
+                alignItems: "stretch",
+              }}
+            >
+              <ConnectWalletButton
+                connector={metaMask}
+                hooks={hooks}
+                text="Connect with MetaMask"
+                size="large"
+                disabled={!!data?.isLoggedIn}
+              />
 
-            <ConnectWalletButton
-              connector={coinbase.coinbaseWallet}
-              text="Connect with Coinbase Wallet"
-              hooks={coinbase.hooks}
-              size="large"
-              disabled={!!data?.isLoggedIn}
-            />
-          </Space>
-        </div>
-        <div>
-          <h4>Step 2</h4>
-          <LoginButton />
-        </div>
+              <ConnectWalletButton
+                connector={coinbase.coinbaseWallet}
+                text="Connect with Coinbase Wallet"
+                hooks={coinbase.hooks}
+                size="large"
+                disabled={!!data?.isLoggedIn}
+              />
+            </Stack>
+          </Box>
+          <Box>
+            <h4>Step 2</h4>
+            <LoginButton />
+          </Box>
 
-        <div>
-          <h4>Step 3</h4>
-          <Button
-            variant="contained"
-            disabled={!data?.isLoggedIn}
-            onClick={hideModal}
-            style={{ width: "100%" }}
-            size="large"
-          >
-            Go to your profile
-          </Button>
-        </div>
+          <Box>
+            <h4>Step 3</h4>
+            <Button
+              variant="contained"
+              disabled={!data?.isLoggedIn}
+              onClick={hideModal}
+              style={{ width: "100%" }}
+              size="large"
+            >
+              Go to your profile
+            </Button>
+          </Box>
+        </>
       </Modal>
-    </S.Container>
+    </Flex>
   );
 }

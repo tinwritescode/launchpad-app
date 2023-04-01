@@ -1,4 +1,5 @@
 import {
+  deployDividendContract,
   deployIdoContract,
   deployIDOToken,
   deployStakingContract,
@@ -22,6 +23,7 @@ async function main() {
     stakingTokenAddress,
     stakingContract
   );
+  const { dividendContract } = await deployDividendContract();
 
   // faucet to user
   const [deployer] = await ethers.getSigners();
@@ -35,6 +37,7 @@ async function main() {
     NEXT_PUBLIC_USDC_TOKEN_ADDRESS: usdcToken.address,
     NEXT_PUBLIC_IDO_CONTRACT_ADDRESS: idoContract.address,
     NEXT_PUBLIC_IDO_TOKEN_ADDRESS: idoToken.address,
+    NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS: dividendContract.address,
   });
 }
 

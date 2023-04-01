@@ -30,6 +30,10 @@ function Header({}: Props) {
         href: "/my-project",
         label: "My project",
       },
+      {
+        href: "/token-manager",
+        label: "Token Manager",
+      },
     ],
     []
   );
