@@ -1,4 +1,10 @@
-import { Button, DialogContent, DialogTitle, Drawer } from "@mui/material";
+import {
+  Box,
+  Button,
+  Modal,
+  Typography,
+  autocompleteClasses,
+} from "@mui/material";
 import { create } from "zustand";
 import { api } from "~/utils/api";
 import { Create } from "../../../create-ido";
@@ -86,21 +92,59 @@ const ProjectList: React.FC<Props> = () => {
         img="https://picsum.photos/200/300"
         link="http://localhost:3000/"
       />
-      <Drawer
-        open={open}
-        onClose={toggleModal}
-        anchor="right"
-        //width={1000}
-        //title="Create IDO"
-      >
-        <DialogTitle>Create IDO</DialogTitle>
-        <DialogContent>
-          <Create />
-        </DialogContent>
-      </Drawer>
+
       <S.TopAction>
         <Button onClick={toggleModal}>Create IDO</Button>
       </S.TopAction>
+      <Modal
+        open={true}
+        onClose={toggleModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{
+          p: 4,
+          width: "80%",
+          marginX: "auto",
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            pt: 4,
+            pb: 4,
+            outline: 0,
+            borderRadius: 2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "background.paper",
+            boxShadow: 24,
+          }}
+        >
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{
+              fontWeight: "bold",
+              size: "1.5rem",
+            }}
+          >
+            Create IDO
+          </Typography>
+          <Typography id="modal-modal-description">
+            <Create />
+          </Typography>
+        </Box>
+      </Modal>
+
+      {/* <S.TopAction>
+        <Button onClick={toggleModal}>Create IDO</Button>
+      </S.TopAction> */}
       {/* <Table
         dataSource={data?.map((project, index) => {
           return {

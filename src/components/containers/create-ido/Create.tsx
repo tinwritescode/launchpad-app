@@ -168,7 +168,6 @@ export function Create({}: Props) {
                 setFieldValue("time", [value.startDate, value.endDate]);
                 setFieldValue("startTime", value.startDate?.getTime());
                 setFieldValue("endTime", value.endDate?.getTime());
-
                 setTimeOpen(!timeOpen);
               }}
             />
@@ -188,9 +187,16 @@ export function Create({}: Props) {
               label="Purchase Cap"
               {...getFieldProps("purchaseCap")}
             />
-            <Button type="submit" variant="contained">
-              Submit
-            </Button>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button type="submit" variant="contained">
+                Create
+              </Button>
+            </div>
           </Stack>
         </form>
       )}
