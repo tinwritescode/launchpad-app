@@ -7,6 +7,8 @@ import {
   FindUsInSocial,
   IDOList,
 } from "../../components/containers/project-list/components";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import PageLayout from "../../components/templates/PageLayout";
 
 const Home: NextPage = () => {
@@ -17,9 +19,18 @@ const Home: NextPage = () => {
       </Head>
 
       <PageLayout>
-        <PageTopHeading />
+        <Tabs
+          // value={value}
+          // onChange={handleChange}
+          aria-label='disabled tabs example'
+        >
+          <Tab label='Active' />
+          <Tab label='Disabled' disabled />
+          <Tab label='Active' />
+        </Tabs>
+        {/* <PageTopHeading /> */}
         <IDOList />
-        <ApplyForIDOHeading />
+        {/* <ApplyForIDOHeading /> */}
       </PageLayout>
     </>
   );

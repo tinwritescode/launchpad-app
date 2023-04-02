@@ -1,8 +1,21 @@
-import { Button, DialogContent, DialogTitle, Drawer } from "@mui/material";
+import {
+  Button,
+  DialogContent,
+  DialogTitle,
+  Drawer,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import { create } from "zustand";
 import { api } from "~/utils/api";
 import { Create } from "../../../create-ido";
 import * as S from "./ProjectList.style";
+import { ProjectInfo } from "../IDOList/IDOList.style";
 interface Props {}
 
 const projectListStore = create<{ open: boolean; toggleModal: () => void }>(
@@ -11,61 +24,19 @@ const projectListStore = create<{ open: boolean; toggleModal: () => void }>(
     toggleModal: () => set((state) => ({ open: !state.open })),
   })
 );
+const formatDate = (date: Date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = `0${d.getMonth() + 1}`.slice(-2);
+  const _date = `0${d.getDate()}`.slice(-2);
+  return `${_date}/${month}/${year}`;
+};
 
 const ProjectList: React.FC<Props> = () => {
-  const columns = [
-    {
-      title: "PROJECT NAME",
-      dataIndex: "project",
-      key: "project",
-      render: (project: {
-        name: string;
-        pricePerToken: number;
-        tokenSymbol: string;
-        img: string;
-        link: string;
-      }) => <S.ProjectInfo item={project} />,
-    },
-    {
-      title: "CHAIN",
-      dataIndex: "chain",
-      key: "chain",
-      render: (imageUrl: string) => (
-        <S.StyledChainImage src={imageUrl}></S.StyledChainImage>
-      ),
-    },
-    {
-      title: "END IN",
-      dataIndex: "endTime",
-      key: "endTime",
-    },
-    {
-      title: "TOTAL RAISE",
-      dataIndex: "totalRaise",
-      key: "totalRaise",
-    },
-    {
-      title: "PROGRESS",
-      dataIndex: "progress",
-      key: "progress",
-      render: (text: string) => <a href="http://localhost:3000/">{text}</a>,
-    },
-    {
-      title: "STATUS",
-      dataIndex: "status",
-      key: "status",
-      render: (text: string) => <a href="http://localhost:3000/">{text}</a>,
-    },
-  ];
   const { data, isLoading, error } = api.project.getAll.useQuery({
     offset: 0,
     limit: 10,
   });
-  const pricePerToken = 100;
-  const tokenSymbol = "ETH";
-  const endTime = new Date().toLocaleDateString();
-  const totalRaise = "1000 ETH";
-  const progress = "50%";
 
   const { open, toggleModal } = projectListStore();
 
@@ -80,19 +51,13 @@ const ProjectList: React.FC<Props> = () => {
   return (
     <S.Container>
       <S.UserInfoCard
-        name="User Name"
-        role="User Role"
-        description="User Description"
-        img="https://picsum.photos/200/300"
-        link="http://localhost:3000/"
+        name='User Name'
+        role='User Role'
+        description='User Description'
+        img='https://picsum.photos/200/300'
+        link='http://localhost:3000/'
       />
-      <Drawer
-        open={open}
-        onClose={toggleModal}
-        anchor="right"
-        //width={1000}
-        //title="Create IDO"
-      >
+      <Drawer open={open} onClose={toggleModal} anchor='right'>
         <DialogTitle>Create IDO</DialogTitle>
         <DialogContent>
           <Create />
@@ -101,26 +66,32 @@ const ProjectList: React.FC<Props> = () => {
       <S.TopAction>
         <Button onClick={toggleModal}>Create IDO</Button>
       </S.TopAction>
-      {/* <Table
-        dataSource={data?.map((project, index) => {
-          return {
-            key: project.id,
-            project: {
-              name: project.name,
-              pricePerToken,
-              tokenSymbol,
-              img: project.image,
-              link: `/ido/${project.id}`,
-            },
-            chain: "https://picsum.photos/200/300",
-            endTime,
-            totalRaise,
-            progress,
-            status: "Active",
-          };
-        })}
-        columns={columns}
-      /> */}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 600 }}>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: "#fbe9e7" }}>
+              <TableCell align='left'>Project Name</TableCell>
+              <TableCell align='left'>Token</TableCell>
+              <TableCell align='center'>Create At</TableCell>
+              <TableCell align='center'>Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data?.map((row) => (
+              <TableRow key={row.name}>
+                <TableCell align='left'>
+                  <ProjectInfo id={row.id} name={row.name} image={row.image} />
+                </TableCell>
+                <TableCell align='left'>{row.token?.name}</TableCell>
+                <TableCell align='center'>
+                  {formatDate(row.createdAt)}
+                </TableCell>
+                <TableCell align='center'>{row.status}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </S.Container>
   );
 };
