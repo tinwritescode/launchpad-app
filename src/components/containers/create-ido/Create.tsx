@@ -48,14 +48,14 @@ export function Create({}: Props) {
           // map errors
           const errors = JSON.parse(error?.message);
 
-          errors.forEach((error: any) => {
-            // form.setFields([
-            //   {
-            //     name: error.path,
-            //     errors: [error.message],
-            //   },
-            // ]);
-          });
+          // errors.forEach((error: any) => {
+          //   form.setFields([
+          //     {
+          //       name: error.path,
+          //       errors: [error.message],
+          //     },
+          //   ]);
+          // });
           return;
         }
       }
@@ -67,18 +67,17 @@ export function Create({}: Props) {
   return (
     <Formik
       initialValues={{
-        startTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 1,
-        endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10,
-        idoPrice: 1,
-        purchaseCap: 100,
-        idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
-        // Fields that need to be filled
-        comparisionContent: "lorem ipsum dolor",
+        name: "Project name",
+        comparisionContent: "lorem ipsum",
         image: "https://picsum.photos/200/300",
         roadmapContent: "ipsum lorem",
         summaryContent: "lorem ipsum",
         videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
-        name: "Project Name",
+        startTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 1,
+        endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10,
+        idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
+        idoPrice: 1,
+        purchaseCap: 100,
       }}
       onSubmit={handleSubmit}
       validationSchema={toFormikValidationSchema(
@@ -91,6 +90,7 @@ export function Create({}: Props) {
             <Field
               component={TextField}
               label="Name"
+              placeholder="Project Name"
               {...getFieldProps("name")}
             />
             <Field
