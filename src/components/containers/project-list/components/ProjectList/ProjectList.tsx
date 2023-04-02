@@ -97,7 +97,7 @@ const ProjectList: React.FC<Props> = () => {
         <Button onClick={toggleModal}>Create IDO</Button>
       </S.TopAction>
       <Modal
-        open={true}
+        open={open}
         onClose={toggleModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
