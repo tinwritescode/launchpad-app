@@ -15,7 +15,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <Toaster
-          position="top-right"
+          position='top-right'
           containerStyle={{
             top: 80,
           }}

@@ -12,7 +12,7 @@
     "commit": "git-cz",
     "contract:node": "cd contracts && npm run hardhat node && cd ..",
     "contract:deploy": "cd contracts && npm run deploy && cd ..",
-    "dev": "concurrently -p \"[{name}]\" -n \"D-App,Hardhat Node,Hardhat Deploy\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm:dev:dapp\" \"npm:contract:node\" \"sleep 3; npm run contract:deploy\" --kill-others-on-fail",
+    "dev": "concurrently -p \"[{name}]\" -n \"D-App,Hardhat Node,Hardhat Deploy\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm:dev:dapp\" \"npm:contract:node\" \"npm run contract:deploy\" --kill-others-on-fail",
     "seed": "esbuild prisma/seed.ts --outfile=node_modules/tmp-seed.cjs --bundle --format=cjs --external:prisma --external:@prisma/client && node node_modules/tmp-seed.cjs --preview-feature",
     "prisma:reset": "prisma migrate reset && npm run seed"
   },

@@ -31,6 +31,21 @@ export const projectRouter = createTRPCRouter({
       return await prisma.project.findMany({
         skip: input.offset,
         take: input.limit,
+        select: {
+          id: true,
+          status: true,
+          name: true,
+          image: true,
+          createdAt: true,
+          updatedAt: true,
+          token: {
+            select: {
+              id: true,
+              name: true,
+              symbol: true,
+            },
+          },
+        },
       });
     }),
 
