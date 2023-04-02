@@ -9,7 +9,7 @@ import {
 import { IDOContract } from "~/server/services/ido-contract";
 import { env } from "../../../../env.mjs";
 import { getErc20Contract, getRpcProvider } from "../../../../libs/blockchain";
-import { Dividend__factory } from "@contracts/typechain-types/factories/contracts/Dividend__factory";
+import { Dividend__factory } from "~/libs/typechain-types";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 import { protectedProcedure } from "./../../trpc";
 import {
