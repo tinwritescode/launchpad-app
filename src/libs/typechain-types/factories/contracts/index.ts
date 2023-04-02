@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as idoContractSol from "./IdoContract.sol";
-// @ts-ignore
 export * as interface from "./interface";
 export * as samples from "./samples";
+export { Dividend__factory } from "./Dividend__factory";
 export { Staking__factory } from "./Staking__factory";
