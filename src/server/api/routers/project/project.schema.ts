@@ -11,7 +11,7 @@ export const createIdoProjectInputSchema = z
     summaryContent: z.string(),
     videoURL: z.string().url(),
   })
-  .and(
+  .merge(
     idoContractDto.pick({
       startTime: true,
       endTime: true,

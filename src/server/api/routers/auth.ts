@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import moment from "moment";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -8,11 +7,17 @@ export const authRouter = createTRPCRouter({
   /*
     query
   */
-  getMessage: publicProcedure.query(() => {
-    return `By signing this message, you are agreeing to the terms of service. ${Date.now()}`;
-  }),
+  getMessage: publicProcedure
+    .meta({ openapi: { tags: ["auth"], method: "GET", path: "/auth/message" } })
+    .output(z.string())
+    .input(z.void())
+    .query(() => {
+      return `By signing this message, you are agreeing to the terms of service. ${Date.now()}`;
+    }),
 
   login: publicProcedure
+    .meta({ openapi: { method: "POST", path: "/auth/login", tags: ["auth"] } })
+    .output(z.any())
     .input(
       z
         .object({
@@ -60,10 +65,14 @@ export const authRouter = createTRPCRouter({
       return user;
     }),
 
-  logout: publicProcedure.mutation(async ({ ctx }) => {
-    ctx.session.user = undefined;
-    await ctx.session.save();
-  }),
+  logout: publicProcedure
+    .meta({ openapi: { method: "POST", path: "/auth/logout", tags: ["auth"] } })
+    .input(z.void())
+    .output(z.void())
+    .mutation(async ({ ctx }) => {
+      ctx.session.user = undefined;
+      await ctx.session.save();
+    }),
 
   getSession: publicProcedure.query(({ ctx }) => {
     return (

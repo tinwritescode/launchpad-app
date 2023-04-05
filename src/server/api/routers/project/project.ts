@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { ethers } from "ethers";
 import { z } from "zod";
+import { Dividend__factory } from "~/libs/typechain-types";
 import {
   adminProcedure,
   createTRPCRouter,
@@ -8,8 +9,7 @@ import {
 } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
 import { env } from "../../../../env.mjs";
-import { getErc20Contract, getRpcProvider } from "../../../../libs/blockchain";
-import { Dividend__factory } from "~/libs/typechain-types";
+import { getErc20Contract } from "../../../../libs/blockchain";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 import { protectedProcedure } from "./../../trpc";
 import {
@@ -18,39 +18,61 @@ import {
   getContractNameFromIndex,
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
+import { Prisma } from "@prisma/client";
 
 export const projectRouter = createTRPCRouter({
   getAll: publicProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/projects",
+        tags: ["project"],
+      },
+    })
     .input(
       z.object({
         offset: z.number().min(0).default(0),
         limit: z.number().positive().max(100).default(10),
       })
     )
+    .output(z.any())
     .query(async ({ input, ctx: { prisma } }) => {
-      return await prisma.project.findMany({
-        skip: input.offset,
-        take: input.limit,
-        select: {
-          id: true,
-          status: true,
-          name: true,
-          image: true,
-          createdAt: true,
-          updatedAt: true,
-          token: {
-            select: {
-              id: true,
-              name: true,
-              symbol: true,
+      const [data, count] = await Promise.all([
+        prisma.project.findMany({
+          skip: input.offset,
+          take: input.limit,
+          select: {
+            id: true,
+            status: true,
+            name: true,
+            image: true,
+            createdAt: true,
+            updatedAt: true,
+            token: {
+              select: {
+                id: true,
+                name: true,
+                symbol: true,
+              },
             },
           },
+        }),
+
+        prisma.project.count(),
+      ]);
+
+      return {
+        data,
+        meta: {
+          total: count,
         },
-      });
+      };
     }),
 
   createIdoProject: protectedProcedure
+    .meta({ openapi: { method: "POST", path: "/projects", tags: ["project"] } })
     .input(createIdoProjectInputSchema)
+    .output(z.any())
     .mutation(async ({ ctx, input }) => {
       // Initialize variables
       const {
@@ -112,6 +134,10 @@ export const projectRouter = createTRPCRouter({
     }),
 
   getOne: publicProcedure
+    .meta({
+      openapi: { method: "GET", path: "/projects/{id}", tags: ["project"] },
+    })
+    .output(z.any())
     .input(
       z.object({
         id: z.string().uuid(),
@@ -132,6 +158,10 @@ export const projectRouter = createTRPCRouter({
     }),
 
   getMyProject: protectedProcedure
+    .meta({
+      openapi: { method: "GET", path: "/projects/me", tags: ["project"] },
+    })
+    .output(z.any())
     .input(
       z.object({
         offset: z.number().min(0).default(0),
@@ -155,6 +185,15 @@ export const projectRouter = createTRPCRouter({
     }),
 
   divideTokenForProjectContracts: adminProcedure
+    .meta({
+      openapi: {
+        method: "POST",
+        path: "/projects/divide",
+        summary: "Divide token for project contracts",
+        protect: true,
+      },
+    })
+    .output(z.any())
     .input(
       z.object({
         projectId: z.string().uuid(),
@@ -202,5 +241,64 @@ export const projectRouter = createTRPCRouter({
         .then((res) => res.wait());
 
       return tx;
+    }),
+
+  getProjectOwner: publicProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/owners/{id}",
+        tags: ["project"],
+      },
+    })
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .output(z.any())
+    .query(async ({ input, ctx: { prisma } }) => {
+      const owner = await prisma.user.findUnique({
+        where: {
+          id: input.id,
+        },
+        select: {
+          id: true,
+          walletAddress: true,
+          roles: true,
+        },
+      });
+
+      return owner;
+    }),
+
+  getAllOwners: publicProcedure
+    .meta({ openapi: { method: "GET", path: "/owners", tags: ["project"] } })
+    .input(
+      z.object({
+        offset: z.number().min(0).default(0),
+        limit: z.number().positive().max(100).default(10),
+        ids: z
+          .preprocess((ids: any) => ids.split(","), z.array(z.string().uuid()))
+          .optional(),
+      })
+    )
+    .output(z.any())
+    .query(async ({ input, ctx: { prisma } }) => {
+      const whereClause: Prisma.UserWhereInput = {
+        projects: { some: {} },
+        id: { in: input.ids },
+      };
+      const [data, total] = await Promise.all([
+        await prisma.user.findMany({
+          where: whereClause,
+          select: { id: true, walletAddress: true, roles: true },
+        }),
+        await prisma.user.count({
+          where: whereClause,
+        }),
+      ]);
+
+      return { data, meta: { total } };
     }),
 });
