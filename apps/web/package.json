@@ -13,7 +13,8 @@
     "contract:node": "cd contracts && npm run hardhat node && cd ..",
     "contract:deploy": "cd contracts && npm run deploy && cd ..",
     "seed": "esbuild prisma/seed.ts --outfile=node_modules/tmp-seed.cjs --bundle --format=cjs --external:prisma --external:@prisma/client && node node_modules/tmp-seed.cjs --preview-feature",
-    "prisma:reset": "prisma migrate reset && npm run seed"
+    "prisma:reset": "prisma migrate reset && npm run seed",
+    "deploy": "vercel deploy --yes"
   },
   "dependencies": {
     "@babel/core": "^7.21.3",
@@ -62,7 +63,8 @@
     "zod": "^3.20.6",
     "zod-formik-adapter": "^1.2.0",
     "zustand": "^4.3.5",
-    "ido-contracts": "workspace:*"
+    "ido-contracts": "workspace:*",
+    "tsconfig": "workspace:*"
   },
   "devDependencies": {
     "@types/eslint": "^8.21.1",

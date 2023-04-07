@@ -7,18 +7,18 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "build": "dotenv -- turbo run build",
+    "dev": "dotenv -- turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "prettier": "latest",
-    "turbo": "latest"
+    "turbo": "latest",
+    "dotenv-cli": "^7.2.1"
   },
   "engines": {
     "node": ">=18.0.0"
   },
-  "dependencies": {},
   "packageManager": "pnpm@7.29.1"
 }

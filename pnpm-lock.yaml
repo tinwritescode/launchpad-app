@@ -4,6 +4,9 @@ importers:
 
   .:
     devDependencies:
+      dotenv-cli:
+        specifier: ^7.2.1
+        version: 7.2.1
       prettier:
         specifier: latest
         version: 2.8.7
@@ -64,6 +67,9 @@ importers:
       react-router-dom:
         specifier: ^6.10.0
         version: 6.10.0(react-dom@18.2.0)(react@18.2.0)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       wagmi:
         specifier: ^0.12.9
         version: 0.12.10(ethers@5.7.2)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)(zod@3.21.4)
@@ -221,6 +227,9 @@ importers:
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@18.14.0)(typescript@4.9.5)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       zod:
         specifier: ^3.20.6
         version: 3.21.4
@@ -355,6 +364,8 @@ importers:
       typechain:
         specifier: ^8.1.0
         version: 8.1.0
+
+  packages/tsconfig: {}
 
 packages:
 
@@ -7011,10 +7022,24 @@ packages:
       is-obj: 2.0.0
     dev: false
 
+  /dotenv-cli@7.2.1:
+    resolution: {integrity: sha512-ODHbGTskqRtXAzZapDPvgNuDVQApu4oKX8lZW7Y0+9hKA6le1ZJlyRS687oU9FXjOVEDU/VFV6zI125HzhM1UQ==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.0.3
+      dotenv-expand: 10.0.0
+      minimist: 1.2.8
+    dev: true
+
+  /dotenv-expand@10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
+    dev: true
+
   /dotenv@16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
-    dev: false
 
   /drange@1.1.1:
     resolution: {integrity: sha512-pYxfDYpued//QpnLIm4Avk7rsNtAtQkUES2cwAYSvD/wd2pKD71gN2Ebj3e7klzXwjocvE8c5vx/1fxwpqmSxA==}

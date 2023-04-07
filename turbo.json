@@ -2,7 +2,16 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
+      "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "web#build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**"]
+    },
+    "dashboard#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist"]
     },
     "lint": {},
     "dev": {
@@ -27,5 +36,16 @@
     "addTSNoCheck": {
       "dependsOn": ["generateTypechain", "deployContract"]
     }
-  }
+  },
+  "globalEnv": [
+    "CHAIN_ID",
+    "BLOCKCHAIN_RPC",
+    "STAKING_CONTRACT_ADDRESS",
+    "STAKING_TOKEN_ADDRESS",
+    "REWARD_TOKEN_ADDRESS",
+    "USDC_TOKEN_ADDRESS",
+    "IDO_CONTRACT_ADDRESS",
+    "IDO_TOKEN_ADDRESS",
+    "DIVIDEND_CONTRACT_ADDRESS"
+  ]
 }
