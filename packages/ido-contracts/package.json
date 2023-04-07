@@ -1,0 +1,38 @@
+{
+  "name": "ido-contracts",
+  "license": "MIT",
+  "scripts": {
+    "test": "hardhat test",
+    "deployContract": "hardhat run scripts/deploy.ts --network localhost",
+    "runLocalNode": "hardhat node",
+    "compile": "hardhat compile",
+    "hardhat": "hardhat",
+    "generateTypechain": "hardhat typechain",
+    "addTSNoCheck": "hardhat run scripts/others/add-ts-nocheck.ts"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@nomiclabs/hardhat-etherscan": "^3.0.0",
+    "@typechain/ethers-v5": "^10.1.0",
+    "@typechain/hardhat": "^6.1.2",
+    "@types/chai": "^4.2.0",
+    "@types/mocha": ">=9.1.0",
+    "hardhat": "^2.13.0",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.8.1",
+    "typechain": "^8.1.0"
+  },
+  "dependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/experimental": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
+    "@openzeppelin/contracts": "^4.8.2",
+    "@thirdweb-dev/contracts": "^3.4.3",
+    "chai": "^4.3.7",
+    "ethers": "^5.7.2",
+    "zod": "^3.21.4"
+  }
+}

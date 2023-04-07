@@ -4,9 +4,13 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 
 ## Techstacks
 
+- [Turborepo](https://turbo.build/)
 - [Next.js](https://nextjs.org)
 - [Prisma](https://prisma.io)
 - [tRPC](https://trpc.io)
+- [Hardhat](https://hardhat.org)
+- [Ethers](https://docs.ethers.io/v5/)
+- [Material UI](https://material-ui.com/)
 
 ## How do I run this?
 
@@ -35,11 +39,22 @@ Install packages:
 pnpm install
 ```
 
-Make sure that you already run blockchain node in our smart contract repo. 
-If you don't run the blockchain node, some functions related to smart contract will not work as expected.
-
 Run development server:
 
 ```bash
 pnpm run dev
 ```
+
+
+## Ports
+
+| URL | Port | Description
+| --- | --- | --- |
+| http://localhost:3000 | 3000 | Frontend |
+| http://localhost:3300 | 3300 | Dashboard |
+
+## Useful links
+
+| URL | Name | Description
+| --- | --- | --- |
+| http://localhost:3000/docs | Swagger | API docs |
