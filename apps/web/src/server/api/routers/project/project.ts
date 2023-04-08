@@ -18,7 +18,7 @@ import {
   getContractNameFromIndex,
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "database";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,

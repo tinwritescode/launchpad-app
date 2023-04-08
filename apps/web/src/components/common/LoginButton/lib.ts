@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role } from "database";
 import { api } from "../../../utils/api";
 
 export const useSession = () => {

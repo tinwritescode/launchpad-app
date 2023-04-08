@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { prisma } from "~/server/db";
 
 export const scheduleRoundRouter = createTRPCRouter({
   /*
@@ -13,7 +12,7 @@ export const scheduleRoundRouter = createTRPCRouter({
         projectId: z.string().uuid(),
       })
     )
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx: { prisma } }) => {
       return await prisma.scheduleRound.findMany({
         where: {
           projectId: input.projectId,
@@ -34,7 +33,7 @@ export const scheduleRoundRouter = createTRPCRouter({
         pricePerToken: z.number().optional(),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx: { prisma } }) => {
       return await prisma.scheduleRound.create({
         data: {
           projectId: input.projectId,

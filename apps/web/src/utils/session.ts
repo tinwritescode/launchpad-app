@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role } from "database";
 import { IronSessionOptions } from "iron-session";
 import { env } from "../env.mjs";
 

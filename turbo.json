@@ -2,7 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "^db:generate"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "web#build": {
@@ -19,7 +19,8 @@
         "addTSNoCheck",
         "deployContract",
         "runLocalNode",
-        "generateTypechain"
+        "generateTypechain",
+        "^db:generate"
       ],
       "cache": false,
       "persistent": true
@@ -35,6 +36,12 @@
     },
     "addTSNoCheck": {
       "dependsOn": ["generateTypechain", "deployContract"]
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
     }
   },
   "globalEnv": [

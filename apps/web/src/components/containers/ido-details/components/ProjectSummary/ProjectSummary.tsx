@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 
 import { api } from "~/utils/api";
-import { Project, ScheduleRound, TokenomicsItem } from "@prisma/client";
+import { Project, ScheduleRound, TokenomicsItem } from "database";
 
 //import { Anchor, Table, Col, Row, Card } from "antd";
 import * as S from "./ProjectSummary.style";

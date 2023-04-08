@@ -1,4 +1,4 @@
-import { Project, ScheduleRound } from "@prisma/client";
+import { Project, ScheduleRound } from "database";
 import { useRouter } from "next/router";
 import React from "react";
 import { api } from "~/utils/api";

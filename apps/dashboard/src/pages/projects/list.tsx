@@ -53,7 +53,7 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column
           title="Actions"
           dataIndex="actions"
-          render={(_, record: BaseRecord) => (
+          render={(_: any, record: BaseRecord) => (
             <Space>
               <EditButton hideText size="small" recordItemId={record.id} />
               <ShowButton hideText size="small" recordItemId={record.id} />

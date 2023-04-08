@@ -54,7 +54,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Image">
           <Form.Item
             name="image"
-            getValueProps={(value) => ({
+            getValueProps={(value: any) => ({
               fileList: [{ url: value, name: value, uid: value }],
             })}
             getValueFromEvent={getValueFromEvent}
@@ -65,7 +65,11 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               },
             ]}
           >
-            <Upload.Dragger listType="picture" beforeUpload={() => false}>
+            <Upload.Dragger
+              capture={false}
+              listType="picture"
+              beforeUpload={() => false}
+            >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
           </Form.Item>
@@ -112,7 +116,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               required: true,
             },
           ]}
-          getValueProps={(value) => ({
+          getValueProps={(value: any) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >
@@ -127,7 +131,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               required: true,
             },
           ]}
-          getValueProps={(value) => ({
+          getValueProps={(value: any) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >

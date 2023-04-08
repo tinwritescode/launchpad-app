@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "database";
 import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
 import { tableCellClasses } from "@mui/material/TableCell";

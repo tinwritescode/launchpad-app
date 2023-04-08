@@ -15,9 +15,7 @@
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { getIronSession } from "iron-session";
 import { verifyToken } from "./lib/jwt";
-
 import { prisma } from "~/server/db";
 
 type CreateContextOptions = Record<string, never>;
@@ -51,7 +49,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
 export const createTRPCContext = async ({ req }: CreateNextContextOptions) => {
   const bearerToken = req.headers?.authorization?.split(" ")[1];
   const innerContext = createInnerTRPCContext({});
-  const session = bearerToken ? await verifyToken(bearerToken) : null;
+  const session = await verifyToken(bearerToken as string).catch(() => null);
 
   return {
     ...innerContext,
@@ -65,9 +63,8 @@ export const createTRPCContext = async ({ req }: CreateNextContextOptions) => {
  * This is where the tRPC API is initialized, connecting the context and transformer.
  */
 import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
-import { sessionOptions } from "../../utils/session";
 import { ethers } from "ethers";
+import superjson from "superjson";
 import { env } from "../../env.mjs";
 import { getRpcProvider } from "../../libs/blockchain";
 

@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role } from "database";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { env } from "../../../env.mjs";
