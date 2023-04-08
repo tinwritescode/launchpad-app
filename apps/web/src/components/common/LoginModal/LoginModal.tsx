@@ -1,13 +1,7 @@
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  Stack,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogContentText, Stack } from "@mui/material";
 import { useCallback, useState } from "react";
 import { formatWalletAddress } from "../../../utils/ethereum";
-import AppButton from "../AppButton";
+import { Button } from "../AppButton";
 import ConnectWalletButton from "../ConnectWalletButton";
 import * as coinbase from "../ConnectWalletButton/connectors/coinbaseWallet";
 import { hooks, metaMask } from "../ConnectWalletButton/connectors/metamask";
@@ -35,11 +29,11 @@ export function LoginModal({}: Props) {
         alignItems: "center",
       }}
     >
-      <AppButton variant="contained" onClick={showModal}>
+      <Button onClick={showModal}>
         {!!data?.isLoggedIn
           ? `Welcome ${formatWalletAddress(data?.address)}`
           : "Login"}
-      </AppButton>
+      </Button>
       <Dialog
         title="Login"
         open={isModalOpen}
@@ -59,7 +53,7 @@ export function LoginModal({}: Props) {
                 connector={metaMask}
                 hooks={hooks}
                 text="Connect with MetaMask"
-                size="large"
+                size="lg"
                 disabled={!!data?.isLoggedIn}
               />
 
@@ -67,7 +61,7 @@ export function LoginModal({}: Props) {
                 connector={coinbase.coinbaseWallet}
                 text="Connect with Coinbase Wallet"
                 hooks={coinbase.hooks}
-                size="large"
+                size="lg"
                 disabled={!!data?.isLoggedIn}
               />
             </Stack>
@@ -80,11 +74,10 @@ export function LoginModal({}: Props) {
           <DialogContentText>
             <h4>Step 3</h4>
             <Button
-              variant="contained"
               disabled={!data?.isLoggedIn}
               onClick={hideModal}
               style={{ width: "100%" }}
-              size="large"
+              size="lg"
             >
               Go to your profile
             </Button>

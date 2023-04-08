@@ -1,17 +1,16 @@
-import { CoinbaseWallet } from "@web3-react/coinbase-wallet";
 import { Web3ReactHooks } from "@web3-react/core";
-import { MetaMask } from "@web3-react/metamask";
 import { env } from "../../../env.mjs";
 import { api } from "../../../utils/api";
 import { formatWalletAddress } from "../../../utils/ethereum";
-import AppButton from "../AppButton";
 import { SupportedWallets, useWeb3App } from "./store";
+import { Button } from "../AppButton";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   connector: SupportedWallets;
   text: string;
   hooks: Web3ReactHooks;
-} & React.ComponentProps<typeof AppButton>;
+} & React.ComponentProps<typeof Button>;
 
 const ConnectWalletButton = ({ connector, text, hooks, ...props }: Props) => {
   const { useAccount, useIsActive, useIsActivating } = hooks;
@@ -27,7 +26,7 @@ const ConnectWalletButton = ({ connector, text, hooks, ...props }: Props) => {
   const { setConnector, setHooks } = useWeb3App();
 
   return (
-    <AppButton
+    <Button
       onClick={async () => {
         if (isActive) {
           if (connector?.deactivate) {
@@ -53,14 +52,15 @@ const ConnectWalletButton = ({ connector, text, hooks, ...props }: Props) => {
         setHooks(hooks);
       }}
       style={{ width: "100%" }}
-      loading={isActivating}
-      size="large"
+      // loading={isActivating}
+      size="lg"
       {...props}
     >
-      {isActive && account
-        ? `Logout (as ${formatWalletAddress(account)})`
-        : text}
-    </AppButton>
+      {(isActivating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />) ||
+        (isActive && account
+          ? `Logout (as ${formatWalletAddress(account)})`
+          : text)}
+    </Button>
   );
 };
 
