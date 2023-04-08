@@ -29,7 +29,7 @@ import {
   ProjectShow,
 } from "./pages/projects";
 import { Register } from "./pages/register";
-import { wagmiClient } from "./utils";
+import { wagmiClient } from "shared";
 
 function App() {
   return (

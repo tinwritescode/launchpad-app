@@ -4,6 +4,8 @@ import { api } from "../../../utils/api";
 import { getSigner, isWalletInstalled } from "../../../utils/ethereum";
 import { Button } from "../AppButton";
 import { useWeb3App } from "../ConnectWalletButton/store";
+import { useAccount } from "wagmi";
+import { removeAccessToken, setAccessToken } from "./lib";
 
 interface Props {}
 
@@ -21,6 +23,7 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
   const logout = api.auth.logout.useMutation({
     onSettled: async () => {
       toast.success("Logout successful");
+      removeAccessToken();
       await utils.auth.invalidate();
     },
   });
@@ -35,12 +38,15 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
 
     signer
       ?.signMessage(sessionMessage.data)
-      .then(async (res) => {
+      .then(async (res) =>
         mutateAsync({
           message: sessionMessage.data,
           signature: res,
           walletAddress: await signer.getAddress(),
-        });
+        })
+      )
+      .then(({ jwtToken }) => {
+        setAccessToken(jwtToken);
       })
       .catch((err) => {
         toast.error("User denied signing");
@@ -51,16 +57,15 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
   const isLoggedIn = userSession.data?.isLoggedIn;
 
   const { hooks } = useWeb3App();
-  const { useAccount } = hooks;
+  const { isConnected } = useAccount();
 
   return (
     <Button
       style={{ width: "100%" }}
       onClick={!isLoggedIn ? onLoginClicked : () => logout.mutateAsync()}
-      disabled={!sessionMessage.data}
+      disabled={!sessionMessage.data || logout.isLoading || !isConnected}
       size="lg"
     >
-      {/* loading={logout.isLoading} */}
       {isLoggedIn ? "Logout" : "Sign"}
     </Button>
   );

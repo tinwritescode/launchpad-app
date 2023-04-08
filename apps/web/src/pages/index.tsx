@@ -2,9 +2,10 @@
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import React, { useMemo } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import PageLayout from "../components/templates/PageLayout";
 import style from "./index.module.scss";
+import { Button } from "../components/common";
 
 type Props = {};
 
@@ -16,20 +17,12 @@ function Home({}: Props) {
         label: "IDO List screen",
       },
       {
-        href: "/ido/create",
-        label: "IDO Create screen",
-      },
-      {
         href: "/farming",
         label: "Farming screen",
       },
       {
-        href: "/ido/test",
-        label: "IDO Test screen",
-      },
-      {
-        href: "/my-project",
-        label: "My project",
+        href: "/token-manager",
+        label: "Token Manager",
       },
     ],
     []
@@ -59,31 +52,19 @@ function Home({}: Props) {
           <Box sx={{ m: 2 }} />
 
           <Box sx={{ gap: 1, justifyContent: "center", display: "flex" }}>
-            <Button variant="contained">Upcoming IDO</Button>
-            <Button variant="contained">Apply to launch</Button>
+            <Button>Upcoming IDO</Button>
+            <Button>Apply to launch</Button>
           </Box>
         </Box>
       </Box>
 
-      <div>
+      <div className="flex space-x-2">
         {links.map((link) => (
           <Link href={link.href} key={link.href}>
-            <Button key={link.href} variant="contained">
-              {link.label}
-            </Button>
+            <Button key={link.href}>{link.label}</Button>
           </Link>
         ))}
       </div>
-
-      {/* <Space direction='vertical'>
-        {links.map((link) => (
-          <Link href={link.href} key={link.href}>
-            <Button key={link.href} variant='contained'>
-              {link.label}
-            </Button>
-          </Link>
-        ))}
-      </Space> */}
 
       <div style={{ height: "700px" }} />
     </PageLayout>

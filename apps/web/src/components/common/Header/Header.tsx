@@ -8,36 +8,6 @@ import style from "./Header.module.scss";
 type Props = {};
 
 function Header({}: Props) {
-  const links = useMemo(
-    () => [
-      {
-        href: "/ido-list",
-        label: "IDO List screen",
-      },
-      {
-        href: "/ido/create",
-        label: "IDO Create screen",
-      },
-      {
-        href: "/farming",
-        label: "Farming screen",
-      },
-      {
-        href: "/ido/test",
-        label: "IDO Test screen",
-      },
-      {
-        href: "/my-project",
-        label: "My project",
-      },
-      {
-        href: "/token-manager",
-        label: "Token Manager",
-      },
-    ],
-    []
-  );
-
   return (
     <>
       <AppBar
@@ -48,15 +18,8 @@ function Header({}: Props) {
       >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Link href="/">
-            <img src="/assets/logo.svg" alt="logo" width={190} height={40} />
+            <img src="/assets/logo.svg" alt="logo" height={20} />
           </Link>
-          <Box>
-            {links.map((link) => (
-              <Button key={link.href} variant="text">
-                <Link href={link.href}>{link.label}</Link>
-              </Button>
-            ))}
-          </Box>
 
           <LoginModal />
         </Toolbar>

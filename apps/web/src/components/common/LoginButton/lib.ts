@@ -14,3 +14,17 @@ export const useIsAdmin = () => {
       session?.roles?.some((role) => role.includes("ADMIN" as Role)),
   };
 };
+
+const ACCESS_TOKEN = "accessToken";
+
+export const getAccessToken = () => {
+  return localStorage.getItem(ACCESS_TOKEN);
+};
+
+export const setAccessToken = (accessToken: string) => {
+  localStorage.setItem(ACCESS_TOKEN, accessToken);
+};
+
+export const removeAccessToken = () => {
+  localStorage.removeItem(ACCESS_TOKEN);
+};

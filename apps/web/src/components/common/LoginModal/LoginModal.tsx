@@ -1,10 +1,9 @@
 import { Dialog, DialogContent, DialogContentText, Stack } from "@mui/material";
 import { useCallback, useState } from "react";
+import { toast } from "react-hot-toast";
+import { useConnect } from "wagmi";
 import { formatWalletAddress } from "../../../utils/ethereum";
 import { Button } from "../AppButton";
-import ConnectWalletButton from "../ConnectWalletButton";
-import * as coinbase from "../ConnectWalletButton/connectors/coinbaseWallet";
-import { hooks, metaMask } from "../ConnectWalletButton/connectors/metamask";
 import Flex from "../Flex/Flex";
 import LoginButton from "../LoginButton";
 import { useSession } from "../LoginButton/lib";
@@ -21,6 +20,14 @@ export function LoginModal({}: Props) {
   const hideModal = useCallback(() => {
     setIsModalOpen(false);
   }, []);
+
+  const {
+    connectAsync,
+    connectors,
+    isLoading,
+    pendingConnector,
+    data: chainData,
+  } = useConnect();
 
   return (
     <Flex
@@ -49,21 +56,35 @@ export function LoginModal({}: Props) {
                 alignItems: "stretch",
               }}
             >
-              <ConnectWalletButton
-                connector={metaMask}
-                hooks={hooks}
-                text="Connect with MetaMask"
-                size="lg"
-                disabled={!!data?.isLoggedIn}
-              />
-
-              <ConnectWalletButton
-                connector={coinbase.coinbaseWallet}
-                text="Connect with Coinbase Wallet"
-                hooks={coinbase.hooks}
-                size="lg"
-                disabled={!!data?.isLoggedIn}
-              />
+              {(chainData?.account && (
+                <Button
+                  onClick={() => {
+                    connectAsync({ connector: chainData?.connector }).catch(
+                      (err) => {}
+                    );
+                  }}
+                >
+                  {formatWalletAddress(chainData?.account)}
+                </Button>
+              )) ||
+                connectors.map((connector) => (
+                  <Button
+                    size="lg"
+                    disabled={!connector.ready}
+                    key={connector.id}
+                    onClick={async () => {
+                      connectAsync({ connector }).catch((err) => {
+                        toast.error(err.message);
+                      });
+                    }}
+                  >
+                    {connector.name}
+                    {!connector.ready && "(unsupported)"}
+                    {isLoading &&
+                      connector.id === pendingConnector?.id &&
+                      "(connecting)"}
+                  </Button>
+                ))}
             </Stack>
           </DialogContentText>
           <DialogContentText>
