@@ -26,7 +26,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           roadmapContent: "ipsum lorem",
           summaryContent: "lorem ipsum",
           videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
-          name: "Project Name",
+          name: `IDO Project ${(Math.random() * 100).toFixed(0)}`,
         }}
       >
         <Form.Item
