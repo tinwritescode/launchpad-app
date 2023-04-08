@@ -16,7 +16,7 @@
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { verifyToken } from "./lib/jwt";
-import { prisma } from "~/server/db";
+import { prismaClient } from "database";
 
 type CreateContextOptions = Record<string, never>;
 
@@ -35,7 +35,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
   const signer = new ethers.Wallet(env.ADMIN_PRIVATE_KEY, provider);
 
   return {
-    prisma,
+    prisma: prismaClient,
     signer,
   };
 };
@@ -111,6 +111,13 @@ export const protectedProcedure = publicProcedure.use(protectedMiddleware);
 
 export const adminProcedure = protectedProcedure.use(
   t.middleware(({ next, ctx }) => {
+    // TODO: remove later, just for local testing
+    if (
+      ctx.session?.user.address === "0x56c7b349738CF0AC71aF0B31444bF04E757e2c10"
+    ) {
+      return next();
+    }
+
     const roles = ["ADMIN", "SUPER_ADMIN"];
     const userRoleArr = ctx.session?.user?.roles || [];
 

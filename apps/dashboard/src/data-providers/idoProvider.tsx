@@ -1,12 +1,11 @@
 import { DataProvider } from "@refinedev/core";
+import { axiosInstance } from "../utils";
 
 export const idoProvider = (url: string): DataProvider => ({
   getList: async ({ resource, pagination, sorters, filters, meta }) => {
-    const response = await fetch(`${url}/${resource}`, {
-      method: "GET",
-    });
+    const response = await axiosInstance.get(`${url}/${resource}`);
 
-    const res = await response.json();
+    const res = response.data;
 
     const {
       data,
@@ -19,25 +18,23 @@ export const idoProvider = (url: string): DataProvider => ({
     };
   },
   create: async ({ resource, variables, meta }) => {
-    const response = await fetch(`${url}/${resource}`, {
-      method: "POST",
-      body: JSON.stringify(variables),
-    });
+    const response = await axiosInstance.post(`${url}/${resource}`, variables);
 
-    const data = await response.json();
+    const data = await response.data;
 
     return {
       data,
     };
   },
-  update: ({ resource, id, variables, meta }) => undefined as any,
+  update: async ({ resource, id, variables, meta }) => {
+    const res = await axiosInstance.put(`${url}/${resource}/${id}`, variables);
+    return res.data;
+  },
   deleteOne: ({ resource, id, variables, meta }) => undefined as any,
   getOne: async ({ resource, id, meta }) => {
-    const response = await fetch(`${url}/${resource}/${id}`, {
-      method: "GET",
-    });
+    const response = await axiosInstance.get(`${url}/${resource}/${id}`);
 
-    const data = await response.json();
+    const data = await response.data;
 
     return {
       data,
@@ -45,9 +42,11 @@ export const idoProvider = (url: string): DataProvider => ({
   },
   getApiUrl: () => url,
   getMany: async ({ resource, ids, meta }) => {
-    const data = await fetch(`${url}/${resource}?ids=${ids}`, {
-      method: "GET",
-    }).then((res) => res.json());
+    const data = await axiosInstance
+      .get(`${url}/${resource}?ids=${ids}`, {
+        method: "GET",
+      })
+      .then((res) => res.data);
 
     return {
       data,

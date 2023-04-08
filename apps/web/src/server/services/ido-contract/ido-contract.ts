@@ -8,14 +8,6 @@ export type ContractInfo = {};
 
 export class IDOContract {
   static instance = new IDOContract();
-  signer = new NonceManager(
-    new Wallet(
-      env.ADMIN_PRIVATE_KEY,
-      new ethers.providers.JsonRpcProvider(env.NEXT_PUBLIC_BLOCKCHAIN_RPC)
-    )
-  );
-
-  private constructor() {}
 
   static getInstance() {
     if (!IDOContract.instance) {
@@ -24,7 +16,7 @@ export class IDOContract {
     return IDOContract.instance;
   }
 
-  deployIDOContract(payload: IdoContractDto) {
+  deployIDOContract(payload: IdoContractDto, signer: NonceManager) {
     const {
       endTime,
       idoPrice,
@@ -40,7 +32,7 @@ export class IDOContract {
     const factory = new ContractFactory(
       IDOContract__factory.abi,
       IDOContract__factory.bytecode,
-      this.signer
+      signer
     );
 
     const contractInstance = factory.deploy(
@@ -54,11 +46,6 @@ export class IDOContract {
       minStakingRequired,
       maxStakingRequired
     );
-
-    contractInstance.then((contract) => {
-      // reset nonce
-      this.signer.setTransactionCount(contract.deployTransaction.nonce);
-    });
 
     return contractInstance;
   }

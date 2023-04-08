@@ -13,7 +13,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 );
 
 // Set up client
-export const wagmiClient = createClient({
+export const wagmiClient: any = createClient({
   autoConnect: true,
   connectors: [
     new MetaMaskConnector({ chains }),

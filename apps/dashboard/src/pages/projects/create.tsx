@@ -1,8 +1,8 @@
-import React from "react";
+import { Create, getValueFromEvent, useForm } from "@refinedev/antd";
 import { IResourceComponentsProps } from "@refinedev/core";
-import { Create, useForm, getValueFromEvent } from "@refinedev/antd";
-import { Form, Input, Upload, DatePicker } from "antd";
+import { DatePicker, Form, Input, Upload } from "antd";
 import dayjs from "dayjs";
+import React from "react";
 import { env } from "../../env";
 
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
@@ -49,7 +49,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
             },
           ]}
         >
-          <Input />
+          <Input.TextArea />
         </Form.Item>
         <Form.Item label="Image">
           <Form.Item

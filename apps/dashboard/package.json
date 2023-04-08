@@ -29,7 +29,8 @@
     "react-router-dom": "^6.10.0",
     "wagmi": "^0.12.9",
     "zod": "^3.21.4",
-    "tsconfig": "workspace:*"
+    "tsconfig": "workspace:*",
+    "database": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

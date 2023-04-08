@@ -18,8 +18,8 @@
       "dependsOn": [
         "addTSNoCheck",
         "deployContract",
-        "runLocalNode",
         "generateTypechain",
+        "runLocalNode",
         "^db:generate"
       ],
       "cache": false,
@@ -32,10 +32,10 @@
       "cache": false
     },
     "generateTypechain": {
-      "dependsOn": ["deployContract"]
+      "dependsOn": ["^deployContract"]
     },
     "addTSNoCheck": {
-      "dependsOn": ["generateTypechain", "deployContract"]
+      "dependsOn": ["^generateTypechain"]
     },
     "db:generate": {
       "cache": false

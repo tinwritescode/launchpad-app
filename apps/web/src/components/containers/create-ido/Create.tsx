@@ -7,9 +7,9 @@ import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import { env } from "../../../env.mjs";
-import { createIdoProjectInputSchema } from "../../../server/api/routers/project/project.schema";
-import { api } from "../../../utils/api";
+import { env } from "~/env.mjs";
+import { createIdoProjectInputSchema } from "~/server/api/routers/project/project.schema";
+import { api } from "~/utils/api";
 import { DateRangePicker, DateRange } from "mui-daterange-picker";
 
 type Props = {};

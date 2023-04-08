@@ -80,11 +80,15 @@ const ProjectList: React.FC<Props> = () => {
             {data?.data.map((row) => (
               <TableRow key={row.name}>
                 <TableCell align="left">
-                  <ProjectInfo id={row.id} name={row.name} image={row.image} />
+                  <ProjectInfo
+                    id={row.id as string}
+                    name={row.name as string}
+                    image={row.image as string}
+                  />
                 </TableCell>
                 <TableCell align="left">{row.token?.name}</TableCell>
                 <TableCell align="center">
-                  {formatDate(row.createdAt)}
+                  {formatDate(row.createdAt as Date)}
                 </TableCell>
                 <TableCell align="center">{row.status}</TableCell>
               </TableRow>

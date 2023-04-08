@@ -78,7 +78,7 @@ model IDOContract {
     id        String   @id @default(uuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    address   String   @unique
+    address   String
     Project   Project  @relation(fields: [projectId], references: [id])
     projectId String
     name      String
