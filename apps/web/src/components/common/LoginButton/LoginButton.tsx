@@ -1,10 +1,9 @@
 import React, { useCallback } from "react";
 import { toast } from "react-hot-toast";
+import { useAccount } from "wagmi";
 import { api } from "../../../utils/api";
 import { getSigner, isWalletInstalled } from "../../../utils/ethereum";
 import { Button } from "../AppButton";
-import { useWeb3App } from "../ConnectWalletButton/store";
-import { useAccount } from "wagmi";
 import { removeAccessToken, setAccessToken } from "./lib";
 
 interface Props {}
@@ -53,10 +52,7 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
       });
   }, [sessionMessage.data, userSession.data]);
 
-  //
   const isLoggedIn = userSession.data?.isLoggedIn;
-
-  const { hooks } = useWeb3App();
   const { isConnected } = useAccount();
 
   return (

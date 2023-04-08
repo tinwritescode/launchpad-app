@@ -1,37 +1,34 @@
 import {
   Alert,
-  Box,
-  Button,
   Card,
   CardContent,
   CircularProgress,
   List,
-  ListItemIcon,
   Stack,
   Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import { Field, Formik, useFormikContext } from "formik";
-import { useCallback } from "react";
-import { z } from "zod";
-import { useWeb3Hooks } from "../../common/ConnectWalletButton/store";
-import { getErc20Contract } from "../../../libs/blockchain";
-import { formatNumber } from "../../../utils/format";
-import { formikSchema } from "../../../pages/token-manager/index";
 import { TextField } from "formik-mui";
+import { useCallback } from "react";
+import { toast } from "react-hot-toast";
+import { useAccount } from "wagmi";
+import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { env } from "../../../env.mjs";
+import { getErc20Contract } from "../../../libs/blockchain";
+import { formikSchema } from "../../../pages/token-manager/index";
 import { getSigner } from "../../../utils/ethereum";
-import { toast } from "react-hot-toast";
+import { formatNumber } from "../../../utils/format";
+import { Button } from "../../common";
 
 export const TokenInfo = () => {
   const { values, errors } = useFormikContext<z.infer<typeof formikSchema>>();
-  const { useAccount } = useWeb3Hooks();
-  const account = useAccount();
+  const { address } = useAccount();
   const getTokenInfo = useCallback(
     async ({ queryKey: [, tokenAddress] }: any) => {
-      if (!account || !tokenAddress) {
+      if (!address || !tokenAddress) {
         return null;
       }
       const erc20Contract = getErc20Contract().attach(tokenAddress);
@@ -40,7 +37,7 @@ export const TokenInfo = () => {
         erc20Contract.name(),
         erc20Contract.decimals(),
         erc20Contract.totalSupply(),
-        erc20Contract.balanceOf(account),
+        erc20Contract.balanceOf(address),
       ]);
 
       return {
@@ -110,7 +107,7 @@ export const TokenInfo = () => {
   const transferEventHistory = useQuery(
     ["transferEventHistory", values.tokenAddress],
     async ({ queryKey: [, tokenAddress] }: any) => {
-      if (!account || !tokenAddress) {
+      if (!address || !tokenAddress) {
         return null;
       }
       const erc20Contract = getErc20Contract().attach(tokenAddress);
@@ -121,8 +118,6 @@ export const TokenInfo = () => {
         0,
         1000
       );
-
-      console.log("logs", logs);
 
       return logs;
     },
@@ -236,7 +231,6 @@ export const TokenInfo = () => {
                   <Stack spacing={2}>
                     <Field component={TextField} name="amount" label="Amount" />
                     <Button
-                      variant="contained"
                       color="primary"
                       disabled={isSubmitting}
                       onClick={submitForm}

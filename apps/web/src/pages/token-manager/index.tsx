@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Button, Stack } from "@mui/material";
+import { Alert, AlertTitle, Stack } from "@mui/material";
 import { Field, Formik } from "formik";
 import { TextField } from "formik-mui";
 import { z } from "zod";
@@ -30,7 +30,7 @@ function TokenManager({}: Props) {
         }}
         validationSchema={toFormikValidationSchema(formikSchema)}
       >
-        {({ values, handleSubmit, getFieldProps, isSubmitting, errors }) => (
+        {({ handleSubmit, getFieldProps }) => (
           <form onSubmit={handleSubmit}>
             <Stack spacing={4}>
               <Alert severity="info">
@@ -48,14 +48,9 @@ function TokenManager({}: Props) {
 
                 <TokenInfo />
 
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disabled={isSubmitting}
-                  type="submit"
-                >
+                {/* <Button disabled={isSubmitting} type="submit">
                   Submit
-                </Button>
+                </Button> */}
               </Stack>
             </Stack>
           </form>

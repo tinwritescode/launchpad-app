@@ -1,5 +1,4 @@
 export * from "./AppButton";
-export * from "./ConnectWalletButton";
 export * from "./Flex";
 export * from "./Footer";
 export * from "./Header";

@@ -4,10 +4,9 @@ import { BigNumber } from "ethers";
 import { create } from "zustand";
 import { env } from "../../../env.mjs";
 import { getErc20Contract, getStakingContract } from "../../../libs/blockchain";
-import { useWeb3Hooks } from "../../common/ConnectWalletButton/store";
 import { getSigner } from "../../../utils/ethereum";
-
 import toast from "react-hot-toast";
+import { useAccount } from "wagmi";
 
 export class FarmingHelper {
   static instance: FarmingHelper;
@@ -40,8 +39,7 @@ export class FarmingHelper {
 }
 
 export const useFarmingHook = () => {
-  const { useAccount } = useWeb3Hooks();
-  const address = useAccount();
+  const { address } = useAccount();
   const { data: stakeInfo, isLoading: isLoadingStakeInfo } = useQuery(
     ["stakeInfo"],
     () => FarmingHelper.getInstance().getAmountStaked(address),
