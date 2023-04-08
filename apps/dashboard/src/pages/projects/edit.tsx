@@ -15,6 +15,21 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "walletAddress",
   });
 
+  const statusList = [
+    {
+      label: "Active",
+      value: "ACTIVE",
+    },
+    {
+      label: "Inactive",
+      value: "INACTIVE",
+    },
+    {
+      label: "Deleted",
+      value: "DELETED",
+    },
+  ];
+
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
@@ -37,7 +52,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
               required: true,
             },
           ]}
-          getValueProps={(value) => ({
+          getValueProps={(value: any) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >
@@ -51,7 +66,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
               required: true,
             },
           ]}
-          getValueProps={(value) => ({
+          getValueProps={(value: any) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >
@@ -71,7 +86,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Image">
           <Form.Item
             name="image"
-            getValueProps={(value) => ({
+            getValueProps={(value: any) => ({
               fileList: [{ url: value, name: value, uid: value }],
             })}
             getValueFromEvent={getValueFromEvent}
@@ -82,7 +97,11 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
               },
             ]}
           >
-            <Upload.Dragger listType="picture" beforeUpload={() => false}>
+            <Upload.Dragger
+              capture={false}
+              listType="picture"
+              beforeUpload={() => false}
+            >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
           </Form.Item>
@@ -96,7 +115,14 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
             },
           ]}
         >
-          <Input />
+          {/* <Input /> */}
+          <Select>
+            {statusList.map((key) => (
+              <Select.Option key={key.value} value={key.value}>
+                {key.label}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           label="Summary Content"
@@ -153,7 +179,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Select {...ownerSelectProps} />
         </Form.Item>
-        <>
+        {/* <>
           {(projectsData?.IDOContract as any[])?.map((item, index) => (
             <Form.Item
               key={index}
@@ -163,7 +189,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
               <Input type="text" />
             </Form.Item>
           ))}
-        </>
+        </> */}
       </Form>
     </Edit>
   );

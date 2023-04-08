@@ -1,9 +1,7 @@
 import { ethers } from "ethers";
 import { AuthBindings } from "@refinedev/core";
-import { axiosInstance } from "./utils/axios";
+import { TOKEN_KEY, axiosInstance } from "./utils/axios";
 import { getBalance } from "./utils";
-
-export const TOKEN_KEY = "refine-auth";
 
 export const authProvider: AuthBindings = {
   login: async () => {

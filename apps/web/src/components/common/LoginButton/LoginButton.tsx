@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { api } from "../../../utils/api";
 import { getSigner, isWalletInstalled } from "../../../utils/ethereum";
-import AppButton from "../AppButton";
+import { Button } from "../AppButton";
 import { useWeb3App } from "../ConnectWalletButton/store";
 
 interface Props {}
@@ -54,16 +54,15 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
   const { useAccount } = hooks;
 
   return (
-    <AppButton
+    <Button
       style={{ width: "100%" }}
       onClick={!isLoggedIn ? onLoginClicked : () => logout.mutateAsync()}
-      variant="contained"
-      loading={logout.isLoading}
       disabled={!sessionMessage.data}
-      size="large"
+      size="lg"
     >
+      {/* loading={logout.isLoading} */}
       {isLoggedIn ? "Logout" : "Sign"}
-    </AppButton>
+    </Button>
   );
 };
 

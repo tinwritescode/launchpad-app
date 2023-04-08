@@ -1,7 +1,10 @@
+import { NonceManager } from "@ethersproject/experimental";
 import { TRPCError } from "@trpc/server";
+import { Prisma, Status } from "database";
 import { ethers } from "ethers";
-import { z } from "zod";
 import { Dividend__factory } from "ido-contracts/typechain-types";
+import PQueue from "p-queue";
+import { z } from "zod";
 import {
   adminProcedure,
   createTRPCRouter,
@@ -18,7 +21,6 @@ import {
   getContractNameFromIndex,
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
-import { Prisma } from "@prisma/client";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -99,20 +101,21 @@ export const projectRouter = createTRPCRouter({
       });
 
       const instance = IDOContract.getInstance();
+      const signer = new NonceManager(ctx.signer);
+      const queue = new PQueue({ concurrency: 1 });
 
-      // Deploy contract
-      const deployedContracts = await Promise.all(
-        contracts
-          .map(async (contract) => {
-            return instance.deployIDOContract(contract);
+      const deployedContracts = await queue
+        .addAll(
+          contracts.map((contract) => {
+            return () => instance.deployIDOContract(contract, signer);
           })
-          .map((p) => p.then((res) => res.deployed()))
-      ).catch((err) => {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: err.message,
+        )
+        .catch((err) => {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: err.message,
+          });
         });
-      });
 
       if (!ctx.session?.user?.isLoggedIn)
         throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -161,6 +164,40 @@ export const projectRouter = createTRPCRouter({
           token: true,
         },
       });
+    }),
+
+  editIdoProject: adminProcedure
+    .meta({
+      openapi: { method: "PUT", path: "/projects/{id}", tags: ["project"] },
+    })
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        name: z.string().optional(),
+        comparisionContent: z.string().optional(),
+        image: z.string().optional(),
+        roadmapContent: z.string().optional(),
+        summaryContent: z.string().optional(),
+        videoURL: z.string().optional(),
+        status: z.nativeEnum(Status).optional(),
+      })
+    )
+    .output(z.any())
+    .mutation(async ({ ctx, input }) => {
+      const { id, ...rest } = input;
+      const project = await ctx.prisma.project.update({
+        where: {
+          id,
+        },
+        data: {
+          ...rest,
+        },
+        include: {
+          IDOContract: true,
+        },
+      });
+
+      return project;
     }),
 
   getMyProject: protectedProcedure
@@ -278,7 +315,7 @@ export const projectRouter = createTRPCRouter({
       return owner;
     }),
 
-  getAllOwners: publicProcedure
+  getAllOwners: adminProcedure
     .meta({ openapi: { method: "GET", path: "/owners", tags: ["project"] } })
     .input(
       z.object({
@@ -292,7 +329,7 @@ export const projectRouter = createTRPCRouter({
     .output(z.any())
     .query(async ({ input, ctx: { prisma } }) => {
       const whereClause: Prisma.UserWhereInput = {
-        projects: { some: {} },
+        // projects: { some: {} },
         id: { in: input.ids },
       };
       const [data, total] = await Promise.all([

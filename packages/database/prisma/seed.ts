@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-import { env } from "../src/env.mjs";
 
 async function main() {
   const owner = await prisma.user
@@ -35,7 +34,7 @@ async function main() {
             symbol: "MIF",
             decimals: 18,
             totalSupply: 100000,
-            address: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
+            address: "0x56c7b349738CF0AC71aF0B31444bF04E757e2c10",
           },
         },
       },

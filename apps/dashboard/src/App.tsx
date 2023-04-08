@@ -16,14 +16,15 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { WagmiConfig } from "wagmi";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
+import { CustomSider } from "./components/sider";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { idoProvider } from "./data-providers/idoProvider";
 import { env } from "./env";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import {
-  ProjectEdit,
   ProjectCreate,
+  ProjectEdit,
   ProjectList,
   ProjectShow,
 } from "./pages/projects";
@@ -62,7 +63,7 @@ function App() {
                 <Route
                   element={
                     <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                      <ThemedLayout Header={Header}>
+                      <ThemedLayout Header={Header} Sider={CustomSider}>
                         <Outlet />
                       </ThemedLayout>
                     </Authenticated>
@@ -70,7 +71,7 @@ function App() {
                 >
                   <Route
                     index
-                    element={<NavigateToResource resource="blog_posts" />}
+                    element={<NavigateToResource resource="projects" />}
                   />
                   <Route path="/projects">
                     <Route index element={<ProjectList />} />

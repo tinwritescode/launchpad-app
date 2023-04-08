@@ -6,7 +6,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "refine": "refine",
-    "start": "refine start"
+    "start": "refine start",
+    "deploy": "vercel deploy dist --yes"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
@@ -27,7 +28,9 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.10.0",
     "wagmi": "^0.12.9",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "tsconfig": "workspace:*",
+    "database": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",

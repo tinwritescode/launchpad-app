@@ -1,8 +1,8 @@
-import React from "react";
+import { Create, getValueFromEvent, useForm } from "@refinedev/antd";
 import { IResourceComponentsProps } from "@refinedev/core";
-import { Create, useForm, getValueFromEvent } from "@refinedev/antd";
-import { Form, Input, Upload, DatePicker } from "antd";
+import { DatePicker, Form, Input, Upload } from "antd";
 import dayjs from "dayjs";
+import React from "react";
 import { env } from "../../env";
 
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
@@ -26,7 +26,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           roadmapContent: "ipsum lorem",
           summaryContent: "lorem ipsum",
           videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
-          name: "Project Name",
+          name: `IDO Project ${(Math.random() * 100).toFixed(0)}`,
         }}
       >
         <Form.Item
@@ -49,12 +49,12 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
             },
           ]}
         >
-          <Input />
+          <Input.TextArea />
         </Form.Item>
         <Form.Item label="Image">
           <Form.Item
             name="image"
-            getValueProps={(value) => ({
+            getValueProps={(value: any) => ({
               fileList: [{ url: value, name: value, uid: value }],
             })}
             getValueFromEvent={getValueFromEvent}
@@ -65,7 +65,11 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               },
             ]}
           >
-            <Upload.Dragger listType="picture" beforeUpload={() => false}>
+            <Upload.Dragger
+              capture={false}
+              listType="picture"
+              beforeUpload={() => false}
+            >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
           </Form.Item>
@@ -112,7 +116,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               required: true,
             },
           ]}
-          getValueProps={(value) => ({
+          getValueProps={(value: any) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >
@@ -127,7 +131,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               required: true,
             },
           ]}
-          getValueProps={(value) => ({
+          getValueProps={(value: any) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >

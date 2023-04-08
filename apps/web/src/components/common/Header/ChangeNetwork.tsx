@@ -1,4 +1,5 @@
-import { Alert, AlertTitle, Button } from "@mui/material";
+import { Alert, AlertTitle } from "@mui/material";
+import { Button } from "~/components/common";
 import { toast } from "react-hot-toast";
 import { env } from "../../../env.mjs";
 import { switchNetwork } from "../../../utils/ethereum";
@@ -16,10 +17,13 @@ export const ChangeNetwork = () => {
         sx={{ width: "100%" }}
         action={
           <Button
-            size="small"
-            variant="contained"
+            size="sm"
             onClick={async () => {
               try {
+                console.log(
+                  env.NEXT_PUBLIC_BLOCKCHAIN_RPC,
+                  env.NEXT_PUBLIC_CHAIN_ID
+                );
                 await switchNetwork(env.NEXT_PUBLIC_CHAIN_ID);
               } catch (error: any) {
                 toast.error(error?.message || "Failed to switch network.");

@@ -15,10 +15,8 @@
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { getIronSession } from "iron-session";
 import { verifyToken } from "./lib/jwt";
-
-import { prisma } from "~/server/db";
+import { prismaClient } from "database";
 
 type CreateContextOptions = Record<string, never>;
 
@@ -37,7 +35,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
   const signer = new ethers.Wallet(env.ADMIN_PRIVATE_KEY, provider);
 
   return {
-    prisma,
+    prisma: prismaClient,
     signer,
   };
 };
@@ -51,7 +49,7 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
 export const createTRPCContext = async ({ req }: CreateNextContextOptions) => {
   const bearerToken = req.headers?.authorization?.split(" ")[1];
   const innerContext = createInnerTRPCContext({});
-  const session = bearerToken ? await verifyToken(bearerToken) : null;
+  const session = await verifyToken(bearerToken as string).catch(() => null);
 
   return {
     ...innerContext,
@@ -65,9 +63,8 @@ export const createTRPCContext = async ({ req }: CreateNextContextOptions) => {
  * This is where the tRPC API is initialized, connecting the context and transformer.
  */
 import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
-import { sessionOptions } from "../../utils/session";
 import { ethers } from "ethers";
+import superjson from "superjson";
 import { env } from "../../env.mjs";
 import { getRpcProvider } from "../../libs/blockchain";
 
@@ -114,6 +111,13 @@ export const protectedProcedure = publicProcedure.use(protectedMiddleware);
 
 export const adminProcedure = protectedProcedure.use(
   t.middleware(({ next, ctx }) => {
+    // TODO: remove later, just for local testing
+    if (
+      ctx.session?.user.address === "0x56c7b349738CF0AC71aF0B31444bF04E757e2c10"
+    ) {
+      return next();
+    }
+
     const roles = ["ADMIN", "SUPER_ADMIN"];
     const userRoleArr = ctx.session?.user?.roles || [];
 

@@ -1,5 +1,6 @@
 import {
   DateField,
+  TagField,
   EditButton,
   ImageField,
   List,
@@ -8,7 +9,7 @@ import {
   useTable,
 } from "@refinedev/antd";
 import { BaseRecord, IResourceComponentsProps } from "@refinedev/core";
-import { Space, Table } from "antd";
+import { Space, Table, Typography } from "antd";
 import React from "react";
 
 export const ProjectList: React.FC<IResourceComponentsProps> = () => {
@@ -19,7 +20,20 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
   return (
     <List>
       <Table {...tableProps} rowKey="id">
-        <Table.Column dataIndex="id" title="Id" />
+        <Table.Column
+          dataIndex="id"
+          title="Id"
+          render={(value: any) => (
+            <Typography.Text
+              ellipsis={{ tooltip: value }}
+              style={{
+                maxWidth: "100px",
+              }}
+            >
+              {value}
+            </Typography.Text>
+          )}
+        />
         <Table.Column dataIndex="name" title="Name" />
         <Table.Column
           dataIndex="comparisionContent"
@@ -39,21 +53,27 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
           title="Video URL"
           render={(value: any) => <UrlField value={value} />}
         />
-        <Table.Column dataIndex="status" title="Status" />
+        <Table.Column
+          dataIndex="status"
+          title="Status"
+          render={(value: any) => <TagField value={value} />}
+        />
         <Table.Column
           dataIndex={["createdAt"]}
           title="Created At"
           render={(value: any) => <DateField value={value} />}
+          width={150}
         />
         <Table.Column
           dataIndex={["updatedAt"]}
           title="Updated At"
           render={(value: any) => <DateField value={value} />}
+          width={150}
         />
         <Table.Column
           title="Actions"
           dataIndex="actions"
-          render={(_, record: BaseRecord) => (
+          render={(_: any, record: BaseRecord) => (
             <Space>
               <EditButton hideText size="small" recordItemId={record.id} />
               <ShowButton hideText size="small" recordItemId={record.id} />

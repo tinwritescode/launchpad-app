@@ -1,75 +1,84 @@
-import { Project, ScheduleRound } from "@prisma/client";
+import { Project, ScheduleRound } from "database";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { api } from "~/utils/api";
-import * as S from "./TopDetailInfo.style";
+import { Progress } from "~/components/common/Progress";
 
 interface Props {}
 
 const TopDetailInfo: React.FC<Props> = () => {
   const { id } = useRouter().query as { id: string };
-  const { data, isLoading } = api.project.getOne.useQuery({ id });
+  const { data, isLoading } = api.project.getOne.useQuery(
+    { id },
+    {
+      enabled: !!id,
+    }
+  );
   const project = data as Project;
   const scheduleRounds = data?.ScheduleRound as ScheduleRound[];
   const currentRound = scheduleRounds?.find(
     (round) => round.startTime < new Date() && round.endTime > new Date()
   );
-  const elapsedTime: number = currentRound
-    ? new Date().getTime() - new Date(currentRound.startTime).getTime()
-    : 0;
+
+  const [progress, setProgress] = React.useState(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setProgress(80);
+    }, 500);
+  }, []);
 
   return (
-    <S.Container>
-      <h1>Card detail</h1>
-      {/* <Card>
-        <Row>
-          <Col span={10}>
-            <Row>
-              <Space>
-                <img src={project?.image} width={150} height={150} />
-                <Col>
-                  <h1>{project?.name}</h1>
-                  <div>PRICE (DDO) = {currentRound?.pricePerToken} BUSD</div>
-                </Col>
-              </Space>
-            </Row>
-          </Col>
-          <Col span={4}>
-            <img
-              src="https://www.iconarchive.com/download/i109534/cjdowner/cryptocurrency-flat/Ethereum-ETH.1024.png"
-              width={50}
-              height={50}
-            />
-          </Col>
-          <Col span={10}>
-            {elapsedTime > 0 ? (
-              <>
-                <p>Sale ends in</p>
-                <h1>1d 2h 3m 4s</h1>
-              </>
-            ) : (
-              <p>Sale has ended</p>
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <Col span={10}>Total raise: 10000 BUSD 15%</Col>
-          <Col span={4}>Allocation: 10000 BUSD Max</Col>
-          <Col span={10}>Targeted raise: 100000 BUSD</Col>
-        </Row>
-        <Progress
-          percent={50}
-          strokeColor={{ "0%": "#108ee9", "100%": "#87d068" }}
-        />
-        <Row>
-          <Col span={10}>
-            <Button variant="contained">Claim token</Button>
-          </Col>
-          <Col span={4}>Participants 100 / 1000</Col>
-          <Col span={10}>Share this project</Col>
-        </Row>
-      </Card> */}
-    </S.Container>
+    <>
+      {project && (
+        <div className="bg-gray-800 p-12 flex flex-col text-white font-bold gap-7 rounded-xl">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <div className="bg-black w-28 aspect-square rouned-md">
+                <img src={project?.image} className="w-full h-full" />
+              </div>
+
+              <div className="grid gap-4">
+                <p className="capitalize font-mono text-3xl">{project.name}</p>
+                <div>
+                  <p>Price (DDO) = {currentRound?.pricePerToken} BUSD</p>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-full bg-blue-400 w-12 aspect-square"></div>
+            <div>
+              <p className="font-light text-xl">Sale end in</p>
+              <div className="flex gap-4">
+                <div>
+                  <span className="text-5xl">8</span>
+                  <span className="text-sm">D</span>
+                </div>
+                <div>
+                  <span className="text-5xl">9</span>
+                  <span className="text-sm">H</span>
+                </div>
+                <div>
+                  <span className="text-5xl">10</span>
+                  <span className="text-sm">M</span>
+                </div>
+                <div>
+                  <span className="text-5xl">11</span>
+                  <span className="text-sm">S</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center font-bold text-sm">
+            <span>Total Raise: 100,000 BUSD (64%)</span>
+            <span>Allocation: 500 BUSD Max</span>
+            <span>Targeted Price: 200,000 BUSD</span>
+          </div>
+
+          <Progress value={progress} secondaryClassName="bg-lime-300" />
+        </div>
+      )}
+    </>
   );
 };
 

@@ -4,7 +4,7 @@ import { useConnect } from "wagmi";
 
 export const Login: React.FC = () => {
   const { mutate: login } = useLogin();
-  const { connect, connectors, error, isLoading, pendingConnector } =
+  const { connectAsync, connectors, error, isLoading, pendingConnector } =
     useConnect();
 
   return (
@@ -44,8 +44,7 @@ export const Login: React.FC = () => {
                 disabled={!connector.ready}
                 key={connector.id}
                 onClick={() => {
-                  connect({ connector });
-                  login({});
+                  connectAsync({ connector }).finally(() => login({}));
                 }}
               >
                 {connector.name}
