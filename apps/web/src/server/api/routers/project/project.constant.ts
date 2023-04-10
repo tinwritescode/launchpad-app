@@ -25,10 +25,9 @@ export const buildContracts = ({
   endTime,
   idoPrice,
   idoTokenAddress,
-  purchaseCap,
 }: Pick<
   IdoContractDto,
-  "startTime" | "endTime" | "idoPrice" | "idoTokenAddress" | "purchaseCap"
+  "startTime" | "endTime" | "idoPrice" | "idoTokenAddress"
 >): IdoContractDto[] => {
   return Object.keys(IDO_CONTRACT_STAKING_REQUIRED).map((key, index) => {
     const nextKey = getContractNameFromIndex(index + 1);
@@ -45,7 +44,7 @@ export const buildContracts = ({
       endTime,
       idoPrice,
       idoTokenAddress,
-      purchaseCap,
+      // purchaseCap,
       stakingContractAddress: env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS,
       stakingTokenAddress: env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS,
       name: key,

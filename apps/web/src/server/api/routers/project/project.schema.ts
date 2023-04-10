@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { idoContractDto } from "../../../services/ido-contract/ido-contract.dto";
+import {
+  idoContractDto,
+  parseStringToEthers,
+} from "../../../services/ido-contract/ido-contract.dto";
 
 export const createIdoProjectInputSchema = z
   .object({
@@ -10,6 +13,7 @@ export const createIdoProjectInputSchema = z
     roadmapContent: z.string(),
     summaryContent: z.string(),
     videoURL: z.string().url(),
+    targettedRaise: parseStringToEthers,
   })
   .merge(
     idoContractDto.pick({
@@ -17,7 +21,7 @@ export const createIdoProjectInputSchema = z
       endTime: true,
       idoPrice: true,
       idoTokenAddress: true,
-      purchaseCap: true,
+      // purchaseCap: true,
       // TODO: add custom payment token, for example: pay with USDC
       // paymentTokenAddress: true,
     })

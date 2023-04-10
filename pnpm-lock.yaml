@@ -161,6 +161,9 @@ importers:
       '@web3-react/types':
         specifier: ^8.1.2-beta.0
         version: 8.1.2-beta.0(react@18.2.0)
+      bignumber.js:
+        specifier: ^9.1.1
+        version: 9.1.1
       class-variance-authority:
         specifier: ^0.5.1
         version: 0.5.1(typescript@4.9.5)
@@ -388,6 +391,9 @@ importers:
       ethers:
         specifier: ^5.7.2
         version: 5.7.2
+      p-queue:
+        specifier: ^7.3.4
+        version: 7.3.4
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@18.14.0)(typescript@5.0.4)
@@ -6523,7 +6529,6 @@ packages:
 
   /bignumber.js@9.1.1:
     resolution: {integrity: sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==}
-    dev: true
 
   /binary-extensions@2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}

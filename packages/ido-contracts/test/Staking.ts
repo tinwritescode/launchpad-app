@@ -1,11 +1,10 @@
-import { getErc20Contract, waitForTx } from "@/utils/index";
-import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
-import { expect } from "chai";
-import { ethers } from "hardhat";
-import { deployContract } from "@/utils";
+import { deployContract, getErc20Contract, waitForTx } from "../src/utils";
 import { NonceManager } from "@ethersproject/experimental";
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
+import { expect } from "chai";
 import { BigNumber } from "ethers";
+import { ethers } from "hardhat";
 
 describe("Lock", function () {
   // We define a fixture to reuse the same setup in every test.

@@ -79,6 +79,7 @@ export function Create({}: Props) {
         summaryContent: "lorem ipsum",
         videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
         name: "Project Name",
+        targettedRaise: "1000000",
       }}
       onSubmit={handleSubmit}
       validationSchema={toFormikValidationSchema(
@@ -185,8 +186,8 @@ export function Create({}: Props) {
             />
             <Field
               component={TextField}
-              label="Purchase Cap"
-              {...getFieldProps("purchaseCap")}
+              label="Targetted Raise"
+              {...getFieldProps("targettedRaise")}
             />
             <Button type="submit" variant="contained">
               Submit

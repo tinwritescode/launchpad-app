@@ -2,6 +2,7 @@
 pragma solidity ^0.8.9;
 
 import "./interface/IStaking.sol";
+import "./interface/IIdoContract.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
@@ -11,7 +12,7 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
  * Users can purchase tokens after sale started and claim after sale ended
  */
 
-contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step {
+contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step, IIDOContract {
     using SafeERC20 for IERC20;
 
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
@@ -284,9 +285,9 @@ contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step {
     /**
      * @dev Deposit IDO token to the sale contract
      */
-    function depositTokens(uint256 amount) external onlyOperator whenNotPaused {
+    function depositTokens(address from, uint256 amount) external onlyOperator whenNotPaused {
         require(amount > 0, "IDOSale: DEPOSIT_AMOUNT_INVALID");
-        ido.safeTransferFrom(_msgSender(), address(this), amount);
+        ido.safeTransferFrom(from, address(this), amount);
 
         emit Deposited(_msgSender(), amount);
     }
