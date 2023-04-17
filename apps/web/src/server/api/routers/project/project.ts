@@ -1,7 +1,7 @@
 import { NonceManager } from "@ethersproject/experimental";
 import { TRPCError } from "@trpc/server";
 import { Prisma, Status } from "database";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { Dividend__factory } from "ido-contracts/typechain-types";
 import PQueue from "p-queue";
 import { z } from "zod";
@@ -21,6 +21,8 @@ import {
   getContractNameFromIndex,
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
+import { BigNumber as BNjs } from "bignumber.js";
+import { calculateDividendPercent } from "./project.util";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -88,7 +90,7 @@ export const projectRouter = createTRPCRouter({
         endTime,
         idoPrice,
         idoTokenAddress,
-        purchaseCap,
+        targettedRaise,
         ...rest
       } = input;
 
@@ -97,7 +99,6 @@ export const projectRouter = createTRPCRouter({
         endTime,
         idoPrice,
         idoTokenAddress,
-        purchaseCap,
       });
 
       const instance = IDOContract.getInstance();
@@ -107,7 +108,33 @@ export const projectRouter = createTRPCRouter({
       const deployedContracts = await queue
         .addAll(
           contracts.map((contract) => {
-            return () => instance.deployIDOContract(contract, signer);
+            return () => {
+              const numberOfPeople = 200;
+              const dividendPercent = getContractDividendInPercent(
+                contract.name
+              );
+              const purchaseCap = new BNjs(
+                calculateDividendPercent(
+                  BigNumber.from(targettedRaise),
+                  dividendPercent
+                )
+              ).dividedBy(new BNjs(numberOfPeople));
+
+              // all variables
+              console.group("Variables");
+              console.log("numberOfPeople", numberOfPeople);
+              console.log("dividendPercent", dividendPercent);
+              console.log("purchaseCap", purchaseCap.toString());
+              console.groupEnd();
+
+              return instance.deployIDOContract(
+                {
+                  ...contract,
+                  purchaseCap: BigNumber.from(purchaseCap.toString()),
+                },
+                signer
+              );
+            };
           })
         )
         .catch((err) => {
@@ -124,6 +151,9 @@ export const projectRouter = createTRPCRouter({
       const project = await ctx.prisma.project.create({
         data: {
           ...rest,
+          targettedRaise: new BNjs(targettedRaise.toString())
+            .multipliedBy(10 ** 18)
+            .toFixed(),
           ownerId: ctx.session?.user?.id,
           IDOContract: {
             createMany: {
@@ -153,7 +183,7 @@ export const projectRouter = createTRPCRouter({
       })
     )
     .query(async ({ input, ctx: { prisma } }) => {
-      return await prisma.project.findUnique({
+      const data = await prisma.project.findUnique({
         where: {
           id: input.id,
         },
@@ -164,6 +194,17 @@ export const projectRouter = createTRPCRouter({
           token: true,
         },
       });
+
+      return {
+        ...data,
+        IDOContract: data?.IDOContract.map((contract) => ({
+          ...contract,
+          dividendAmount: new BNjs(getContractDividendInPercent(contract.name))
+            .multipliedBy(data.targettedRaise)
+            .dividedBy(new BNjs(10 ** 18))
+            .toString(),
+        })),
+      };
     }),
 
   editIdoProject: adminProcedure
@@ -276,9 +317,10 @@ export const projectRouter = createTRPCRouter({
           tokenAddress,
           data.IDOContract.map((contract) => ({
             to: contract.address,
-            amount: tokenBalance
-              .mul(getContractDividendInPercent(contract.name))
-              .div(100),
+            amount: calculateDividendPercent(
+              tokenBalance,
+              getContractDividendInPercent(contract.name)
+            ),
           }))
         )
         .then((res) => res.wait());

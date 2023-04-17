@@ -1,7 +1,7 @@
-import { ethers } from "ethers";
 import { AuthBindings } from "@refinedev/core";
-import { TOKEN_KEY, axiosInstance } from "./utils/axios";
+import { ethers } from "ethers";
 import { getBalance } from "./utils";
+import { TOKEN_KEY, axiosInstance } from "./utils/axios";
 
 export const authProvider: AuthBindings = {
   login: async () => {
@@ -78,15 +78,17 @@ export const authProvider: AuthBindings = {
   },
   getPermissions: async () => null,
   getIdentity: async () => {
-    const address = localStorage.getItem(TOKEN_KEY);
-    if (!address) {
+    const authData = localStorage.getItem(TOKEN_KEY);
+    if (!authData) {
       return null;
     }
 
-    const balance = await getBalance(address);
+    const user = JSON.parse(authData)?.user;
+
+    const balance = await getBalance(user.walletAddress);
 
     return {
-      address,
+      authData,
       balance,
     };
   },

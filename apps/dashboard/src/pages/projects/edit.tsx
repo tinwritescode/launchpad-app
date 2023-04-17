@@ -1,8 +1,18 @@
 import React from "react";
 import { IResourceComponentsProps } from "@refinedev/core";
 import { Edit, useForm, useSelect, getValueFromEvent } from "@refinedev/antd";
-import { Form, Input, DatePicker, Upload, Select } from "antd";
+import {
+  Form,
+  Input,
+  DatePicker,
+  Upload,
+  Select,
+  Button,
+  Row,
+  Col,
+} from "antd";
 import dayjs from "dayjs";
+import { PlusOutlined } from "@ant-design/icons";
 
 export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult } = useForm();
@@ -178,6 +188,57 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           ]}
         >
           <Select {...ownerSelectProps} />
+        </Form.Item>
+
+        <Form.Item label="Distribution token" required>
+          <Form.List name="IDOContract">
+            {(fields, { add, remove }) => {
+              return (
+                <div>
+                  <Row gutter={16}>
+                    <Col span={7}>
+                      {fields.map((field) => {
+                        return (
+                          <Row key={field.key} gutter={16}>
+                            <Col span={12}>
+                              <Form.Item
+                                {...field}
+                                label="Name"
+                                name={[field.name, "name"]}
+                              >
+                                <Input disabled />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                {...field}
+                                label="Distribution Amount"
+                                name={[field.name, "dividendAmount"]}
+                              >
+                                <Input disabled />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                        );
+                      })}
+                    </Col>
+                  </Row>
+                  <Form.Item>
+                    <Button
+                      size="large"
+                      type="primary"
+                      onClick={() => {
+                        add();
+                      }}
+                      block
+                    >
+                      <PlusOutlined /> Distribute
+                    </Button>
+                  </Form.Item>
+                </div>
+              );
+            }}
+          </Form.List>
         </Form.Item>
         {/* <>
           {(projectsData?.IDOContract as any[])?.map((item, index) => (

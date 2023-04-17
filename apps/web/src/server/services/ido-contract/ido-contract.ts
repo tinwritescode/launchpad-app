@@ -1,6 +1,6 @@
 import { NonceManager } from "@ethersproject/experimental";
-import { ContractFactory, ethers, Wallet } from "ethers";
-import { env } from "~/env.mjs";
+import { BigNumber as BNjs } from "bignumber.js";
+import { BigNumber, ContractFactory } from "ethers";
 import { IDOContract__factory } from "ido-contracts/typechain-types";
 import { IdoContractDto } from "./ido-contract.dto";
 
@@ -16,12 +16,17 @@ export class IDOContract {
     return IDOContract.instance;
   }
 
-  deployIDOContract(payload: IdoContractDto, signer: NonceManager) {
+  deployIDOContract(
+    payload: IdoContractDto & {
+      purchaseCap: BigNumber;
+    },
+    signer: NonceManager
+  ) {
     const {
+      purchaseCap,
       endTime,
       idoPrice,
       idoTokenAddress,
-      purchaseCap,
       startTime,
       stakingContractAddress,
       stakingTokenAddress,

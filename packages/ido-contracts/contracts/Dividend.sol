@@ -4,6 +4,8 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./interface/IIdoContract.sol";
+import "hardhat/console.sol";
 
 // write a contract that can receive ERC20 tokens
 contract Dividend is Ownable {
@@ -23,13 +25,14 @@ contract Dividend is Ownable {
         for (uint256 i = 0; i < items.length; i++) {
             totalAmount += items[i].amount;
         }
-        
+
         if (totalAmount > IERC20(token).balanceOf(address(this))) {
             revert("Not enough tokens");
         }
 
         for (uint256 i = 0; i < items.length; i++) {
-            IERC20(token).transferFrom(msg.sender, items[i].to, items[i].amount);
+            IERC20(token).approve(items[i].to, items[i].amount);
+            IIDOContract(items[i].to).depositTokens(address(this), items[i].amount);
         }
     }
 

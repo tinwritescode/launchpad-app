@@ -1,6 +1,6 @@
 import { Create, getValueFromEvent, useForm } from "@refinedev/antd";
 import { IResourceComponentsProps } from "@refinedev/core";
-import { DatePicker, Form, Input, Upload } from "antd";
+import { DatePicker, Form, Input, InputNumber, Upload } from "antd";
 import dayjs from "dayjs";
 import React from "react";
 import { env } from "../../env";
@@ -27,6 +27,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           summaryContent: "lorem ipsum",
           videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
           name: `IDO Project ${(Math.random() * 100).toFixed(0)}`,
+          targettedRaise: "1000000",
         }}
       >
         <Form.Item
@@ -163,15 +164,19 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
 
         <Form.Item
-          label="Purchase Cap"
-          name={["purchaseCap"]}
+          label="Targetted Raise"
+          name={["targettedRaise"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input />
+          <InputNumber
+            style={{
+              width: "100%",
+            }}
+          />
         </Form.Item>
       </Form>
     </Create>

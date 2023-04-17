@@ -1,8 +1,7 @@
 import { ethers } from "ethers";
 import { z } from "zod";
 
-const ethereumAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/);
-const parseToEthers = z.coerce.number().superRefine((val, ctx) => {
+const parseEther = <T>(val: T, ctx: z.RefinementCtx) => {
   try {
     ethers.utils.parseEther(`${val}`);
     return true;
@@ -13,7 +12,10 @@ const parseToEthers = z.coerce.number().superRefine((val, ctx) => {
     });
     return false;
   }
-});
+};
+const ethereumAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/);
+export const parseToEthers = z.coerce.number().superRefine(parseEther);
+export const parseStringToEthers = z.coerce.string().superRefine(parseEther);
 
 const parseFromDateToNumber = z.coerce.date().transform((val) => val.getTime());
 
@@ -23,7 +25,6 @@ export const idoContractDto = z.object({
   stakingTokenAddress: ethereumAddress,
   stakingContractAddress: ethereumAddress,
   idoPrice: parseToEthers,
-  purchaseCap: parseToEthers,
   startTime: parseFromDateToNumber,
   endTime: parseFromDateToNumber,
   minStakingRequired: parseToEthers,
