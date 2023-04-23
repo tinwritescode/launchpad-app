@@ -86,7 +86,7 @@ const ProjectList: React.FC<Props> = () => {
                     image={row.image as string}
                   />
                 </TableCell>
-                <TableCell align="left">{row.token?.name}</TableCell>
+                <TableCell align="left">CORRECT ME</TableCell>
                 <TableCell align="center">
                   {formatDate(row.createdAt as Date)}
                 </TableCell>

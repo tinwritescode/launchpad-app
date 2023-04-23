@@ -86,16 +86,12 @@ model IDOContract {
 }
 
 model Token {
-    id          String   @id @default(uuid())
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    name        String   @unique
-    symbol      String   @unique
-    decimals    Int
-    totalSupply Int
-    address     String
-    Project     Project  @relation(fields: [projectId], references: [id])
-    projectId   String   @unique
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    address   String
+    Project   Project  @relation(fields: [projectId], references: [id])
+    projectId String   @unique
 }
 
 model ScheduleRound {

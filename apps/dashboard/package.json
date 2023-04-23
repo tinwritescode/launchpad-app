@@ -22,20 +22,22 @@
     "antd": "^5.4.0",
     "antd-css-utilities": "^1.0.3",
     "axios": "^1.3.5",
+    "database": "workspace:*",
     "dayjs": "^1.11.7",
     "ethers": "^5.7.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.10.0",
-    "wagmi": "^0.12.9",
-    "zod": "^3.21.4",
+    "shared": "workspace:*",
+    "styled-components": "^5.3.8",
     "tsconfig": "workspace:*",
-    "database": "workspace:*",
-    "shared": "workspace:*"
+    "wagmi": "^0.12.9",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^1.0.7",
     "typescript": "^4.7.4",
     "vite": "^2.8.0"

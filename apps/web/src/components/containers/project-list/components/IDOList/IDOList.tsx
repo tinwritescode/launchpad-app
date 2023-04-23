@@ -70,9 +70,7 @@ const IDOList: React.FC<Props> = () => {
                     image={row.image as string}
                   />
                 </StyledTableCell>
-                <StyledTableCell align="left">
-                  {row.token?.name}
-                </StyledTableCell>
+                <StyledTableCell align="left">CORRECT ME</StyledTableCell>
                 <StyledTableCell align="center">
                   {formatDate(row.createdAt as Date)}
                 </StyledTableCell>
