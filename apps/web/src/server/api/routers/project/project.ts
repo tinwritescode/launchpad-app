@@ -25,8 +25,8 @@ import {
   getContractNameFromIndex,
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
-import { BigNumber as BNjs } from "bignumber.js";
 import { calculateDividendPercent } from "./project.util";
+import BNjs from "bignumber.js";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -42,6 +42,7 @@ const defaultProjectSelector: Prisma.ProjectSelect = {
   token: {
     select: {
       id: true,
+      address: true,
     },
   },
 };

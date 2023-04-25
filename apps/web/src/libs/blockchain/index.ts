@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { env } from "../../env.mjs";
 import {
   Erc20__factory,
+  IDOContract__factory,
   Staking__factory,
 } from "ido-contracts/typechain-types";
 
@@ -20,8 +21,10 @@ export const getStakingContract = () => {
   );
 };
 
-export const getErc20Contract = (
-  address = env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS
-) => {
+export const getErc20Contract = (address: string) => {
   return Erc20__factory.connect(address, getRpcProvider());
+};
+
+export const getIdoContract = (address: string) => {
+  return IDOContract__factory.connect(address, getRpcProvider());
 };

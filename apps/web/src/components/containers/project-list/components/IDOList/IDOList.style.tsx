@@ -13,6 +13,7 @@ type CustomProjectInfoProps = {
   id: string;
   name: string;
   image: string;
+  url: string;
 };
 
 type Project = {
@@ -37,8 +38,9 @@ const formatDate = (date: Date) => {
   return `${_date}/${month}/${year}`;
 };
 export const ProjectInfo = function (props: CustomProjectInfoProps) {
+  const { url } = props;
   return (
-    <a href={"asdas"}>
+    <a href={url}>
       <div style={{ display: "flex", color: "black", alignItems: "center" }}>
         <StyledImage src={props.image} />
         <p>{props.name}</p>
@@ -53,21 +55,26 @@ export const ProjectList = function ({ data }: ProjectListProps) {
       <Table sx={{ minWidth: 600 }}>
         <TableHead>
           <TableRow sx={{ backgroundColor: "#fbe9e7" }}>
-            <TableCell align='left'>Project Name</TableCell>
-            <TableCell align='left'>Token</TableCell>
-            <TableCell align='center'>Create At</TableCell>
-            <TableCell align='center'>Status</TableCell>
+            <TableCell align="left">Project Name</TableCell>
+            <TableCell align="left">Token</TableCell>
+            <TableCell align="center">Create At</TableCell>
+            <TableCell align="center">Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data?.map((row) => (
             <TableRow key={row.name}>
-              <TableCell align='left'>
-                <ProjectInfo id={row.id} name={row.name} image={row.image} />
+              <TableCell align="left">
+                <ProjectInfo
+                  id={row.id}
+                  name={row.name}
+                  image={row.image}
+                  url={`/project/${row.id}`}
+                />
               </TableCell>
-              <TableCell align='left'>{row.token?.name}</TableCell>
-              <TableCell align='center'>{formatDate(row.createdAt)}</TableCell>
-              <TableCell align='center'>{row.status}</TableCell>
+              <TableCell align="left">{row.token?.name}</TableCell>
+              <TableCell align="center">{formatDate(row.createdAt)}</TableCell>
+              <TableCell align="center">{row.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

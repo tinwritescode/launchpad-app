@@ -35,7 +35,7 @@ export function Create({}: Props) {
       toast.success("Created");
 
       //form.resetFields();
-      router.push(`/ido/${id}`);
+      router.push(`/project/${id}`);
     } catch (error: any) {
       if (error instanceof TRPCClientError) {
         if (error?.shape?.data?.code === "INTERNAL_SERVER_ERROR") {
