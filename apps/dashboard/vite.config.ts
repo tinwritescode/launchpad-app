@@ -8,4 +8,5 @@ export default defineConfig({
   server: {
     port: 3300,
   },
+  envPrefix: "NEXT_PUBLIC_",
 });

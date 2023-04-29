@@ -254,7 +254,7 @@ export const projectRouter = createTRPCRouter({
                 .dividedBy(100)
                 .dividedBy(new BNjs(10 ** 18))
                 .toString(),
-              fulfilledAmount: fulfilledAmount.toString(),
+              fulfilledAmount: fulfilledAmount.toFormat(),
             };
           }) || []
         ),
@@ -545,7 +545,8 @@ async function getDividendContractInfo(
   return {
     isDividendFulfilled,
     avgRate: avgRate.toString(),
-    requiredBalance,
-    dividendBalance,
+    requiredBalance: requiredBalance,
+    dividendBalance: dividendBalance,
+    contractAddress: env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
   };
 }
