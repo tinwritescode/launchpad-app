@@ -81,6 +81,7 @@ const ProjectList: React.FC<Props> = () => {
                     id={row.id as string}
                     name={row.name as string}
                     image={row.image as string}
+                    url={`/project/${row.id}`}
                   />
                 </TableCell>
                 <TableCell align="left">CORRECT ME</TableCell>

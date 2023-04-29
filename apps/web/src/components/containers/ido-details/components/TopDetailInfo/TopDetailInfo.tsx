@@ -1,8 +1,9 @@
 import { Project, ScheduleRound } from "database";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { api } from "~/utils/api";
 import { Progress } from "~/components/common/Progress";
+import { api } from "~/utils/api";
+import { useIdoDetail } from "./hooks/useIdoDetail";
 
 interface Props {}
 
@@ -19,14 +20,19 @@ const TopDetailInfo: React.FC<Props> = () => {
   const currentRound = scheduleRounds?.find(
     (round) => round.startTime < new Date() && round.endTime > new Date()
   );
-
   const [progress, setProgress] = React.useState(0);
+  const { erc20Contract, idoContract, saleEndIn } = useIdoDetail({
+    erc20ContractAddress: data?.token?.address,
+    idoContractAddress: data?.IDOContract?.[0]?.address,
+  });
 
   useEffect(() => {
     setTimeout(() => {
       setProgress(80);
     }, 500);
   }, []);
+
+  if (!isLoading && !project) return <div>Project not found</div>;
 
   return (
     <>
@@ -49,22 +55,16 @@ const TopDetailInfo: React.FC<Props> = () => {
             <div>
               <p className="font-light text-xl">Sale end in</p>
               <div className="flex gap-4">
-                <div>
-                  <span className="text-5xl">8</span>
-                  <span className="text-sm">D</span>
-                </div>
-                <div>
-                  <span className="text-5xl">9</span>
-                  <span className="text-sm">H</span>
-                </div>
-                <div>
-                  <span className="text-5xl">10</span>
-                  <span className="text-sm">M</span>
-                </div>
-                <div>
-                  <span className="text-5xl">11</span>
-                  <span className="text-sm">S</span>
-                </div>
+                {saleEndIn &&
+                  saleEndIn
+                    .split(", ")
+                    .map((item) => item.split(" "))
+                    .map((item) => (
+                      <div>
+                        <span className="text-5xl">{item[0]}</span>
+                        <span className="text-sm">{item[1]}</span>
+                      </div>
+                    ))}
               </div>
             </div>
           </div>
