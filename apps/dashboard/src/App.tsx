@@ -38,7 +38,9 @@ function App() {
         <ColorModeContextProvider>
           <WagmiConfig client={wagmiClient}>
             <Refine
-              dataProvider={{ default: idoProvider(env.VITE_BASE_API_URL) }}
+              dataProvider={{
+                default: idoProvider(env.NEXT_PUBLIC_BASE_API_URL),
+              }}
               notificationProvider={notificationProvider}
               routerProvider={routerBindings}
               authProvider={authProvider}

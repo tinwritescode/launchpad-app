@@ -32,12 +32,10 @@ function Home({}: Props) {
     <PageLayout>
       <Box
         sx={{
-          background: "url('/assets/hero-bg.png') no-repeat 0% 80%/cover",
           height: "500px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          mt: "-100px",
         }}
       >
         <Box sx={{ textAlign: "center" }}>
@@ -58,15 +56,13 @@ function Home({}: Props) {
         </Box>
       </Box>
 
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 justify-center">
         {links.map((link) => (
           <Link href={link.href} key={link.href}>
             <Button key={link.href}>{link.label}</Button>
           </Link>
         ))}
       </div>
-
-      <div style={{ height: "700px" }} />
     </PageLayout>
   );
 }

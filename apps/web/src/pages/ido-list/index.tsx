@@ -18,15 +18,16 @@ const Home: NextPage = () => {
         <title>Home</title>
       </Head>
 
-      <PageLayout>
-        <Tabs
-          // value={value}
-          // onChange={handleChange}
-          aria-label='disabled tabs example'
-        >
-          <Tab label='Active' />
-          <Tab label='Disabled' disabled />
-          <Tab label='Active' />
+      <PageLayout
+        style={{
+          display: "grid",
+          gap: "1rem",
+        }}
+      >
+        <Tabs aria-label="disabled tabs example">
+          <Tab label="Active" />
+          <Tab label="Disabled" disabled />
+          <Tab label="Active" />
         </Tabs>
         {/* <PageTopHeading /> */}
         <IDOList />

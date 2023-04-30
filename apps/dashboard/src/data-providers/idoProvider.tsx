@@ -55,6 +55,28 @@ export const idoProvider = (url: string): DataProvider => ({
   createMany: ({ resource, variables, meta }) => undefined as any,
   deleteMany: ({ resource, ids, variables, meta }) => undefined as any,
   updateMany: ({ resource, ids, variables, meta }) => undefined as any,
-  custom: ({ url, method, filters, sorters, payload, query, headers, meta }) =>
-    undefined as any,
+  custom: async ({
+    url,
+    method,
+    filters,
+    sorters,
+    payload,
+    query,
+    headers,
+    meta,
+  }) => {
+    const data = await axiosInstance
+      .request({
+        url,
+        method,
+        data: payload,
+        params: query,
+        headers,
+      })
+      .then((res) => res.data);
+
+    return {
+      data,
+    };
+  },
 });

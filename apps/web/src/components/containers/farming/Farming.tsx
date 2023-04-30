@@ -1,8 +1,8 @@
 //import { Divider } from "antd";
-import styled from 'styled-components';
-import PageLayout from '../../templates/PageLayout';
-import FarmingFilterBar from './components/FarmingFilterBar';
-import FarmingTable from './components/FarmingTable';
+import styled from "styled-components";
+import PageLayout from "../../templates/PageLayout";
+import FarmingFilterBar from "./components/FarmingFilterBar";
+import FarmingTable from "./components/FarmingTable";
 
 const FarmingContainer = styled.div`
   max-width: 1200px;
@@ -10,7 +10,7 @@ const FarmingContainer = styled.div`
   padding: 0 20px;
 `;
 
-const Farming = () => {
+const Staking = () => {
   return (
     <>
       <PageLayout>
@@ -24,4 +24,4 @@ const Farming = () => {
   );
 };
 
-export default Farming;
+export default Staking;

@@ -6,7 +6,7 @@ import React from "react";
 import { env } from "../../env";
 
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm();
+  const { formProps, saveButtonProps } = useForm();
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -19,7 +19,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10,
           idoPrice: 1,
           purchaseCap: 100,
-          idoTokenAddress: env.VITE_NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
+          idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
           // Fields that need to be filled
           comparisionContent: "lorem ipsum dolor",
           image: "https://picsum.photos/200/300",

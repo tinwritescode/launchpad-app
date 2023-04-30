@@ -5,28 +5,15 @@ import * as S from "./PageLayout.style";
 
 type Props = {
   children: React.ReactNode;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-function PageLayout({ children }: Props) {
-  // return (
-  //   <Layout>
-  //     <Header />
-
-  //     <Layout.Content>
-  //       <S.Container>{children}</S.Container>
-  //     </Layout.Content>
-  //     <Layout.Footer>
-  //       <Footer />
-  //     </Layout.Footer>
-  //   </Layout>
-  // );
-
+function PageLayout({ children, ...rest }: Props) {
   return (
-    <>
+    <main>
       <Header />
-      <S.Container>{children}</S.Container>
+      <S.Container {...rest}>{children}</S.Container>
       <Footer />
-    </>
+    </main>
   );
 }
 

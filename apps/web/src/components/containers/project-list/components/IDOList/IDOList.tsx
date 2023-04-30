@@ -1,23 +1,21 @@
-import { Prisma } from "database";
-import { styled } from "@mui/material/styles";
-import React, { useState } from "react";
-import { tableCellClasses } from "@mui/material/TableCell";
 import {
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import React from "react";
+import { BarLoader } from "react-spinners";
 import { api } from "~/utils/api";
 import * as S from "./IDOList.style";
 
 interface Props {}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({}));
-
 const StyledTableRow = styled(TableRow)(({ theme }) => ({}));
 
 const formatDate = (date: Date) => {
@@ -30,59 +28,50 @@ const formatDate = (date: Date) => {
 
 const IDOList: React.FC<Props> = () => {
   const { data, isLoading, error, refetch } = api.project.getAll.useQuery({
-    // status,
     offset: 0,
     limit: 10,
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <BarLoader />;
   }
+
   if (error) {
     return <div>Error...</div>;
   }
 
-  const onChange = (key: string) => {
-    refetch();
-  };
   return (
-    <>
-      {/* project List
-      {JSON.stringify(data)} */}
-      {/* <S.ProjectList data = {data} /> */}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 600 }}>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "#fbe9e7" }}>
-              <StyledTableCell align="left">Project Name</StyledTableCell>
-              <StyledTableCell align="left">Token</StyledTableCell>
-              <StyledTableCell align="center">Create At</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data?.data.map((row) => (
-              <StyledTableRow key={row.name}>
-                <StyledTableCell align="left">
-                  <S.ProjectInfo
-                    id={row.id as string}
-                    name={row.name as string}
-                    image={row.image as string}
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="left">
-                  {row.token?.name}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {formatDate(row.createdAt as Date)}
-                </StyledTableCell>
-                <StyledTableCell align="center">{row.status}</StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+    <TableContainer component={Paper} variant="outlined">
+      <Table>
+        <TableHead>
+          <TableRow>
+            <StyledTableCell align="left">Project Name</StyledTableCell>
+            <StyledTableCell align="left">Token</StyledTableCell>
+            <StyledTableCell align="center">Create At</StyledTableCell>
+            <StyledTableCell align="center">Status</StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data?.data.map((row) => (
+            <StyledTableRow key={row.name}>
+              <StyledTableCell align="left">
+                <S.ProjectInfo
+                  id={row.id as string}
+                  name={row.name as string}
+                  image={row.image as string}
+                  url={`/project/${row.id}`}
+                />
+              </StyledTableCell>
+              <StyledTableCell align="left">CORRECT ME</StyledTableCell>
+              <StyledTableCell align="center">
+                {formatDate(row.createdAt as Date)}
+              </StyledTableCell>
+              <StyledTableCell align="center">{row.status}</StyledTableCell>
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

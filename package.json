@@ -10,15 +10,19 @@
     "build": "dotenv -- turbo run build",
     "dev": "dotenv -- turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "turbo": "dotenv -- turbo run"
   },
   "devDependencies": {
+    "dotenv-cli": "^7.2.1",
     "prettier": "latest",
-    "turbo": "latest",
-    "dotenv-cli": "^7.2.1"
+    "turbo": "latest"
   },
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@7.29.1"
+  "packageManager": "pnpm@7.29.1",
+  "dependencies": {
+    "next": "^13.3.0"
+  }
 }

@@ -1,47 +1,27 @@
 import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
+const ADMIN_WALLET_ADDRESS = "0x56c7b349738CF0AC71aF0B31444bF04E757e2c10";
 
 async function main() {
   const owner = await prisma.user
     .create({
       data: {
-        walletAddress: "0x56c7b349738CF0AC71aF0B31444bF04E757e2c10",
+        walletAddress: ADMIN_WALLET_ADDRESS,
         roles: ["ADMIN", "SUPER_ADMIN"],
       },
     })
     .catch((e) => {
-      console.log("User already exists");
+      console.log("User already exists", e.message);
+
       return prisma.user.findUnique({
         where: {
-          walletAddress: "0x56c7b349738CF0AC71aF0B31444bF04E757e2c10",
+          walletAddress: ADMIN_WALLET_ADDRESS,
         },
       });
     });
 
-  await prisma.project
-    .create({
-      data: {
-        ownerId: owner?.id,
-        name: "Mi Fen",
-        comparisionContent: "lorem ipsum",
-        image: "https://picsum.photos/200",
-        roadmapContent: "lorem ipsum",
-        summaryContent: "lorem ipsum",
-        videoURL: "https://www.youtube.com/watch?v=QH2-TGUlwu4",
-        token: {
-          create: {
-            name: "Mi Fen",
-            symbol: "MIF",
-            decimals: 18,
-            totalSupply: 100000,
-            address: "0x56c7b349738CF0AC71aF0B31444bF04E757e2c10",
-          },
-        },
-      },
-    })
-    .catch((e) => {
-      console.log("Project already exists");
-    });
+  console.log("Created/Found owner: ", owner);
 }
 
 main()
