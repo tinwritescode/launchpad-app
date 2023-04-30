@@ -56,6 +56,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
+    "react-icons": "^4.8.0",
     "react-is": "^18.2.0",
     "react-sticky-box": "^2.0.0",
     "shared": "workspace:*",
