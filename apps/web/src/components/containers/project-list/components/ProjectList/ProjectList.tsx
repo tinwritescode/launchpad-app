@@ -16,6 +16,7 @@ import { api } from "~/utils/api";
 import { Create } from "../../../create-ido";
 import * as S from "./ProjectList.style";
 import { ProjectInfo } from "../IDOList/IDOList.style";
+import { BarLoader } from "react-spinners";
 interface Props {}
 
 const projectListStore = create<{ open: boolean; toggleModal: () => void }>(
@@ -40,14 +41,13 @@ const ProjectList: React.FC<Props> = () => {
 
   const { open, toggleModal } = projectListStore();
 
-  // create modal
-
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <BarLoader />;
   }
   if (error) {
     return <div>Error...</div>;
   }
+
   return (
     <S.Container>
       <S.UserInfoCard
@@ -63,9 +63,6 @@ const ProjectList: React.FC<Props> = () => {
           <Create />
         </DialogContent>
       </Drawer>
-      <S.TopAction>
-        <Button onClick={toggleModal}>Create IDO</Button>
-      </S.TopAction>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 600 }}>
           <TableHead>

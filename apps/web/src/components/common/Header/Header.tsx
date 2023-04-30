@@ -1,6 +1,5 @@
-import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
+import { AppBar, Stack, Toolbar } from "@mui/material";
 import Link from "next/link";
-import { useMemo } from "react";
 import { LoginModal } from "../LoginModal/LoginModal";
 import { ChangeNetwork } from "./ChangeNetwork";
 import style from "./Header.module.scss";
@@ -8,52 +7,46 @@ import style from "./Header.module.scss";
 type Props = {};
 
 function Header({}: Props) {
+  const links = [
+    {
+      name: "Home",
+      url: "/",
+    },
+    {
+      name: "IDOs",
+      url: "/ido-list",
+    },
+    {
+      name: "Staking",
+      url: "/staking",
+    },
+  ];
+
   return (
     <>
-      <AppBar
-        position="sticky"
-        className={style.header}
-        sx={{ top: 0, zIndex: 999 }}
-        color={"transparent"}
-      >
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+      <nav className="flex justify-evenly gap-3 p-4 py-8  text-gray-600 items-center">
+        <div className="flex gap-8 items-center">
           <Link href="/">
-            <img src="/assets/logo.svg" alt="logo" height={20} />
+            <h1 className="font-bold font-mono text-3xl text-gray-800">
+              HCMUSStarter
+            </h1>
           </Link>
+          <div className="flex gap-8">
+            {links.map((link) => (
+              <Link className="font-semibold" href={link.url}>
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
 
-          <LoginModal />
-        </Toolbar>
-      </AppBar>
+        <LoginModal />
+      </nav>
       <Stack spacing={2} sx={{ position: "sticky", top: 0, zIndex: 100 }}>
         <ChangeNetwork />
       </Stack>
     </>
   );
-  // return (
-  //   <>
-  //     <Space direction="vertical">
-  //       <AppBar position="fixed" className={style.header}>
-  //         <Toolbar sx={{ justifyContent: "space-between" }}>
-  //           <Link href="/">
-  //             <img src="/assets/logo.svg" width={190} height={40} />
-  //           </Link>
-  //           <Box>
-  //             {links.map((link) => (
-  //               <Button key={link.href} variant="text">
-  //                 <Link href={link.href}>{link.label}</Link>
-  //               </Button>
-  //             ))}
-  //           </Box>
-
-  //           <LoginModal />
-  //         </Toolbar>
-  //       </AppBar>
-  //       <ChangeNetwork />
-  //     </Space>
-
-  //     <Box sx={{ height: "100px" }} />
-  //   </>
-  // );
 }
 
 export default Header;

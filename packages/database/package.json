@@ -7,8 +7,8 @@
   "scripts": {
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate --accept-data-loss --force-reset",
-    "seed": "esbuild prisma/seed.ts --outfile=node_modules/tmp-seed.cjs --bundle --format=cjs --external:prisma --external:@prisma/client && node node_modules/tmp-seed.cjs --preview-feature",
-    "prisma:reset": "prisma migrate reset && npm run seed"
+    "db:reset": "prisma migrate reset --force && npm run db:push && npm run db:seed",
+    "db:seed": "esbuild prisma/seed.ts --outfile=node_modules/tmp-seed.cjs --bundle --format=cjs --external:prisma --external:@prisma/client && node node_modules/tmp-seed.cjs --preview-feature"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.14.0",
+    "esbuild": "^0.17.14",
     "prisma": "^4.9.0",
     "typescript": "^5.0.4"
   }

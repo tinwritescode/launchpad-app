@@ -3,7 +3,7 @@ import { env } from "../env";
 
 export const TOKEN_KEY = "refine-auth";
 export const axiosInstance = axios.create({
-  baseURL: env.VITE_BASE_API_URL,
+  baseURL: env.NEXT_PUBLIC_BASE_API_URL,
 });
 
 axiosInstance.interceptors.request.use(async (config) => {

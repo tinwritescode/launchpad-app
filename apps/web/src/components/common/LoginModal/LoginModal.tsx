@@ -1,26 +1,23 @@
-import { Dialog, DialogContent, DialogContentText, Stack } from "@mui/material";
-import { useCallback, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useConnect } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/common/Dialog";
 import { formatWalletAddress } from "../../../utils/ethereum";
 import { Button } from "../AppButton";
 import Flex from "../Flex/Flex";
 import LoginButton from "../LoginButton";
 import { useSession } from "../LoginButton/lib";
+import CoinBaseLogo from "./coinbase-wallet-logo.svg";
+import MetaMaskLogo from "./metamask-logo.svg";
 
 type Props = {};
 
 export function LoginModal({}: Props) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data } = useSession();
-
-  const showModal = useCallback(() => {
-    setIsModalOpen(true);
-  }, []);
-  const hideModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
-
   const {
     connectAsync,
     connectors,
@@ -28,6 +25,51 @@ export function LoginModal({}: Props) {
     pendingConnector,
     data: chainData,
   } = useConnect();
+  const { isConnected, address, connector } = useAccount();
+  const { disconnectAsync } = useDisconnect();
+
+  const steps = [
+    {
+      name: "Step 1",
+      children: (
+        <>
+          {(isConnected && (
+            <Button
+              onClick={async () =>
+                disconnectAsync().catch((err) => {
+                  toast.error(err.message);
+                })
+              }
+            >
+              {formatWalletAddress(address as string)}
+            </Button>
+          )) ||
+            connectors.map((connector) => (
+              <Button
+                size="lg"
+                disabled={!connector.ready}
+                key={connector.id}
+                onClick={async () =>
+                  connectAsync({ connector }).catch((err) => {
+                    toast.error(err.message);
+                  })
+                }
+              >
+                {connector.name}
+                {!connector.ready && "(unsupported)"}
+                {isLoading &&
+                  connector.id === pendingConnector?.id &&
+                  "(connecting)"}
+              </Button>
+            ))}
+        </>
+      ),
+    },
+    {
+      name: "Step 2",
+      children: <LoginButton />,
+    },
+  ];
 
   return (
     <Flex
@@ -36,73 +78,23 @@ export function LoginModal({}: Props) {
         alignItems: "center",
       }}
     >
-      <Button onClick={showModal}>
-        {!!data?.isLoggedIn
-          ? `Welcome ${formatWalletAddress(data?.address)}`
-          : "Login"}
-      </Button>
-      <Dialog
-        title="Login"
-        open={isModalOpen}
-        onClose={hideModal}
-        maxWidth="xl"
-      >
-        <DialogContent>
-          <DialogContentText>
-            <h4>Step 1</h4>
-            <Stack
-              sx={{
-                width: "100%",
-                alignItems: "stretch",
-              }}
-            >
-              {(chainData?.account && (
-                <Button
-                  onClick={() => {
-                    connectAsync({ connector: chainData?.connector }).catch(
-                      (err) => {}
-                    );
-                  }}
-                >
-                  {formatWalletAddress(chainData?.account)}
-                </Button>
-              )) ||
-                connectors.map((connector) => (
-                  <Button
-                    size="lg"
-                    disabled={!connector.ready}
-                    key={connector.id}
-                    onClick={async () => {
-                      connectAsync({ connector }).catch((err) => {
-                        toast.error(err.message);
-                      });
-                    }}
-                  >
-                    {connector.name}
-                    {!connector.ready && "(unsupported)"}
-                    {isLoading &&
-                      connector.id === pendingConnector?.id &&
-                      "(connecting)"}
-                  </Button>
-                ))}
-            </Stack>
-          </DialogContentText>
-          <DialogContentText>
-            <h4>Step 2</h4>
-            <LoginButton />
-          </DialogContentText>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="px-16">
+            {!!data?.isLoggedIn
+              ? `Welcome ${formatWalletAddress(data?.address)}`
+              : "Login"}
+          </Button>
+        </DialogTrigger>
 
-          <DialogContentText>
-            <h4>Step 3</h4>
-            <Button
-              disabled={!data?.isLoggedIn}
-              onClick={hideModal}
-              style={{ width: "100%" }}
-              size="lg"
-            >
-              Go to your profile
-            </Button>
-          </DialogContentText>
+        <DialogContent className="bg-white">
+          <DialogTitle>Login</DialogTitle>
+          {steps.map((step) => (
+            <div className="grid gap-4">
+              <h4 className="font-bold">{step.name}</h4>
+              <div className="grid gap-2">{step.children}</div>
+            </div>
+          ))}
         </DialogContent>
       </Dialog>
     </Flex>

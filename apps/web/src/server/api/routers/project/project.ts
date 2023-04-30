@@ -175,6 +175,24 @@ export const projectRouter = createTRPCRouter({
             });
           });
 
+        const dividendContract = await Dividend__factory.connect(
+          env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
+          signer
+        );
+
+        // add operator
+        await Promise.all(
+          deployedContracts.map(async (contract) => {
+            const idoContract = IDOContract__factory.connect(
+              contract.address,
+              signer
+            );
+
+            const tx = await idoContract.addOperator(dividendContract.address);
+            return await tx.wait();
+          })
+        );
+
         return await ctx.prisma.project.update({
           where: { id: project.id },
           data: {
@@ -251,7 +269,7 @@ export const projectRouter = createTRPCRouter({
                 .dividedBy(100)
                 .dividedBy(new BNjs(10 ** 18))
                 .toString(),
-              fulfilledAmount: fulfilledAmount.toString(),
+              fulfilledAmount: fulfilledAmount.toFormat(),
             };
           }) || []
         ),
@@ -358,13 +376,14 @@ export const projectRouter = createTRPCRouter({
         new ethers.providers.JsonRpcProvider(env.NEXT_PUBLIC_BLOCKCHAIN_RPC)
       );
 
-      const { isDividendFulfilled } = await getDividendContractInfo(
-        ctx.prisma,
-        {
-          id: input.projectId,
-        },
-        ctx.signer
-      );
+      const { isDividendFulfilled, requiredBalance } =
+        await getDividendContractInfo(
+          ctx.prisma,
+          {
+            id: input.projectId,
+          },
+          ctx.signer
+        );
 
       if (!isDividendFulfilled) {
         throw new TRPCError({
@@ -393,9 +412,6 @@ export const projectRouter = createTRPCRouter({
         });
 
       const tokenAddress = data.token?.address as string;
-      const tokenBalance = await getErc20Contract(tokenAddress).balanceOf(
-        dividendContract.address
-      );
 
       const tx = await dividendContract
         .connect(ctx.signer)
@@ -404,7 +420,7 @@ export const projectRouter = createTRPCRouter({
           data.IDOContract.map((contract) => ({
             to: contract.address,
             amount: calculateDividendPercent(
-              tokenBalance,
+              BigNumber.from(requiredBalance.toFixed(0)),
               getContractDividendInPercent(contract.name)
             ),
           }))
@@ -544,7 +560,8 @@ async function getDividendContractInfo(
   return {
     isDividendFulfilled,
     avgRate: avgRate.toString(),
-    requiredBalance,
-    dividendBalance,
+    requiredBalance: requiredBalance,
+    dividendBalance: dividendBalance,
+    contractAddress: env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
   };
 }

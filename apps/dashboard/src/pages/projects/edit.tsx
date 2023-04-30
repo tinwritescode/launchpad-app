@@ -1,4 +1,10 @@
-import { Edit, getValueFromEvent, useForm, useSelect } from "@refinedev/antd";
+import {
+  Edit,
+  SaveButton,
+  getValueFromEvent,
+  useSelect,
+  useStepsForm,
+} from "@refinedev/antd";
 import {
   IResourceComponentsProps,
   useCustom,
@@ -12,19 +18,27 @@ import {
   Input,
   Row,
   Select,
+  Steps,
   Typography,
   Upload,
 } from "antd";
 import dayjs from "dayjs";
 import React from "react";
+import { BigNumber as BigNumberJS } from "bignumber.js";
+import { env } from "../../env";
 
-const FULLFIL_DIVIDEND_URL = "http://localhost:3000/token-manager";
+const FULLFIL_DIVIDEND_URL = `http://localhost:3000/token-manager`;
 
 export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm();
-
+  const {
+    formProps,
+    saveButtonProps,
+    queryResult,
+    stepsProps,
+    current,
+    gotoStep,
+  } = useStepsForm();
   const projectsData = queryResult?.data?.data;
-
   const { selectProps: ownerSelectProps } = useSelect({
     resource: "owners",
     defaultValue: projectsData?.ownerId,
@@ -39,7 +53,6 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       enabled: !!projectsData?.id,
     },
   });
-
   const statusList = [
     {
       label: "Active",
@@ -73,77 +86,25 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label="Id"
-          name={["id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input readOnly disabled />
-        </Form.Item>
-        <Form.Item
-          label="Created At"
-          name={["createdAt"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
+          name="image"
           getValueProps={(value: any) => ({
-            value: value ? dayjs(value) : undefined,
+            fileList: [{ url: value, name: value, uid: value }],
           })}
-        >
-          <DatePicker />
-        </Form.Item>
-        <Form.Item
-          label="Updated At"
-          name={["updatedAt"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-          getValueProps={(value: any) => ({
-            value: value ? dayjs(value) : undefined,
-          })}
-        >
-          <DatePicker />
-        </Form.Item>
-        <Form.Item
-          label="Name"
-          name={["name"]}
+          getValueFromEvent={getValueFromEvent}
+          noStyle
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input />
-        </Form.Item>
-        <Form.Item label="Image">
-          <Form.Item
-            name="image"
-            getValueProps={(value: any) => ({
-              fileList: [{ url: value, name: value, uid: value }],
-            })}
-            getValueFromEvent={getValueFromEvent}
-            noStyle
-            rules={[
-              {
-                required: true,
-              },
-            ]}
+          <Upload.Dragger
+            capture={false}
+            listType="picture"
+            beforeUpload={() => false}
           >
-            <Upload.Dragger
-              capture={false}
-              listType="picture"
-              beforeUpload={() => false}
-            >
-              <p className="ant-upload-text">Drag & drop a file in this area</p>
-            </Upload.Dragger>
-          </Form.Item>
+            <p className="ant-upload-text">Drag & drop a file in this area</p>
+          </Upload.Dragger>
         </Form.Item>
         <Form.Item
           label="Status"
@@ -290,18 +251,20 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
             }}
           </Form.List>
         </Form.Item>
+      <Form
+        {...formProps}
+        layout="vertical"
+        style={{
+          display: "grid",
+          gap: "2rem",
+        }}
+      >
+        <Steps
+          {...stepsProps}
+          items={[{ title: "About Project" }, { title: "Distribute tokens" }]}
+        />
 
-        {/* <>
-          {(projectsData?.IDOContract as any[])?.map((item, index) => (
-            <Form.Item
-              key={index}
-              label={`IDOContract ${index + 1}`}
-              name={["IDOContract", index, "name"]}
-            >
-              <Input type="text" />
-            </Form.Item>
-          ))}
-        </> */}
+        {formList[current]}
       </Form>
     </Edit>
   );

@@ -22,14 +22,6 @@ export const Login: React.FC = () => {
         }}
       >
         <Col xs={22}>
-          {error && (
-            <Alert
-              type="error"
-              showIcon
-              message={error.message}
-              className="mb-4"
-            />
-          )}
           <Space
             direction="vertical"
             style={{
