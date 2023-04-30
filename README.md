@@ -25,10 +25,22 @@ git clone https://github.com/tinwritescode/launchpad-app
 cd ./launchpad-app
 ```
 
+Setting up env:
+
+```bash
+cp .env.example .env
+```
+
 Run `docker-compose`:
 
 ```bash
 docker-compose up
+```
+
+Setting up database:
+
+```bash
+pnpm run turbo db:push
 ```
 
 2. Run local development server
