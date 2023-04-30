@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-console.log("env here", import.meta.env);
-
 const envSchema = z.object({
   NEXT_PUBLIC_BASE_API_URL: z.string().url(),
   NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS: z.string(),

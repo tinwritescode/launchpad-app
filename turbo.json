@@ -5,13 +5,21 @@
       "dependsOn": ["^build", "^db:generate", "^generateTypechain"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "web#build": {
-      "dependsOn": ["^build"],
+    "launchpad-web#build": {
+      "dependsOn": ["^build", "^generateTypechain", "^db:generate"],
       "outputs": [".next/**"]
     },
     "dashboard#build": {
       "dependsOn": ["^build"],
       "outputs": ["dist"]
+    },
+    "launchpad-web#start": {
+      "dependsOn": [
+        "^launchpad-web#build",
+        "^generateTypechain",
+        "^db:generate"
+      ],
+      "outputs": [".next/**"]
     },
     "lint": {},
     "dev": {
