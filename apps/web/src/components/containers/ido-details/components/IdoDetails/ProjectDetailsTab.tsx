@@ -1,24 +1,36 @@
+import { useRouter } from "next/router";
 import React from "react";
+import { api } from "~/utils/api";
+import { useIdoDetail } from "../../hooks/useIdoDetail";
 
-type PoolInfoProps = {
-  opens?: string;
-  fcfsOpens?: string;
-  closes?: string;
-  swapRate?: string;
-  cap?: string;
-  totalUsersParticipated?: string;
-  totalFundsSwapped?: string;
-  accessType?: string;
-};
-type TokenInfoProps = {
-  tokenName?: string;
-  tokenSymbol?: string;
-  totalSupply?: string;
-};
-export const ProjectDetailsTab = (
-  poolInfo?: PoolInfoProps,
-  tokenInfo?: TokenInfoProps
-) => {
+// type PoolInfoProps = {
+//   opens?: string;
+//   fcfsOpens?: string;
+//   closes?: string;
+//   swapRate?: string;
+//   cap?: string;
+//   totalUsersParticipated?: string;
+//   totalFundsSwapped?: string;
+//   accessType?: string;
+// };
+// type TokenInfoProps = {
+//   tokenName?: string;
+//   tokenSymbol?: string;
+//   totalSupply?: string;
+// };
+export const ProjectDetailsTab = () => {
+  const { id } = useRouter().query as { id: string };
+  const { data, isLoading } = api.project.getOne.useQuery(
+    { id },
+    {
+      enabled: !!id,
+    }
+  );
+
+  const { tokenInfo } = useIdoDetail({
+    erc20ContractAddress: data?.token?.address,
+  });
+
   return (
     <>
       <div className="grid grid-flow-row gap-8 md:grid-flow-col">
@@ -30,7 +42,7 @@ export const ProjectDetailsTab = (
                 <th className="px-6 py-3"></th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Opens
@@ -79,7 +91,7 @@ export const ProjectDetailsTab = (
                 </th>
                 <td className="px-6 py-4">{poolInfo?.accessType}</td>
               </tr>
-            </tbody>
+            </tbody> */}
           </table>
         </div>
 
@@ -96,19 +108,21 @@ export const ProjectDetailsTab = (
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Name
                 </th>
-                <td className="px-6 py-4">{tokenInfo?.tokenName}</td>
+                <td className="px-6 py-4">{tokenInfo?.name}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Token Symbol
                 </th>
-                <td className="px-6 py-4">{tokenInfo?.tokenSymbol}</td>
+                <td className="px-6 py-4">{tokenInfo?.symbol}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Total Supply
                 </th>
-                <td className="px-6 py-4">{tokenInfo?.totalSupply}</td>
+                <td className="px-6 py-4">
+                  {tokenInfo?.totalSupply.toString()}
+                </td>
               </tr>
             </tbody>
           </table>

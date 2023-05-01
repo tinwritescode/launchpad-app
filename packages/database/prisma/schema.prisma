@@ -76,13 +76,14 @@ model Project {
 }
 
 model IDOContract {
-    id        String   @id @default(uuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    address   String
-    Project   Project  @relation(fields: [projectId], references: [id])
-    projectId String
-    name      String
+    id            String   @id @default(uuid())
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    address       String
+    Project       Project  @relation(fields: [projectId], references: [id])
+    projectId     String
+    name          String
+    whitelistDump String?
 }
 
 model Token {
