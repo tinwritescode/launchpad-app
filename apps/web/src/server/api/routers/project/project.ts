@@ -216,7 +216,7 @@ export const projectRouter = createTRPCRouter({
       return {
         ...data,
         IDOContract: await Promise.all(
-          data?.IDOContract.map(async (contract) => {
+          data?.IDOContract.map(async ({ whitelistDump, ...contract }) => {
             const idoContract = new IDOContract__factory(signer).attach(
               contract.address
             );
@@ -231,10 +231,8 @@ export const projectRouter = createTRPCRouter({
 
             let stakedAmount: string | null = null;
 
-            if (session?.user?.isLoggedIn && contract.whitelistDump) {
-              const whitelistTree = WhitelistMerkleTree.fromJSON(
-                contract.whitelistDump
-              );
+            if (session?.user?.isLoggedIn && whitelistDump) {
+              const whitelistTree = WhitelistMerkleTree.fromJSON(whitelistDump);
               const whitelistData = whitelistTree.getWhitelistData(
                 session.user.address
               );
