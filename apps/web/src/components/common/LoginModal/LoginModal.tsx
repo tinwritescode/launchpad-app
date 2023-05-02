@@ -11,8 +11,6 @@ import { Button } from "../AppButton";
 import Flex from "../Flex/Flex";
 import LoginButton from "../LoginButton";
 import { useSession } from "../LoginButton/lib";
-import CoinBaseLogo from "./coinbase-wallet-logo.svg";
-import MetaMaskLogo from "./metamask-logo.svg";
 
 type Props = {};
 
@@ -81,7 +79,7 @@ export function LoginModal({}: Props) {
       <Dialog>
         <DialogTrigger asChild>
           <Button className="px-16">
-            {!!data?.isLoggedIn
+            {!!data?.isLoggedIn && isConnected
               ? `Welcome ${formatWalletAddress(data?.address)}`
               : "Login"}
           </Button>

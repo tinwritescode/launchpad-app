@@ -64,7 +64,7 @@ export const useFarmingHook = () => {
     async (payload: { amount: BigNumber; stakingAddress: string }) => {
       const signer = getSigner();
       try {
-        return await getErc20Contract()
+        return await getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS)
           .connect(signer)
           .approve(payload.stakingAddress, BigNumber.from(payload.amount));
       } catch (e: any) {

@@ -17,7 +17,8 @@ const config: HardhatUserConfig = {
   },
   networks: {
     polygonMumbai: {
-      url: "https://rpc-mumbai.maticvigil.com",
+      url: "https://rpc.ankr.com/polygon_mumbai",
+      chainId: 80001,
       accounts: accounts.map((account) => account.privateKey),
     },
     hardhat: {
