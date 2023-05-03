@@ -27,7 +27,10 @@ import {
 import { createIdoProjectInputSchema } from "./project.schema";
 import { calculateDividendPercent } from "./project.util";
 import BNjs from "bignumber.js";
-import { WhitelistMerkleTree } from "~/utils/whitelist_tree";
+import {
+  WhitelistDataProof,
+  WhitelistMerkleTree,
+} from "~/utils/whitelist_tree";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -229,21 +232,18 @@ export const projectRouter = createTRPCRouter({
                 .then((res) => res.toString())
             );
 
-            let stakedAmount: string | null = null;
+            let whitelistData: WhitelistDataProof | null = null;
 
             if (session?.user?.isLoggedIn && whitelistDump) {
               const whitelistTree = WhitelistMerkleTree.fromJSON(whitelistDump);
-              const whitelistData = whitelistTree.getWhitelistData(
+              whitelistData = whitelistTree.getWhitelistDataWithProof(
                 session.user.address
               );
-              if (whitelistData) {
-                stakedAmount = whitelistData.amount;
-              }
             }
 
             return {
               ...contract,
-              ...(stakedAmount && { stakedAmount }),
+              ...(whitelistData && { whitelistData }),
               dividendAmount: new BNjs(
                 getContractDividendInPercent(contract.name)
               )

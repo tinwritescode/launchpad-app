@@ -19,6 +19,11 @@ export class WhitelistData {
   }
 }
 
+export type WhitelistDataProof = {
+  stakedAmount: string;
+  proof: string[];
+};
+
 export class WhitelistMerkleTree {
   private tree: StandardMerkleTree<any[]>;
 
@@ -41,10 +46,13 @@ export class WhitelistMerkleTree {
     return JSON.stringify(this.tree.dump());
   }
 
-  getWhitelistData(address: string): WhitelistData | null {
+  getWhitelistDataWithProof(address: string): WhitelistDataProof | null {
     for (const [index, values] of this.tree.entries()) {
       if (values[0] === address) {
-        return WhitelistData.fromArray(values);
+        return {
+          stakedAmount: values[1],
+          proof: this.tree.getProof(index),
+        };
       }
     }
     return null;
