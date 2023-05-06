@@ -2,33 +2,18 @@ import { useRouter } from "next/router";
 import React from "react";
 import { api } from "~/utils/api";
 import { useIdoDetail } from "../../hooks/useIdoDetail";
+import { SkeletonCell } from "./SkeletonCell";
 
-// type PoolInfoProps = {
-//   opens?: string;
-//   fcfsOpens?: string;
-//   closes?: string;
-//   swapRate?: string;
-//   cap?: string;
-//   totalUsersParticipated?: string;
-//   totalFundsSwapped?: string;
-//   accessType?: string;
-// };
-// type TokenInfoProps = {
-//   tokenName?: string;
-//   tokenSymbol?: string;
-//   totalSupply?: string;
-// };
 export const ProjectDetailsTab = () => {
   const { id } = useRouter().query as { id: string };
   const { data, isLoading } = api.project.getOne.useQuery(
     { id },
-    {
-      enabled: !!id,
-    }
+    { enabled: !!id, refetchOnWindowFocus: false }
   );
 
-  const { tokenInfo } = useIdoDetail({
+  const { tokenInfo, idosInfo } = useIdoDetail({
     erc20ContractAddress: data?.token?.address,
+    idoContractAddresses: data?.IDOContract?.map((c) => c.address),
   });
 
   return (
@@ -42,56 +27,54 @@ export const ProjectDetailsTab = () => {
                 <th className="px-6 py-3"></th>
               </tr>
             </thead>
-            {/* <tbody>
+            <tbody>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Opens
                 </th>
-                <td className="px-6 py-4">{poolInfo?.opens}</td>
+                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   FCFS Opens
                 </th>
-                <td className="px-6 py-4">{poolInfo?.fcfsOpens}</td>
+                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Closes
                 </th>
-                <td className="px-6 py-4">{poolInfo?.closes}</td>
+                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Swap Rate
                 </th>
-                <td className="px-6 py-4">{poolInfo?.swapRate}</td>
+                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">Cap</th>
-                <td className="px-6 py-4">{poolInfo?.cap}</td>
+                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Total Users Participated
                 </th>
-                <td className="px-6 py-4">
-                  {poolInfo?.totalUsersParticipated}
-                </td>
+                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Total Funds Swapped
                 </th>
-                <td className="px-6 py-4">{poolInfo?.totalFundsSwapped}</td>
+                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Access Type
                 </th>
-                <td className="px-6 py-4">{poolInfo?.accessType}</td>
+                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
               </tr>
-            </tbody> */}
+            </tbody>
           </table>
         </div>
 
@@ -108,20 +91,29 @@ export const ProjectDetailsTab = () => {
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Name
                 </th>
-                <td className="px-6 py-4">{tokenInfo?.name}</td>
+                <td className="px-6 py-4 w-full">
+                  {!isLoading ? tokenInfo?.name : <SkeletonCell />}
+                </td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Token Symbol
                 </th>
-                <td className="px-6 py-4">{tokenInfo?.symbol}</td>
+                <td className="px-6 py-4 w-full">
+                  {" "}
+                  {!isLoading ? tokenInfo?.symbol : <SkeletonCell />}
+                </td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Total Supply
                 </th>
-                <td className="px-6 py-4">
-                  {tokenInfo?.totalSupply.toString()}
+                <td className="px-6 py-4 w-full">
+                  {!isLoading ? (
+                    tokenInfo?.totalSupply.toString()
+                  ) : (
+                    <SkeletonCell />
+                  )}
                 </td>
               </tr>
             </tbody>

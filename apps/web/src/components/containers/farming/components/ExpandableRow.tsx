@@ -1,12 +1,12 @@
 //import { Button, InputNumber, Typography } from "antd";
-import { Button, TextField, Input, Typography } from '@mui/material';
-import { BigNumber, ethers } from 'ethers';
-import moment from 'moment';
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
-import { env } from '../../../../env.mjs';
-import { formatNumber } from '../../../../utils/format';
-import { useFarmingHook } from '../useFarming';
+import { Button, TextField, Input, Typography } from "@mui/material";
+import { BigNumber, ethers } from "ethers";
+import moment from "moment";
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import { env } from "../../../../env.mjs";
+import { formatNumber } from "../../../../utils/format";
+import { useFarmingHook } from "../../staking/useStaking";
 
 const StyledForm = styled.div`
     display: flex;
@@ -52,13 +52,13 @@ const ExpandableRow = () => {
   } = useFarmingHook();
 
   const balanceInEther = useMemo(() => {
-    return ethers.utils.formatEther(stakingTokenBalance || '0');
+    return ethers.utils.formatEther(stakingTokenBalance || "0");
   }, [stakingTokenBalance]);
   const amountStakedInEther = useMemo(() => {
-    return ethers.utils.formatEther(amountStaked || '0');
+    return ethers.utils.formatEther(amountStaked || "0");
   }, [amountStaked]);
   const unclaimedRewardsInEther = useMemo(() => {
-    return ethers.utils.formatEther(unclaimedRewards || '0');
+    return ethers.utils.formatEther(unclaimedRewards || "0");
   }, [unclaimedRewards]);
 
   const inputRef = React.useRef<React.ElementRef<typeof Input>>(null);

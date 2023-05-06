@@ -3,10 +3,10 @@ import { FaTwitter, FaTelegram } from "react-icons/fa";
 import { AiOutlineGlobal } from "react-icons/ai";
 
 type Props = {
-  name: string;
-  twitterUrl: string;
-  telegramUrl: string;
-  websiteUrl: string;
+  name?: string;
+  twitterUrl?: string;
+  telegramUrl?: string;
+  websiteUrl?: string;
 };
 
 const IdoName = ({ name, twitterUrl, telegramUrl, websiteUrl }: Props) => {

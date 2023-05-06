@@ -2,6 +2,7 @@ import React from "react";
 import { ProjectDetailsTab } from "./ProjectDetailsTab";
 import { ScheduleTab } from "./ScheduleTab";
 import { YourAllocationTab } from "./YourAllocationTab";
+import { PoolDetailsTab } from "./PoolDetailsTab";
 
 type Props = {};
 
@@ -25,7 +26,7 @@ const IdoTable = (props: Props) => {
             className={activeTab == 1 ? activeTabClass : ""}
             onClick={() => setActiveTab(1)}
           >
-            Schedule
+            Pool Details
           </button>
         </li>
         <li>
@@ -33,13 +34,33 @@ const IdoTable = (props: Props) => {
             className={activeTab == 2 ? activeTabClass : ""}
             onClick={() => setActiveTab(2)}
           >
+            Schedule
+          </button>
+        </li>
+        <li>
+          <button
+            className={activeTab == 3 ? activeTabClass : ""}
+            onClick={() => setActiveTab(3)}
+          >
             Your Allocation
           </button>
         </li>
       </ul>
-      {activeTab == 0 && <ProjectDetailsTab />}
-      {activeTab == 1 && <ScheduleTab />}
-      {activeTab == 2 && <YourAllocationTab />}
+      {/* {activeTab == 0 && <ProjectDetailsTab />} */}
+      <ul>
+        <li style={activeTab == 0 ? { display: "block" } : { display: "none" }}>
+          {/* <ProjectDetailsTab /> */}
+        </li>
+        <li style={activeTab == 1 ? { display: "block" } : { display: "none" }}>
+          <PoolDetailsTab />
+        </li>
+        <li style={activeTab == 2 ? { display: "block" } : { display: "none" }}>
+          <ScheduleTab />
+        </li>
+        <li style={activeTab == 3 ? { display: "block" } : { display: "none" }}>
+          <YourAllocationTab />
+        </li>
+      </ul>
     </>
   );
 };

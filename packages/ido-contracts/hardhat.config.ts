@@ -6,7 +6,7 @@ const accounts = [
   {
     privateKey:
       "940f63a87785278458057dffadff0a172456bd388ddda58a8c1b14107007d8b0",
-    balance: ethers.utils.parseEther("1000").toString(),
+    balance: ethers.utils.parseEther("100000").toString(),
   },
 ];
 
