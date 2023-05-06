@@ -12,7 +12,13 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
  * Users can purchase tokens after sale started and claim after sale ended
  */
 
-contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step, IIDOContract {
+contract IDOContract is
+    AccessControl,
+    Pausable,
+    ReentrancyGuard,
+    Ownable2Step,
+    IIDOContract
+{
     using SafeERC20 for IERC20;
 
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
@@ -285,7 +291,10 @@ contract IDOContract is AccessControl, Pausable, ReentrancyGuard, Ownable2Step, 
     /**
      * @dev Deposit IDO token to the sale contract
      */
-    function depositTokens(address from, uint256 amount) external onlyOperator whenNotPaused {
+    function depositTokens(
+        address from,
+        uint256 amount
+    ) external onlyOperator whenNotPaused {
         require(amount > 0, "IDOSale: DEPOSIT_AMOUNT_INVALID");
         ido.safeTransferFrom(from, address(this), amount);
 

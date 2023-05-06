@@ -1,5 +1,6 @@
 import { NonceManager } from "@ethersproject/experimental";
 import { TRPCError } from "@trpc/server";
+import BNjs from "bignumber.js";
 import { Prisma, PrismaClient, Status } from "database";
 import { BigNumber, ethers } from "ethers";
 import {
@@ -16,17 +17,17 @@ import {
 } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
 import { env } from "../../../../env.mjs";
-import { getErc20Contract, getRpcProvider } from "../../../../libs/blockchain";
+import { getRpcProvider } from "../../../../libs/blockchain";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 import { protectedProcedure } from "./../../trpc";
 import {
+  TierKeys,
   buildContracts as buildContractPayloads,
   getContractDividendInPercent,
   getContractNameFromIndex,
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
 import { calculateDividendPercent } from "./project.util";
-import BNjs from "bignumber.js";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -149,7 +150,7 @@ export const projectRouter = createTRPCRouter({
                   // TODO: Change this later
                   const numberOfPeople = 200;
                   const dividendPercent = getContractDividendInPercent(
-                    contract.name
+                    contract.name as TierKeys
                   );
                   const purchaseCap = new BNjs(
                     calculateDividendPercent(
@@ -270,7 +271,7 @@ export const projectRouter = createTRPCRouter({
             return {
               ...contract,
               dividendAmount: new BNjs(
-                getContractDividendInPercent(contract.name)
+                getContractDividendInPercent(contract.name as TierKeys)
               )
                 .multipliedBy(data.targettedRaise)
                 .dividedBy(100)
@@ -428,7 +429,7 @@ export const projectRouter = createTRPCRouter({
             to: contract.address,
             amount: calculateDividendPercent(
               BigNumber.from(requiredBalance.toFixed(0)),
-              getContractDividendInPercent(contract.name)
+              getContractDividendInPercent(contract.name as TierKeys)
             ),
           }))
         )
