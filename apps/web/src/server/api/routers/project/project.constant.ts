@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { env } from "../../../../env.mjs";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 // - Tiers: Bronze: 1000, Silver: 2500, Gold:  5000, Platinum: 10000, Diamond: 250000, Blue Diamond: 750000

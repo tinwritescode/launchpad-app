@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getErc20Contract, getIdoContract } from "../../../../libs/blockchain";
 import moment from "moment";
 import { BigNumber } from "ethers";
+import { useQuery } from "@tanstack/react-query";
 
 export enum SaleStatus {
   NOT_STARTED,

@@ -128,6 +128,15 @@ export const useStakingHook = () => {
     }
   );
 
+  const decimals = useQuery(
+    ["decimals", address],
+    ({ queryKey }) =>
+      getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).decimals(),
+    {
+      enabled: !!address,
+    }
+  );
+
   return {
     amountStaked: stakeInfo?.amountStaked,
     unclaimedRewards: stakeInfo?.unclaimedRewards,
@@ -140,5 +149,6 @@ export const useStakingHook = () => {
     claimReward,
     withdraw,
     unlockTime: unlockTime.data,
+    decimals: decimals.data,
   };
 };

@@ -17,8 +17,9 @@ export class IDOContract {
   }
 
   deployIDOContract(
-    payload: IdoContractDto & {
+    payload: Omit<IdoContractDto, "idoPrice"> & {
       purchaseCap: BigNumber;
+      idoPrice: BigNumber;
     },
     signer: NonceManager
   ) {

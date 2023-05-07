@@ -174,6 +174,7 @@ export const projectRouter = createTRPCRouter({
                     {
                       ...contract,
                       purchaseCap: BigNumber.from(purchaseCap.toString()),
+                      idoPrice: ethers.utils.parseEther(idoPrice.toString()),
                     },
                     signer
                   );
@@ -292,6 +293,14 @@ export const projectRouter = createTRPCRouter({
                 .dividedBy(new BNjs(10 ** 18))
                 .toString(),
               fulfilledAmount: fulfilledAmount.toFormat(),
+              minStakedAmount: (
+                await idoContract.minStakingRequired()
+              ).toString(),
+              maxStakedAmount: (
+                await idoContract.maxStakingRequired()
+              ).toString(),
+              purchaseCap: (await idoContract.purchaseCap()).toString(),
+              idoPrice: (await idoContract.idoPrice()).toString(),
             };
           }) || []
         ),

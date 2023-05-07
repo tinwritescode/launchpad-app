@@ -78,7 +78,7 @@ export function LoginModal({}: Props) {
     >
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="px-16">
+          <Button className="px-16" id="login-button">
             {!!data?.isLoggedIn && isConnected
               ? `Welcome ${formatWalletAddress(data?.address)}`
               : "Login"}

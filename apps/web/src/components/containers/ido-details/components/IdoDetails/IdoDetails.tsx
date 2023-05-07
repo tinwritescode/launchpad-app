@@ -1,13 +1,12 @@
-import React from "react";
-import data from "./ido-details-data.json";
-import IdoName from "./IdoName";
-import IdoStatus from "./IdoStatus";
-import IdoButtonWallet from "./IdoButtonWallet";
-import IdoTable from "./IdoTable";
 import { useRouter } from "next/router";
+import { useStakingHook } from "~/components/containers/staking/useStaking";
 import { api } from "~/utils/api";
 import { useIdoDetail } from "../../hooks/useIdoDetail";
-import { useStakingHook } from "~/components/containers/staking/useStaking";
+import IdoButtonWallet from "./IdoButtonWallet";
+import IdoName from "./IdoName";
+import IdoStatus from "./IdoStatus";
+import { BigNumber } from "ethers";
+import { Button } from "../../../../common";
 
 const IdoDetail = () => {
   const { id } = useRouter().query as { id: string };
@@ -15,23 +14,15 @@ const IdoDetail = () => {
     { id },
     { enabled: !!id, refetchOnWindowFocus: false }
   );
-
   const { amountStaked, stakingTokenName, stakingTokenBalance } =
     useStakingHook();
-
-  const { idosInfo } = useIdoDetail({
-    idoContractAddresses: data?.IDOContract?.map((c) => c.address),
-  });
-
-  const idoTier = idosInfo.find((ido) => {
-    return (
-      amountStaked &&
-      ido.minStaking <= amountStaked &&
-      amountStaked <= ido.maxStaking
+  const userTier =
+    amountStaked &&
+    data?.IDOContract?.find(
+      (c) =>
+        amountStaked.gte(c.minStakedAmount) &&
+        amountStaked.lt(c.maxStakedAmount)
     );
-  });
-
-  console.log(idoTier);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -61,7 +52,16 @@ const IdoDetail = () => {
             <div className=" text-lg text-neutral-400">
               {data?.roadmapContent}
             </div>
-            <IdoButtonWallet />
+            {(data?.token?.address && userTier?.address && (
+              <IdoButtonWallet
+                connectedButtonProps={{
+                  purchaseTokenAddress: data?.token?.address,
+                  idoContractAddress: userTier?.address,
+                  amount: userTier.purchaseCap.toString(),
+                  idoPrice: userTier.idoPrice.toString(),
+                }}
+              />
+            )) || <Button>Stake now to join</Button>}
             <div className=" text-lg text-neutral-400">
               {data?.summaryContent}
             </div>
