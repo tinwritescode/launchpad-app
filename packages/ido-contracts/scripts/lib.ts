@@ -1,9 +1,15 @@
+import { PLATFORM_TOKEN_INFO } from "./deploy";
 import { ethers, network } from "hardhat";
 import { Erc20 } from "../typechain-types";
 import { Staking } from "../typechain-types/contracts/Staking";
 import { deployContract } from "../src/utils";
+import { NonceManager } from "@ethersproject/experimental";
+import { TypeOf } from "zod";
 
-export async function deployStakingContract() {
+export async function deployStakingContract(
+  signer: NonceManager,
+  platformTokenInfo: typeof PLATFORM_TOKEN_INFO
+) {
   const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
 
   const timeUnitInSecs = 60;
@@ -11,15 +17,15 @@ export async function deployStakingContract() {
     numerator: 1,
     denominator: 10000,
   };
-  const totalSupply = ethers.utils.parseEther("1000000000");
+  const totalSupply = platformTokenInfo.totalSupply;
   const lockTime = ONE_YEAR_IN_SECS;
 
   const address: Record<string, string> = {};
   address["stakingToken"] = await deployContract(
     "Erc20",
     totalSupply,
-    "HCMUS IT Token",
-    "HIT"
+    platformTokenInfo.name,
+    platformTokenInfo.symbol
   );
   address["rewardToken"] = address["stakingToken"];
 
@@ -39,7 +45,7 @@ export async function deployStakingContract() {
   }
 
   const Staking = await ethers.getContractFactory("Staking");
-  const stakingContract = await Staking.deploy(
+  const stakingContract = await Staking.connect(signer).deploy(
     timeUnitInSecs,
     rewardRatio.numerator,
     rewardRatio.denominator,
@@ -48,8 +54,6 @@ export async function deployStakingContract() {
     address["WETH"],
     lockTime
   );
-
-  await stakingContract.deployed();
 
   console.log("Staking deployed to:", stakingContract.address);
 
@@ -61,27 +65,25 @@ export async function deployStakingContract() {
   };
 }
 
-export async function deployIDOToken() {
+export async function deployIDOToken(signer: NonceManager) {
   return {
     idoToken: await (await ethers.getContractFactory("Erc20"))
-      .deploy(ethers.utils.parseEther("1000000000"), "Dragon Ball Z", "DBZ")
-      .then((contract) => contract.deployed() as Promise<Erc20>),
+      .connect(signer)
+      .deploy(ethers.utils.parseEther("1000000000"), "Dragon Ball Z", "DBZ"),
   };
 }
 
-export async function deployUSDCToken() {
+export async function deployUSDCToken(signer: NonceManager) {
   return {
     usdcToken: await (await ethers.getContractFactory("Erc20"))
-      .deploy(ethers.utils.parseEther("1000000000"), "USD Coin", "USDC")
-      .then((contract) => contract.deployed()),
+      .connect(signer)
+      .deploy(ethers.utils.parseEther("1000000000"), "USD Coin", "USDC"),
   };
 }
 
-export async function deployDividendContract() {
+export async function deployDividendContract(signer: NonceManager) {
   const Dividend = await ethers.getContractFactory("Dividend");
-  const dividendContract = await Dividend.deploy();
-
-  await dividendContract.deployed();
+  const dividendContract = await Dividend.connect(signer).deploy();
 
   console.log("Dividend deployed to:", dividendContract.address);
 

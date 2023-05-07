@@ -28,7 +28,7 @@ function Header({}: Props) {
         <div className="flex gap-8 items-center">
           <Link href="/">
             <h1 className="font-bold font-mono text-3xl text-gray-800">
-              HCMUSStarter
+              StrawBerry
             </h1>
           </Link>
           <div className="flex gap-8">

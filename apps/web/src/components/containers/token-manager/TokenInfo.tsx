@@ -31,7 +31,7 @@ export const TokenInfo = () => {
       if (!address || !tokenAddress) {
         return null;
       }
-      const erc20Contract = getErc20Contract().attach(tokenAddress);
+      const erc20Contract = getErc20Contract(tokenAddress);
 
       const [name, decimals, totalSupply, balanceOf] = await Promise.all([
         erc20Contract.name(),
@@ -110,7 +110,7 @@ export const TokenInfo = () => {
       if (!address || !tokenAddress) {
         return null;
       }
-      const erc20Contract = getErc20Contract().attach(tokenAddress);
+      const erc20Contract = getErc20Contract(tokenAddress);
 
       // get last 1000 transfer events
       const logs = await erc20Contract.queryFilter(
@@ -195,9 +195,7 @@ export const TokenInfo = () => {
                 onSubmit={async (_values, { setSubmitting }) => {
                   try {
                     console.log("values", _values);
-                    const erc20Contract = getErc20Contract().attach(
-                      values.tokenAddress
-                    );
+                    const erc20Contract = getErc20Contract(values.tokenAddress);
                     const signer = getSigner();
                     await erc20Contract
                       .connect(signer)

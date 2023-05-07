@@ -41,7 +41,7 @@ function Footer({}: Props) {
 
       <div className="grid gap-5">
         <div className="flex justify-center">
-          <h1 className="text-3xl font-mono">HCMUSStarter</h1>
+          <h1 className="text-3xl font-mono">StrawBerry</h1>
         </div>
         <div className="flex justify-center gap-6">
           {links.map((link) => (

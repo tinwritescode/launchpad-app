@@ -28,3 +28,7 @@ export const getErc20Contract = (address: string) => {
 export const getIdoContract = (address: string) => {
   return IDOContract__factory.connect(address, getRpcProvider());
 };
+
+export const useErc20Contract = (address: string) => {
+  return getErc20Contract(address);
+};

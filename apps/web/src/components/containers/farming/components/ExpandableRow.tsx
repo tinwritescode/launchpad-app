@@ -1,12 +1,9 @@
 //import { Button, InputNumber, Typography } from "antd";
-import { Button, TextField, Input, Typography } from "@mui/material";
-import { BigNumber, ethers } from "ethers";
-import moment from "moment";
+import { Input } from "@mui/material";
+import { ethers } from "ethers";
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { env } from "../../../../env.mjs";
-import { formatNumber } from "../../../../utils/format";
-import { useFarmingHook } from "../../staking/useStaking";
+import { useStakingHook } from "../../staking/useStaking";
 
 const StyledForm = styled.div`
     display: flex;
@@ -49,7 +46,7 @@ const ExpandableRow = () => {
     approveAmount,
     withdraw,
     unlockTime,
-  } = useFarmingHook();
+  } = useStakingHook();
 
   const balanceInEther = useMemo(() => {
     return ethers.utils.formatEther(stakingTokenBalance || "0");

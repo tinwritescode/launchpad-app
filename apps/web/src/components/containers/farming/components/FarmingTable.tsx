@@ -2,7 +2,7 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 // import { Table } from "antd";
 // import type { ColumnsType } from "antd/es/table";
-import { useFarmingHook } from "../../staking/useStaking";
+import { useStakingHook } from "../../staking/useStaking";
 import ExpandableRow from "./ExpandableRow";
 
 const data = [

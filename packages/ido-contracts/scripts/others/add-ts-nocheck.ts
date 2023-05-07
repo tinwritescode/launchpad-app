@@ -21,7 +21,7 @@ async function main() {
     if (!hasTsNoCheck) {
       // If not, add the comment to the top of the file
       exec(`sed -i '' '1i\\
-    // @ts-nocheck
+// @ts-nocheck
     ' "${file}"`);
       console.log(`Added @ts-nocheck to ${JSON.stringify(file)}`);
     }

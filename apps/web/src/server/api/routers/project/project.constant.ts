@@ -3,7 +3,16 @@ import { env } from "../../../../env.mjs";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 // - Tiers: Bronze: 1000, Silver: 2500, Gold:  5000, Platinum: 10000, Diamond: 250000, Blue Diamond: 750000
 
-export const IDO_CONTRACT_STAKING_REQUIRED: Record<string, number> = {
+export enum TierKeys {
+  BRONZE = "BRONZE",
+  SILVER = "SILVER",
+  GOLD = "GOLD",
+  PLATINUM = "PLATINUM",
+  DIAMOND = "DIAMOND",
+  BLUE_DIAMOND = "BLUE_DIAMOND",
+}
+
+export const IDO_CONTRACT_STAKING_REQUIRED: Record<TierKeys, number> = {
   BRONZE: 1000,
   SILVER: 2500,
   GOLD: 5000,
@@ -29,7 +38,8 @@ export const buildContracts = ({
   IdoContractDto,
   "startTime" | "endTime" | "idoPrice" | "idoTokenAddress"
 >): IdoContractDto[] => {
-  return Object.keys(IDO_CONTRACT_STAKING_REQUIRED).map((key, index) => {
+  return Object.keys(IDO_CONTRACT_STAKING_REQUIRED).map((_key, index) => {
+    const key = _key as TierKeys;
     const nextKey = getContractNameFromIndex(index + 1);
 
     const maxStakingRequired = nextKey
@@ -38,7 +48,7 @@ export const buildContracts = ({
 
     // next key or max number
     return {
-      minStakingRequired: IDO_CONTRACT_STAKING_REQUIRED[key] as number,
+      minStakingRequired: IDO_CONTRACT_STAKING_REQUIRED[key],
       maxStakingRequired: maxStakingRequired as number,
       startTime,
       endTime,
@@ -51,6 +61,15 @@ export const buildContracts = ({
     };
   });
 };
+
+export const IDO_CONTRACT_TAILWIND_COLORS: Record<TierKeys, string> = {
+  BRONZE: "bg-yellow-100",
+  SILVER: "bg-gray-100",
+  GOLD: "bg-yellow-100",
+  PLATINUM: "bg-gray-100",
+  DIAMOND: "bg-blue-100",
+  BLUE_DIAMOND: "bg-blue-100",
+} as const;
 
 /** Specs: 
 - Bronze tier: 5% (500 tokens)

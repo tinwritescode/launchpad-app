@@ -16,10 +16,11 @@ import {
 } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
 import { env } from "../../../../env.mjs";
-import { getErc20Contract } from "../../../../libs/blockchain";
+import { getRpcProvider } from "../../../../libs/blockchain";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 import { protectedProcedure } from "./../../trpc";
 import {
+  TierKeys,
   buildContracts as buildContractPayloads,
   getContractDividendInPercent,
   getContractNameFromIndex,
@@ -68,22 +69,32 @@ export const projectRouter = createTRPCRouter({
     )
     .output(z.any())
     .query(async ({ input, ctx: { prisma } }) => {
-      const [data, count] = await Promise.all([
-        prisma.project.findMany({
-          skip: input.offset,
-          take: input.limit,
-          select: defaultProjectSelector,
-        }),
+      try {
+        const [data, count] = await Promise.all([
+          prisma.project.findMany({
+            skip: input.offset,
+            take: input.limit,
+            select: defaultProjectSelector,
+            orderBy: {
+              createdAt: "desc",
+            },
+          }),
 
-        prisma.project.count(),
-      ]);
+          prisma.project.count(),
+        ]);
 
-      return {
-        data,
-        meta: {
-          total: count,
-        },
-      };
+        return {
+          data,
+          meta: {
+            total: count,
+          },
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error?.message,
+        });
+      }
     }),
 
   createIdoProject: adminProcedure
@@ -115,98 +126,109 @@ export const projectRouter = createTRPCRouter({
       const signer = new NonceManager(ctx.signer);
       const queue = new PQueue({ concurrency: 1 });
 
-      const project = await ctx.prisma.$transaction(async (tx) => {
-        // Create project
-        const project = await ctx.prisma.project.create({
-          data: {
-            ...rest,
-            targettedRaise: new BNjs(targettedRaise.toString())
-              .multipliedBy(10 ** 18)
-              .toFixed(),
-            ownerId: ctx.session?.user?.id,
-            token: {
-              create: {
-                address: idoTokenAddress,
+      const project = await ctx.prisma.$transaction(
+        async (tx) => {
+          // Create project
+          const project = await tx.project.create({
+            data: {
+              ...rest,
+              targettedRaise: new BNjs(targettedRaise.toString())
+                .multipliedBy(10 ** 18)
+                .toFixed(),
+              ownerId: ctx.session?.user?.id,
+              token: {
+                create: {
+                  address: idoTokenAddress,
+                },
               },
             },
-          },
-          include: {
-            IDOContract: true,
-          },
-        });
-
-        const deployedContracts = await queue
-          .addAll(
-            contracts.map((contract) => {
-              return () => {
-                // TODO: Change this later
-                const numberOfPeople = 200;
-                const dividendPercent = getContractDividendInPercent(
-                  contract.name
-                );
-                const purchaseCap = new BNjs(
-                  calculateDividendPercent(
-                    BigNumber.from(targettedRaise),
-                    dividendPercent
-                  )
-                ).dividedBy(new BNjs(numberOfPeople));
-
-                // all variables
-                console.group("Variables");
-                console.log("numberOfPeople", numberOfPeople);
-                console.log("dividendPercent", dividendPercent);
-                console.log("purchaseCap", purchaseCap.toString());
-                console.groupEnd();
-
-                return instance.deployIDOContract(
-                  {
-                    ...contract,
-                    purchaseCap: BigNumber.from(purchaseCap.toString()),
-                  },
-                  signer
-                );
-              };
-            })
-          )
-          .catch((err) => {
-            throw new TRPCError({
-              code: "INTERNAL_SERVER_ERROR",
-              message: err.message,
-            });
+            include: {
+              IDOContract: true,
+            },
           });
 
-        const dividendContract = await Dividend__factory.connect(
-          env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
-          signer
-        );
+          const deployedContracts = await queue
+            .addAll(
+              contracts.map((contract) => {
+                return () => {
+                  // TODO: Change this later
+                  const numberOfPeople = 200;
+                  const dividendPercent = getContractDividendInPercent(
+                    contract.name as TierKeys
+                  );
+                  const purchaseCap = new BNjs(
+                    calculateDividendPercent(
+                      BigNumber.from(targettedRaise),
+                      dividendPercent
+                    )
+                  ).dividedBy(new BNjs(numberOfPeople));
 
-        // add operator
-        await Promise.all(
-          deployedContracts.map(async (contract) => {
-            const idoContract = IDOContract__factory.connect(
-              contract.address,
-              signer
-            );
+                  // all variables
+                  console.group("Variables");
+                  console.log("numberOfPeople", numberOfPeople);
+                  console.log("dividendPercent", dividendPercent);
+                  console.log("purchaseCap", purchaseCap.toString());
+                  console.groupEnd();
 
-            const tx = await idoContract.addOperator(dividendContract.address);
-            return await tx.wait();
-          })
-        );
+                  return instance.deployIDOContract(
+                    {
+                      ...contract,
+                      purchaseCap: BigNumber.from(purchaseCap.toString()),
+                    },
+                    signer
+                  );
+                };
+              })
+            )
+            .catch((err) => {
+              throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: err.message,
+              });
+            });
 
-        return await ctx.prisma.project.update({
-          where: { id: project.id },
-          data: {
-            IDOContract: {
-              createMany: {
-                data: deployedContracts.map((contract, i) => ({
-                  address: contract.address,
-                  name: getContractNameFromIndex(i) as string,
-                })),
+          const dividendContract = Dividend__factory.connect(
+            env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
+            signer
+          );
+          // add operator
+          await queue.addAll(
+            deployedContracts.map((contract) => {
+              return async () => {
+                const idoContract = IDOContract__factory.connect(
+                  contract.address,
+                  signer
+                );
+
+                const gasLimit = await idoContract.estimateGas
+                  .addOperator(dividendContract.address)
+                  .then((gasLimit) => gasLimit.mul(2));
+
+                return idoContract.addOperator(dividendContract.address, {
+                  gasLimit,
+                });
+              };
+            })
+          );
+
+          return await tx.project.update({
+            where: { id: project.id },
+            data: {
+              IDOContract: {
+                createMany: {
+                  data: deployedContracts.map((contract, i) => ({
+                    address: contract.address,
+                    name: getContractNameFromIndex(i) as string,
+                  })),
+                },
               },
             },
-          },
-        });
-      });
+          });
+        },
+        {
+          timeout: 120000,
+        }
+      );
 
       return project;
     }),
@@ -263,7 +285,7 @@ export const projectRouter = createTRPCRouter({
               ...contract,
               ...(whitelistData && { whitelistData }),
               dividendAmount: new BNjs(
-                getContractDividendInPercent(contract.name)
+                getContractDividendInPercent(contract.name as TierKeys)
               )
                 .multipliedBy(data.targettedRaise)
                 .dividedBy(100)
@@ -373,7 +395,7 @@ export const projectRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const dividendContract = Dividend__factory.connect(
         env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
-        new ethers.providers.JsonRpcProvider(env.NEXT_PUBLIC_BLOCKCHAIN_RPC)
+        getRpcProvider()
       );
 
       const { isDividendFulfilled, requiredBalance } =
@@ -421,7 +443,7 @@ export const projectRouter = createTRPCRouter({
             to: contract.address,
             amount: calculateDividendPercent(
               BigNumber.from(requiredBalance.toFixed(0)),
-              getContractDividendInPercent(contract.name)
+              getContractDividendInPercent(contract.name as TierKeys)
             ),
           }))
         )

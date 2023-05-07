@@ -1,9 +1,9 @@
 import { Alert, AlertTitle } from "@mui/material";
-import { Button } from "~/components/common";
 import { toast } from "react-hot-toast";
+import { useAccount, useChainId } from "wagmi";
+import { Button } from "~/components/common";
 import { env } from "../../../env.mjs";
 import { switchNetwork } from "../../../utils/ethereum";
-import { useAccount, useChainId } from "wagmi";
 
 export const ChangeNetwork = () => {
   const chainId = useChainId();
@@ -20,10 +20,6 @@ export const ChangeNetwork = () => {
               size="sm"
               onClick={async () => {
                 try {
-                  console.log(
-                    env.NEXT_PUBLIC_BLOCKCHAIN_RPC,
-                    env.NEXT_PUBLIC_CHAIN_ID
-                  );
                   await switchNetwork(env.NEXT_PUBLIC_CHAIN_ID);
                 } catch (error: any) {
                   toast.error(error?.message || "Failed to switch network.");

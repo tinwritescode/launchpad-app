@@ -32,7 +32,7 @@ export const CustomSider = () => {
                 fontWeight: "bold",
               }}
             >
-              HcmusStarter
+              Strawberry
             </Typography.Text>
           </Space>
         </Typography.Link>
