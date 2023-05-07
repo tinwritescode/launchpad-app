@@ -86,7 +86,7 @@ export interface IDOContractInterface extends utils.Interface {
     "pendingOwner()": FunctionFragment;
     "permitAndDepositTokens(uint256,(uint256,uint256,uint8,bytes32,bytes32))": FunctionFragment;
     "permitAndPurchase(uint256,(uint256,uint256,uint8,bytes32,bytes32))": FunctionFragment;
-    "purchase(uint256)": FunctionFragment;
+    "purchase(uint256,bytes32[],uint256)": FunctionFragment;
     "purchaseCap()": FunctionFragment;
     "purchaseHistory()": FunctionFragment;
     "purchaseToken()": FunctionFragment;
@@ -98,6 +98,7 @@ export interface IDOContractInterface extends utils.Interface {
     "revokeRole(bytes32,address)": FunctionFragment;
     "setIdoPrice(uint256)": FunctionFragment;
     "setPurchaseCap(uint256)": FunctionFragment;
+    "setWhitelistMerkleRoot(bytes32)": FunctionFragment;
     "stakingContract()": FunctionFragment;
     "startTime()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -106,6 +107,7 @@ export interface IDOContractInterface extends utils.Interface {
     "transferOwnership(address)": FunctionFragment;
     "unpause()": FunctionFragment;
     "whitelist(address)": FunctionFragment;
+    "whitelistMerkleRoot()": FunctionFragment;
     "whitelistedUsers()": FunctionFragment;
   };
 
@@ -146,6 +148,7 @@ export interface IDOContractInterface extends utils.Interface {
       | "revokeRole"
       | "setIdoPrice"
       | "setPurchaseCap"
+      | "setWhitelistMerkleRoot"
       | "stakingContract"
       | "startTime"
       | "supportsInterface"
@@ -154,6 +157,7 @@ export interface IDOContractInterface extends utils.Interface {
       | "transferOwnership"
       | "unpause"
       | "whitelist"
+      | "whitelistMerkleRoot"
       | "whitelistedUsers"
   ): FunctionFragment;
 
@@ -233,7 +237,11 @@ export interface IDOContractInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "purchase",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>[],
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "purchaseCap",
@@ -280,6 +288,10 @@ export interface IDOContractInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setWhitelistMerkleRoot",
+    values: [PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "stakingContract",
     values?: undefined
   ): string;
@@ -304,6 +316,10 @@ export interface IDOContractInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "whitelist",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "whitelistMerkleRoot",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "whitelistedUsers",
@@ -418,6 +434,10 @@ export interface IDOContractInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setWhitelistMerkleRoot",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "stakingContract",
     data: BytesLike
   ): Result;
@@ -438,6 +458,10 @@ export interface IDOContractInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "whitelist", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "whitelistMerkleRoot",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "whitelistedUsers",
     data: BytesLike
   ): Result;
@@ -457,6 +481,7 @@ export interface IDOContractInterface extends utils.Interface {
     "Swept(address,uint256)": EventFragment;
     "Unpaused(address)": EventFragment;
     "WhitelistAdded(address)": EventFragment;
+    "WhitelistMerkleRootSet(address,bytes32)": EventFragment;
     "WhitelistRemoved(address)": EventFragment;
   };
 
@@ -474,6 +499,7 @@ export interface IDOContractInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Swept"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "WhitelistAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WhitelistMerkleRootSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "WhitelistRemoved"): EventFragment;
 }
 
@@ -621,6 +647,18 @@ export type WhitelistAddedEvent = TypedEvent<
 
 export type WhitelistAddedEventFilter = TypedEventFilter<WhitelistAddedEvent>;
 
+export interface WhitelistMerkleRootSetEventObject {
+  sender: string;
+  merkleRoot: string;
+}
+export type WhitelistMerkleRootSetEvent = TypedEvent<
+  [string, string],
+  WhitelistMerkleRootSetEventObject
+>;
+
+export type WhitelistMerkleRootSetEventFilter =
+  TypedEventFilter<WhitelistMerkleRootSetEvent>;
+
 export interface WhitelistRemovedEventObject {
   account: string;
 }
@@ -748,6 +786,8 @@ export interface IDOContract extends BaseContract {
 
     purchase(
       amount: PromiseOrValue<BigNumberish>,
+      proof: PromiseOrValue<BytesLike>[],
+      stakedAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -800,6 +840,11 @@ export interface IDOContract extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setWhitelistMerkleRoot(
+      merkleRoot: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     stakingContract(overrides?: CallOverrides): Promise<[string]>;
 
     startTime(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -829,6 +874,8 @@ export interface IDOContract extends BaseContract {
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    whitelistMerkleRoot(overrides?: CallOverrides): Promise<[string]>;
 
     whitelistedUsers(overrides?: CallOverrides): Promise<[string[]]>;
   };
@@ -922,6 +969,8 @@ export interface IDOContract extends BaseContract {
 
   purchase(
     amount: PromiseOrValue<BigNumberish>,
+    proof: PromiseOrValue<BytesLike>[],
+    stakedAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -974,6 +1023,11 @@ export interface IDOContract extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setWhitelistMerkleRoot(
+    merkleRoot: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   stakingContract(overrides?: CallOverrides): Promise<string>;
 
   startTime(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1003,6 +1057,8 @@ export interface IDOContract extends BaseContract {
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  whitelistMerkleRoot(overrides?: CallOverrides): Promise<string>;
 
   whitelistedUsers(overrides?: CallOverrides): Promise<string[]>;
 
@@ -1090,6 +1146,8 @@ export interface IDOContract extends BaseContract {
 
     purchase(
       amount: PromiseOrValue<BigNumberish>,
+      proof: PromiseOrValue<BytesLike>[],
+      stakedAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1140,6 +1198,11 @@ export interface IDOContract extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setWhitelistMerkleRoot(
+      merkleRoot: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     stakingContract(overrides?: CallOverrides): Promise<string>;
 
     startTime(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1164,6 +1227,8 @@ export interface IDOContract extends BaseContract {
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    whitelistMerkleRoot(overrides?: CallOverrides): Promise<string>;
 
     whitelistedUsers(overrides?: CallOverrides): Promise<string[]>;
   };
@@ -1277,6 +1342,15 @@ export interface IDOContract extends BaseContract {
       account?: PromiseOrValue<string> | null
     ): WhitelistAddedEventFilter;
 
+    "WhitelistMerkleRootSet(address,bytes32)"(
+      sender?: PromiseOrValue<string> | null,
+      merkleRoot?: null
+    ): WhitelistMerkleRootSetEventFilter;
+    WhitelistMerkleRootSet(
+      sender?: PromiseOrValue<string> | null,
+      merkleRoot?: null
+    ): WhitelistMerkleRootSetEventFilter;
+
     "WhitelistRemoved(address)"(
       account?: PromiseOrValue<string> | null
     ): WhitelistRemovedEventFilter;
@@ -1375,6 +1449,8 @@ export interface IDOContract extends BaseContract {
 
     purchase(
       amount: PromiseOrValue<BigNumberish>,
+      proof: PromiseOrValue<BytesLike>[],
+      stakedAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1425,6 +1501,11 @@ export interface IDOContract extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setWhitelistMerkleRoot(
+      merkleRoot: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     stakingContract(overrides?: CallOverrides): Promise<BigNumber>;
 
     startTime(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1454,6 +1535,8 @@ export interface IDOContract extends BaseContract {
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    whitelistMerkleRoot(overrides?: CallOverrides): Promise<BigNumber>;
 
     whitelistedUsers(overrides?: CallOverrides): Promise<BigNumber>;
   };
@@ -1554,6 +1637,8 @@ export interface IDOContract extends BaseContract {
 
     purchase(
       amount: PromiseOrValue<BigNumberish>,
+      proof: PromiseOrValue<BytesLike>[],
+      stakedAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1604,6 +1689,11 @@ export interface IDOContract extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    setWhitelistMerkleRoot(
+      merkleRoot: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     stakingContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     startTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1633,6 +1723,10 @@ export interface IDOContract extends BaseContract {
 
     whitelist(
       arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    whitelistMerkleRoot(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

@@ -10,7 +10,6 @@ import { env } from "../env.mjs";
 import { useQuery } from "@tanstack/react-query";
 import { BarLoader } from "react-spinners";
 import { useAccount } from "wagmi";
-import { useFarmingHook } from "../components/containers/farming/useFarming";
 import { Progress } from "../components/common/Progress";
 import {
   IDO_CONTRACT_STAKING_REQUIRED,
@@ -19,6 +18,7 @@ import {
 } from "../server/api/routers/project/project.constant";
 import { cn } from "../utils/tailwind";
 import Image from "next/image";
+import { useStakingHook } from "../components/containers/staking/useStaking";
 
 type Props = {};
 
@@ -26,7 +26,7 @@ function Home({}: Props) {
   const { address, balanceOf } = useErc20Contract(
     env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS
   );
-  const { amountStaked } = useFarmingHook();
+  const { amountStaked } = useStakingHook();
   const { address: walletAddress } = useAccount();
   const balance = useQuery(
     ["balance"],

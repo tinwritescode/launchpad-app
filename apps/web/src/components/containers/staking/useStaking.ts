@@ -8,14 +8,14 @@ import { getSigner } from "../../../utils/ethereum";
 import toast from "react-hot-toast";
 import { useAccount } from "wagmi";
 
-export class FarmingHelper {
-  static instance: FarmingHelper;
+export class StakingHelper {
+  static instance: StakingHelper;
 
   static getInstance() {
-    if (!FarmingHelper.instance) {
-      FarmingHelper.instance = new FarmingHelper();
+    if (!StakingHelper.instance) {
+      StakingHelper.instance = new StakingHelper();
     }
-    return FarmingHelper.instance;
+    return StakingHelper.instance;
   }
 
   async getRewardRatio() {
@@ -38,11 +38,11 @@ export class FarmingHelper {
   }
 }
 
-export const useFarmingHook = () => {
+export const useStakingHook = () => {
   const { address } = useAccount();
   const { data: stakeInfo, isLoading: isLoadingStakeInfo } = useQuery(
     ["stakeInfo"],
-    () => FarmingHelper.getInstance().getAmountStaked(address),
+    () => StakingHelper.getInstance().getAmountStaked(address),
     {
       enabled: !!address,
     }

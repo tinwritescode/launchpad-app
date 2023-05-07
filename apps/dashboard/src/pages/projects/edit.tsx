@@ -44,7 +44,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     defaultValue: projectsData?.ownerId,
     optionLabel: "walletAddress",
   });
-  const { mutate } = useCustomMutation();
+
+  const { data, mutate } = useCustomMutation();
   const dividendInfo = useCustom({
     method: "get",
     url: `/projects/${projectsData?.id}/dividend`,

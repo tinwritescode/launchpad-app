@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 /**
  * Users can purchase tokens after sale started and claim after sale ended
@@ -53,6 +54,9 @@ contract IDOContract is
     // Date timestamp when token sale ends
     uint256 public endTime;
 
+    // Whitelist merkle tree root
+    bytes32 public whitelistMerkleRoot;
+
     // Used for returning purchase history
     struct Purchase {
         address account;
@@ -75,6 +79,7 @@ contract IDOContract is
     event Purchased(address indexed sender, uint256 amount);
     event Claimed(address indexed sender, uint256 amount);
     event Swept(address indexed sender, uint256 amount);
+    event WhitelistMerkleRootSet(address indexed sender, bytes32 merkleRoot);
 
     constructor(
         IERC20 _ido,
@@ -330,11 +335,12 @@ contract IDOContract is
      * @dev Purchase IDO token
      * Only whitelisted users can purchase within `purchcaseCap` amount
      */
-    function purchase(uint256 amount) external nonReentrant whenNotPaused {
+    function purchase(uint256 amount, bytes32[] memory proof, uint256 stakedAmount) external nonReentrant whenNotPaused {
         require(startTime <= block.timestamp, "IDOSale: SALE_NOT_STARTED");
         require(block.timestamp < endTime, "IDOSale: SALE_ALREADY_ENDED");
         require(amount > 0, "IDOSale: PURCHASE_AMOUNT_INVALID");
-        require(whitelist[_msgSender()], "IDOSale: CALLER_NO_WHITELIST");
+        bytes32 leaf = keccak256(abi.encodePacked(_msgSender(), stakedAmount));
+        require(MerkleProof.verify(proof, whitelistMerkleRoot, leaf), "IDOSale: INVALID_PROOF");
         require(
             purchasedAmounts[_msgSender()] + amount <= purchaseCap,
             "IDOSale: PURCHASE_CAP_EXCEEDED"
@@ -441,5 +447,16 @@ contract IDOContract is
         purchaseToken.safeTransfer(to, bal);
 
         emit Swept(to, bal);
+    }
+
+    /**
+     * @dev Set Whitelist merkle root
+     */
+    function setWhitelistMerkleRoot(bytes32 merkleRoot) external onlyOwner {
+        require(whitelistMerkleRoot == bytes32(0), "IDOSale: MERKLE_ROOT_ALREADY_SET");
+        require(merkleRoot != bytes32(0), "IDOSale: MERKLE_ROOT_INVALID");
+        whitelistMerkleRoot = merkleRoot;
+
+        emit WhitelistMerkleRootSet(_msgSender(), merkleRoot);
     }
 }

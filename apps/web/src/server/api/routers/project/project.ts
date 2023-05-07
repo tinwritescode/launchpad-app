@@ -1,6 +1,5 @@
 import { NonceManager } from "@ethersproject/experimental";
 import { TRPCError } from "@trpc/server";
-import BNjs from "bignumber.js";
 import { Prisma, PrismaClient, Status } from "database";
 import { BigNumber, ethers } from "ethers";
 import {
@@ -28,6 +27,11 @@ import {
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
 import { calculateDividendPercent } from "./project.util";
+import BNjs from "bignumber.js";
+import {
+  WhitelistDataProof,
+  WhitelistMerkleTree,
+} from "~/utils/whitelist_tree";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -239,7 +243,7 @@ export const projectRouter = createTRPCRouter({
         id: z.string().uuid(),
       })
     )
-    .query(async ({ input, ctx: { prisma, signer } }) => {
+    .query(async ({ input, ctx: { prisma, signer, session } }) => {
       const data = await prisma.project.findUnique({
         where: {
           id: input.id,
@@ -255,7 +259,7 @@ export const projectRouter = createTRPCRouter({
       return {
         ...data,
         IDOContract: await Promise.all(
-          data?.IDOContract.map(async (contract) => {
+          data?.IDOContract.map(async ({ whitelistDump, ...contract }) => {
             const idoContract = new IDOContract__factory(signer).attach(
               contract.address
             );
@@ -268,8 +272,18 @@ export const projectRouter = createTRPCRouter({
                 .then((res) => res.toString())
             );
 
+            let whitelistData: WhitelistDataProof | null = null;
+
+            if (session?.user?.isLoggedIn && whitelistDump) {
+              const whitelistTree = WhitelistMerkleTree.fromJSON(whitelistDump);
+              whitelistData = whitelistTree.getWhitelistDataWithProof(
+                session.user.address
+              );
+            }
+
             return {
               ...contract,
+              ...(whitelistData && { whitelistData }),
               dividendAmount: new BNjs(
                 getContractDividendInPercent(contract.name as TierKeys)
               )
