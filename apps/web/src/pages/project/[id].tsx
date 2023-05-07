@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { useIsAdmin } from "../../components/common/LoginButton/lib";
 import {
+  IDODetail,
   MiddleDetailInfo,
   ProjectSummary,
   TopDetailInfo,
@@ -25,22 +26,31 @@ import { useRouter } from "next/router";
 
 type Props = {};
 
-function IDODetail({}: Props) {
-  const { isAdmin } = useIsAdmin();
+// function IDODetail({}: Props) {
+//   const { isAdmin } = useIsAdmin();
+//   return (
+//     <PageLayout>
+//       <Stack spacing={2}>
+//         <TopDetailInfo />
+//         <MiddleDetailInfo />
+//         <ProjectSummary />
+//       </Stack>
+//       {isAdmin && <AdminSpeedDial />}
+//     </PageLayout>
+//   );
+// }
+
+const IDO = (props: Props) => {
   return (
-    <PageLayout>
-      <Stack spacing={2}>
-        <TopDetailInfo />
-        <MiddleDetailInfo />
-        <ProjectSummary />
-      </Stack>
-
-      {isAdmin && <AdminSpeedDial />}
-    </PageLayout>
+    <>
+      <PageLayout>
+        <IDODetail />
+      </PageLayout>
+    </>
   );
-}
+};
 
-export default IDODetail;
+export default IDO;
 
 const AdminSpeedDial = () => {
   const [open, setOpen] = useState(false);
