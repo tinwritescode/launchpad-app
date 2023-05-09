@@ -49,7 +49,7 @@ const IdoTable = (props: Props) => {
       {/* {activeTab == 0 && <ProjectDetailsTab />} */}
       <ul>
         <li style={activeTab == 0 ? { display: "block" } : { display: "none" }}>
-          {/* <ProjectDetailsTab /> */}
+          <ProjectDetailsTab />
         </li>
         <li style={activeTab == 1 ? { display: "block" } : { display: "none" }}>
           <PoolDetailsTab />

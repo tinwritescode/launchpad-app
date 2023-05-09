@@ -3,6 +3,7 @@ import React from "react";
 import { api } from "~/utils/api";
 import { useIdoDetail } from "../../hooks/useIdoDetail";
 import { SkeletonCell } from "./SkeletonCell";
+import { ethers } from "ethers";
 
 const createPoolData = (
   idoContracts: any,
@@ -107,18 +108,18 @@ const PoolItem = ({
             {startTime} - {endTime}
           </div>
           <div className=" text-gray-400 text-lg">Price</div>
-          <div className=" text-white font-bold text-lg">{IdoPrice} USDT</div>
+          <div className=" text-white font-bold text-lg">{IdoPrice} STRAW</div>
           <div className=" text-gray-400 text-lg">Purchase Cap</div>
           <div className=" text-white font-bold text-lg">
-            {purchaseCap} USDT
+            {purchaseCap} STRAW
           </div>
           <div className=" text-gray-400 text-lg">Dividend Amount</div>
           <div className=" text-white font-bold text-lg">
-            {dividendAmount} USDT
+            {dividendAmount} STRAW
           </div>
           <div className=" text-gray-400 text-lg">Fulfilled Amount</div>
           <div className=" text-white font-bold text-lg">
-            {fulfilledAmount} USDT
+            {fulfilledAmount} STRAW
           </div>
           <div className="w-full h-px bg-gray-500 my-2"></div>
         </div>
@@ -197,7 +198,7 @@ export const PoolDetailsTab = () => {
                 key={pool.address}
                 poolName={pool.name}
                 stakingRequirement={pool.minStaking}
-                IdoPrice={pool.idoPrice}
+                IdoPrice={ethers.utils.formatEther(pool.idoPrice)}
                 purchaseCap={pool.purchaseCap}
                 dividendAmount={pool.dividendAmount}
                 fulfilledAmount={pool.fulfilledAmount}

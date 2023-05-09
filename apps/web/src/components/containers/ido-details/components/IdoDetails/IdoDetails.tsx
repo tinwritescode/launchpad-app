@@ -5,14 +5,19 @@ import { useIdoDetail } from "../../hooks/useIdoDetail";
 import IdoButtonWallet from "./IdoButtonWallet";
 import IdoName from "./IdoName";
 import IdoStatus from "./IdoStatus";
-import { BigNumber } from "ethers";
 import { Button } from "../../../../common";
+import IdoTable from "./IdoTable";
+import { ethers } from "ethers";
+import { useErc20Contract } from "~/libs/blockchain";
+import { getSigner } from "~/utils/ethereum";
+import { useQuery } from "@tanstack/react-query";
+import { Diversity1TwoTone } from "@mui/icons-material";
 
 const IdoDetail = () => {
   const { id } = useRouter().query as { id: string };
   const { data, isLoading } = api.project.getOne.useQuery(
     { id },
-    { enabled: !!id, refetchOnWindowFocus: false }
+    { enabled: !!id, refetchOnWindowFocus: true }
   );
   const { amountStaked, stakingTokenName, stakingTokenBalance } =
     useStakingHook();
@@ -20,9 +25,29 @@ const IdoDetail = () => {
     amountStaked &&
     data?.IDOContract?.find(
       (c) =>
-        amountStaked.gte(c.minStakedAmount) &&
-        amountStaked.lt(c.maxStakedAmount)
+        amountStaked.gte(ethers.utils.parseEther(c.minStakedAmount)) &&
+        amountStaked.lt(ethers.utils.parseEther(c.maxStakedAmount))
     );
+
+  const getAproveAmount = async (tokenAddress: any, tierAdress: any) => {
+    const singer = getSigner();
+
+    console.log(singer, tokenAddress, tierAdress);
+    const allownce = useErc20Contract(tokenAddress).allowance(
+      singer.getAddress(),
+      tierAdress
+    );
+
+    return allownce;
+  };
+
+  const { data: approveAmount } = useQuery(
+    ["approveAmount", data?.token?.address, userTier?.address],
+    () => {
+      return getAproveAmount(data?.token?.address, userTier?.address);
+    },
+    { enabled: !!data?.token?.address && !!userTier?.address }
+  );
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -67,17 +92,48 @@ const IdoDetail = () => {
             </div>
           </div>
           <div className="flex flex-col justify-center h-fit w-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-md p-2">
-            <div className="flex flex-row"></div>
+            <div className="grid grid-cols-2 ">
+              <div className="">
+                <h1>Your Blance:</h1>
+                <div className="text-xl text-left">
+                  {stakingTokenBalance &&
+                    stakingTokenName &&
+                    ethers.utils.formatEther(stakingTokenBalance)}{" "}
+                  {stakingTokenName}
+                </div>
+              </div>
+              <div className="">
+                <h1>Your Tier:</h1>
+                <div className="text-xl text-left">{userTier?.name}</div>
+              </div>
+            </div>
+            <h1>Your approved amount:</h1>
+            <div className="text-lg text-left">
+              <div>{ethers.utils.formatEther(approveAmount || 0)}</div>
+              <div>
+                {userTier?.purchaseCap &&
+                approveAmount?.gt(
+                  ethers.utils.parseEther(userTier?.purchaseCap)
+                ) ? (
+                  <h1>{`approve amount greater than purchase Cap ${userTier?.purchaseCap}`}</h1>
+                ) : (
+                  <h1>{`approve amount less than purchase Cap ${userTier?.purchaseCap}`}</h1>
+                )}
+              </div>
+            </div>
             <hr className="mb-2" />
-            <div className="text-xl text-left">CLOSED</div>
+            <div className="text-xl text-left">
+              {data?.status == "ACTIVE" ? "OPENED" : "CLOSED"}
+            </div>
             <hr className="mb-2 mt-2" />
 
-            <div className="flex flex-row"></div>
+            <div className="grid grid-cols-2 "></div>
+
             <hr className="mb-2 mt-2" />
-            <div className="flex flex-row"></div>
+            <div className="grid grid-cols-2 "></div>
           </div>
         </div>
-        {/* <IdoTable /> */}
+        <IdoTable />
       </div>
     </>
   );
