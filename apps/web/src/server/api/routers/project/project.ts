@@ -16,7 +16,10 @@ import {
 } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
 import { env } from "../../../../env.mjs";
-import { getRpcProvider } from "../../../../libs/blockchain";
+import {
+  getRpcProvider,
+  getStakingContract,
+} from "../../../../libs/blockchain";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 import { protectedProcedure } from "./../../trpc";
 import {
@@ -29,6 +32,7 @@ import { createIdoProjectInputSchema } from "./project.schema";
 import { calculateDividendPercent } from "./project.util";
 import BNjs from "bignumber.js";
 import {
+  WhitelistData,
   WhitelistDataProof,
   WhitelistMerkleTree,
 } from "~/utils/whitelist_tree";
@@ -518,6 +522,108 @@ export const projectRouter = createTRPCRouter({
       ]);
 
       return { data, meta: { total } };
+    }),
+
+  startWhitelisting: adminProcedure
+    .meta({
+      openapi: {
+        method: "POST",
+        path: "/projects/startWhitelisting",
+        summary: "Start IDOs whitelisting",
+        protect: true,
+      },
+    })
+    .output(z.any())
+    .input(
+      z.object({
+        projectId: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ input, ctx: { prisma, signer } }) => {
+      const idoContracts = await prisma.iDOContract.findMany({
+        where: {
+          projectId: input.projectId,
+        },
+      });
+
+      if (idoContracts.length === 0) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No IDO contract found for this project",
+        });
+      }
+
+      const idosData = await Promise.all(
+        idoContracts.map(async (contract) => {
+          const idoContract = new IDOContract__factory(signer).attach(
+            contract.address
+          );
+          const minStaking = await idoContract.minStakingRequired();
+          const maxStaking = await idoContract.maxStakingRequired();
+          let whitelist: WhitelistData[] = [];
+
+          return {
+            id: contract.id,
+            idoContract,
+            minStaking,
+            maxStaking,
+            whitelist,
+          };
+        })
+      );
+
+      const stakingContract = getStakingContract();
+      const stakersLength = await stakingContract.getStakersLength();
+      let index = BigNumber.from(0);
+
+      while (index.lt(stakersLength)) {
+        const staker = await stakingContract.getStakerAtIndex(index);
+        const [amount, reward] = await stakingContract.getStakeInfo(staker);
+        const [stakingTokenAddr, rewardTokenAddr] = await Promise.all([
+          stakingContract.stakingToken(),
+          stakingContract.rewardToken(),
+        ]);
+        let total = amount;
+
+        if (stakingTokenAddr === rewardTokenAddr) {
+          total.add(reward);
+        }
+
+        const ido = idosData.find(
+          (ido) => ido.minStaking.lte(total) && ido.maxStaking.gte(total)
+        );
+        if (ido) {
+          ido.whitelist.push(new WhitelistData(staker, total.toString()));
+        }
+
+        index.add(1);
+      }
+
+      let successWhilelists: { address: string; totalWhitelisted: number }[] =
+        [];
+      for (const ido of idosData) {
+        if (ido.whitelist.length === 0) {
+          continue;
+        }
+
+        const tree = new WhitelistMerkleTree(ido.whitelist);
+        await prisma.iDOContract.update({
+          where: {
+            id: ido.id,
+          },
+          data: {
+            whitelistDump: tree.toJSON(),
+          },
+        });
+        await ido.idoContract.setWhitelistMerkleRoot(tree.getRoot());
+
+        successWhilelists.push({
+          address: ido.idoContract.address,
+          totalWhitelisted: ido.whitelist.length,
+        });
+      }
+
+      return successWhilelists;
     }),
 });
 

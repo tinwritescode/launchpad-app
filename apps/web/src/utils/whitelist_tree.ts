@@ -10,12 +10,8 @@ export class WhitelistData {
     this.amount = amount;
   }
 
-  toArray(): any[] {
+  toArray(): string[] {
     return [this.address, this.amount];
-  }
-
-  static fromArray(arr: any[]): WhitelistData {
-    return new WhitelistData(arr[0], arr[1]);
   }
 }
 
@@ -56,5 +52,9 @@ export class WhitelistMerkleTree {
       }
     }
     return null;
+  }
+
+  getRoot(): string {
+    return this.tree.root;
   }
 }
