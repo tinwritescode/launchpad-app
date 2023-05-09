@@ -198,7 +198,7 @@ export const PoolDetailsTab = () => {
                 key={pool.address}
                 poolName={pool.name}
                 stakingRequirement={pool.minStaking}
-                IdoPrice={ethers.utils.formatEther(pool.idoPrice)}
+                IdoPrice={ethers.utils.formatEther(pool.idoPrice || 0)}
                 purchaseCap={pool.purchaseCap}
                 dividendAmount={pool.dividendAmount}
                 fulfilledAmount={pool.fulfilledAmount}
