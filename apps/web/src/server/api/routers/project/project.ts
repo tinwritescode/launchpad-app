@@ -596,7 +596,7 @@ export const projectRouter = createTRPCRouter({
           ido.whitelist.push(new WhitelistData(staker, total.toString()));
         }
 
-        index.add(1);
+        index = index.add(1);
       }
 
       let successWhilelists: { address: string; totalWhitelisted: number }[] =
@@ -607,6 +607,14 @@ export const projectRouter = createTRPCRouter({
         }
 
         const tree = new WhitelistMerkleTree(ido.whitelist);
+
+        try {
+          await ido.idoContract.setWhitelistMerkleRoot(tree.getRoot());
+        } catch (error) {
+          console.log(error);
+          continue;
+        }
+
         await prisma.iDOContract.update({
           where: {
             id: ido.id,
@@ -615,7 +623,6 @@ export const projectRouter = createTRPCRouter({
             whitelistDump: tree.toJSON(),
           },
         });
-        await ido.idoContract.setWhitelistMerkleRoot(tree.getRoot());
 
         successWhilelists.push({
           address: ido.idoContract.address,
