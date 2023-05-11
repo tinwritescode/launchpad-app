@@ -137,6 +137,44 @@ export const useStakingHook = () => {
     }
   );
 
+  const totalStaked = useQuery(
+    ["totalStaked", address],
+    ({ queryKey }) => getStakingContract().stakingTokenBalance(),
+    {
+      enabled: !!address,
+    }
+  );
+
+  const numberOfStakers = useQuery(
+    ["numberOfStakers", address],
+    ({ queryKey }) => getStakingContract().getStakersLength(),
+    {
+      enabled: !!address,
+    }
+  );
+
+  const APY = useQuery(
+    ["APY", address],
+    async ({ queryKey }) => {
+      const [timeUnit, rewardRatio, rewardBalance] = await Promise.all([
+        getStakingContract().getTimeUnit(),
+        getStakingContract().getRewardRatio(),
+        getStakingContract().getRewardTokenBalance(),
+      ]);
+      const timeInAYear = BigNumber.from(60 * 60 * 24 * 365).div(timeUnit);
+      const rewardRatioPerYear = rewardRatio._numerator
+        .mul(timeInAYear)
+        .div(rewardRatio._denominator)
+        .mul(rewardBalance);
+
+      return rewardRatioPerYear;
+    },
+
+    {
+      enabled: !!address,
+    }
+  );
+
   return {
     amountStaked: stakeInfo?.amountStaked,
     unclaimedRewards: stakeInfo?.unclaimedRewards,
@@ -150,5 +188,8 @@ export const useStakingHook = () => {
     withdraw,
     unlockTime: unlockTime.data,
     decimals: decimals.data,
+    totalStaked: totalStaked.data,
+    numberOfStakers: numberOfStakers.data,
+    APY: APY.data,
   };
 };

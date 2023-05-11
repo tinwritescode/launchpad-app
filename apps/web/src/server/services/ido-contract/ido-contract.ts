@@ -35,6 +35,8 @@ export class IDOContract {
       maxStakingRequired,
     } = payload;
 
+    debugger;
+
     const factory = new ContractFactory(
       IDOContract__factory.abi,
       IDOContract__factory.bytecode,

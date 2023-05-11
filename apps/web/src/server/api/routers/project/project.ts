@@ -126,6 +126,8 @@ export const projectRouter = createTRPCRouter({
         idoTokenAddress,
       });
 
+      debugger;
+
       const instance = IDOContract.getInstance();
       const signer = new NonceManager(ctx.signer);
       const queue = new PQueue({ concurrency: 1 });
