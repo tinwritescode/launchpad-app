@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { z } from "zod";
 
 const parseEther = <T>(val: T, ctx: z.RefinementCtx) => {
@@ -27,8 +27,8 @@ export const idoContractDto = z.object({
   idoPrice: parseToEthers,
   startTime: parseFromDateToNumber,
   endTime: parseFromDateToNumber,
-  minStakingRequired: parseToEthers,
-  maxStakingRequired: parseToEthers,
+  minStakingRequired: ,
+  maxStakingRequired: ,
 
   // prisma fields
   name: z.string(),

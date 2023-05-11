@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { env } from "../../../../env.mjs";
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 // - Tiers: Bronze: 1000, Silver: 2500, Gold:  5000, Platinum: 10000, Diamond: 250000, Blue Diamond: 750000
@@ -48,8 +48,12 @@ export const buildContracts = ({
 
     // next key or max number
     return {
-      minStakingRequired: IDO_CONTRACT_STAKING_REQUIRED[key],
-      maxStakingRequired: maxStakingRequired as number,
+      minStakingRequired: ethers.utils.parseEther(
+        IDO_CONTRACT_STAKING_REQUIRED[key].toString()
+      ),
+      maxStakingRequired: ethers.utils.parseEther(
+        maxStakingRequired.toString()
+      ),
       startTime,
       endTime,
       idoPrice,
