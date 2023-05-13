@@ -276,15 +276,15 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                           dividendInfo?.data?.data?.requiredBalance
                         )
                           .dividedBy(10 ** 18)
-                          .toFormat()} tokens to the contract address.`}
+                          .toFormat()} tokens to the contract address (current balance: ${BigNumberJS(
+                          dividendInfo?.data?.data?.dividendBalance
+                        )
+                          .dividedBy(10 ** 18)
+                          .toFormat()}).`}
                         <br />
 
                         <Typography.Link
-                          href={`${FULLFIL_DIVIDEND_URL}?address=${
-                            dividendInfo?.data?.data?.contractAddress
-                          }&amount=${BigNumberJS(
-                            dividendInfo?.data?.data?.requiredBalance
-                          ).dividedBy(10 ** 18)}`}
+                          href={`${FULLFIL_DIVIDEND_URL}?projectId=${projectsData?.id}`}
                           target="_blank"
                         >
                           Fulfill dividend

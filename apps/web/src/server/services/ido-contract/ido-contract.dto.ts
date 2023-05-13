@@ -27,8 +27,8 @@ export const idoContractDto = z.object({
   idoPrice: parseToEthers,
   startTime: parseFromDateToNumber,
   endTime: parseFromDateToNumber,
-  minStakingRequired: parseToEthers,
-  maxStakingRequired: parseToEthers,
+  minStakingRequired: parseStringToEthers,
+  maxStakingRequired: parseStringToEthers,
 
   // prisma fields
   name: z.string(),

@@ -24,6 +24,7 @@ import {
 import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 import { protectedProcedure } from "./../../trpc";
 import {
+  NUMBER_OF_PEOPLE,
   TierKeys,
   buildContracts as buildContractPayloads,
   getContractDividendInPercent,
@@ -166,14 +167,12 @@ export const projectRouter = createTRPCRouter({
       if (!ctx.session?.user?.isLoggedIn)
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
-      const contracts: IdoContractDto[] = buildContractPayloads({
+      const contracts = buildContractPayloads({
         startTime,
         endTime,
         idoPrice,
         idoTokenAddress,
       });
-
-      debugger;
 
       const instance = IDOContract.getInstance();
       const signer = new NonceManager(ctx.signer);
@@ -205,7 +204,7 @@ export const projectRouter = createTRPCRouter({
               contracts.map((contract) => {
                 return () => {
                   // TODO: Change this later
-                  const numberOfPeople = 200;
+                  const numberOfPeople = NUMBER_OF_PEOPLE[contract.name];
                   const dividendPercent = getContractDividendInPercent(
                     contract.name as TierKeys
                   );
@@ -216,18 +215,15 @@ export const projectRouter = createTRPCRouter({
                     )
                   ).dividedBy(new BNjs(numberOfPeople));
 
-                  // all variables
-                  console.group("Variables");
-                  console.log("numberOfPeople", numberOfPeople);
-                  console.log("dividendPercent", dividendPercent);
-                  console.log("purchaseCap", purchaseCap.toString());
-                  console.groupEnd();
-
                   return instance.deployIDOContract(
                     {
                       ...contract,
                       purchaseCap: BigNumber.from(purchaseCap.toString()),
                       idoPrice: ethers.utils.parseEther(idoPrice.toString()),
+                      minStakingRequired:
+                        contract.minStakingRequired.toString(),
+                      maxStakingRequired:
+                        contract.maxStakingRequired.toString(),
                     },
                     signer
                   );
@@ -747,7 +743,9 @@ async function getDividendContractInfo(
 
   avgRate = avgRate.dividedBy(data.IDOContract.length);
 
-  const requiredBalance = new BNjs(data.targettedRaise).dividedBy(avgRate);
+  const requiredBalance = new BNjs(data.targettedRaise)
+    .dividedBy(avgRate)
+    .multipliedBy(new BNjs(10).pow(18));
   const isDividendFulfilled = dividendBalance.gte(requiredBalance);
 
   return {
@@ -756,5 +754,6 @@ async function getDividendContractInfo(
     requiredBalance: requiredBalance,
     dividendBalance: dividendBalance,
     contractAddress: env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
+    tokenAddress: data.token.address,
   };
 }

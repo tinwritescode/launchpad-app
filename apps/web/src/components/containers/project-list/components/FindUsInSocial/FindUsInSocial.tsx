@@ -32,7 +32,7 @@ const FindUsInSocial: React.FC<Props> = () => {
   return (
     <div className="w-full bg-gray-100 p-4 flex justify-center gap-6">
       {socials.map((social) => (
-        <div className="bg-gray-400 p-4 rounded text-white">
+        <div className="bg-gray-400 p-4 rounded text-white" key={social.link}>
           <a href={social.link} target="_blank">
             {social.icon}
           </a>

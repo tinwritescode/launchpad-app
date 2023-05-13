@@ -1,6 +1,6 @@
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { env } from "../../../../env.mjs";
-import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
+
 // - Tiers: Bronze: 1000, Silver: 2500, Gold:  5000, Platinum: 10000, Diamond: 250000, Blue Diamond: 750000
 
 export enum TierKeys {
@@ -11,6 +11,15 @@ export enum TierKeys {
   DIAMOND = "DIAMOND",
   BLUE_DIAMOND = "BLUE_DIAMOND",
 }
+
+export const NUMBER_OF_PEOPLE: Record<TierKeys, number> = {
+  BRONZE: 100,
+  SILVER: 100,
+  GOLD: 100,
+  PLATINUM: 100,
+  DIAMOND: 100,
+  BLUE_DIAMOND: 100,
+};
 
 export const IDO_CONTRACT_STAKING_REQUIRED: Record<TierKeys, number> = {
   BRONZE: 1000,
@@ -34,29 +43,30 @@ export const buildContracts = ({
   endTime,
   idoPrice,
   idoTokenAddress,
-}: Pick<
-  IdoContractDto,
-  "startTime" | "endTime" | "idoPrice" | "idoTokenAddress"
->): IdoContractDto[] => {
+}: {
+  startTime: number;
+  endTime: number;
+  idoPrice: number;
+  idoTokenAddress: string;
+}) => {
   return Object.keys(IDO_CONTRACT_STAKING_REQUIRED).map((_key, index) => {
     const key = _key as TierKeys;
     const nextKey = getContractNameFromIndex(index + 1);
 
     const maxStakingRequired = nextKey
       ? IDO_CONTRACT_STAKING_REQUIRED[nextKey]
-      : BigNumber.from(2).pow(256).sub(1);
+      : null;
 
-    // next key or max number
     return {
-      minStakingRequired: ethers.utils.parseEther(
-        IDO_CONTRACT_STAKING_REQUIRED[key].toString()
-      ),
-      maxStakingRequired: ethers.utils.parseEther(
-        maxStakingRequired.toString()
-      ),
+      minStakingRequired: ethers.utils
+        .parseEther(IDO_CONTRACT_STAKING_REQUIRED[key].toString())
+        .toString(),
+      maxStakingRequired: maxStakingRequired
+        ? ethers.utils.parseEther(maxStakingRequired.toString()).toString()
+        : ethers.constants.MaxUint256.toString(),
       startTime,
       endTime,
-      idoPrice,
+      idoPrice: ethers.utils.parseEther(idoPrice.toString()).toString(),
       idoTokenAddress,
       // purchaseCap,
       stakingContractAddress: env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS,

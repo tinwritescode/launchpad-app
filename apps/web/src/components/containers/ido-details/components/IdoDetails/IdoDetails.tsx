@@ -15,7 +15,7 @@ import { Diversity1TwoTone } from "@mui/icons-material";
 
 const IdoDetail = () => {
   const { id } = useRouter().query as { id: string };
-  const { data, isLoading } = api.project.getOne.useQuery(
+  const { data, isLoading, isError } = api.project.getOne.useQuery(
     { id },
     { enabled: !!id, refetchOnWindowFocus: true }
   );
@@ -49,6 +49,9 @@ const IdoDetail = () => {
     { enabled: !!data?.token?.address && !!userTier?.address }
   );
 
+  if (isError) {
+    return <div>Error</div>;
+  }
   if (isLoading) return <div>Loading...</div>;
 
   return (

@@ -1,3 +1,4 @@
+import { Main } from "./main";
 import { Alert, AlertTitle, Stack } from "@mui/material";
 import { Field, Formik } from "formik";
 import { TextField } from "formik-mui";
@@ -19,6 +20,8 @@ type Props = {};
 function TokenManager({}: Props) {
   return (
     <PageLayout>
+      <Main />
+
       <Formik
         initialValues={{
           // TODO: remove default later
