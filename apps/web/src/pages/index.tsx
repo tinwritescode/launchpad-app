@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { Button } from "../components/common";
 import PageLayout from "../components/templates/PageLayout";
 import style from "./index.module.scss";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useErc20Contract } from "../libs/blockchain";
 import { env } from "../env.mjs";
 import { useQuery } from "@tanstack/react-query";
@@ -23,9 +23,7 @@ import { useStakingHook } from "../components/containers/staking/useStaking";
 type Props = {};
 
 function Home({}: Props) {
-  const { address, balanceOf } = useErc20Contract(
-    env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS
-  );
+  const { balanceOf } = useErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS);
   const { amountStaked } = useStakingHook();
   const { address: walletAddress } = useAccount();
   const balance = useQuery(
@@ -65,7 +63,6 @@ function Home({}: Props) {
       <p>Currently there is no projects</p>
     </>
   );
-
   const idoTypes = [
     {
       label: "Opening sales on Strawberry Launchpad",
@@ -212,6 +209,21 @@ function Home({}: Props) {
     },
   ];
 
+  const userTierIndex =
+    amountStaked &&
+    Object.values(IDO_CONTRACT_STAKING_REQUIRED).findIndex((value, index) => {
+      return (
+        amountStaked.gte(ethers.utils.parseEther(value.toString())) &&
+        amountStaked.lt(
+          ethers.utils.parseEther(
+            IDO_CONTRACT_STAKING_REQUIRED[
+              Object.keys(IDO_CONTRACT_STAKING_REQUIRED)[index + 1] as TierKeys
+            ].toString()
+          )
+        )
+      );
+    });
+
   return (
     <PageLayout>
       <div className="text-center space-y-4 my-10">
@@ -253,20 +265,10 @@ function Home({}: Props) {
       </div>
 
       <div className="space-y-8 my-10">
-        {!amountStaked ? (
+        {!userTierIndex ? (
           <BarLoader />
         ) : (
-          <Progress
-            value={amountStaked
-              .div(
-                ethers.utils.parseEther(
-                  IDO_CONTRACT_STAKING_REQUIRED["BLUE_DIAMOND"]?.toFixed(
-                    2
-                  ) as string
-                )
-              )
-              .toNumber()}
-          />
+          <Progress value={20 * userTierIndex} />
         )}
 
         <div className="flex gap-10 items-center justify-center">
@@ -307,32 +309,6 @@ function Home({}: Props) {
           </div>
         </section>
       ))}
-
-      <Box
-        sx={{
-          height: "500px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Box sx={{ textAlign: "center" }}>
-          <Typography className={style.heroText} variant="h4">
-            The fully decentralized protocol for launching new ideas
-          </Typography>
-          <Typography variant="subtitle1">
-            An all-in-one Incubation Hub with a full stack Defi platform across
-            all main blockchain networks
-          </Typography>
-
-          <Box sx={{ m: 2 }} />
-
-          <Box sx={{ gap: 1, justifyContent: "center", display: "flex" }}>
-            <Button>Upcoming IDO</Button>
-            <Button>Apply to launch</Button>
-          </Box>
-        </Box>
-      </Box>
 
       <div className="flex space-x-2 justify-center">
         {links.map((link) => (
