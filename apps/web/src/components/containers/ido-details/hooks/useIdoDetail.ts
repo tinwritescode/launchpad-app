@@ -141,13 +141,10 @@ export const useIdoDetail = ({
           (acc, purchase) => acc.add(purchase.amount),
           BigNumber.from(0)
         );
-        const uniqueParticipants = new Set(
-          purchases.map((purchase) => purchase.account)
-        );
         return {
           idoAddress: contract!.address,
           totalAmount: totalAmount,
-          participants: uniqueParticipants.size,
+          participants: purchases.length,
         };
       })
     );

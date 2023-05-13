@@ -17,6 +17,7 @@ import {
 import { IDOContract } from "~/server/services/ido-contract";
 import { env } from "../../../../env.mjs";
 import {
+  getIdoContract,
   getRpcProvider,
   getStakingContract,
 } from "../../../../libs/blockchain";
@@ -54,6 +55,7 @@ const defaultProjectSelector: Prisma.ProjectSelect = {
       address: true,
     },
   },
+  IDOContract: true,
 };
 
 export const projectRouter = createTRPCRouter({
@@ -87,8 +89,53 @@ export const projectRouter = createTRPCRouter({
           prisma.project.count(),
         ]);
 
+        const fullData = await Promise.all(
+          data.map(async (project: any) => {
+            let status: "UNKNOWN" | "UPCOMING" | "OPEN" | "CLOSED" = "UNKNOWN";
+            if (project.IDOContract.length === 0) {
+              return {
+                ...project,
+                status,
+              };
+            }
+            let totalRaised = BigNumber.from(0);
+            let totalParticipants = 0;
+
+            project.IDOContract.map(async (ido: any) => {
+              const contract = getIdoContract(ido.address);
+              const now = new Date().getTime();
+              const startTime = (await contract.startTime()).toNumber();
+              const endTime = (await contract.endTime()).toNumber();
+
+              if (status === "UNKNOWN") {
+                if (startTime > now) {
+                  status = "UPCOMING";
+                } else if (endTime < now) {
+                  status = "CLOSED";
+                } else {
+                  status = "OPEN";
+                }
+              }
+
+              const purchaseHistory = await contract.purchaseHistory();
+              totalParticipants = purchaseHistory.length;
+              totalRaised = purchaseHistory.reduce(
+                (acc, curr) => acc.add(curr.amount),
+                totalRaised
+              );
+            });
+
+            return {
+              ...project,
+              status,
+              totalRaised,
+              totalParticipants,
+            };
+          })
+        );
+
         return {
-          data,
+          data: fullData,
           meta: {
             total: count,
           },
