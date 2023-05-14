@@ -82,9 +82,11 @@ export interface DividendInterface extends utils.Interface {
 
   events: {
     "OwnershipTransferred(address,address)": EventFragment;
+    "Received(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Received"): EventFragment;
 }
 
 export interface OwnershipTransferredEventObject {
@@ -98,6 +100,18 @@ export type OwnershipTransferredEvent = TypedEvent<
 
 export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
+
+export interface ReceivedEventObject {
+  from: string;
+  token: string;
+  amount: BigNumber;
+}
+export type ReceivedEvent = TypedEvent<
+  [string, string, BigNumber],
+  ReceivedEventObject
+>;
+
+export type ReceivedEventFilter = TypedEventFilter<ReceivedEvent>;
 
 export interface Dividend extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -187,6 +201,17 @@ export interface Dividend extends BaseContract {
       previousOwner?: PromiseOrValue<string> | null,
       newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
+
+    "Received(address,address,uint256)"(
+      from?: PromiseOrValue<string> | null,
+      token?: PromiseOrValue<string> | null,
+      amount?: null
+    ): ReceivedEventFilter;
+    Received(
+      from?: PromiseOrValue<string> | null,
+      token?: PromiseOrValue<string> | null,
+      amount?: null
+    ): ReceivedEventFilter;
   };
 
   estimateGas: {

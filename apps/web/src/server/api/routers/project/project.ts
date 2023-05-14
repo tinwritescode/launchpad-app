@@ -341,7 +341,7 @@ export const projectRouter = createTRPCRouter({
                 .dividedBy(100)
                 .dividedBy(new BNjs(10 ** 18))
                 .toString(),
-              fulfilledAmount: fulfilledAmount.toFormat(),
+              fulfilledAmount: fulfilledAmount.dividedBy(new BNjs(10 ** 18)),
               minStakedAmount: (
                 await idoContract.minStakingRequired()
               ).toString(),
@@ -456,7 +456,7 @@ export const projectRouter = createTRPCRouter({
         getRpcProvider()
       );
 
-      const { isDividendFulfilled, requiredBalance } =
+      const { isDividendFulfilled, requiredBalance, isDistributed } =
         await getDividendContractInfo(
           ctx.prisma,
           {
@@ -464,6 +464,13 @@ export const projectRouter = createTRPCRouter({
           },
           ctx.signer
         );
+
+      if (isDistributed) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Dividend is already distributed",
+        });
+      }
 
       if (!isDividendFulfilled) {
         throw new TRPCError({
@@ -746,7 +753,36 @@ async function getDividendContractInfo(
   const requiredBalance = new BNjs(data.targettedRaise)
     .dividedBy(avgRate)
     .multipliedBy(new BNjs(10).pow(18));
+
   const isDividendFulfilled = dividendBalance.gte(requiredBalance);
+
+  const dividendContract = new Dividend__factory(signer).attach(
+    env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS
+  );
+
+  const distributeLogs = await dividendContract.queryFilter(
+    dividendContract.filters.Received(null, data.token.address),
+    0,
+    "latest"
+    // calculate sum
+  );
+  // if exist a filter ethers for distribute
+  const isDistributed = distributeLogs
+    .reduce(
+      (acc, cur) => acc.plus(cur.args?.amount.toString() || 0),
+      new BNjs(0)
+    )
+    .gte(requiredBalance.toFixed(0));
+
+  const firstIdoContract = new IDOContract__factory(signer).attach(
+    data.IDOContract[0].address
+  );
+  const isReady = await firstIdoContract
+    .startTime()
+    .then((res) => res.lt((Date.now() / 1000).toFixed(0)));
+  const isEnd = await firstIdoContract
+    .endTime()
+    .then((res) => res.lt((Date.now() / 1000).toFixed(0)));
 
   return {
     isDividendFulfilled,
@@ -755,5 +791,16 @@ async function getDividendContractInfo(
     dividendBalance: dividendBalance,
     contractAddress: env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
     tokenAddress: data.token.address,
+    isDistributed,
+    isReady,
+    isEnd,
+    distributeLogs,
+    idoStartIn: await firstIdoContract
+      .startTime()
+      .then((res) => res.sub((Date.now() / 1000).toFixed(0))),
+    idoEndIn: await firstIdoContract
+      .endTime()
+      .then((res) => res.sub((Date.now() / 1000).toFixed(0))),
+    tokenName: await erc20.name(),
   };
 }

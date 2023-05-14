@@ -88,7 +88,7 @@ export function LoginModal({}: Props) {
         <DialogContent className="bg-white">
           <DialogTitle>Login</DialogTitle>
           {steps.map((step) => (
-            <div className="grid gap-4">
+            <div className="grid gap-4" key={step.name}>
               <h4 className="font-bold">{step.name}</h4>
               <div className="grid gap-2">{step.children}</div>
             </div>

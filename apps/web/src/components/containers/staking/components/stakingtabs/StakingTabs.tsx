@@ -43,36 +43,6 @@ const StakingTabs = (props: Props) => {
 
   return (
     <>
-      <ul className="flex flex-row flex-wrap justify-between gap-2 text-lg font-semibold">
-        <TabItem
-          value="7 DAYS"
-          isActive={activeTab == 0}
-          onClick={() => {
-            handleTabItemClick(0);
-          }}
-        />
-        <TabItem
-          value="14 DAYS"
-          isActive={activeTab == 1}
-          onClick={() => {
-            handleTabItemClick(1);
-          }}
-        />
-        <TabItem
-          value="30 DAYS"
-          isActive={activeTab == 2}
-          onClick={() => {
-            handleTabItemClick(2);
-          }}
-        />
-        <TabItem
-          value="60 DAYS"
-          isActive={activeTab == 3}
-          onClick={() => {
-            handleTabItemClick(3);
-          }}
-        />
-      </ul>
       <div className="h-1"></div>
       {TabPanels.map((item, index) => {
         if (index == activeTab) {

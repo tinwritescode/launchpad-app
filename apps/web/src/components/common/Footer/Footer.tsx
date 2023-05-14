@@ -45,7 +45,7 @@ function Footer({}: Props) {
         </div>
         <div className="flex justify-center gap-6">
           {links.map((link) => (
-            <a href={link.url} target="_blank">
+            <a href={link.url} target="_blank" key={link.name}>
               {link.name}
             </a>
           ))}
