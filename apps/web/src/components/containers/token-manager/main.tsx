@@ -250,7 +250,9 @@ export function Main() {
           <div>
             <AiOutlineCheck className="inline-block mr-2" /> IDO start date:{" "}
             {moment(
-              BigNumber.from(dividendInfo?.idoStartIn || "0").toNumber()
+              BigNumberJS(dividendInfo?.idoStartIn.toString() || "0")
+                .multipliedBy(1000)
+                .toNumber()
             ).format("YYYY/MM/DD - HH:mm")}
           </div>
         </p>,

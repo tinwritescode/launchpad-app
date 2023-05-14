@@ -15,8 +15,8 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         layout="vertical"
         initialValues={{
           // generate all random values (mock)
-          startTime: new Date().getTime(),
-          endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10,
+          startTime: new Date().getTime() + 1000 * 60 * 2, // 2 minutes from now
+          endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10, // 10 days from now
           idoPrice: 1,
           purchaseCap: 100,
           idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
@@ -125,7 +125,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
             value: value ? dayjs(value) : undefined,
           })}
         >
-          <DatePicker />
+          <DatePicker showTime />
         </Form.Item>
 
         <Form.Item
@@ -140,7 +140,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
             value: value ? dayjs(value) : undefined,
           })}
         >
-          <DatePicker />
+          <DatePicker showTime />
         </Form.Item>
 
         <Form.Item

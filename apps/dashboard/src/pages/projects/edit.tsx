@@ -131,7 +131,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       >
         <Input readOnly disabled />
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         label="Created At"
         name={["createdAt"]}
         rules={[
@@ -144,8 +144,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         })}
       >
         <DatePicker />
-      </Form.Item>
-      <Form.Item
+      </Form.Item> */}
+      {/* <Form.Item
         label="Updated At"
         name={["updatedAt"]}
         rules={[
@@ -158,7 +158,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         })}
       >
         <DatePicker />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         label="Name"
         name={["name"]}

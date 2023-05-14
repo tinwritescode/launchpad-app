@@ -139,7 +139,7 @@ export function Main({}) {
         elements: [
           <div className="grid grid-cols-3 gap-4">
             {["John", "Doe", "Alice", "Bob", "Lan", "Linh"].map((name) => (
-              <Card className="flex flex-col items-center gap-1 p-4">
+              <Card className="flex flex-col items-center gap-1 p-4" key={name}>
                 <img
                   src="https://i.pravatar.cc/100"
                   className="w-20 h-20 rounded-full object-cover"

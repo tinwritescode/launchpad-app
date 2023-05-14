@@ -42,6 +42,7 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
       if (allowance.lt(amount)) {
         await erc20Contract.approve(idoContractAddress, amount);
       }
+
       return contractFactory
         .connect(getSigner())
         .purchase(amount, proof, stakedAmount)

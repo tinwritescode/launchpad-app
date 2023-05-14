@@ -181,8 +181,9 @@ export const projectRouter = createTRPCRouter({
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
       const contracts = buildContractPayloads({
-        startTime,
-        endTime,
+        // block chain timestamp is second-based
+        startTime: +(startTime / 1000).toFixed(0),
+        endTime: +(endTime / 1000).toFixed(0),
         idoPrice,
         idoTokenAddress,
       });
@@ -660,8 +661,10 @@ export const projectRouter = createTRPCRouter({
           const idoContract = new IDOContract__factory(signer).attach(
             contract.address
           );
-          const minStaking = await idoContract.minStakingRequired();
-          const maxStaking = await idoContract.maxStakingRequired();
+          const [minStaking, maxStaking] = await Promise.all([
+            idoContract.minStakingRequired(),
+            idoContract.maxStakingRequired(),
+          ]);
           let whitelist: WhitelistData[] = [];
 
           return {
@@ -979,10 +982,8 @@ async function getDividendContractInfo(
     distributeLogs,
     idoStartIn: await firstIdoContract
       .startTime()
-      .then((res) => res.sub((Date.now() / 1000).toFixed(0))),
-    idoEndIn: await firstIdoContract
-      .endTime()
-      .then((res) => res.sub((Date.now() / 1000).toFixed(0))),
+      .then((res) => res.toString()),
+    idoEndIn: await firstIdoContract.endTime().then((res) => res.toString()),
     tokenName: await erc20.name(),
   };
 }
