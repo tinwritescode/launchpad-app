@@ -23,7 +23,7 @@ function NotFound({}: Props) {
           }
         `}
       </style>
-      <div className="bg-gray-100 h-screen justify-center">
+      <div className="bg-gray-100 h-[calc(100vh)] justify-center fixed inset-0 w-full">
         <center className="mt-24 m-auto">
           <svg
             className="emoji-404 "
@@ -126,7 +126,7 @@ function NotFound({}: Props) {
         </center>
         <center className="mt-6">
           <a
-            href="{{url()->previous()}}"
+            href="/"
             className="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md"
           >
             Go back{" "}

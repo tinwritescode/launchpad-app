@@ -1,102 +1,180 @@
-import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import toast from "react-hot-toast";
+import React, { useMemo } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
-import { getErc20Contract } from "../../../../../libs/blockchain";
+import {
+  IoLogoInstagram,
+  IoLogoLinkedin,
+  IoLogoTwitter,
+  IoMdInformationCircleOutline,
+} from "react-icons/io";
+import { Input } from "src/components/common/ui/input";
+import { Label } from "src/components/common/ui/label";
 import { api } from "../../../../../utils/api";
-import { getSigner } from "../../../../../utils/ethereum";
 import { cn } from "../../../../../utils/tailwind";
 import Spinner from "../../../../common/ui/spinner";
-import { BigNumber as BigNumberJS } from "bignumber.js";
-import { Input } from "src/components/common/ui/input";
-import { Button } from "src/components/common/AppButton";
-import { Label } from "src/components/common/ui/label";
+import { Card } from "../../../../common/ui/card";
 
 export function Main({}) {
   const router = useRouter();
   const query = router.query;
 
-  const { data: dividendInfo } = api.project.getDividendContractInfo.useQuery(
+  const { data } = api.project.getOne.useQuery(
+    { id: query?.id as string },
     {
-      id: query?.projectId as string,
-    },
-    {
-      enabled: !!query?.projectId,
+      enabled: !!query?.id,
     }
   );
-  const erc20Contract =
-    dividendInfo && getErc20Contract(dividendInfo?.tokenAddress);
 
   /**
-     * 
-     * - Xem thông tin dự án: tên dự án, giá IDO, giới thiệu ngắn
-- Xem team (logo, linkedin, twitter)
-- Xem rank của mình, các rank hiện có, nút staking để lên rank
-- Các mạng xã hội của dự án
-- Trạng thái dự án
+   * Xem thông tin dự án: tên dự án, giá IDO, giới thiệu ngắn
+   * Xem team (logo, linkedin, twitter)
+   * Xem rank của mình, các rank hiện có, nút staking để lên rank
+   * Các mạng xã hội của dự án
+   * Trạng thái dự án
+   */
+  const steps = useMemo(
+    () => [
+      {
+        title: "Project info",
+        elements: [
+          <>
+            <div className="flex gap-6 items-center">
+              <img
+                src={data?.image}
+                className="w-20 h-20 rounded-full object-cover"
+              />
+              <div className="flex flex-col gap-1">
+                <div className="text-2xl font-bold">{data?.name}</div>
+                <div className="text-sm font-semibold text-gray-600">
+                  ${data?.token?.symbol}
+                </div>
+              </div>
+            </div>
+          </>,
+          <div>
+            <Label className="flex items-center gap-1">
+              <IoMdInformationCircleOutline />
+              Description:
+            </Label>
+            <p
+              className={cn(
+                "text-sm text-gray-600",
+                "whitespace-pre-wrap",
+                "overflow-ellipsis overflow-hidden",
+                "my-2"
+              )}
+            >
+              {data?.summaryContent}
+            </p>
+          </div>,
+          <div>
+            <Label className="flex items-center gap-1">
+              <IoMdInformationCircleOutline />
+              Website:
+            </Label>
+            <a
+              href={data?.website}
+              target="_blank"
+              className="text-sm text-gray-600"
+            >
+              {data?.website}
+            </a>
+          </div>,
+          <div>
+            <Label className="flex items-center gap-1">
+              <IoMdInformationCircleOutline />
+              Whitepaper:
+            </Label>
+            <a
+              href={data?.whitepaper}
+              target="_blank"
+              className="text-sm text-gray-600"
+            >
+              {data?.whitepaper}
+            </a>
+          </div>,
+          <div></div>,
+        ] as React.ReactNode[],
+      },
+      {
+        title: "Team",
+        elements: [
+          <div className="grid grid-cols-3 gap-4">
+            {["John", "Doe", "Alice", "Bob", "Lan", "Linh"].map((name) => (
+              <Card className="flex flex-col items-center gap-1 p-4">
+                <img
+                  src="https://i.pravatar.cc/100"
+                  className="w-20 h-20 rounded-full object-cover"
+                />
+                <div className="text-sm font-semibold">{name}</div>
+                <div className="text-xs text-gray-600">CEO</div>
 
-     */
-
-  const steps = [
-    {
-      title: "Project info",
-      elements: [] as React.ReactNode[],
-    },
-    {
-      title: "Team",
-      elements: [] as React.ReactNode[],
-    },
-    {
-      title: "Staking",
-      elements: [
-        <div>
-          <Label>Stake</Label>
-          <Input />
-        </div>,
-      ] as React.ReactNode[],
-    },
-    {
-      title: "Social media",
-      elements: [] as React.ReactNode[],
-    },
-    {
-      title: "Whitelist locked",
-      elements: [] as React.ReactNode[],
-    },
-    {
-      title: "IDO start",
-      elements: [] as React.ReactNode[],
-    },
-    {
-      title: "Claim",
-      elements: [] as React.ReactNode[],
-    },
-    {
-      title: "History",
-      elements: [] as React.ReactNode[],
-    },
-  ];
+                <div className="flex gap-2">
+                  <a href="#" target="_blank">
+                    <IoLogoLinkedin className="w-6 h-6" />
+                  </a>
+                  <a href="#" target="_blank">
+                    <IoLogoTwitter className="w-6 h-6" />
+                  </a>
+                  <a href="#" target="_blank">
+                    <IoLogoInstagram className="w-6 h-6" />
+                  </a>
+                </div>
+              </Card>
+            ))}
+          </div>,
+        ] as React.ReactNode[],
+      },
+      {
+        title: "Staking",
+        elements: [
+          <div>
+            <Label>Current rank</Label>
+            <Input />
+          </div>,
+        ] as React.ReactNode[],
+      },
+      {
+        title: "Whitelist locked",
+        elements: [] as React.ReactNode[],
+      },
+      {
+        title: "IDO start",
+        elements: [] as React.ReactNode[],
+      },
+      {
+        title: "Claim",
+        elements: [] as React.ReactNode[],
+      },
+      {
+        title: "History",
+        elements: [] as React.ReactNode[],
+      },
+    ],
+    []
+  );
 
   const [currentStep, setCurrentStep] = React.useState(0);
-  const [maxStep, setMaxStep] = React.useState(0);
+  const [maxStep, setMaxStep] = React.useState(4);
 
-  useEffect(() => {
-    if (!dividendInfo) return;
+  // useEffect(() => {
+  //   if (!dividendInfo) return;
 
-    if (
-      BigNumberJS(dividendInfo?.dividendBalance).gte(
-        dividendInfo?.requiredBalance
-      )
-    ) {
-      setMaxStep(1);
-    }
-  }, [dividendInfo]);
+  //   if (
+  //     BigNumberJS(dividendInfo?.dividendBalance).gte(
+  //       dividendInfo?.requiredBalance
+  //     )
+  //   ) {
+  //     setMaxStep(1);
+  //   }
+  // }, [dividendInfo]);
 
   return (
     <div className="flex py-10 w-full items-center justify-center">
       <div className="aspect-square w-[600px] space-y-4 rounded-md border bg-gray-50 p-8 shadow-md">
-        <div className="text-center text-2xl font-semibold">IDO Controller</div>
+        <div className="text-center text-2xl font-semibold">
+          {steps[currentStep]?.title || <Spinner />}
+        </div>
 
         <div className="overflow-x-auto py-4">
           <div className="flex w-[1000px] text-center">

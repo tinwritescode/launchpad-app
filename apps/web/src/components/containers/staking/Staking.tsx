@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { BarLoader } from "react-spinners";
 import { useAccount } from "wagmi";
 import { Button } from "../../common";
+import PleaseConnectYourWallet from "../../common/PleaseConnectYourWallet";
 
 type Props = {};
 
@@ -200,14 +201,7 @@ const Staking = (props: Props) => {
           </div>
         </div>
       ) : (
-        <div
-          className="flex justify-center"
-          onClick={() => {
-            document.getElementById("login-button")?.click();
-          }}
-        >
-          <Button size="lg">Please connect your wallet</Button>
-        </div>
+        <PleaseConnectYourWallet />
       )}
     </>
   );

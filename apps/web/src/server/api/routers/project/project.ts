@@ -1,5 +1,6 @@
 import { NonceManager } from "@ethersproject/experimental";
 import { TRPCError } from "@trpc/server";
+import BNjs from "bignumber.js";
 import { Prisma, PrismaClient, Status } from "database";
 import { BigNumber, ethers } from "ethers";
 import {
@@ -15,13 +16,18 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
+import {
+  WhitelistData,
+  WhitelistDataProof,
+  WhitelistMerkleTree,
+} from "~/utils/whitelist_tree";
 import { env } from "../../../../env.mjs";
 import {
+  getErc20Contract,
   getIdoContract,
   getRpcProvider,
   getStakingContract,
 } from "../../../../libs/blockchain";
-import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
 import { protectedProcedure } from "./../../trpc";
 import {
   NUMBER_OF_PEOPLE,
@@ -32,12 +38,6 @@ import {
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
 import { calculateDividendPercent } from "./project.util";
-import BNjs from "bignumber.js";
-import {
-  WhitelistData,
-  WhitelistDataProof,
-  WhitelistMerkleTree,
-} from "~/utils/whitelist_tree";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -306,6 +306,11 @@ export const projectRouter = createTRPCRouter({
         },
       });
 
+      if (!data?.token?.address)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Token not found" });
+
+      const erc20 = getErc20Contract(data?.token?.address);
+
       return {
         ...data,
         IDOContract: await Promise.all(
@@ -353,6 +358,12 @@ export const projectRouter = createTRPCRouter({
             };
           }) || []
         ),
+        token: {
+          ...data?.token,
+          decimals: await erc20.decimals(),
+          symbol: await erc20.symbol(),
+          totalSupply: await erc20.totalSupply(),
+        },
       };
     }),
 

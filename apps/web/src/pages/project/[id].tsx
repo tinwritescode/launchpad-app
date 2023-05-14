@@ -9,20 +9,13 @@ import {
   DialogTitle,
   SpeedDial,
   SpeedDialAction,
-  Stack,
 } from "@mui/material";
-import { useState } from "react";
-import { useIsAdmin } from "../../components/common/LoginButton/lib";
-import {
-  IDODetail,
-  MiddleDetailInfo,
-  ProjectSummary,
-  TopDetailInfo,
-} from "../../components/containers/ido-details/components";
-import PageLayout from "../../components/templates/PageLayout";
-import { toast } from "react-hot-toast";
-import { api } from "../../utils/api";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { IDODetail } from "../../components/containers/ido-details/components";
+import PageLayout from "../../components/templates/PageLayout";
+import { api } from "../../utils/api";
 
 type Props = {};
 
