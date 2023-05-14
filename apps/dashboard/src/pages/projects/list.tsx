@@ -71,6 +71,26 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
           width={150}
         />
         <Table.Column
+          dataIndex={["websiteURL"]}
+          title="Website"
+          render={(value: any) => <UrlField value={value} />}
+        />
+        <Table.Column
+          dataIndex={["facebookURL"]}
+          title="Facebook Page"
+          render={(value: any) => <UrlField value={value} />}
+        />
+        <Table.Column
+          dataIndex={["telegramURL"]}
+          title="Telegram Channel"
+          render={(value: any) => <UrlField value={value} />}
+        />
+        <Table.Column
+          dataIndex={["twitterURL"]}
+          title="Twitter Page"
+          render={(value: any) => <UrlField value={value} />}
+        />
+        <Table.Column
           title="Actions"
           dataIndex="actions"
           render={(_: any, record: BaseRecord) => (

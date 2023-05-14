@@ -2,6 +2,9 @@ import { useRouter } from "next/router";
 import React, { useEffect, useMemo } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import {
+  IoIosGlobe,
+  IoIosPaperPlane,
+  IoLogoFacebook,
   IoLogoInstagram,
   IoLogoLinkedin,
   IoLogoTwitter,
@@ -74,28 +77,57 @@ export function Main({}) {
           </div>,
           <div>
             <Label className="flex items-center gap-1">
-              <IoMdInformationCircleOutline />
+              <IoIosGlobe color="#1DA1F2" />
               Website:
             </Label>
             <a
-              href={data?.website}
+              href={data?.websiteURL}
               target="_blank"
               className="text-sm text-gray-600"
             >
-              {data?.website}
+              {data?.websiteURL}
             </a>
           </div>,
           <div>
             <Label className="flex items-center gap-1">
-              <IoMdInformationCircleOutline />
-              Whitepaper:
+              <IoLogoFacebook color="#4267B2" />
+              Facebook Page:
             </Label>
             <a
-              href={data?.whitepaper}
+              href={data?.facebookURL}
               target="_blank"
               className="text-sm text-gray-600"
             >
-              {data?.whitepaper}
+              {data?.facebookURL}
+            </a>
+          </div>,
+          <div>
+            <Label className="flex items-center gap-1">
+              <IoIosPaperPlane
+                style={{ borderRadius: "50%", background: "#1DA1F2" }}
+                color="#fff"
+              />
+              Telegram Channel:
+            </Label>
+            <a
+              href={data?.telegramURL}
+              target="_blank"
+              className="text-sm text-gray-600"
+            >
+              {data?.telegramURL}
+            </a>
+          </div>,
+          <div>
+            <Label className="flex items-center gap-1">
+              <IoLogoTwitter color="#1DA1F2" />
+              Twitter Page:
+            </Label>
+            <a
+              href={data?.twitterURL}
+              target="_blank"
+              className="text-sm text-gray-600"
+            >
+              {data?.twitterURL}
             </a>
           </div>,
           <div></div>,

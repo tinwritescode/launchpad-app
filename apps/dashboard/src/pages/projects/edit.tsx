@@ -255,6 +255,18 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       >
         <Input />
       </Form.Item>
+      <Form.Item label="Website" name={["websiteURL"]}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Facebook Page" name={["facebookURL"]}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Telegram Channel" name={["telegramURL"]}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Twitter Page" name={["twitterURL"]}>
+        <Input />
+      </Form.Item>
       <Form.Item
         label="Owner"
         name={"ownerId"}

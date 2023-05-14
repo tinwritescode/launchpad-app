@@ -28,6 +28,10 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
           name: `IDO Project ${(Math.random() * 100).toFixed(0)}`,
           targettedRaise: "1000000",
+          websiteURL: "https://myidoproject.com",
+          facebookURL: "https://facebook.com/myidoproject",
+          twitterURL: "https://twitter.com/myidoproject",
+          telegramURL: "https://t.me/myidoproject",
         }}
       >
         <Form.Item
@@ -177,6 +181,22 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               width: "100%",
             }}
           />
+        </Form.Item>
+
+        <Form.Item label="Website" name={["websiteURL"]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Facebook Page" name={["facebookURL"]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Telegram Channel" name={["telegramURL"]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Twitter Page" name={["twitterURL"]}>
+          <Input />
         </Form.Item>
       </Form>
     </Create>

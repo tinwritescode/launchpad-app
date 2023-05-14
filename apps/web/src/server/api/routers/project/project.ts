@@ -50,6 +50,10 @@ const defaultProjectSelector: Prisma.ProjectSelect = {
   status: true,
   createdAt: true,
   updatedAt: true,
+  websiteURL: true,
+  facebookURL: true,
+  telegramURL: true,
+  twitterURL: true,
   token: {
     select: {
       id: true,
@@ -75,7 +79,7 @@ export const projectRouter = createTRPCRouter({
       })
     )
     .output(z.any())
-    .query(async ({ input, ctx: { prisma, signer } }) => {
+    .query(async ({ input, ctx: { prisma } }) => {
       try {
         const [data, count] = await Promise.all([
           prisma.project.findMany({
@@ -106,8 +110,8 @@ export const projectRouter = createTRPCRouter({
             let totalRaised = BigNumber.from(0);
             let totalParticipants = 0;
 
-            for (const ido of project.IDOContract) {
-              const contract = getIdoContract(ido.address);
+            for (const idoContract of project.IDOContract) {
+              const contract = getIdoContract(idoContract.address);
               const now = new Date().getTime();
               const [startTime, endTime] = await Promise.all([
                 contract.startTime(),
@@ -408,6 +412,10 @@ export const projectRouter = createTRPCRouter({
         summaryContent: z.string().optional(),
         videoURL: z.string().optional(),
         status: z.nativeEnum(Status).optional(),
+        websiteURL: z.string().optional(),
+        facebookURL: z.string().optional(),
+        twitterURL: z.string().optional(),
+        telegramURL: z.string().optional(),
       })
     )
     .output(z.any())
@@ -625,19 +633,25 @@ export const projectRouter = createTRPCRouter({
         });
       }
 
-      const { isDividendFulfilled, requiredBalance, isDistributed } =
-        await getDividendContractInfo(
-          prisma,
-          {
-            id: input.projectId,
-          },
-          signer
-        );
+      const { isDistributed } = await getDividendContractInfo(
+        prisma,
+        {
+          id: input.projectId,
+        },
+        signer
+      );
 
       if (!isDistributed) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "Dividend is not distributed yet",
+        });
+      }
+
+      if (idoContracts.some((contract) => contract.whitelistDump !== null)) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Whitelist is already started",
         });
       }
 

@@ -14,6 +14,11 @@ export const createIdoProjectInputSchema = z
     summaryContent: z.string(),
     videoURL: z.string().url(),
     targettedRaise: parseStringToEthers,
+    // optional fields
+    facebookURL: z.string().url().optional(),
+    telegramURL: z.string().url().optional(),
+    twitterURL: z.string().url().optional(),
+    websiteURL: z.string().url().optional(),
   })
   .merge(
     idoContractDto.pick({
