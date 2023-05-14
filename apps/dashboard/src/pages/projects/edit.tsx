@@ -20,6 +20,7 @@ import {
   Row,
   Select,
   Steps,
+  Table,
   Typography,
   Upload,
 } from "antd";
@@ -27,6 +28,7 @@ import dayjs from "dayjs";
 import React from "react";
 import { BigNumber as BigNumberJS } from "bignumber.js";
 import { env } from "../../env";
+import { LockOutlined } from "@ant-design/icons";
 
 const FULLFIL_DIVIDEND_URL = `http://localhost:3000/token-manager`;
 
@@ -54,6 +56,39 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       enabled: !!projectsData?.id,
     },
   });
+
+  const whitelistInfo = useCustom({
+    method: "get",
+    url: `/projects/${projectsData?.id}/whitelist`,
+    queryOptions: {
+      enabled: !!projectsData?.id,
+    },
+  });
+
+  const onLockWhitelist = async () => {
+    if (!projectsData?.id) return;
+
+    mutate(
+      {
+        method: "post",
+        url: `/projects/startWhitelisting`,
+        values: {
+          projectId: projectsData?.id,
+        },
+      },
+      {
+        onSuccess: () => {
+          invalidate({
+            resource: "projects",
+            invalidates: ["all"],
+          });
+
+          whitelistInfo.refetch();
+        },
+      }
+    );
+  };
+
   const isDistributed = dividendInfo?.data?.data?.isDistributed;
   const statusList = [
     {
@@ -69,6 +104,20 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       value: "DELETED",
     },
   ];
+  const columns = [
+    {
+      title: "Wallet Address",
+      dataIndex: "address",
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      render: (value: any) => {
+        return <>{new BigNumberJS(value).div(1e18).toFormat(2)}</>;
+      },
+    },
+  ];
+
   const formList = [
     <>
       <Form.Item
@@ -316,6 +365,23 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           }}
         </Form.List>
       </Form.Item>
+    </>,
+    <>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          type="primary"
+          onClick={() => onLockWhitelist()}
+          disabled={whitelistInfo.data?.data?.length > 0}
+          size="large"
+          icon={<LockOutlined />}
+          danger
+        >
+          Lock whitelist
+        </Button>
+      </div>
+      {/* Table */}
+
+      <Table columns={columns} dataSource={whitelistInfo.data?.data as any[]} />
     </>,
   ];
   const onDistribute = () => {

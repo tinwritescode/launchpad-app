@@ -721,8 +721,7 @@ export const projectRouter = createTRPCRouter({
       return successWhilelists;
     }),
 
-  // Get all whitelist address for an ido project id
-  getUserWhiteListInfo: adminProcedure
+  getUserWhiteListInfo: publicProcedure
     .meta({
       openapi: {
         method: "GET",
@@ -806,6 +805,52 @@ export const projectRouter = createTRPCRouter({
         isWhiteListed: false,
         isIdoStarted: null,
       };
+    }),
+
+  // Get all whitelist address for an ido project id
+  getWhitelistInfo: adminProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/projects/{id}/whitelist",
+        summary: "Get all whitelist address for an ido project id",
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .output(z.any())
+    .query(async ({ input, ctx: { prisma, signer } }) => {
+      // get all and use reducer to merge whitelist array from all ido contract
+      const project = await prisma.project.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          IDOContract: true,
+        },
+      });
+
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+
+      return project.IDOContract.map((idoContract) => {
+        return JSON.parse(idoContract.whitelistDump ?? "{}")?.values ?? [];
+      })
+        .flat()
+        .map((item) => {
+          return {
+            address: item.value[0],
+            amount: item.value[1],
+          };
+        });
     }),
 });
 
