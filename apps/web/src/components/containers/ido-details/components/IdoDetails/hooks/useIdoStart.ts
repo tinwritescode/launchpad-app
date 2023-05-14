@@ -79,7 +79,40 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
     }
   );
 
-  return { purchase };
+  const claim = useMutation(
+    async ({ amount }: { amount: string }) => {
+      if (!contractFactory) throw new Error("No contract factory");
+      if (!idoContractAddress) throw new Error("No ido contract address");
+
+      return contractFactory
+        .connect(getSigner())
+        .claim(amount)
+        .then((tx) => tx.wait());
+    },
+    {
+      onSuccess: () => {
+        invalidate();
+      },
+      onError: (error: any) => {
+        if (error?.code === Logger.errors.UNPREDICTABLE_GAS_LIMIT) {
+          // Error: VM Exception while processing transaction: reverted with reason string
+          const reason: string = error?.reason;
+
+          if (reason.includes("SALE_NOT_ENDED")) {
+            toast.error("Sale not ended");
+          } else if (reason.includes("CLAIM_AMOUNT_INVALID")) {
+            toast.error("Claim amount invalid");
+          } else if (reason.includes("CLAIM_AMOUNT_EXCEEDED")) {
+            toast.error("Claim amount exceeded");
+          } else {
+            toast.error("Transaction failed");
+          }
+        }
+      },
+    }
+  );
+
+  return { purchase, claim };
 }
 
 export default useIdoStart;

@@ -18,7 +18,7 @@ function Claim({}: Props) {
     id: query?.id as string,
     walletAddress: address as string,
   });
-  const { purchase } = useIdoStart({
+  const { claim } = useIdoStart({
     idoContractAddress: data?.idoContractAddress,
     proof: data?.proof?.proof,
     stakedAmount: data?.proof?.stakedAmount,
@@ -36,7 +36,7 @@ function Claim({}: Props) {
       <div className="flex justify-between">
         <Label className="mb-2 font-semibold">Amount</Label>
         <Label className="flex items-center gap-1">
-          Purchase cap: {data?.purchaseCap}
+          Claim amount: {data?.claimedAmounts}
         </Label>
       </div>
 
@@ -51,10 +51,10 @@ function Claim({}: Props) {
             disabled={!data?.isIdoStarted}
             className="flex-1"
             onClick={() => {
-              if (!data?.purchaseCap) return;
+              if (!data?.claimedAmounts) return;
               if (!inputRef.current) return;
 
-              inputRef.current.value = BigNumber.from(data?.purchaseCap)
+              inputRef.current.value = BigNumber.from(data?.claimedAmounts)
                 .mul(percent)
                 .div(100)
                 .toString();
@@ -68,10 +68,10 @@ function Claim({}: Props) {
       <div className="h-4"></div>
 
       {/* Is ido started? */}
-      {!data?.isIdoStarted ? (
-        <p>❌ IDO has not started yet. Please wait until the IDO starts.</p>
+      {!data?.isIdoEnded ? (
+        <p>❌ IDO has not ended yet. You cannot claim.</p>
       ) : (
-        <p>✅ IDO has started. You can purchase now.</p>
+        <p>✅ IDO has ended. You can claim.</p>
       )}
 
       <div className="flex justify-center">
@@ -79,17 +79,17 @@ function Claim({}: Props) {
           onClick={() => {
             if (!inputRef.current?.value) return;
 
-            return purchase.mutate({ amount: inputRef.current?.value });
+            return claim.mutate({ amount: inputRef.current?.value });
           }}
-          disabled={!data?.isIdoStarted}
+          disabled={!data?.isIdoEnded}
         >
-          {!data?.isIdoStarted ? (
+          {!data?.isIdoEnded ? (
             <>
               <Spinner className="mr-2 w-4" color="green" />
-              <span>IDO has not started yet</span>
+              <span>IDO has not ended yet</span>
             </>
           ) : (
-            "Purchase"
+            "Claim"
           )}
         </Button>
       </div>

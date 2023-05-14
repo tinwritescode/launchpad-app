@@ -784,6 +784,7 @@ export const projectRouter = createTRPCRouter({
         );
 
         const proof = merkle.getWhitelistDataWithProof(input.walletAddress);
+        const provider = signer.provider;
 
         const [
           isIdoStarted,
@@ -791,14 +792,27 @@ export const projectRouter = createTRPCRouter({
           isClaimed,
           purchasedAmount,
           purchaseCap,
+          claimedAmounts,
+          purchaseHistory,
         ] = await Promise.all([
-          _idoContract.startTime().then((time) => time.toNumber() < Date.now()),
-          _idoContract.endTime().then((time) => time.toNumber() < Date.now()),
+          _idoContract
+            .startTime()
+            .then((time) => time.toNumber() < Date.now() / 1000),
+          _idoContract
+            .endTime()
+            .then((time) => time.toNumber() < Date.now() / 1000),
           _idoContract
             .claimedAmounts(input.walletAddress)
             .then((amount) => amount.gt(0)),
           _idoContract.purchasedAmounts(input.walletAddress),
           _idoContract.purchaseCap(),
+          _idoContract.claimedAmounts(input.walletAddress),
+          provider.getLogs({
+            fromBlock: 0,
+            toBlock: "latest",
+            address: _idoContract.address,
+            topics: [_idoContract.interface.getEventTopic("Claimed")],
+          }),
         ]);
 
         return {
@@ -811,6 +825,14 @@ export const projectRouter = createTRPCRouter({
           isIdoEnded,
           isClaimed: isClaimed,
           purchasedAmount: purchasedAmount.toString(),
+          claimedAmounts: claimedAmounts.toString(),
+          purchaseHistory: purchaseHistory.map((log) => {
+            const parsedLog = _idoContract.interface.parseLog(log);
+            return {
+              amount: parsedLog.args.amount.toString(),
+              timestamp: parsedLog.args.timestamp.toNumber(),
+            };
+          }),
         };
       }
 
@@ -821,6 +843,11 @@ export const projectRouter = createTRPCRouter({
         purchaseCap: null,
         isWhiteListed: false,
         isIdoStarted: null,
+        isIdoEnded: null,
+        isClaimed: null,
+        purchasedAmount: null,
+        claimedAmounts: null,
+        purchaseHistory: null,
       };
     }),
 
