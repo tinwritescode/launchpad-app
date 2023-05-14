@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import {
   IoLogoInstagram,
@@ -7,17 +7,22 @@ import {
   IoLogoTwitter,
   IoMdInformationCircleOutline,
 } from "react-icons/io";
-import { Input } from "src/components/common/ui/input";
 import { Label } from "src/components/common/ui/label";
 import { api } from "../../../../../utils/api";
 import { cn } from "../../../../../utils/tailwind";
-import Spinner from "../../../../common/ui/spinner";
 import { Card } from "../../../../common/ui/card";
+import Spinner from "../../../../common/ui/spinner";
+import IdoStart from "./IdoStart";
+import { StakingInfo } from "./StakingInfo";
+import WhitelistTable from "./WhitelistTable";
+import { useAccount } from "wagmi";
+import PleaseConnectYourWallet from "../../../../common/PleaseConnectYourWallet";
+import Claim from "./Claim";
 
 export function Main({}) {
   const router = useRouter();
   const query = router.query;
-
+  const { isConnected } = useAccount();
   const { data } = api.project.getOne.useQuery(
     { id: query?.id as string },
     {
@@ -95,6 +100,7 @@ export function Main({}) {
           </div>,
           <div></div>,
         ] as React.ReactNode[],
+        connectWalletRequired: false,
       },
       {
         title: "Team",
@@ -124,50 +130,68 @@ export function Main({}) {
             ))}
           </div>,
         ] as React.ReactNode[],
+        connectWalletRequired: false,
       },
       {
         title: "Staking",
-        elements: [
-          <div>
-            <Label>Current rank</Label>
-            <Input />
-          </div>,
-        ] as React.ReactNode[],
+        elements: [<StakingInfo />] as React.ReactNode[],
+        connectWalletRequired: true,
       },
       {
         title: "Whitelist locked",
-        elements: [] as React.ReactNode[],
+        elements: [<WhitelistTable />] as React.ReactNode[],
+        connectWalletRequired: true,
       },
       {
         title: "IDO start",
-        elements: [] as React.ReactNode[],
+        elements: [<IdoStart />] as React.ReactNode[],
+        connectWalletRequired: true,
       },
       {
         title: "Claim",
-        elements: [] as React.ReactNode[],
+        elements: [<Claim />] as React.ReactNode[],
+        connectWalletRequired: true,
       },
       {
         title: "History",
         elements: [] as React.ReactNode[],
+        connectWalletRequired: true,
       },
     ],
     []
   );
 
+  const { address } = useAccount();
+
+  const { data: userWhiteListInfo } = api.project.getUserWhiteListInfo.useQuery(
+    {
+      id: query?.id as string,
+      walletAddress: address as string,
+    },
+    {
+      enabled: !!query?.id && !!address,
+    }
+  );
+
   const [currentStep, setCurrentStep] = React.useState(0);
   const [maxStep, setMaxStep] = React.useState(4);
 
-  // useEffect(() => {
-  //   if (!dividendInfo) return;
+  useEffect(() => {
+    if (!userWhiteListInfo?.isIdoStarted) {
+      setMaxStep(4);
+      setCurrentStep(4);
+    }
 
-  //   if (
-  //     BigNumberJS(dividendInfo?.dividendBalance).gte(
-  //       dividendInfo?.requiredBalance
-  //     )
-  //   ) {
-  //     setMaxStep(1);
-  //   }
-  // }, [dividendInfo]);
+    if (userWhiteListInfo?.isIdoEnded) {
+      setMaxStep(5);
+      setCurrentStep(5);
+    }
+
+    if (userWhiteListInfo?.isClaimed) {
+      setMaxStep(6);
+      setCurrentStep(6);
+    }
+  }, [isConnected, userWhiteListInfo]);
 
   return (
     <div className="flex py-10 w-full items-center justify-center">
@@ -208,7 +232,11 @@ export function Main({}) {
           </div>
         </div>
 
-        <div className="space-y-3 py-4">{steps[currentStep]?.elements}</div>
+        {steps[currentStep]?.connectWalletRequired && !isConnected ? (
+          <PleaseConnectYourWallet />
+        ) : (
+          <div className="space-y-3 py-4">{steps[currentStep]?.elements}</div>
+        )}
       </div>
     </div>
   );

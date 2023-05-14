@@ -695,6 +695,93 @@ export const projectRouter = createTRPCRouter({
 
       return successWhilelists;
     }),
+
+  // Get all whitelist address for an ido project id
+  getUserWhiteListInfo: adminProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/projects/whitelist/{id}",
+        summary: "Get all whitelist address for an ido project id",
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        walletAddress: z.string(),
+      })
+    )
+    .output(z.any())
+    .query(async ({ input, ctx: { prisma, signer } }) => {
+      // open prisma and get the table ido contract
+      const project = await prisma.project.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          IDOContract: true,
+        },
+      });
+
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+
+      for (const idoContract of project.IDOContract) {
+        const { whitelistDump } = idoContract;
+        const rankName = idoContract.name;
+
+        if (!whitelistDump) continue;
+
+        const merkle = WhitelistMerkleTree.fromJSON(whitelistDump);
+        const _idoContract = new IDOContract__factory(signer).attach(
+          idoContract.address
+        );
+
+        const proof = merkle.getWhitelistDataWithProof(input.walletAddress);
+
+        const [
+          isIdoStarted,
+          isIdoEnded,
+          isClaimed,
+          purchasedAmount,
+          purchaseCap,
+        ] = await Promise.all([
+          _idoContract.startTime().then((time) => time.toNumber() < Date.now()),
+          _idoContract.endTime().then((time) => time.toNumber() < Date.now()),
+          _idoContract
+            .claimedAmounts(input.walletAddress)
+            .then((amount) => amount.gt(0)),
+          _idoContract.purchasedAmounts(input.walletAddress),
+          _idoContract.purchaseCap(),
+        ]);
+
+        return {
+          proof,
+          rank: rankName,
+          idoContractAddress: idoContract.address,
+          purchaseCap: purchaseCap.toString(),
+          isWhiteListed: !!proof,
+          isIdoStarted,
+          isIdoEnded,
+          isClaimed: isClaimed,
+          purchasedAmount: purchasedAmount.toString(),
+        };
+      }
+
+      return {
+        proof: null,
+        rank: null,
+        idoContractAddress: null,
+        purchaseCap: null,
+        isWhiteListed: false,
+        isIdoStarted: null,
+      };
+    }),
 });
 
 async function getDividendContractInfo(

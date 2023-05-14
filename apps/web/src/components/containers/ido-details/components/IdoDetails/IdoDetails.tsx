@@ -43,14 +43,6 @@ const IdoDetail = () => {
     return allownce;
   };
 
-  const { data: approveAmount } = useQuery(
-    ["approveAmount", data?.token?.address, userTier?.address],
-    () => {
-      return getAproveAmount(data?.token?.address, userTier?.address);
-    },
-    { enabled: !!data?.token?.address && !!userTier?.address }
-  );
-
   const router = useRouter();
 
   useEffect(() => {

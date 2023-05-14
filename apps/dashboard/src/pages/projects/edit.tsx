@@ -274,7 +274,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                     </Button>
                     {isDistributed ? (
                       <Typography.Text style={{ fontSize: "1rem" }}>
-                        Tokens have been distributed.
+                        ✅ Tokens have been distributed.
                       </Typography.Text>
                     ) : (
                       (!isDividendFulfilled && (
@@ -379,7 +379,13 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       >
         <Steps
           {...stepsProps}
-          items={[{ title: "About Project" }, { title: "Distribute tokens" }]}
+          items={[
+            { title: "About Project" },
+            { title: "Distribute tokens" },
+            {
+              title: "Whitelist",
+            },
+          ]}
         />
 
         {formList[current]}

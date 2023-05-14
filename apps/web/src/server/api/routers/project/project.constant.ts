@@ -29,6 +29,7 @@ export const IDO_CONTRACT_STAKING_REQUIRED: Record<TierKeys, number> = {
   DIAMOND: 250000,
   BLUE_DIAMOND: 750000,
 } as const;
+
 export const getContractNameFromIndex = (
   index: number
 ): keyof typeof IDO_CONTRACT_STAKING_REQUIRED | null => {

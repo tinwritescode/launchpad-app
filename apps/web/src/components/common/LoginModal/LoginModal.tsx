@@ -28,7 +28,7 @@ export function LoginModal({}: Props) {
 
   const steps = [
     {
-      name: "Step 1",
+      name: "Connect Wallet",
       children: (
         <>
           {(isConnected && (
@@ -63,10 +63,10 @@ export function LoginModal({}: Props) {
         </>
       ),
     },
-    {
-      name: "Step 2",
-      children: <LoginButton />,
-    },
+    // {
+    //   name: "Step 2",
+    //   children: <LoginButton />,
+    // },
   ];
 
   return (

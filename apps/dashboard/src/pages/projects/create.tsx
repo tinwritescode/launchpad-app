@@ -15,7 +15,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         layout="vertical"
         initialValues={{
           // generate all random values (mock)
-          startTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 1,
+          startTime: new Date().getTime(),
           endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10,
           idoPrice: 1,
           purchaseCap: 100,
