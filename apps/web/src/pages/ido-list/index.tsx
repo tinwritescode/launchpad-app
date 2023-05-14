@@ -7,8 +7,6 @@ import {
   FindUsInSocial,
   IDOList,
 } from "../../components/containers/project-list/components";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import PageLayout from "../../components/templates/PageLayout";
 
 const Home: NextPage = () => {
@@ -24,11 +22,6 @@ const Home: NextPage = () => {
           gap: "1rem",
         }}
       >
-        <Tabs aria-label="disabled tabs example">
-          <Tab label="Active" />
-          <Tab label="Disabled" disabled />
-          <Tab label="Active" />
-        </Tabs>
         {/* <PageTopHeading /> */}
         <IDOList />
         {/* <ApplyForIDOHeading /> */}
