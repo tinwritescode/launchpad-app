@@ -75,7 +75,7 @@ export const projectRouter = createTRPCRouter({
       })
     )
     .output(z.any())
-    .query(async ({ input, ctx: { prisma } }) => {
+    .query(async ({ input, ctx: { prisma, signer } }) => {
       try {
         const [data, count] = await Promise.all([
           prisma.project.findMany({
@@ -92,45 +92,54 @@ export const projectRouter = createTRPCRouter({
 
         const fullData = await Promise.all(
           data.map(async (project: any) => {
-            let status: "UNKNOWN" | "UPCOMING" | "OPEN" | "CLOSED" = "UNKNOWN";
-            if (project.IDOContract.length === 0) {
+            let saleStatus: "UNKNOWN" | "UPCOMING" | "OPEN" | "CLOSED" =
+              "UNKNOWN";
+            if (
+              project.IDOContract.length === 0 ||
+              project.status !== Status.ACTIVE
+            ) {
               return {
                 ...project,
-                status,
+                saleStatus,
               };
             }
             let totalRaised = BigNumber.from(0);
             let totalParticipants = 0;
 
-            project.IDOContract.map(async (ido: any) => {
+            for (const ido of project.IDOContract) {
               const contract = getIdoContract(ido.address);
               const now = new Date().getTime();
-              const startTime = (await contract.startTime()).toNumber();
-              const endTime = (await contract.endTime()).toNumber();
+              const [startTime, endTime] = await Promise.all([
+                contract.startTime(),
+                contract.endTime(),
+              ]);
 
-              if (status === "UNKNOWN") {
-                if (startTime > now) {
-                  status = "UPCOMING";
-                } else if (endTime < now) {
-                  status = "CLOSED";
+              if (saleStatus === "UNKNOWN") {
+                if (startTime.toNumber() > now) {
+                  saleStatus = "UPCOMING";
+                  break;
+                } else if (endTime.toNumber() < now) {
+                  saleStatus = "CLOSED";
                 } else {
-                  status = "OPEN";
+                  saleStatus = "OPEN";
                 }
               }
 
               const purchaseHistory = await contract.purchaseHistory();
-              totalParticipants = purchaseHistory.length;
+              totalParticipants += purchaseHistory.length;
               totalRaised = purchaseHistory.reduce(
                 (acc, curr) => acc.add(curr.amount),
                 totalRaised
               );
-            });
+            }
 
             return {
               ...project,
-              status,
-              totalRaised,
-              totalParticipants,
+              saleStatus,
+              ...((saleStatus === "OPEN" || saleStatus === "CLOSED") && {
+                totalRaised,
+                totalParticipants,
+              }),
             };
           })
         );
@@ -613,6 +622,22 @@ export const projectRouter = createTRPCRouter({
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "No IDO contract found for this project",
+        });
+      }
+
+      const { isDividendFulfilled, requiredBalance, isDistributed } =
+        await getDividendContractInfo(
+          prisma,
+          {
+            id: input.projectId,
+          },
+          signer
+        );
+
+      if (!isDistributed) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Dividend is not distributed yet",
         });
       }
 

@@ -12,6 +12,7 @@ import React from "react";
 import { BarLoader } from "react-spinners";
 import { api } from "~/utils/api";
 import * as S from "./IDOList.style";
+import { ethers } from "ethers";
 
 interface Props {}
 
@@ -47,8 +48,11 @@ const IDOList: React.FC<Props> = () => {
           <TableRow>
             <StyledTableCell align="left">Project Name</StyledTableCell>
             <StyledTableCell align="left">Token</StyledTableCell>
-            <StyledTableCell align="center">Create At</StyledTableCell>
+            <StyledTableCell align="center">Created At</StyledTableCell>
             <StyledTableCell align="center">Status</StyledTableCell>
+            <StyledTableCell align="center">Sale Status</StyledTableCell>
+            <StyledTableCell align="center">Total Raised</StyledTableCell>
+            <StyledTableCell align="center">Participants</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -67,6 +71,14 @@ const IDOList: React.FC<Props> = () => {
                 {formatDate(row.createdAt as Date)}
               </StyledTableCell>
               <StyledTableCell align="center">{row.status}</StyledTableCell>
+              <StyledTableCell align="center">{row.saleStatus}</StyledTableCell>
+              <StyledTableCell align="center">
+                {row.totalRaised &&
+                  ethers.utils.formatEther(row.totalRaised) + " STRAW"}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {row.totalParticipants && row.totalParticipants}
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
