@@ -9,7 +9,7 @@ import { useErc20Contract } from "../libs/blockchain";
 import { env } from "../env.mjs";
 import { useQuery } from "@tanstack/react-query";
 import { BarLoader } from "react-spinners";
-import { useAccount } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
 import { Progress } from "../components/common/Progress";
 import {
   IDO_CONTRACT_STAKING_REQUIRED,
@@ -19,13 +19,14 @@ import {
 import { cn } from "../utils/tailwind";
 import Image from "next/image";
 import { useStakingHook } from "../components/containers/staking/useStaking";
+import Head from "next/head";
 
 type Props = {};
 
 function Home({}: Props) {
   const { balanceOf } = useErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS);
   const { amountStaked } = useStakingHook();
-  const { address: walletAddress } = useAccount();
+  const { address: walletAddress, isConnected } = useAccount();
   const balance = useQuery(
     ["balance"],
     () => balanceOf(walletAddress as string),
@@ -208,7 +209,6 @@ function Home({}: Props) {
       },
     },
   ];
-
   const userTierIndex =
     amountStaked &&
     Object.values(IDO_CONTRACT_STAKING_REQUIRED).findIndex((value, index) => {
@@ -226,15 +226,23 @@ function Home({}: Props) {
 
   return (
     <PageLayout>
+      <Head>
+        <title>{env.NEXT_PUBLIC_PROJECT_NAME} - Home</title>
+      </Head>
+
       <div className="text-center space-y-4 my-10">
         <h2 className="text-4xl font-semibold">Strawberry Launchpad</h2>
-        <div className="text-muted-foreground text-sm">Your balance</div>
-        {!balance.data || balance.isLoading ? (
-          <BarLoader />
-        ) : (
-          <div className="font-semibold text-lg">
-            {ethers.utils.commify(ethers.utils.formatEther(balance.data))}
-          </div>
+        {isConnected && (
+          <>
+            <div className="text-muted-foreground text-sm">Your balance</div>
+            {!balance.data || balance.isLoading ? (
+              <BarLoader />
+            ) : (
+              <div className="font-semibold text-lg">
+                {ethers.utils.commify(ethers.utils.formatEther(balance.data))}
+              </div>
+            )}
+          </>
         )}
 
         <div className="space-x-2">
@@ -254,20 +262,23 @@ function Home({}: Props) {
           How to stake? &gt;&gt;
         </Link>
 
-        <p className="text-sm text-muted-foreground">Your staked amount:</p>
-        {!amountStaked ? (
-          <BarLoader />
-        ) : (
-          <div className="font-semibold text-lg">
-            {ethers.utils.commify(ethers.utils.formatEther(amountStaked))} STRAW
-          </div>
+        {isConnected && (
+          <>
+            <p className="text-sm text-muted-foreground">Your staked amount:</p>
+            {!amountStaked ? (
+              <BarLoader />
+            ) : (
+              <div className="font-semibold text-lg">
+                {ethers.utils.commify(ethers.utils.formatEther(amountStaked))}{" "}
+                STRAW
+              </div>
+            )}
+          </>
         )}
       </div>
 
       <div className="space-y-8 my-10">
-        {!userTierIndex ? (
-          <BarLoader />
-        ) : (
+        {isConnected && userTierIndex && (
           <Progress value={20 * userTierIndex} />
         )}
 

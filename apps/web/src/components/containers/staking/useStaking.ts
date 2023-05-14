@@ -175,6 +175,14 @@ export const useStakingHook = () => {
     }
   );
 
+  const lockTime = useQuery(
+    ["lockTime", address],
+    ({ queryKey }) => getStakingContract().lockTime(),
+    {
+      enabled: !!address,
+    }
+  );
+
   return {
     amountStaked: stakeInfo?.amountStaked,
     unclaimedRewards: stakeInfo?.unclaimedRewards,
@@ -191,5 +199,6 @@ export const useStakingHook = () => {
     totalStaked: totalStaked.data,
     numberOfStakers: numberOfStakers.data,
     APY: APY.data,
+    lockTime: lockTime.data,
   };
 };

@@ -1,10 +1,12 @@
 import React from "react";
 import TabItem from "./TabItem";
 import TabPanel from "./TabPanel";
+import { useStakingHook } from "../../useStaking";
 
 type Props = {};
 
 const StakingTabs = (props: Props) => {
+  const { lockTime, APY } = useStakingHook();
   const [activeTab, setActiveTab] = React.useState<number>(0);
   const handleTabItemClick = (index: number) => {
     setActiveTab(index);
@@ -44,20 +46,14 @@ const StakingTabs = (props: Props) => {
   return (
     <>
       <div className="h-1"></div>
-      {TabPanels.map((item, index) => {
-        if (index == activeTab) {
-          return (
-            <TabPanel
-              lockPeriod={item.lockPeriod}
-              apyRate={item.apyRate}
-              reLocksOnRegistration={item.reLocksOnRegistration}
-              earlyUnstakeFee={item.earlyUnstakeFee}
-              status={item.status}
-              key={index}
-            />
-          );
-        }
-      })}
+      {lockTime && APY && (
+        <TabPanel
+          lockPeriod={`${lockTime?.toNumber() / 86400} days`}
+          apyRate={APY.toString()}
+          reLocksOnRegistration={false}
+          status={"Unlocked"}
+        />
+      )}
     </>
   );
 };

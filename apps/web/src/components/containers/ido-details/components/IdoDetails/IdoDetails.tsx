@@ -1,17 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
+import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { useStakingHook } from "~/components/containers/staking/useStaking";
+import { useErc20Contract } from "~/libs/blockchain";
 import { api } from "~/utils/api";
-import { useIdoDetail } from "../../hooks/useIdoDetail";
+import { getSigner } from "~/utils/ethereum";
+import { Button } from "../../../../common";
 import IdoButtonWallet from "./IdoButtonWallet";
 import IdoName from "./IdoName";
 import IdoStatus from "./IdoStatus";
-import { Button } from "../../../../common";
 import IdoTable from "./IdoTable";
-import { ethers } from "ethers";
-import { useErc20Contract } from "~/libs/blockchain";
-import { getSigner } from "~/utils/ethereum";
-import { useQuery } from "@tanstack/react-query";
-import { Diversity1TwoTone } from "@mui/icons-material";
+import { Main } from "./Main";
+import Head from "next/head";
+import { env } from "../../../../../env.mjs";
 
 const IdoDetail = () => {
   const { id } = useRouter().query as { id: string };
@@ -56,6 +57,17 @@ const IdoDetail = () => {
 
   return (
     <>
+      <Head>
+        <title>
+          {data?.name} - {env.NEXT_PUBLIC_PROJECT_NAME}
+        </title>
+      </Head>
+      <Main />
+    </>
+  );
+
+  return (
+    <>
       <div className="container h-full bg-slate-800 text-white p-4">
         <div className="flex flex-row gap-2 py-8 ">
           <div className="flex flex-col justify-center w-full gap-2 ">
@@ -83,10 +95,10 @@ const IdoDetail = () => {
             {(data?.token?.address && userTier?.address && (
               <IdoButtonWallet
                 connectedButtonProps={{
-                  purchaseTokenAddress: data?.token?.address,
-                  idoContractAddress: userTier?.address,
-                  amount: userTier.purchaseCap.toString(),
-                  idoPrice: userTier.idoPrice.toString(),
+                  purchaseTokenAddress: data?.token?.address as string,
+                  idoContractAddress: userTier?.address as string,
+                  amount: userTier?.purchaseCap.toString() as string,
+                  idoPrice: userTier?.idoPrice.toString() as string,
                 }}
               />
             )) || <Button>Stake now to join</Button>}
