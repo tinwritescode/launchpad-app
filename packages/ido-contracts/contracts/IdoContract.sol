@@ -343,7 +343,7 @@ contract IDOContract is
         require(startTime <= block.timestamp, "IDOSale: SALE_NOT_STARTED");
         require(block.timestamp < endTime, "IDOSale: SALE_ALREADY_ENDED");
         require(amount > 0, "IDOSale: PURCHASE_AMOUNT_INVALID");
-        bytes32 leaf = keccak256(abi.encodePacked(_msgSender(), stakedAmount));
+        bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(_msgSender(), stakedAmount))));
         require(
             MerkleProof.verify(proof, whitelistMerkleRoot, leaf),
             "IDOSale: INVALID_PROOF"
