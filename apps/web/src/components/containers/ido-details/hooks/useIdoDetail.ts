@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getErc20Contract, getIdoContract } from "../../../../libs/blockchain";
 import moment from "moment";
 import { BigNumber } from "ethers";
+import { useQuery } from "@tanstack/react-query";
 
 export enum SaleStatus {
   NOT_STARTED,
@@ -140,13 +141,10 @@ export const useIdoDetail = ({
           (acc, purchase) => acc.add(purchase.amount),
           BigNumber.from(0)
         );
-        const uniqueParticipants = new Set(
-          purchases.map((purchase) => purchase.account)
-        );
         return {
           idoAddress: contract!.address,
           totalAmount: totalAmount,
-          participants: uniqueParticipants.size,
+          participants: purchases.length,
         };
       })
     );

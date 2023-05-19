@@ -8,7 +8,8 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate --accept-data-loss --force-reset",
     "db:reset": "prisma migrate reset --force && npm run db:push && npm run db:seed",
-    "db:seed": "esbuild prisma/seed.ts --outfile=node_modules/tmp-seed.cjs --bundle --format=cjs --external:prisma --external:@prisma/client && node node_modules/tmp-seed.cjs --preview-feature"
+    "db:seed": "esbuild prisma/seed.ts --outfile=node_modules/tmp-seed.cjs --bundle --format=cjs --external:prisma --external:@prisma/client && node node_modules/tmp-seed.cjs --preview-feature",
+    "prisma:studio": "prisma studio"
   },
   "keywords": [],
   "author": "",

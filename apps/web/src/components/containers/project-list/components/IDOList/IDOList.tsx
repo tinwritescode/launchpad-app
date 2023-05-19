@@ -13,6 +13,7 @@ import { BarLoader } from "react-spinners";
 import { api } from "~/utils/api";
 import * as S from "./IDOList.style";
 import { ethers } from "ethers";
+
 import Link from "next/link";
 
 interface Props {}
@@ -99,7 +100,8 @@ const IDOList: React.FC<Props> = () => {
                   {item.status}
                 </td>
                 <td className="px-6 py-4 text-sm text-center font-medium underline whitespace-nowrap">
-                  <Link
+                  <
+                  
                     href={`/project/${item.id}`}
                     className="text-indigo-600 hover:text-indigo-900"
                   >

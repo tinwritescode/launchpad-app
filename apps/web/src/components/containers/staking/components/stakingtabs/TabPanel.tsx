@@ -4,7 +4,7 @@ type Props = {
   lockPeriod: string;
   apyRate: string;
   reLocksOnRegistration: boolean;
-  earlyUnstakeFee: string;
+  earlyUnstakeFee?: string;
   status: string;
 };
 
@@ -30,13 +30,15 @@ const TabPanel = (props: Props) => {
             {props.apyRate}%
           </div>
         </div>
-        <div className="flex flex-row flex-wrap justify-between">
-          <div className="text-lg text-gray-500">
-            Early unstake fee:{" "}
-            <span className="text-white">{props.earlyUnstakeFee}%</span>
+        {props.earlyUnstakeFee && (
+          <div className="flex flex-row flex-wrap justify-between">
+            <div className="text-lg text-gray-500">
+              Early unstake fee:{" "}
+              <span className="text-white">{props.earlyUnstakeFee}%</span>
+            </div>
+            <div className="text-lg text-gray-500">*APY is dynamic</div>
           </div>
-          <div className="text-lg text-gray-500">*APY is dynamic</div>
-        </div>
+        )}
         <div className="text-lg text-gray-500">
           Status: <span className="text-white">{props.status}</span>
         </div>

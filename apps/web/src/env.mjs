@@ -24,6 +24,7 @@ const client = z.object({
   NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS: z.string(),
 
   NEXT_PUBLIC_CHAIN_ID: z.string(),
+  NEXT_PUBLIC_PROJECT_NAME: z.string().default("Strawberry Launchpad"),
 });
 
 /**
@@ -47,6 +48,7 @@ const processEnv = {
   NEXT_PUBLIC_BLOCKCHAIN_RPC: process.env.NEXT_PUBLIC_BLOCKCHAIN_RPC,
   NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS:
     process.env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
+  NEXT_PUBLIC_PROJECT_NAME: process.env.NEXT_PUBLIC_PROJECT_NAME,
 };
 // Don't touch the part below
 // --------------------------

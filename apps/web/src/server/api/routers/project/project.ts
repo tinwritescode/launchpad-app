@@ -1,6 +1,7 @@
 import { Select } from "@mui/material";
 import { NonceManager } from "@ethersproject/experimental";
 import { TRPCError } from "@trpc/server";
+import BNjs from "bignumber.js";
 import { Prisma, PrismaClient, Status } from "database";
 import { BigNumber, ethers } from "ethers";
 import {
@@ -16,11 +17,21 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { IDOContract } from "~/server/services/ido-contract";
+import {
+  WhitelistData,
+  WhitelistDataProof,
+  WhitelistMerkleTree,
+} from "~/utils/whitelist_tree";
 import { env } from "../../../../env.mjs";
-import { getRpcProvider } from "../../../../libs/blockchain";
-import { IdoContractDto } from "./../../../services/ido-contract/ido-contract.dto";
+import {
+  getErc20Contract,
+  getIdoContract,
+  getRpcProvider,
+  getStakingContract,
+} from "../../../../libs/blockchain";
 import { protectedProcedure } from "./../../trpc";
 import {
+  NUMBER_OF_PEOPLE,
   TierKeys,
   buildContracts as buildContractPayloads,
   getContractDividendInPercent,
@@ -28,11 +39,6 @@ import {
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
 import { calculateDividendPercent } from "./project.util";
-import BNjs from "bignumber.js";
-import {
-  WhitelistDataProof,
-  WhitelistMerkleTree,
-} from "~/utils/whitelist_tree";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -45,12 +51,17 @@ const defaultProjectSelector: Prisma.ProjectSelect = {
   status: true,
   createdAt: true,
   updatedAt: true,
+  websiteURL: true,
+  facebookURL: true,
+  telegramURL: true,
+  twitterURL: true,
   token: {
     select: {
       id: true,
       address: true,
     },
   },
+  IDOContract: true,
 };
 
 export const projectRouter = createTRPCRouter({
@@ -87,8 +98,62 @@ export const projectRouter = createTRPCRouter({
           prisma.project.count(),
         ]);
 
+        const fullData = await Promise.all(
+          data.map(async (project: any) => {
+            let saleStatus: "UNKNOWN" | "UPCOMING" | "OPEN" | "CLOSED" =
+              "UNKNOWN";
+            if (
+              project.IDOContract.length === 0 ||
+              project.status !== Status.ACTIVE
+            ) {
+              return {
+                ...project,
+                saleStatus,
+              };
+            }
+            let totalRaised = BigNumber.from(0);
+            let totalParticipants = 0;
+
+            for (const idoContract of project.IDOContract) {
+              const contract = getIdoContract(idoContract.address);
+              const now = new Date().getTime();
+              const [startTime, endTime] = await Promise.all([
+                contract.startTime(),
+                contract.endTime(),
+              ]);
+
+              if (saleStatus === "UNKNOWN") {
+                if (startTime.toNumber() > now) {
+                  saleStatus = "UPCOMING";
+                  break;
+                } else if (endTime.toNumber() < now) {
+                  saleStatus = "CLOSED";
+                } else {
+                  saleStatus = "OPEN";
+                }
+              }
+
+              const purchaseHistory = await contract.purchaseHistory();
+              totalParticipants += purchaseHistory.length;
+              totalRaised = purchaseHistory.reduce(
+                (acc, curr) => acc.add(curr.amount),
+                totalRaised
+              );
+            }
+
+            return {
+              ...project,
+              saleStatus,
+              ...((saleStatus === "OPEN" || saleStatus === "CLOSED") && {
+                totalRaised,
+                totalParticipants,
+              }),
+            };
+          })
+        );
+
         return {
-          data,
+          data: fullData,
           meta: {
             total: count,
           },
@@ -119,9 +184,10 @@ export const projectRouter = createTRPCRouter({
       if (!ctx.session?.user?.isLoggedIn)
         throw new TRPCError({ code: "UNAUTHORIZED" });
 
-      const contracts: IdoContractDto[] = buildContractPayloads({
-        startTime,
-        endTime,
+      const contracts = buildContractPayloads({
+        // block chain timestamp is second-based
+        startTime: +(startTime / 1000).toFixed(0),
+        endTime: +(endTime / 1000).toFixed(0),
         idoPrice,
         idoTokenAddress,
       });
@@ -156,7 +222,7 @@ export const projectRouter = createTRPCRouter({
               contracts.map((contract) => {
                 return () => {
                   // TODO: Change this later
-                  const numberOfPeople = 200;
+                  const numberOfPeople = NUMBER_OF_PEOPLE[contract.name];
                   const dividendPercent = getContractDividendInPercent(
                     contract.name as TierKeys
                   );
@@ -167,17 +233,15 @@ export const projectRouter = createTRPCRouter({
                     )
                   ).dividedBy(new BNjs(numberOfPeople));
 
-                  // all variables
-                  console.group("Variables");
-                  console.log("numberOfPeople", numberOfPeople);
-                  console.log("dividendPercent", dividendPercent);
-                  console.log("purchaseCap", purchaseCap.toString());
-                  console.groupEnd();
-
                   return instance.deployIDOContract(
                     {
                       ...contract,
                       purchaseCap: BigNumber.from(purchaseCap.toString()),
+                      idoPrice: ethers.utils.parseEther(idoPrice.toString()),
+                      minStakingRequired:
+                        contract.minStakingRequired.toString(),
+                      maxStakingRequired:
+                        contract.maxStakingRequired.toString(),
                     },
                     signer
                   );
@@ -260,6 +324,11 @@ export const projectRouter = createTRPCRouter({
         },
       });
 
+      if (!data?.token?.address)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Token not found" });
+
+      const erc20 = getErc20Contract(data?.token?.address);
+
       return {
         ...data,
         IDOContract: await Promise.all(
@@ -295,10 +364,24 @@ export const projectRouter = createTRPCRouter({
                 .dividedBy(100)
                 .dividedBy(new BNjs(10 ** 18))
                 .toString(),
-              fulfilledAmount: fulfilledAmount.toFormat(),
+              fulfilledAmount: fulfilledAmount.dividedBy(new BNjs(10 ** 18)),
+              minStakedAmount: (
+                await idoContract.minStakingRequired()
+              ).toString(),
+              maxStakedAmount: (
+                await idoContract.maxStakingRequired()
+              ).toString(),
+              purchaseCap: (await idoContract.purchaseCap()).toString(),
+              idoPrice: (await idoContract.idoPrice()).toString(),
             };
           }) || []
         ),
+        token: {
+          ...data?.token,
+          decimals: await erc20.decimals(),
+          symbol: await erc20.symbol(),
+          totalSupply: await erc20.totalSupply(),
+        },
       };
     }),
 
@@ -334,6 +417,10 @@ export const projectRouter = createTRPCRouter({
         summaryContent: z.string().optional(),
         videoURL: z.string().optional(),
         status: z.nativeEnum(Status).optional(),
+        websiteURL: z.string().optional(),
+        facebookURL: z.string().optional(),
+        twitterURL: z.string().optional(),
+        telegramURL: z.string().optional(),
       })
     )
     .output(z.any())
@@ -402,7 +489,7 @@ export const projectRouter = createTRPCRouter({
         getRpcProvider()
       );
 
-      const { isDividendFulfilled, requiredBalance } =
+      const { isDividendFulfilled, requiredBalance, isDistributed } =
         await getDividendContractInfo(
           ctx.prisma,
           {
@@ -410,6 +497,13 @@ export const projectRouter = createTRPCRouter({
           },
           ctx.signer
         );
+
+      if (isDistributed) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Dividend is already distributed",
+        });
+      }
 
       if (!isDividendFulfilled) {
         throw new TRPCError({
@@ -514,6 +608,298 @@ export const projectRouter = createTRPCRouter({
 
       return { data, meta: { total } };
     }),
+
+  startWhitelisting: adminProcedure
+    .meta({
+      openapi: {
+        method: "POST",
+        path: "/projects/startWhitelisting",
+        summary: "Start IDOs whitelisting",
+        protect: true,
+      },
+    })
+    .output(z.any())
+    .input(
+      z.object({
+        projectId: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ input, ctx: { prisma, signer } }) => {
+      const idoContracts = await prisma.iDOContract.findMany({
+        where: {
+          projectId: input.projectId,
+        },
+      });
+
+      if (idoContracts.length === 0) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No IDO contract found for this project",
+        });
+      }
+
+      const { isDistributed } = await getDividendContractInfo(
+        prisma,
+        {
+          id: input.projectId,
+        },
+        signer
+      );
+
+      if (!isDistributed) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Dividend is not distributed yet",
+        });
+      }
+
+      if (idoContracts.some((contract) => contract.whitelistDump !== null)) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Whitelist is already started",
+        });
+      }
+
+      const idosData = await Promise.all(
+        idoContracts.map(async (contract) => {
+          const idoContract = new IDOContract__factory(signer).attach(
+            contract.address
+          );
+          const [minStaking, maxStaking] = await Promise.all([
+            idoContract.minStakingRequired(),
+            idoContract.maxStakingRequired(),
+          ]);
+          let whitelist: WhitelistData[] = [];
+
+          return {
+            id: contract.id,
+            idoContract,
+            minStaking,
+            maxStaking,
+            whitelist,
+          };
+        })
+      );
+
+      const stakingContract = getStakingContract();
+      const stakersLength = await stakingContract.getStakersLength();
+      let index = BigNumber.from(0);
+
+      while (index.lt(stakersLength)) {
+        const staker = await stakingContract.getStakerAtIndex(index);
+        const [amount, reward] = await stakingContract.getStakeInfo(staker);
+        const [stakingTokenAddr, rewardTokenAddr] = await Promise.all([
+          stakingContract.stakingToken(),
+          stakingContract.rewardToken(),
+        ]);
+        let total = amount;
+
+        if (stakingTokenAddr === rewardTokenAddr) {
+          total.add(reward);
+        }
+
+        const ido = idosData.find(
+          (ido) => ido.minStaking.lte(total) && ido.maxStaking.gte(total)
+        );
+        if (ido) {
+          ido.whitelist.push(new WhitelistData(staker, total.toString()));
+        }
+
+        index = index.add(1);
+      }
+
+      let successWhilelists: { address: string; totalWhitelisted: number }[] =
+        [];
+      for (const ido of idosData) {
+        if (ido.whitelist.length === 0) {
+          continue;
+        }
+
+        const tree = new WhitelistMerkleTree(ido.whitelist);
+
+        try {
+          await ido.idoContract.setWhitelistMerkleRoot(tree.getRoot());
+        } catch (error) {
+          console.log(error);
+          continue;
+        }
+
+        await prisma.iDOContract.update({
+          where: {
+            id: ido.id,
+          },
+          data: {
+            whitelistDump: tree.toJSON(),
+          },
+        });
+
+        successWhilelists.push({
+          address: ido.idoContract.address,
+          totalWhitelisted: ido.whitelist.length,
+        });
+      }
+
+      return successWhilelists;
+    }),
+
+  getUserWhiteListInfo: publicProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/projects/whitelist/{id}",
+        summary: "Get all whitelist address for an ido project id",
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        walletAddress: z.string(),
+      })
+    )
+    .output(z.any())
+    .query(async ({ input, ctx: { prisma, signer } }) => {
+      // open prisma and get the table ido contract
+      const project = await prisma.project.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          IDOContract: true,
+        },
+      });
+
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+
+      for (const idoContract of project.IDOContract) {
+        const { whitelistDump } = idoContract;
+        const rankName = idoContract.name;
+
+        if (!whitelistDump) continue;
+
+        const merkle = WhitelistMerkleTree.fromJSON(whitelistDump);
+        const _idoContract = new IDOContract__factory(signer).attach(
+          idoContract.address
+        );
+
+        const proof = merkle.getWhitelistDataWithProof(input.walletAddress);
+        const provider = signer.provider;
+
+        const [
+          isIdoStarted,
+          isIdoEnded,
+          isClaimed,
+          purchasedAmount,
+          purchaseCap,
+          claimedAmounts,
+          purchaseHistory,
+        ] = await Promise.all([
+          _idoContract
+            .startTime()
+            .then((time) => time.toNumber() < Date.now() / 1000),
+          _idoContract
+            .endTime()
+            .then((time) => time.toNumber() < Date.now() / 1000),
+          _idoContract
+            .claimedAmounts(input.walletAddress)
+            .then((amount) => amount.gt(0)),
+          _idoContract.purchasedAmounts(input.walletAddress),
+          _idoContract.purchaseCap(),
+          _idoContract.claimedAmounts(input.walletAddress),
+          provider.getLogs({
+            fromBlock: 0,
+            toBlock: "latest",
+            address: _idoContract.address,
+            topics: [_idoContract.interface.getEventTopic("Claimed")],
+          }),
+        ]);
+
+        return {
+          proof,
+          rank: rankName,
+          idoContractAddress: idoContract.address,
+          purchaseCap: purchaseCap.toString(),
+          isWhiteListed: !!proof,
+          isIdoStarted,
+          isIdoEnded,
+          isClaimed: isClaimed,
+          purchasedAmount: purchasedAmount.toString(),
+          claimedAmounts: claimedAmounts.toString(),
+          purchaseHistory: purchaseHistory.map((log) => {
+            const parsedLog = _idoContract.interface.parseLog(log);
+            return {
+              amount: parsedLog.args.amount.toString(),
+              timestamp: parsedLog.args.timestamp.toNumber(),
+            };
+          }),
+        };
+      }
+
+      return {
+        proof: null,
+        rank: null,
+        idoContractAddress: null,
+        purchaseCap: null,
+        isWhiteListed: false,
+        isIdoStarted: null,
+        isIdoEnded: null,
+        isClaimed: null,
+        purchasedAmount: null,
+        claimedAmounts: null,
+        purchaseHistory: null,
+      };
+    }),
+
+  // Get all whitelist address for an ido project id
+  getWhitelistInfo: adminProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/projects/{id}/whitelist",
+        summary: "Get all whitelist address for an ido project id",
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .output(z.any())
+    .query(async ({ input, ctx: { prisma, signer } }) => {
+      // get all and use reducer to merge whitelist array from all ido contract
+      const project = await prisma.project.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          IDOContract: true,
+        },
+      });
+
+      if (!project) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Project not found",
+        });
+      }
+
+      return project.IDOContract.map((idoContract) => {
+        return JSON.parse(idoContract.whitelistDump ?? "{}")?.values ?? [];
+      })
+        .flat()
+        .map((item) => {
+          return {
+            address: item.value[0],
+            amount: item.value[1],
+          };
+        });
+    }),
 });
 
 async function getDividendContractInfo(
@@ -580,8 +966,39 @@ async function getDividendContractInfo(
 
   avgRate = avgRate.dividedBy(data.IDOContract.length);
 
-  const requiredBalance = new BNjs(data.targettedRaise).dividedBy(avgRate);
+  const requiredBalance = new BNjs(data.targettedRaise)
+    .dividedBy(avgRate)
+    .multipliedBy(new BNjs(10).pow(18));
+
   const isDividendFulfilled = dividendBalance.gte(requiredBalance);
+
+  const dividendContract = new Dividend__factory(signer).attach(
+    env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS
+  );
+
+  const distributeLogs = await dividendContract.queryFilter(
+    dividendContract.filters.Received(null, data.token.address),
+    0,
+    "latest"
+    // calculate sum
+  );
+  // if exist a filter ethers for distribute
+  const isDistributed = distributeLogs
+    .reduce(
+      (acc, cur) => acc.plus(cur.args?.amount.toString() || 0),
+      new BNjs(0)
+    )
+    .gte(requiredBalance.toFixed(0));
+
+  const firstIdoContract = new IDOContract__factory(signer).attach(
+    data.IDOContract[0].address
+  );
+  const isReady = await firstIdoContract
+    .startTime()
+    .then((res) => res.lt((Date.now() / 1000).toFixed(0)));
+  const isEnd = await firstIdoContract
+    .endTime()
+    .then((res) => res.lt((Date.now() / 1000).toFixed(0)));
 
   return {
     isDividendFulfilled,
@@ -589,5 +1006,15 @@ async function getDividendContractInfo(
     requiredBalance: requiredBalance,
     dividendBalance: dividendBalance,
     contractAddress: env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
+    tokenAddress: data.token.address,
+    isDistributed,
+    isReady,
+    isEnd,
+    distributeLogs,
+    idoStartIn: await firstIdoContract
+      .startTime()
+      .then((res) => res.toString()),
+    idoEndIn: await firstIdoContract.endTime().then((res) => res.toString()),
+    tokenName: await erc20.name(),
   };
 }

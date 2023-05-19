@@ -25,6 +25,7 @@ const config: HardhatUserConfig = {
       accounts: accounts,
       // https://hardhat.org/hardhat-network/docs/metamask-issue
       chainId: 1337,
+      initialDate: new Date(Date.now()).toISOString(),
     },
   },
 };

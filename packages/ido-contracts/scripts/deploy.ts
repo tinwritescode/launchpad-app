@@ -26,6 +26,18 @@ async function main() {
   const { idoToken } = await deployIDOToken(signer);
   const { dividendContract } = await deployDividendContract(signer);
 
+  // approve staking contract
+  const stakingToken = await ethers.getContractAt(
+    "ERC20",
+    stakingTokenAddress,
+    signer
+  );
+  await stakingToken
+    .connect(signer)
+    .approve(stakingContract.address, ethers.constants.MaxUint256);
+
+  await stakingContract.connect(signer).stake(ethers.utils.parseEther("5000"));
+
   await saveToEnvFile({
     NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS: stakingContract.address,
     NEXT_PUBLIC_STAKING_TOKEN_ADDRESS: stakingTokenAddress,

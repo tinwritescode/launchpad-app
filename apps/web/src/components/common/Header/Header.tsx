@@ -33,7 +33,7 @@ function Header({}: Props) {
           </Link>
           <div className="flex gap-8">
             {links.map((link) => (
-              <Link className="font-semibold" href={link.url}>
+              <Link className="font-semibold" href={link.url} key={link.name}>
                 {link.name}
               </Link>
             ))}

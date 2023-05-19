@@ -54,6 +54,9 @@
     },
     "db:seed": {
       "cache": false
+    },
+    "prisma:studio": {
+      "cache": false
     }
   },
   "globalEnv": [

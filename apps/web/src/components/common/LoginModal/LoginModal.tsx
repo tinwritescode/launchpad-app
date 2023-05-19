@@ -28,7 +28,7 @@ export function LoginModal({}: Props) {
 
   const steps = [
     {
-      name: "Step 1",
+      name: "Connect Wallet",
       children: (
         <>
           {(isConnected && (
@@ -63,10 +63,10 @@ export function LoginModal({}: Props) {
         </>
       ),
     },
-    {
-      name: "Step 2",
-      children: <LoginButton />,
-    },
+    // {
+    //   name: "Step 2",
+    //   children: <LoginButton />,
+    // },
   ];
 
   return (
@@ -78,7 +78,7 @@ export function LoginModal({}: Props) {
     >
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="px-16">
+          <Button className="px-16" id="login-button">
             {!!data?.isLoggedIn && isConnected
               ? `Welcome ${formatWalletAddress(data?.address)}`
               : "Login"}
@@ -88,7 +88,7 @@ export function LoginModal({}: Props) {
         <DialogContent className="bg-white">
           <DialogTitle>Login</DialogTitle>
           {steps.map((step) => (
-            <div className="grid gap-4">
+            <div className="grid gap-4" key={step.name}>
               <h4 className="font-bold">{step.name}</h4>
               <div className="grid gap-2">{step.children}</div>
             </div>

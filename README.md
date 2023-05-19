@@ -57,6 +57,34 @@ Run development server:
 pnpm run dev
 ```
 
+## Reset db
+
+When in development, for example when you restart with `pnpm run dev`, you may want to clear the database as well. Use this command:
+
+```bash
+yarn turbo db:reset
+```
+
+Then restart the development server.
+
+```bash
+pnpm run dev
+```
+
+Notice that you may want to logout (from the dashboard) and login again after resetting the database. This is because the database is cleared, but the session is not.
+
+## Debug with VSCode
+
+First, start the development server:
+
+```bash
+pnpm run dev
+```
+
+Then, in VSCode, attach to the process by pressing `Ctrl + Shift + D` and select `Attach to Node` then type-in the word: `web` and select the first option.
+
+Place `debugger;` in the code where you want to debug.
+
 ## Ports
 
 | URL | Port | Description

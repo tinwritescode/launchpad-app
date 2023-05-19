@@ -11,7 +11,8 @@
     "dev": "dotenv -- turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "turbo": "dotenv -- turbo run"
+    "turbo": "dotenv -- turbo run",
+    "prisma:studio": "dotenv -- turbo run prisma:studio"
   },
   "devDependencies": {
     "dotenv-cli": "^7.2.1",

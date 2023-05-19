@@ -335,12 +335,21 @@ contract IDOContract is
      * @dev Purchase IDO token
      * Only whitelisted users can purchase within `purchcaseCap` amount
      */
-    function purchase(uint256 amount, bytes32[] memory proof, uint256 stakedAmount) external nonReentrant whenNotPaused {
+    function purchase(
+        uint256 amount,
+        bytes32[] memory proof,
+        uint256 stakedAmount
+    ) external nonReentrant whenNotPaused {
         require(startTime <= block.timestamp, "IDOSale: SALE_NOT_STARTED");
         require(block.timestamp < endTime, "IDOSale: SALE_ALREADY_ENDED");
         require(amount > 0, "IDOSale: PURCHASE_AMOUNT_INVALID");
-        bytes32 leaf = keccak256(abi.encodePacked(_msgSender(), stakedAmount));
-        require(MerkleProof.verify(proof, whitelistMerkleRoot, leaf), "IDOSale: INVALID_PROOF");
+        bytes32 leaf = keccak256(
+            bytes.concat(keccak256(abi.encode(_msgSender(), stakedAmount)))
+        );
+        require(
+            MerkleProof.verify(proof, whitelistMerkleRoot, leaf),
+            "IDOSale: INVALID_PROOF"
+        );
         require(
             purchasedAmounts[_msgSender()] + amount <= purchaseCap,
             "IDOSale: PURCHASE_CAP_EXCEEDED"
@@ -453,7 +462,10 @@ contract IDOContract is
      * @dev Set Whitelist merkle root
      */
     function setWhitelistMerkleRoot(bytes32 merkleRoot) external onlyOwner {
-        require(whitelistMerkleRoot == bytes32(0), "IDOSale: MERKLE_ROOT_ALREADY_SET");
+        require(
+            whitelistMerkleRoot == bytes32(0),
+            "IDOSale: MERKLE_ROOT_ALREADY_SET"
+        );
         require(merkleRoot != bytes32(0), "IDOSale: MERKLE_ROOT_INVALID");
         whitelistMerkleRoot = merkleRoot;
 

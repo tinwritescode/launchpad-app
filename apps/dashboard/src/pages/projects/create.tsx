@@ -15,8 +15,8 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         layout="vertical"
         initialValues={{
           // generate all random values (mock)
-          startTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 1,
-          endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10,
+          startTime: new Date().getTime() + 1000 * 60 * 2, // 2 minutes from now
+          endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10, // 10 days from now
           idoPrice: 1,
           purchaseCap: 100,
           idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
@@ -28,6 +28,10 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
           name: `IDO Project ${(Math.random() * 100).toFixed(0)}`,
           targettedRaise: "1000000",
+          websiteURL: "https://myidoproject.com",
+          facebookURL: "https://facebook.com/myidoproject",
+          twitterURL: "https://twitter.com/myidoproject",
+          telegramURL: "https://t.me/myidoproject",
         }}
       >
         <Form.Item
@@ -121,7 +125,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
             value: value ? dayjs(value) : undefined,
           })}
         >
-          <DatePicker />
+          <DatePicker showTime />
         </Form.Item>
 
         <Form.Item
@@ -136,7 +140,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
             value: value ? dayjs(value) : undefined,
           })}
         >
-          <DatePicker />
+          <DatePicker showTime />
         </Form.Item>
 
         <Form.Item
@@ -177,6 +181,22 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               width: "100%",
             }}
           />
+        </Form.Item>
+
+        <Form.Item label="Website" name={["websiteURL"]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Facebook Page" name={["facebookURL"]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Telegram Channel" name={["telegramURL"]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Twitter Page" name={["twitterURL"]}>
+          <Input />
         </Form.Item>
       </Form>
     </Create>

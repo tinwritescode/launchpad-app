@@ -9,6 +9,7 @@ import {
   IResourceComponentsProps,
   useCustom,
   useCustomMutation,
+  useInvalidate,
 } from "@refinedev/core";
 import {
   Button,
@@ -19,6 +20,7 @@ import {
   Row,
   Select,
   Steps,
+  Table,
   Typography,
   Upload,
 } from "antd";
@@ -26,10 +28,12 @@ import dayjs from "dayjs";
 import React from "react";
 import { BigNumber as BigNumberJS } from "bignumber.js";
 import { env } from "../../env";
+import { LockOutlined } from "@ant-design/icons";
 
 const FULLFIL_DIVIDEND_URL = `http://localhost:3000/token-manager`;
 
 export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
+  const invalidate = useInvalidate();
   const {
     formProps,
     saveButtonProps,
@@ -44,7 +48,6 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     defaultValue: projectsData?.ownerId,
     optionLabel: "walletAddress",
   });
-
   const { data, mutate } = useCustomMutation();
   const dividendInfo = useCustom({
     method: "get",
@@ -53,6 +56,40 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       enabled: !!projectsData?.id,
     },
   });
+
+  const whitelistInfo = useCustom({
+    method: "get",
+    url: `/projects/${projectsData?.id}/whitelist`,
+    queryOptions: {
+      enabled: !!projectsData?.id,
+    },
+  });
+
+  const onLockWhitelist = async () => {
+    if (!projectsData?.id) return;
+
+    mutate(
+      {
+        method: "post",
+        url: `/projects/startWhitelisting`,
+        values: {
+          projectId: projectsData?.id,
+        },
+      },
+      {
+        onSuccess: () => {
+          invalidate({
+            resource: "projects",
+            invalidates: ["all"],
+          });
+
+          whitelistInfo.refetch();
+        },
+      }
+    );
+  };
+
+  const isDistributed = dividendInfo?.data?.data?.isDistributed;
   const statusList = [
     {
       label: "Active",
@@ -67,6 +104,20 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       value: "DELETED",
     },
   ];
+  const columns = [
+    {
+      title: "Wallet Address",
+      dataIndex: "address",
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      render: (value: any) => {
+        return <>{new BigNumberJS(value).div(1e18).toFormat(2)}</>;
+      },
+    },
+  ];
+
   const formList = [
     <>
       <Form.Item
@@ -80,7 +131,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       >
         <Input readOnly disabled />
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         label="Created At"
         name={["createdAt"]}
         rules={[
@@ -93,8 +144,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         })}
       >
         <DatePicker />
-      </Form.Item>
-      <Form.Item
+      </Form.Item> */}
+      {/* <Form.Item
         label="Updated At"
         name={["updatedAt"]}
         rules={[
@@ -107,7 +158,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         })}
       >
         <DatePicker />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         label="Name"
         name={["name"]}
@@ -204,6 +255,18 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       >
         <Input />
       </Form.Item>
+      <Form.Item label="Website" name={["websiteURL"]}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Facebook Page" name={["facebookURL"]}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Telegram Channel" name={["telegramURL"]}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Twitter Page" name={["twitterURL"]}>
+        <Input />
+      </Form.Item>
       <Form.Item
         label="Owner"
         name={"ownerId"}
@@ -270,26 +333,42 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                     >
                       Distribute tokens
                     </Button>
-                    {!isDividendFulfilled && (
+                    {isDistributed ? (
                       <Typography.Text style={{ fontSize: "1rem" }}>
-                        {`You need to send ${BigNumberJS(
-                          dividendInfo?.data?.data?.requiredBalance
-                        )
-                          .dividedBy(10 ** 18)
-                          .toFormat()} tokens to the contract address.`}
-                        <br />
-
-                        <Typography.Link
-                          href={`${FULLFIL_DIVIDEND_URL}?address=${
-                            dividendInfo?.data?.data?.contractAddress
-                          }&amount=${BigNumberJS(
-                            dividendInfo?.data?.data?.requiredBalance
-                          ).dividedBy(10 ** 18)}`}
-                          target="_blank"
-                        >
-                          Fulfill dividend
-                        </Typography.Link>
+                        ✅ Tokens have been distributed.
                       </Typography.Text>
+                    ) : (
+                      (!isDividendFulfilled && (
+                        <Typography.Text style={{ fontSize: "1rem" }}>
+                          {`❌ You need to send ${BigNumberJS(
+                            dividendInfo?.data?.data?.requiredBalance
+                          )
+                            .dividedBy(10 ** 18)
+                            .toFormat()} tokens to the contract address (current balance: ${BigNumberJS(
+                            dividendInfo?.data?.data?.dividendBalance
+                          )
+                            .dividedBy(10 ** 18)
+                            .toFormat()}).`}
+                          <br />
+                          💡 Send this link to the owner to fulfill the
+                          dividend:{" "}
+                          <Typography.Link
+                            href={`${FULLFIL_DIVIDEND_URL}?projectId=${projectsData?.id}`}
+                            target="_blank"
+                            style={{ fontSize: "16px" }}
+                          >
+                            Fulfill dividend
+                          </Typography.Link>
+                        </Typography.Text>
+                      )) || (
+                        <Typography.Text style={{ fontSize: "1rem" }}>
+                          {`✅ Ready to distribute ${BigNumberJS(
+                            dividendInfo?.data?.data?.dividendBalance
+                          )
+                            .dividedBy(10 ** 18)
+                            .toFormat()} tokens to ido contracts.`}
+                        </Typography.Text>
+                      )
                     )}
                   </div>
                 </Form.Item>
@@ -299,15 +378,43 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         </Form.List>
       </Form.Item>
     </>,
+    <>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          type="primary"
+          onClick={() => onLockWhitelist()}
+          disabled={whitelistInfo.data?.data?.length > 0}
+          size="large"
+          icon={<LockOutlined />}
+          danger
+        >
+          Lock whitelist
+        </Button>
+      </div>
+      {/* Table */}
+
+      <Table columns={columns} dataSource={whitelistInfo.data?.data as any[]} />
+    </>,
   ];
   const onDistribute = () => {
-    mutate({
-      url: `projects/divide`,
-      method: "post",
-      values: {
-        projectId: projectsData?.id,
+    mutate(
+      {
+        url: `projects/divide`,
+        method: "post",
+        values: {
+          projectId: projectsData?.id,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          invalidate({
+            resource: "projects",
+            id: projectsData?.id,
+            invalidates: ["all"],
+          });
+        },
+      }
+    );
   };
   const isDividendFulfilled = dividendInfo?.data?.data?.isDividendFulfilled;
 
@@ -350,7 +457,13 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       >
         <Steps
           {...stepsProps}
-          items={[{ title: "About Project" }, { title: "Distribute tokens" }]}
+          items={[
+            { title: "About Project" },
+            { title: "Distribute tokens" },
+            {
+              title: "Whitelist",
+            },
+          ]}
         />
 
         {formList[current]}

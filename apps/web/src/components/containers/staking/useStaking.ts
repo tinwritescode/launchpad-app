@@ -128,6 +128,61 @@ export const useStakingHook = () => {
     }
   );
 
+  const decimals = useQuery(
+    ["decimals", address],
+    ({ queryKey }) =>
+      getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).decimals(),
+    {
+      enabled: !!address,
+    }
+  );
+
+  const totalStaked = useQuery(
+    ["totalStaked", address],
+    ({ queryKey }) => getStakingContract().stakingTokenBalance(),
+    {
+      enabled: !!address,
+    }
+  );
+
+  const numberOfStakers = useQuery(
+    ["numberOfStakers", address],
+    ({ queryKey }) => getStakingContract().getStakersLength(),
+    {
+      enabled: !!address,
+    }
+  );
+
+  const APY = useQuery(
+    ["APY", address],
+    async ({ queryKey }) => {
+      const [timeUnit, rewardRatio, rewardBalance] = await Promise.all([
+        getStakingContract().getTimeUnit(),
+        getStakingContract().getRewardRatio(),
+        getStakingContract().getRewardTokenBalance(),
+      ]);
+      const timeInAYear = BigNumber.from(60 * 60 * 24 * 365).div(timeUnit);
+      const rewardRatioPerYear = rewardRatio._numerator
+        .mul(timeInAYear)
+        .div(rewardRatio._denominator)
+        .mul(rewardBalance);
+
+      return rewardRatioPerYear;
+    },
+
+    {
+      enabled: !!address,
+    }
+  );
+
+  const lockTime = useQuery(
+    ["lockTime", address],
+    ({ queryKey }) => getStakingContract().lockTime(),
+    {
+      enabled: !!address,
+    }
+  );
+
   return {
     amountStaked: stakeInfo?.amountStaked,
     unclaimedRewards: stakeInfo?.unclaimedRewards,
@@ -140,5 +195,10 @@ export const useStakingHook = () => {
     claimReward,
     withdraw,
     unlockTime: unlockTime.data,
+    decimals: decimals.data,
+    totalStaked: totalStaked.data,
+    numberOfStakers: numberOfStakers.data,
+    APY: APY.data,
+    lockTime: lockTime.data,
   };
 };

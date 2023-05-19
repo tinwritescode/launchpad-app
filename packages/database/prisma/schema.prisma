@@ -73,6 +73,10 @@ model Project {
     User               User?            @relation(fields: [ownerId], references: [id])
     ownerId            String
     targettedRaise     String
+    facebookURL        String?
+    telegramURL        String?
+    twitterURL         String?
+    websiteURL         String?
 }
 
 model IDOContract {

@@ -3,8 +3,10 @@ import React from "react";
 import { api } from "~/utils/api";
 import { useIdoDetail } from "../../hooks/useIdoDetail";
 import { SkeletonCell } from "./SkeletonCell";
+import { useStakingHook } from "~/components/containers/staking/useStaking";
+import { BigNumber, ethers } from "ethers";
 
-export const ProjectDetailsTab = () => {
+export const ProjectDetailsTab = (tab0: any) => {
   const { id } = useRouter().query as { id: string };
   const { data, isLoading } = api.project.getOne.useQuery(
     { id },
@@ -14,6 +16,20 @@ export const ProjectDetailsTab = () => {
   const { tokenInfo, idosInfo } = useIdoDetail({
     erc20ContractAddress: data?.token?.address,
     idoContractAddresses: data?.IDOContract?.map((c) => c.address),
+  });
+
+  const { amountStaked, stakingTokenName, stakingTokenBalance } =
+    useStakingHook();
+
+  const poolInfo = idosInfo?.find((c) => {
+    const userTier =
+      amountStaked &&
+      data?.IDOContract?.find(
+        (d) =>
+          amountStaked.gte(ethers.utils.parseEther(d.minStakedAmount)) &&
+          amountStaked.lt(ethers.utils.parseEther(d.maxStakedAmount))
+      );
+    return c.address === userTier?.address && userTier;
   });
 
   return (
@@ -32,7 +48,12 @@ export const ProjectDetailsTab = () => {
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Opens
                 </th>
-                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
+                <td className="px-6 py-4 w-full">
+                  {(poolInfo?.startTime &&
+                    new Date(
+                      poolInfo.startTime.toNumber()
+                    ).toLocaleString()) || <SkeletonCell />}
+                </td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
@@ -44,17 +65,40 @@ export const ProjectDetailsTab = () => {
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Closes
                 </th>
-                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
+                <td className="px-6 py-4 w-full">
+                  {(poolInfo?.endTime &&
+                    new Date(poolInfo.endTime.toNumber()).toLocaleString()) || (
+                    <SkeletonCell />
+                  )}
+                </td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">
                   Swap Rate
                 </th>
-                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
+                <td className="px-6 py-4 w-full">
+                  {poolInfo?.idoPrice && tokenInfo && stakingTokenName ? (
+                    "1 " +
+                    stakingTokenName +
+                    " = " +
+                    ethers.utils.formatEther(poolInfo.idoPrice) +
+                    " " +
+                    tokenInfo?.symbol
+                  ) : (
+                    <SkeletonCell />
+                  )}
+                </td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">Cap</th>
-                <td className="px-6 py-4 w-full">{<SkeletonCell />}</td>
+                <td className="px-6 py-4 w-full">
+                  {poolInfo?.purchaseCap && tokenInfo ? (
+                    // ethers.utils.formatEther(poolInfo.purchaseCap) +
+                    poolInfo.purchaseCap.toString() + " " + tokenInfo?.symbol
+                  ) : (
+                    <SkeletonCell />
+                  )}
+                </td>
               </tr>
               <tr className="border-b border-gray-500">
                 <th className="px-6 py-4 font-medium whitespace-nowrap">

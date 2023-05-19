@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
@@ -16,11 +15,13 @@ contract Dividend is Ownable {
         uint256 amount;
     }
 
+    event Received(address indexed from, address indexed token, uint256 amount);
+
     // divide the amount of tokens received by the number of addresses
-    function distribute(address token, TransferItem[] memory items)
-        public
-        onlyOwner
-    {
+    function distribute(
+        address token,
+        TransferItem[] memory items
+    ) public onlyOwner {
         uint256 totalAmount = 0;
         for (uint256 i = 0; i < items.length; i++) {
             totalAmount += items[i].amount;
@@ -32,8 +33,12 @@ contract Dividend is Ownable {
 
         for (uint256 i = 0; i < items.length; i++) {
             IERC20(token).approve(items[i].to, items[i].amount);
-            IIDOContract(items[i].to).depositTokens(address(this), items[i].amount);
+            IIDOContract(items[i].to).depositTokens(
+                address(this),
+                items[i].amount
+            );
+
+            emit Received(items[i].to, token, items[i].amount);
         }
     }
-
 }

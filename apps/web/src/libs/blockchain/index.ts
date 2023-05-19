@@ -5,6 +5,7 @@ import {
   IDOContract__factory,
   Staking__factory,
 } from "ido-contracts/typechain-types";
+import { getSigner } from "../../utils/ethereum";
 
 export const getRpcProvider = () => {
   const provider = new ethers.providers.JsonRpcProvider(
