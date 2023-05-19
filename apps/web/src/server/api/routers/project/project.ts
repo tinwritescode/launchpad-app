@@ -1,3 +1,4 @@
+import { Select } from "@mui/material";
 import { NonceManager } from "@ethersproject/experimental";
 import { TRPCError } from "@trpc/server";
 import BNjs from "bignumber.js";
@@ -85,7 +86,10 @@ export const projectRouter = createTRPCRouter({
           prisma.project.findMany({
             skip: input.offset,
             take: input.limit,
-            select: defaultProjectSelector,
+            select: {
+              ...defaultProjectSelector,
+              targettedRaise: true,
+            },
             orderBy: {
               createdAt: "desc",
             },
