@@ -13,6 +13,7 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 import "antd-css-utilities/utility.min.css";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { wagmiClient } from "shared";
 import { WagmiConfig } from "wagmi";
 import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
@@ -29,7 +30,6 @@ import {
   ProjectShow,
 } from "./pages/projects";
 import { Register } from "./pages/register";
-import { wagmiClient } from "shared";
 
 function App() {
   return (

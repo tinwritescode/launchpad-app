@@ -1,29 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import { BigNumber as BigNumberJS } from "bignumber.js";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { Dividend__factory } from "ido-contracts/typechain-types";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineCheck } from "react-icons/ai";
-import { Button } from "../../common";
-import { Input } from "../../common/ui/input";
-import { Label } from "../../common/ui/label";
-import Spinner from "../../common/ui/spinner";
+import { FaHourglassEnd } from "react-icons/fa";
+import { useAccount } from "wagmi";
 import { getErc20Contract, getRpcProvider } from "../../../libs/blockchain";
 import { api } from "../../../utils/api";
 import { getSigner } from "../../../utils/ethereum";
 import { cn } from "../../../utils/tailwind";
+import { Button } from "../../common";
 import PleaseConnectYourWallet from "../../common/PleaseConnectYourWallet";
-import { useAccount } from "wagmi";
-import { FaHourglassEnd } from "react-icons/fa";
+import { Input } from "../../common/ui/input";
+import { Label } from "../../common/ui/label";
+import Spinner from "../../common/ui/spinner";
+import dynamic from "next/dynamic";
 
 const formatEtherAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 
-export function Main() {
+export function Inside() {
   const router = useRouter();
   const { isConnected } = useAccount();
   const query = router.query;
@@ -39,12 +40,7 @@ export function Main() {
     );
   const erc20Contract =
     dividendInfo && getErc20Contract(dividendInfo?.tokenAddress);
-  const {
-    data: distributeInfo,
-    isLoading,
-    isInitialLoading,
-    refetch: refetchDistributeInfo,
-  } = useQuery(
+  const { data: distributeInfo, refetch: refetchDistributeInfo } = useQuery(
     ["distribute", query?.projectId],
     async () => {
       if (!dividendInfo) {
@@ -71,6 +67,29 @@ export function Main() {
       refetchOnMount: false,
     }
   );
+
+  const [currentStep, setCurrentStep] = React.useState(0);
+  const [maxStep, setMaxStep] = React.useState(0);
+
+  useEffect(() => {
+    if (!dividendInfo) return;
+
+    if (
+      BigNumberJS(dividendInfo?.dividendBalance).gte(
+        dividendInfo?.requiredBalance
+      )
+    ) {
+      setMaxStep(1);
+    }
+
+    if (dividendInfo?.isDistributed) {
+      setMaxStep(2);
+    }
+
+    if (dividendInfo?.isReady) {
+      setMaxStep(3);
+    }
+  }, [dividendInfo]);
 
   const steps = [
     {
@@ -156,7 +175,7 @@ export function Main() {
           </p>
         </div>,
 
-        <div className="">
+        <div>
           <Button
             onClick={async () => {
               if (!erc20Contract) return;
@@ -196,66 +215,54 @@ export function Main() {
     {
       title: "Wait for distributing",
       elements: [
-        isLoading || isInitialLoading ? (
-          <Spinner />
-        ) : (
-          <>
-            {distributeInfo?.length === 0 ? (
-              <div className="my-10">
-                <div className="text-center text-sm flex items-center flex-col gap-4">
-                  <FaHourglassEnd size={50} />
+        (distributeInfo?.length === 0 && (
+          <div className="my-10">
+            <div className="text-center text-sm flex items-center flex-col gap-4">
+              <FaHourglassEnd size={50} />
 
-                  <div>
-                    No distribute logs, please wait for distribute (usually take
-                    24 hours after sending tokens)
-                  </div>
-                </div>
+              <div>
+                No distribute logs, please wait for distribute (usually take 24
+                hours after sending tokens)
               </div>
-            ) : (
-              <table className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th className="text-left">Address</th>
-                    <th className="text-left">Amount</th>
-                    <th className="text-left">Timestamp</th>
-                  </tr>
-                </thead>
+            </div>
+          </div>
+        )) || (
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th className="text-left">Address</th>
+                <th className="text-left">Amount</th>
+                <th className="text-left">Timestamp</th>
+              </tr>
+            </thead>
 
-                <tbody>
-                  {distributeInfo?.map((info) => (
-                    <tr>
-                      <td>{formatEtherAddress(info.address)}</td>
-                      <td>
-                        {ethers.utils.formatEther(info.amount.toString())}
-                      </td>
-                      <td>
-                        {moment(info.timestamp).format("YYYY/MM/DD - HH:mm")}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </>
+            <tbody>
+              {distributeInfo?.map((info) => (
+                <tr key={`${info.address}_${info.timestamp}`}>
+                  <td>{formatEtherAddress(info.address)}</td>
+                  <td>{ethers.utils.formatEther(info.amount.toString())}</td>
+                  <td>{moment(info.timestamp).format("YYYY/MM/DD - HH:mm")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         ),
       ] as React.ReactNode[],
     },
     {
       title: "IDO ready",
       elements: [
-        <p>
-          <div>
-            <AiOutlineCheck className="inline-block mr-2" /> Ready to start IDO
-          </div>
-          <div>
-            <AiOutlineCheck className="inline-block mr-2" /> IDO start date:{" "}
-            {moment(
-              BigNumberJS(dividendInfo?.idoStartIn.toString() || "0")
-                .multipliedBy(1000)
-                .toNumber()
-            ).format("YYYY/MM/DD - HH:mm")}
-          </div>
-        </p>,
+        <div>
+          <AiOutlineCheck className="inline-block mr-2" /> Ready to start IDO
+        </div>,
+        <div>
+          <AiOutlineCheck className="inline-block mr-2" /> IDO start date:{" "}
+          {moment(
+            BigNumberJS(dividendInfo?.idoStartIn.toString() || "0")
+              .multipliedBy(1000)
+              .toNumber()
+          ).format("YYYY/MM/DD - HH:mm")}
+        </div>,
       ] as React.ReactNode[],
     },
     {
@@ -263,28 +270,6 @@ export function Main() {
       elements: [],
     },
   ];
-  const [currentStep, setCurrentStep] = React.useState(0);
-  const [maxStep, setMaxStep] = React.useState(0);
-
-  useEffect(() => {
-    if (!dividendInfo) return;
-
-    if (
-      BigNumberJS(dividendInfo?.dividendBalance).gte(
-        dividendInfo?.requiredBalance
-      )
-    ) {
-      setMaxStep(1);
-    }
-
-    if (dividendInfo?.isDistributed) {
-      setMaxStep(2);
-    }
-
-    if (dividendInfo?.isReady) {
-      setMaxStep(3);
-    }
-  }, [dividendInfo]);
 
   return (
     <div className="flex py-10 w-full items-center justify-center">
@@ -328,7 +313,9 @@ export function Main() {
                 ))}
               </div>
               <div className="space-y-3 py-4">
-                {steps[currentStep]?.elements}
+                {steps[currentStep]?.elements.map((element, index) => (
+                  <div key={index}>{element}</div>
+                ))}
               </div>
             </div>
           )
@@ -339,3 +326,7 @@ export function Main() {
     </div>
   );
 }
+
+export const Main = dynamic(() => Promise.resolve(Inside), {
+  ssr: false,
+});

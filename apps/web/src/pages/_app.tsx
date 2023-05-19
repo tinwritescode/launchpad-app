@@ -13,23 +13,21 @@ import { wagmiClient } from "../utils/wagmi";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <React.Fragment>
-      <WagmiConfig client={wagmiClient}>
-        <CssBaseline />
-        <ThemeProvider theme={theme}>
-          <Toaster
-            position="top-right"
-            containerStyle={{
-              top: 80,
-            }}
-          />
-          <NextNProgress />
-          <Providers>
-            <Component {...pageProps} />
-          </Providers>
-        </ThemeProvider>
-      </WagmiConfig>
-    </React.Fragment>
+    <WagmiConfig client={wagmiClient}>
+      <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <Toaster
+          position="top-right"
+          containerStyle={{
+            top: 80,
+          }}
+        />
+        <NextNProgress />
+        <Providers>
+          <Component {...pageProps} />
+        </Providers>
+      </ThemeProvider>
+    </WagmiConfig>
   );
 };
 

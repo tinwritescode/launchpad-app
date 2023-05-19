@@ -11,16 +11,16 @@ import {
   IoMdInformationCircleOutline,
 } from "react-icons/io";
 import { Label } from "src/components/common/ui/label";
+import { useAccount } from "wagmi";
 import { api } from "../../../../../utils/api";
 import { cn } from "../../../../../utils/tailwind";
+import PleaseConnectYourWallet from "../../../../common/PleaseConnectYourWallet";
 import { Card } from "../../../../common/ui/card";
 import Spinner from "../../../../common/ui/spinner";
+import Claim from "./Claim";
 import IdoStart from "./IdoStart";
 import { StakingInfo } from "./StakingInfo";
 import WhitelistTable from "./WhitelistTable";
-import { useAccount } from "wagmi";
-import PleaseConnectYourWallet from "../../../../common/PleaseConnectYourWallet";
-import Claim from "./Claim";
 
 export function Main({}) {
   const router = useRouter();
@@ -45,7 +45,7 @@ export function Main({}) {
       {
         title: "Project info",
         elements: [
-          <>
+          <div>
             <div className="flex gap-6 items-center">
               <img
                 src={data?.image}
@@ -58,7 +58,7 @@ export function Main({}) {
                 </div>
               </div>
             </div>
-          </>,
+          </div>,
           <div>
             <Label className="flex items-center gap-1">
               <IoMdInformationCircleOutline />
@@ -75,62 +75,69 @@ export function Main({}) {
               {data?.summaryContent}
             </p>
           </div>,
-          <div>
-            <Label className="flex items-center gap-1">
-              <IoIosGlobe color="#1DA1F2" />
-              Website:
-            </Label>
-            <a
-              href={data?.websiteURL}
-              target="_blank"
-              className="text-sm text-gray-600"
-            >
-              {data?.websiteURL}
-            </a>
-          </div>,
-          <div>
-            <Label className="flex items-center gap-1">
-              <IoLogoFacebook color="#4267B2" />
-              Facebook Page:
-            </Label>
-            <a
-              href={data?.facebookURL}
-              target="_blank"
-              className="text-sm text-gray-600"
-            >
-              {data?.facebookURL}
-            </a>
-          </div>,
-          <div>
-            <Label className="flex items-center gap-1">
-              <IoIosPaperPlane
-                style={{ borderRadius: "50%", background: "#1DA1F2" }}
-                color="#fff"
-              />
-              Telegram Channel:
-            </Label>
-            <a
-              href={data?.telegramURL}
-              target="_blank"
-              className="text-sm text-gray-600"
-            >
-              {data?.telegramURL}
-            </a>
-          </div>,
-          <div>
-            <Label className="flex items-center gap-1">
-              <IoLogoTwitter color="#1DA1F2" />
-              Twitter Page:
-            </Label>
-            <a
-              href={data?.twitterURL}
-              target="_blank"
-              className="text-sm text-gray-600"
-            >
-              {data?.twitterURL}
-            </a>
-          </div>,
-          <div></div>,
+          data?.websiteURL && (
+            <div>
+              <Label className="flex items-center gap-1">
+                <IoIosGlobe color="#1DA1F2" />
+                Website:
+              </Label>
+              <a
+                href={data?.websiteURL}
+                target="_blank"
+                className="text-sm text-gray-600"
+              >
+                {data?.websiteURL}
+              </a>
+            </div>
+          ),
+          data?.facebookURL && (
+            <div>
+              <Label className="flex items-center gap-1">
+                <IoLogoFacebook color="#4267B2" />
+                Facebook Page:
+              </Label>
+              <a
+                href={data?.facebookURL}
+                target="_blank"
+                className="text-sm text-gray-600"
+              >
+                {data?.facebookURL}
+              </a>
+            </div>
+          ),
+          data?.telegramURL && (
+            <div>
+              <Label className="flex items-center gap-1">
+                <IoIosPaperPlane
+                  style={{ borderRadius: "50%", background: "#1DA1F2" }}
+                  color="#fff"
+                />
+                Telegram Channel:
+              </Label>
+              <a
+                href={data?.telegramURL}
+                target="_blank"
+                className="text-sm text-gray-600"
+              >
+                {data?.telegramURL}
+              </a>
+            </div>
+          ),
+          data?.twitterURL && (
+            <div>
+              <Label className="flex items-center gap-1">
+                <IoLogoTwitter color="#1DA1F2" />
+                Twitter Page:
+              </Label>
+              <a
+                href={data?.twitterURL}
+                target="_blank"
+                className="text-sm text-gray-600"
+              >
+                {data?.twitterURL}
+              </a>
+            </div>
+          ),
         ] as React.ReactNode[],
         connectWalletRequired: false,
       },

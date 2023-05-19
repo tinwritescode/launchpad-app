@@ -232,17 +232,13 @@ function Home({}: Props) {
 
       <div className="text-center space-y-4 my-10">
         <h2 className="text-4xl font-semibold">Strawberry Launchpad</h2>
-        {isConnected && (
-          <>
+        {isConnected && balance.data && (
+          <div>
             <div className="text-muted-foreground text-sm">Your balance</div>
-            {!balance.data || balance.isLoading ? (
-              <BarLoader />
-            ) : (
-              <div className="font-semibold text-lg">
-                {ethers.utils.commify(ethers.utils.formatEther(balance.data))}
-              </div>
-            )}
-          </>
+            <div className="font-semibold text-lg">
+              {ethers.utils.commify(ethers.utils.formatEther(balance?.data))}
+            </div>
+          </div>
         )}
 
         <div className="space-x-2">
@@ -262,18 +258,14 @@ function Home({}: Props) {
           How to stake? &gt;&gt;
         </Link>
 
-        {isConnected && (
-          <>
+        {isConnected && amountStaked && (
+          <div>
             <p className="text-sm text-muted-foreground">Your staked amount:</p>
-            {!amountStaked ? (
-              <BarLoader />
-            ) : (
-              <div className="font-semibold text-lg">
-                {ethers.utils.commify(ethers.utils.formatEther(amountStaked))}{" "}
-                STRAW
-              </div>
-            )}
-          </>
+            <div className="font-semibold text-lg">
+              {ethers.utils.commify(ethers.utils.formatEther(amountStaked))}{" "}
+              STRAW
+            </div>
+          </div>
         )}
       </div>
 
