@@ -20,9 +20,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           };
         }
 
-        return {
-          status: 400,
-        };
+        if (errors.find((error) => error.code === 'BAD_REQUEST')) {
+          return {
+            status: 400,
+          };
+        }
       }
 
       return {};

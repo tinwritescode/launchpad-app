@@ -1,6 +1,7 @@
 import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import { mine } from '@nomicfoundation/hardhat-network-helpers';
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -24,7 +25,7 @@ const func: DeployFunction = async function ({
   );
 
   const rewardTokenAmount = (await stakingTokenContract.balanceOf(deployer))
-    .mul('1')
+    .mul('30')
     .div('100');
 
   await stakingTokenContract
@@ -38,6 +39,9 @@ const func: DeployFunction = async function ({
     .connect(signer)
     .stake(ethers.utils.parseEther('5000'))
     .then((tx) => tx.wait());
+
+  // add time to 10 days
+  await mine(60 * 60 * 24 * 10);
 };
 
 export default func;
