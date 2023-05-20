@@ -1,11 +1,12 @@
-import { z } from "zod";
+import { z } from 'zod';
+import { contractInfo } from '@strawberry/contracts';
 
 /**
  * Specify your server-side environment variables schema here. This way you can ensure the app isn't
  * built with invalid env vars.
  */
 const server = z.object({
-  NODE_ENV: z.enum(["development", "test", "production"]),
+  NODE_ENV: z.enum(['development', 'test', 'production']),
   SESSION_SECRET: z.string().min(1),
   ADMIN_PRIVATE_KEY: z.string().min(1),
   NEXT_PUBLIC_BLOCKCHAIN_RPC: z.string().url(),
@@ -24,7 +25,7 @@ const client = z.object({
   NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS: z.string(),
 
   NEXT_PUBLIC_CHAIN_ID: z.string(),
-  NEXT_PUBLIC_PROJECT_NAME: z.string().default("Strawberry Launchpad"),
+  NEXT_PUBLIC_PROJECT_NAME: z.string().default('Strawberry Launchpad'),
 });
 
 /**
@@ -37,17 +38,23 @@ const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
   SESSION_SECRET: process.env.SESSION_SECRET,
   NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS:
-    process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS,
+    process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS ||
+    contractInfo.default.contracts.Staking.address,
   NEXT_PUBLIC_STAKING_TOKEN_ADDRESS:
-    process.env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS,
+    process.env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS ||
+    contractInfo.default.contracts.StakingToken.address,
   NEXT_PUBLIC_REWARD_TOKEN_ADDRESS:
-    process.env.NEXT_PUBLIC_REWARD_TOKEN_ADDRESS,
-  NEXT_PUBLIC_IDO_TOKEN_ADDRESS: process.env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
+    process.env.NEXT_PUBLIC_REWARD_TOKEN_ADDRESS ||
+    contractInfo.default.contracts.RewardToken.address,
+  NEXT_PUBLIC_IDO_TOKEN_ADDRESS:
+    process.env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS ||
+    contractInfo.default.contracts.IdoToken.address,
   NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_ID,
   ADMIN_PRIVATE_KEY: process.env.ADMIN_PRIVATE_KEY,
   NEXT_PUBLIC_BLOCKCHAIN_RPC: process.env.NEXT_PUBLIC_BLOCKCHAIN_RPC,
   NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS:
-    process.env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
+    process.env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS ||
+    contractInfo.default.contracts.Dividend.address,
   NEXT_PUBLIC_PROJECT_NAME: process.env.NEXT_PUBLIC_PROJECT_NAME,
 };
 // Don't touch the part below
@@ -63,7 +70,7 @@ const merged = server.merge(client);
 let env = /** @type {MergedOutput} */ (process.env);
 
 if (!!process.env.SKIP_ENV_VALIDATION == false) {
-  const isServer = typeof window === "undefined";
+  const isServer = typeof window === 'undefined';
 
   const parsed = /** @type {MergedSafeParseReturn} */ (
     isServer
@@ -73,21 +80,21 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
 
   if (parsed.success === false) {
     console.error(
-      "❌ Invalid environment variables:",
+      '❌ Invalid environment variables:',
       parsed.error.flatten().fieldErrors
     );
-    throw new Error("Invalid environment variables");
+    throw new Error('Invalid environment variables');
   }
 
   env = new Proxy(parsed.data, {
     get(target, prop) {
-      if (typeof prop !== "string") return undefined;
+      if (typeof prop !== 'string') return undefined;
       // Throw a descriptive error if a server-side env var is accessed on the client
       // Otherwise it would just be returning `undefined` and be annoying to debug
-      if (!isServer && !prop.startsWith("NEXT_PUBLIC_"))
+      if (!isServer && !prop.startsWith('NEXT_PUBLIC_'))
         throw new Error(
-          process.env.NODE_ENV === "production"
-            ? "❌ Attempted to access a server-side environment variable on the client"
+          process.env.NODE_ENV === 'production'
+            ? '❌ Attempted to access a server-side environment variable on the client'
             : `❌ Attempted to access server-side environment variable '${prop}' on the client`
         );
       return target[/** @type {keyof typeof target} */ (prop)];

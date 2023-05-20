@@ -1,7 +1,8 @@
-import { HardhatUserConfig } from 'hardhat/config';
 import '@nomicfoundation/hardhat-toolbox';
 import '@nomiclabs/hardhat-ethers';
+import 'hardhat-deploy';
 import { ethers } from 'ethers';
+import { HardhatUserConfig } from 'hardhat/config';
 
 const accounts = [
   {
@@ -18,17 +19,21 @@ const config: HardhatUserConfig = {
     outDir: 'src/lib/typechain-types',
   },
   networks: {
+    hardhat: {
+      accounts: accounts,
+      chainId: 1337,
+      initialDate: new Date(Date.now()).toISOString(),
+    },
     polygonMumbai: {
       url: 'https://rpc.ankr.com/polygon_mumbai',
       chainId: 80001,
       accounts: accounts.map((account) => account.privateKey),
     },
-    hardhat: {
-      accounts: accounts,
-      // https://hardhat.org/hardhat-network/docs/metamask-issue
-      chainId: 1337,
-      initialDate: new Date(Date.now()).toISOString(),
-    },
+  },
+  namedAccounts: {
+    deployer: 0,
+    creator: 0,
+    test: 0,
   },
 };
 

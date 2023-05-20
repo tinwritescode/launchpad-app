@@ -1178,7 +1178,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/Dividend.sol": {
-      "lastModificationDate": 1684550503667,
+      "lastModificationDate": 1684553147146,
       "contentHash": "49c21f715d309e05f49ee96cd80c2b67",
       "sourceName": "contracts/Dividend.sol",
       "solcConfig": {
@@ -1195,12 +1195,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1218,7 +1225,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/interface/IIdoContract.sol": {
-      "lastModificationDate": 1684550503667,
+      "lastModificationDate": 1684553147146,
       "contentHash": "8f5e291fcd1bcc502195848183474bb7",
       "sourceName": "contracts/interface/IIdoContract.sol",
       "solcConfig": {
@@ -1235,12 +1242,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1253,7 +1267,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1684552340860,
+      "lastModificationDate": 1684554771071,
       "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
       "sourceName": "hardhat/console.sol",
       "solcConfig": {
@@ -1270,12 +1284,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1287,45 +1308,8 @@
         "console"
       ]
     },
-    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1684552343308,
-      "contentHash": "e436cea06129be2c73cda4b1acc848b5",
-      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
-      "solcConfig": {
-        "version": "0.8.18",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/Context.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Ownable"
-      ]
-    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-      "lastModificationDate": 1684552351348,
+      "lastModificationDate": 1684554780865,
       "contentHash": "ad7c2d0af148c8f9f097d65deeb4da6b",
       "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
       "solcConfig": {
@@ -1342,12 +1326,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1359,8 +1350,52 @@
         "IERC20"
       ]
     },
+    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1684554773492,
+      "contentHash": "e436cea06129be2c73cda4b1acc848b5",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1684552343312,
+      "lastModificationDate": 1684554773498,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
@@ -1377,12 +1412,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1394,45 +1436,8 @@
         "Context"
       ]
     },
-    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
-      "lastModificationDate": 1684552354965,
-      "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
-      "solcConfig": {
-        "version": "0.8.18",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../IERC20.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC20Metadata"
-      ]
-    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-      "lastModificationDate": 1684552351348,
+      "lastModificationDate": 1684554780865,
       "contentHash": "834a0dde221759af42b030253315b086",
       "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
       "solcConfig": {
@@ -1449,12 +1454,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1470,8 +1482,97 @@
         "ERC20"
       ]
     },
+    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1684554783319,
+      "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "../IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    },
+    "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/samples/Erc20.sol": {
+      "lastModificationDate": 1684553147146,
+      "contentHash": "2fa94d9ea3ad1378d073254ef41aae30",
+      "sourceName": "contracts/samples/Erc20.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "Erc20"
+      ]
+    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/security/Pausable.sol": {
-      "lastModificationDate": 1684552343311,
+      "lastModificationDate": 1684554773508,
       "contentHash": "25c8108f36fdd472bc78d4c4af240c11",
       "sourceName": "@openzeppelin/contracts/security/Pausable.sol",
       "solcConfig": {
@@ -1488,12 +1589,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1508,7 +1616,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/IdoContract.sol": {
-      "lastModificationDate": 1684550503667,
+      "lastModificationDate": 1684553147146,
       "contentHash": "a1a8b3f2ebfc4f111a9a3aa432a87b3a",
       "sourceName": "contracts/IdoContract.sol",
       "solcConfig": {
@@ -1525,12 +1633,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1551,7 +1666,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/interface/IStaking.sol": {
-      "lastModificationDate": 1684550503667,
+      "lastModificationDate": 1684553147146,
       "contentHash": "4198d9cfffad2eff47156ce678a2d4c2",
       "sourceName": "contracts/interface/IStaking.sol",
       "solcConfig": {
@@ -1568,12 +1683,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1588,7 +1710,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/access/AccessControl.sol": {
-      "lastModificationDate": 1684552343307,
+      "lastModificationDate": 1684554773492,
       "contentHash": "95a6c227d1b8843e9385518a5bce4853",
       "sourceName": "@openzeppelin/contracts/access/AccessControl.sol",
       "solcConfig": {
@@ -1605,12 +1727,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1628,7 +1757,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/access/Ownable2Step.sol": {
-      "lastModificationDate": 1684552343308,
+      "lastModificationDate": 1684554773492,
       "contentHash": "9a66ec5f916493cff9d9ef23b16e28d7",
       "sourceName": "@openzeppelin/contracts/access/Ownable2Step.sol",
       "solcConfig": {
@@ -1645,12 +1774,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1665,7 +1801,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/utils/cryptography/MerkleProof.sol": {
-      "lastModificationDate": 1684552351356,
+      "lastModificationDate": 1684554780864,
       "contentHash": "a75542fc722f3c5c883583228040bbfe",
       "sourceName": "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol",
       "solcConfig": {
@@ -1682,12 +1818,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1700,7 +1843,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol": {
-      "lastModificationDate": 1684552354966,
+      "lastModificationDate": 1684554783319,
       "contentHash": "fb77f144244b9ab12533aa6ce85ef8c5",
       "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol",
       "solcConfig": {
@@ -1717,12 +1860,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1735,7 +1885,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/extension/Staking20.sol": {
-      "lastModificationDate": 1684552346259,
+      "lastModificationDate": 1684554775611,
       "contentHash": "d873e92b8698f95d1f4209d49507af73",
       "sourceName": "@thirdweb-dev/contracts/extension/Staking20.sol",
       "solcConfig": {
@@ -1752,12 +1902,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1776,7 +1933,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/eip/interface/IERC20.sol": {
-      "lastModificationDate": 1684552351878,
+      "lastModificationDate": 1684554781127,
       "contentHash": "a64068f27c7945026e1f668f2ad99540",
       "sourceName": "@thirdweb-dev/contracts/eip/interface/IERC20.sol",
       "solcConfig": {
@@ -1793,12 +1950,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1810,43 +1974,8 @@
         "IERC20"
       ]
     },
-    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/extension/interface/IStaking20.sol": {
-      "lastModificationDate": 1684552351923,
-      "contentHash": "4b9f78bbc6f10f175a1cc88df5660daa",
-      "sourceName": "@thirdweb-dev/contracts/extension/interface/IStaking20.sol",
-      "solcConfig": {
-        "version": "0.8.18",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.11"
-      ],
-      "artifacts": [
-        "IStaking20"
-      ]
-    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/lib/CurrencyTransferLib.sol": {
-      "lastModificationDate": 1684552346259,
+      "lastModificationDate": 1684554775615,
       "contentHash": "730e96a157131f935fea56910171eb20",
       "sourceName": "@thirdweb-dev/contracts/lib/CurrencyTransferLib.sol",
       "solcConfig": {
@@ -1863,12 +1992,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1884,7 +2020,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/openzeppelin-presets/security/ReentrancyGuard.sol": {
-      "lastModificationDate": 1684552351926,
+      "lastModificationDate": 1684554781136,
       "contentHash": "3f649a1a493ae2df28274ac4319191e0",
       "sourceName": "@thirdweb-dev/contracts/openzeppelin-presets/security/ReentrancyGuard.sol",
       "solcConfig": {
@@ -1901,12 +2037,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1919,7 +2062,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/openzeppelin-presets/utils/math/SafeMath.sol": {
-      "lastModificationDate": 1684552355380,
+      "lastModificationDate": 1684554783483,
       "contentHash": "2337f0279507b5edf14a07067adf0d05",
       "sourceName": "@thirdweb-dev/contracts/openzeppelin-presets/utils/math/SafeMath.sol",
       "solcConfig": {
@@ -1936,12 +2079,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1953,8 +2103,50 @@
         "SafeMath"
       ]
     },
+    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/extension/interface/IStaking20.sol": {
+      "lastModificationDate": 1684554781131,
+      "contentHash": "4b9f78bbc6f10f175a1cc88df5660daa",
+      "sourceName": "@thirdweb-dev/contracts/extension/interface/IStaking20.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.11"
+      ],
+      "artifacts": [
+        "IStaking20"
+      ]
+    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/interfaces/IWETH.sol": {
-      "lastModificationDate": 1684552346265,
+      "lastModificationDate": 1684554775615,
       "contentHash": "9d442e36e038beed704d10414faeac9e",
       "sourceName": "@thirdweb-dev/contracts/interfaces/IWETH.sol",
       "solcConfig": {
@@ -1971,12 +2163,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -1989,7 +2188,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/openzeppelin-presets/token/ERC20/utils/SafeERC20.sol": {
-      "lastModificationDate": 1684552357444,
+      "lastModificationDate": 1684554784793,
       "contentHash": "5168fb5df573a980a7258ad111d4ffe2",
       "sourceName": "@thirdweb-dev/contracts/openzeppelin-presets/token/ERC20/utils/SafeERC20.sol",
       "solcConfig": {
@@ -2006,12 +2205,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -2027,7 +2233,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/lib/TWAddress.sol": {
-      "lastModificationDate": 1684552346260,
+      "lastModificationDate": 1684554775615,
       "contentHash": "5a657561820dab6efd6613a48ae33f51",
       "sourceName": "@thirdweb-dev/contracts/lib/TWAddress.sol",
       "solcConfig": {
@@ -2044,12 +2250,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -2062,7 +2275,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/access/IAccessControl.sol": {
-      "lastModificationDate": 1684552343307,
+      "lastModificationDate": 1684554773492,
       "contentHash": "57c84298234411cea19c7c284d86be8b",
       "sourceName": "@openzeppelin/contracts/access/IAccessControl.sol",
       "solcConfig": {
@@ -2079,12 +2292,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -2097,7 +2317,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-      "lastModificationDate": 1684552343312,
+      "lastModificationDate": 1684554773498,
       "contentHash": "396031251978f8febfd90cb62cb240ec",
       "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
       "solcConfig": {
@@ -2114,12 +2334,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -2134,7 +2361,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-      "lastModificationDate": 1684552351355,
+      "lastModificationDate": 1684554780865,
       "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
       "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
       "solcConfig": {
@@ -2151,12 +2378,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -2171,7 +2405,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
-      "lastModificationDate": 1684552351356,
+      "lastModificationDate": 1684554780864,
       "contentHash": "b9c58920ce74d6dc819161786112e7ee",
       "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
       "solcConfig": {
@@ -2188,12 +2422,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -2206,7 +2447,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1684552351355,
+      "lastModificationDate": 1684554780865,
       "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
       "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
@@ -2223,12 +2464,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -2240,47 +2488,9 @@
         "IERC165"
       ]
     },
-    "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/samples/Erc20.sol": {
-      "lastModificationDate": 1684550503667,
-      "contentHash": "2fa94d9ea3ad1378d073254ef41aae30",
-      "sourceName": "contracts/samples/Erc20.sol",
-      "solcConfig": {
-        "version": "0.8.18",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "@openzeppelin/contracts/access/Ownable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "Erc20"
-      ]
-    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/Staking.sol": {
-      "lastModificationDate": 1684550503667,
-      "contentHash": "a57f991eb97d3ec47b06f98ebda7ac43",
+      "lastModificationDate": 1684559268040,
+      "contentHash": "117f47c880f89efd8d2106468539b88f",
       "sourceName": "contracts/Staking.sol",
       "solcConfig": {
         "version": "0.8.18",
@@ -2296,12 +2506,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },
@@ -2319,7 +2536,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/eip/interface/IERC20Metadata.sol": {
-      "lastModificationDate": 1684552351878,
+      "lastModificationDate": 1684554781128,
       "contentHash": "a4ee60b35795160c5ef04071ddf1d1de",
       "sourceName": "@thirdweb-dev/contracts/eip/interface/IERC20Metadata.sol",
       "solcConfig": {
@@ -2336,12 +2553,19 @@
                 "evm.bytecode",
                 "evm.deployedBytecode",
                 "evm.methodIdentifiers",
-                "metadata"
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
               ],
               "": [
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": true
           }
         }
       },

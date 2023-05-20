@@ -3,8 +3,14 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "declaration": true,
-    "types": ["node"]
+    "types": ["node"],
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts", "hardhat.config.ts", "scripts/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "hardhat.config.ts",
+    "scripts/**/*.ts",
+    "deploy/**/*.ts"
+  ],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }
