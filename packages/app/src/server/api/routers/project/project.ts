@@ -108,13 +108,27 @@ export const projectRouter = createTRPCRouter({
             }
             let totalRaised = BigNumber.from(0);
             let totalParticipants = 0;
+            let name = null;
+            let symbol = null;
+            let decimals = null;
+            let totalSupply = null;
 
             for (const idoContract of project.IDOContract) {
               const contract = getIdoContract(idoContract.address);
+              const erc20TokenContract = getErc20Contract(
+                project.token.address
+              );
               const now = new Date().getTime();
               const [startTime, endTime] = await Promise.all([
                 contract.startTime(),
                 contract.endTime(),
+              ]);
+
+              [name, symbol, decimals, totalSupply] = await Promise.all([
+                erc20TokenContract?.name(),
+                erc20TokenContract?.symbol(),
+                erc20TokenContract?.decimals(),
+                erc20TokenContract?.totalSupply(),
               ]);
 
               if (saleStatus === 'UNKNOWN') {
@@ -138,6 +152,13 @@ export const projectRouter = createTRPCRouter({
 
             return {
               ...project,
+              token: {
+                ...project.token,
+                name,
+                symbol,
+                decimals,
+                totalSupply,
+              },
               saleStatus,
               ...((saleStatus === 'OPEN' || saleStatus === 'CLOSED') && {
                 totalRaised,
