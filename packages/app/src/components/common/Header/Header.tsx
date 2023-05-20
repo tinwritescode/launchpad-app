@@ -34,9 +34,13 @@ function Header() {
     },
   ];
 
+  const formattedUnclaimRewards = Number(
+    ethers.utils.formatEther(unclaimedRewards || '0')
+  ).toFixed(2);
+
   return (
     <>
-      <nav className="flex justify-evenly gap-3 p-4 py-8  text-gray-600 items-center">
+      <nav className="flex justify-evenly gap-3 p-4 py-3 border-b text-gray-600 items-center sticky top-0 bg-white">
         <div className="flex gap-8 items-center">
           <Link href="/">
             <h1 className="font-bold font-mono text-3xl text-gray-800">
@@ -65,14 +69,14 @@ function Header() {
                     }}
                   >
                     <TbCoin />
-                    {ethers.utils.formatEther(unclaimedRewards || '0')} STRAW
+                    {formattedUnclaimRewards || '0'} STRAW
                   </Button>
                 </TooltipTrigger>
 
                 <TooltipContent>
                   <p>
-                    Unclaimed Rewards:{' '}
-                    {ethers.utils.formatEther(unclaimedRewards || '0')} STRAW
+                    Unclaimed Rewards: {formattedUnclaimRewards || '0'}
+                    STRAW
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -82,7 +86,7 @@ function Header() {
           <LoginModal />
         </div>
       </nav>
-      <Stack spacing={2} sx={{ position: 'sticky', top: 0, zIndex: 100 }}>
+      <Stack spacing={2}>
         <ChangeNetwork />
       </Stack>
     </>

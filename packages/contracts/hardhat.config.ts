@@ -23,6 +23,10 @@ const config: HardhatUserConfig = {
       accounts: accounts,
       chainId: 1337,
       initialDate: new Date(Date.now()).toISOString(),
+      mining: {
+        auto: true,
+        interval: 10000,
+      },
     },
     polygonMumbai: {
       url: 'https://rpc.ankr.com/polygon_mumbai',

@@ -12,7 +12,7 @@ const func: DeployFunction = async function ({
   const timeUnitInSecs = 60;
   const rewardRatio = {
     numerator: 1,
-    denominator: 1000,
+    denominator: 10000,
   };
   const lockTime = ONE_MONTH_IN_SECS;
 

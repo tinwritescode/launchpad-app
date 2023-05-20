@@ -38,15 +38,23 @@ export class StakingHelper {
 
     return stakingTokenAddress;
   }
+
+  // get stake info
+  async getStakeInfo(address: string) {
+    const stakingContract = getStakingContract();
+
+    return stakingContract.getStakeInfo(address);
+  }
 }
 
 export const useStakingHook = () => {
   const { address } = useAccount();
   const { data: stakeInfo, isLoading: isLoadingStakeInfo } = useQuery(
     ['stakeInfo'],
-    () => StakingHelper.getInstance().getAmountStaked(address),
+    () => StakingHelper.getInstance().getStakeInfo(address as string),
     {
       enabled: !!address,
+      refetchInterval: 10000,
     }
   );
   const { data: stakingTokenName } = useQuery(['stakingTokenName'], () =>
@@ -186,8 +194,8 @@ export const useStakingHook = () => {
   );
 
   return {
-    amountStaked: stakeInfo?.amountStaked,
-    unclaimedRewards: stakeInfo?.unclaimedRewards,
+    amountStaked: stakeInfo?._tokensStaked,
+    unclaimedRewards: stakeInfo?._rewards,
     stakingTokenBalance,
     stakingTokenName,
     isLoadingStakeInfo,
