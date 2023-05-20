@@ -206,6 +206,7 @@ function Home() {
     },
   ];
   const userTierIndex =
+    isConnected &&
     amountStaked &&
     Object.values(IDO_CONTRACT_STAKING_REQUIRED).findIndex((value, index) => {
       return (
@@ -214,7 +215,7 @@ function Home() {
           ethers.utils.parseEther(
             IDO_CONTRACT_STAKING_REQUIRED[
               Object.keys(IDO_CONTRACT_STAKING_REQUIRED)[index + 1] as TierKeys
-            ].toString()
+            ]?.toString() ?? '0'
           )
         )
       );

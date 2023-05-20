@@ -1,5 +1,5 @@
-import { BigNumber, ethers } from "ethers";
-import { z } from "zod";
+import { ethers } from 'ethers';
+import { z } from 'zod';
 
 const parseEther = <T>(val: T, ctx: z.RefinementCtx) => {
   try {
@@ -8,7 +8,7 @@ const parseEther = <T>(val: T, ctx: z.RefinementCtx) => {
   } catch (e) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: "Must be a valid number",
+      message: 'Must be a valid number',
     });
     return false;
   }
@@ -25,8 +25,24 @@ export const idoContractDto = z.object({
   stakingTokenAddress: ethereumAddress,
   stakingContractAddress: ethereumAddress,
   idoPrice: parseToEthers,
-  startTime: parseFromDateToNumber,
-  endTime: parseFromDateToNumber,
+  startTime: parseFromDateToNumber.superRefine((val, ctx) => {
+    if (val < Date.now()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Must be a valid date',
+      });
+      return false;
+    }
+  }),
+  endTime: parseFromDateToNumber.superRefine((val, ctx) => {
+    if (val < Date.now()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Must be a valid date',
+      });
+      return false;
+    }
+  }),
   minStakingRequired: parseStringToEthers,
   maxStakingRequired: parseStringToEthers,
 

@@ -101,12 +101,25 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-const protectedMiddleware = t.middleware(({ next, ctx }) => {
+const protectedMiddleware = t.middleware(async ({ next, ctx }) => {
   if (!ctx.session?.user?.isLoggedIn) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
     });
   }
+  const { user } = ctx.session;
+  await ctx.prisma.user
+    .findUniqueOrThrow({
+      where: {
+        walletAddress: user.address,
+      },
+    })
+    .catch(() => {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+      });
+    });
+
   return next();
 });
 
