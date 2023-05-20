@@ -54,6 +54,7 @@ export const useStakingHook = () => {
     () => StakingHelper.getInstance().getStakeInfo(address as string),
     {
       enabled: !!address,
+      refetchInterval: 10000,
     }
   );
   const { data: stakingTokenName } = useQuery(['stakingTokenName'], () =>
