@@ -15,9 +15,20 @@ async function main() {
   // Loop through each file found
   for (const file of files) {
     // Check if the file already has a @ts-nocheck comment at the top
-    const hasTsNoCheck =
-      exec(`head -n 1 "${file}" | grep -q '@ts-nocheck'`).toString().trim() ===
-      '';
+
+    const hasTsNoCheck = await new Promise<boolean>((resolve) => {
+      try {
+        exec(`head -n 1 "${file}" | grep -i '@ts-nocheck'`, (error) => {
+          if (error) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      } catch (error) {
+        resolve(false);
+      }
+    });
 
     if (!hasTsNoCheck) {
       // If not, add the comment to the top of the file

@@ -8,7 +8,7 @@
       "executor": "@nx/next:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
-      "dependsOn": ["contracts:add-ts-no-check"],
+      "dependsOn": ["contracts:add-ts-no-check", "app:prisma-generate"],
       "options": {
         "root": "packages/app",
         "outputPath": "dist/packages/app"
