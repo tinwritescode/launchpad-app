@@ -75,6 +75,18 @@ For the dashboard:
 yarn start dashboard
 ```
 
+## Run development faster with `concurrently`
+
+```bash
+yarn dev
+```
+
+But we have to deploy manually the contracts (will be fixed soon):{}
+
+```bash
+yarn start contracts:deploy
+```
+
 ## Remote caching
 
 Run `npx nx connect-to-nx-cloud` to enable [remote caching](https://nx.app) and make CI faster.
