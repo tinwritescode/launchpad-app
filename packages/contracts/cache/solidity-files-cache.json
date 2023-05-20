@@ -1881,50 +1881,6 @@
         "IStaking"
       ]
     },
-    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/access/Ownable2Step.sol": {
-      "lastModificationDate": 1684554773492,
-      "contentHash": "9a66ec5f916493cff9d9ef23b16e28d7",
-      "sourceName": "@openzeppelin/contracts/access/Ownable2Step.sol",
-      "solcConfig": {
-        "version": "0.8.18",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [
-        "./Ownable.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "Ownable2Step"
-      ]
-    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/security/Pausable.sol": {
       "lastModificationDate": 1684554773508,
       "contentHash": "25c8108f36fdd472bc78d4c4af240c11",
@@ -1967,6 +1923,50 @@
       ],
       "artifacts": [
         "Pausable"
+      ]
+    },
+    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/access/Ownable2Step.sol": {
+      "lastModificationDate": 1684554773492,
+      "contentHash": "9a66ec5f916493cff9d9ef23b16e28d7",
+      "sourceName": "@openzeppelin/contracts/access/Ownable2Step.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [
+        "./Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Ownable2Step"
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@openzeppelin/contracts/utils/cryptography/MerkleProof.sol": {
@@ -2143,6 +2143,48 @@
         "IERC20"
       ]
     },
+    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/openzeppelin-presets/security/ReentrancyGuard.sol": {
+      "lastModificationDate": 1684554781136,
+      "contentHash": "3f649a1a493ae2df28274ac4319191e0",
+      "sourceName": "@thirdweb-dev/contracts/openzeppelin-presets/security/ReentrancyGuard.sol",
+      "solcConfig": {
+        "version": "0.8.18",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "storageLayout",
+                "evm.gasEstimates"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ReentrancyGuard"
+      ]
+    },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/lib/CurrencyTransferLib.sol": {
       "lastModificationDate": 1684554775615,
       "contentHash": "730e96a157131f935fea56910171eb20",
@@ -2186,48 +2228,6 @@
       ],
       "artifacts": [
         "CurrencyTransferLib"
-      ]
-    },
-    "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/openzeppelin-presets/security/ReentrancyGuard.sol": {
-      "lastModificationDate": 1684554781136,
-      "contentHash": "3f649a1a493ae2df28274ac4319191e0",
-      "sourceName": "@thirdweb-dev/contracts/openzeppelin-presets/security/ReentrancyGuard.sol",
-      "solcConfig": {
-        "version": "0.8.18",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "devdoc",
-                "userdoc",
-                "storageLayout",
-                "evm.gasEstimates"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          },
-          "metadata": {
-            "useLiteralContent": true
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "ReentrancyGuard"
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/@thirdweb-dev/contracts/openzeppelin-presets/utils/math/SafeMath.sol": {
@@ -2489,7 +2489,7 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/Staking.sol": {
-      "lastModificationDate": 1684567723454,
+      "lastModificationDate": 1684596697892,
       "contentHash": "117f47c880f89efd8d2106468539b88f",
       "sourceName": "contracts/Staking.sol",
       "solcConfig": {
