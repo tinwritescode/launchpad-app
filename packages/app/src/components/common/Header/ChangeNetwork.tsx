@@ -1,8 +1,7 @@
 import { Alert, AlertTitle } from '@mui/material';
 import { toast } from 'react-hot-toast';
-import { useAccount, useChainId, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useChainId, useSwitchNetwork } from 'wagmi';
 import { env } from '../../../env.mjs';
-import { switchNetwork } from '../../../utils/ethereum';
 import { Button } from '../AppButton/AppButton';
 
 export const ChangeNetwork = () => {
@@ -22,8 +21,10 @@ export const ChangeNetwork = () => {
               disabled={isLoading}
               onClick={async () => {
                 try {
-                  if (!switchNetworkAsync) return;
-                  await switchNetworkAsync(
+                  console.log('chainId', chainId);
+                  console.log('env.NEXT_PUBLIC_CHAIN_ID', env.NEXT_PUBLIC_CHAIN_ID);
+
+                  await switchNetworkAsync?.(
                     parseInt(env.NEXT_PUBLIC_CHAIN_ID, 16)
                   );
                 } catch (error: any) {
