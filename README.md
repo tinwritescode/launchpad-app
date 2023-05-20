@@ -60,7 +60,7 @@ yarn start contracts:node
 Then, let's deploy the contracts:
 
 ```bash
-yarn nx contracts:deploy # make sure the localnode is running
+yarn start contracts:deploy # make sure the localnode is running
 ```
 
 Let's start the app:

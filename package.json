@@ -6,7 +6,8 @@
     "nx": "nx",
     "start": "nx serve",
     "build": "nx build",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "dev": "concurrently -n \"NEXT,DASHBOARD,CONTRACTS\" -c \"bgBlue.bold,bgMagenta.bold,bgCyan.bold\" \"nx run app:serve\" \"nx run dashboard:serve\" \"nx run contracts:node\""
   },
   "private": true,
   "dependencies": {
@@ -104,6 +105,7 @@
     "autoprefixer": "10.4.13",
     "babel-jest": "^29.4.1",
     "babel-plugin-styled-components": "1.10.7",
+    "concurrently": "^8.0.1",
     "cypress": "^12.11.0",
     "eslint": "~8.15.0",
     "eslint-config-next": "13.4.1",

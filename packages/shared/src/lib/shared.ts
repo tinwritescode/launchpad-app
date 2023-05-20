@@ -1,9 +1,13 @@
+import { localhost } from 'viem/chains';
 import { configureChains, createConfig, mainnet } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { publicProvider } from 'wagmi/providers/public';
 
-const { chains, publicClient } = configureChains([mainnet], [publicProvider()]);
+const { chains, publicClient } = configureChains(
+  [mainnet, localhost],
+  [publicProvider()]
+);
 
 // Set up client
 export const wagmiClient = createConfig({
