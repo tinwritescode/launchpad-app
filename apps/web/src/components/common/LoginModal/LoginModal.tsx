@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { toast } from "react-hot-toast";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import {
@@ -9,12 +10,11 @@ import {
 import { formatWalletAddress } from "../../../utils/ethereum";
 import { Button } from "../AppButton";
 import Flex from "../Flex/Flex";
-import LoginButton from "../LoginButton";
 import { useSession } from "../LoginButton/lib";
 
 type Props = {};
 
-export function LoginModal({}: Props) {
+function LoginModalInner({}: Props) {
   const { data } = useSession();
   const {
     connectAsync,
@@ -79,8 +79,8 @@ export function LoginModal({}: Props) {
       <Dialog>
         <DialogTrigger asChild>
           <Button className="px-16" id="login-button">
-            {!!data?.isLoggedIn && isConnected
-              ? `Welcome ${formatWalletAddress(data?.address)}`
+            {isConnected
+              ? `Welcome ${formatWalletAddress(address as string)}`
               : "Login"}
           </Button>
         </DialogTrigger>
@@ -98,3 +98,7 @@ export function LoginModal({}: Props) {
     </Flex>
   );
 }
+
+export const LoginModal = dynamic(() => Promise.resolve(LoginModalInner), {
+  ssr: false,
+});

@@ -2,11 +2,12 @@ import React, { useMemo } from "react";
 import { getErc20Contract } from "../../../../../../libs/blockchain";
 import { IDOContract__factory } from "ido-contracts/typechain-types";
 import { getSigner } from "../../../../../../utils/ethereum";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../../../../../utils/api";
 import { ethers } from "ethers";
 import { Logger } from "ethers/lib/utils.js";
 import { toast } from "react-hot-toast";
+import { useAccount } from "wagmi";
 
 type Props = {
   idoContractAddress?: string | null;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
+  const { address } = useAccount();
   const contractFactory = useMemo(
     () =>
       idoContractAddress &&
@@ -33,14 +35,16 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
       const amount = ethers.utils.parseEther(_amount);
 
       const erc20Contract = getErc20Contract(
-        await contractFactory.ido()
+        await contractFactory.purchaseToken()
       ).connect(getSigner());
       const allowance = await erc20Contract.allowance(
         getSigner().getAddress(),
         idoContractAddress
       );
       if (allowance.lt(amount)) {
-        await erc20Contract.approve(idoContractAddress, amount);
+        await erc20Contract
+          .approve(idoContractAddress, amount)
+          .then((tx) => tx.wait());
       }
 
       return contractFactory
@@ -112,7 +116,58 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
     }
   );
 
-  return { purchase, claim };
+  const purchaseHistory = useQuery(
+    ["purchaseHistory", { idoContractAddress, address }],
+    async () => {
+      if (!contractFactory) throw new Error("No contract factory");
+      if (!idoContractAddress) throw new Error("No ido contract address");
+      if (!address) throw new Error("No address");
+
+      const queryFilter = await contractFactory.queryFilter(
+        contractFactory.filters.Purchased(address),
+        0,
+        "latest"
+      );
+
+      return Promise.all(
+        queryFilter.map(async (event) => {
+          const { args, blockHash, blockNumber, transactionHash, getBlock } =
+            event;
+
+          const timestamp = await getBlock().then((block) => block.timestamp);
+          const { amount, sender } = args;
+          return {
+            amount,
+            sender,
+            blockHash,
+            blockNumber,
+            transactionHash,
+            timestamp,
+          };
+        })
+      );
+    },
+    {
+      enabled: !!idoContractAddress && !!address,
+    }
+  );
+
+  const purchaseAmount = useQuery(
+    ["purchaseAmount", { idoContractAddress, address }],
+    async () => {
+      if (!contractFactory) throw new Error("No contract factory");
+      if (!idoContractAddress) throw new Error("No ido contract address");
+
+      return contractFactory
+        .connect(getSigner())
+        .purchasedAmounts(address as string);
+    },
+    {
+      enabled: !!idoContractAddress && !!address,
+    }
+  );
+
+  return { purchase, claim, purchaseHistory, purchaseAmount };
 }
 
 export default useIdoStart;

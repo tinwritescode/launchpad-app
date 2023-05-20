@@ -54,6 +54,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     url: `/projects/${projectsData?.id}/dividend`,
     queryOptions: {
       enabled: !!projectsData?.id,
+      refetchOnWindowFocus: true,
     },
   });
 
