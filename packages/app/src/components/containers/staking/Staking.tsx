@@ -7,10 +7,13 @@ import { env } from '../../../env.mjs';
 import PleaseConnectYourWallet from '../../common/PleaseConnectYourWallet';
 import StakingTabs from './components/stakingtabs/StakingTabs';
 import { useStakingHook } from './useStaking';
+import dynamic from 'next/dynamic';
+import { Button } from '../../common/index';
 
 const Staking = () => {
   const { isConnected } = useAccount();
   const {
+    withdraw,
     approve,
     approveAmount,
     stake,
@@ -20,9 +23,31 @@ const Staking = () => {
     totalStaked,
     numberOfStakers,
     APY,
+    unclaimedRewards,
+    claimReward,
   } = useStakingHook();
   const stakeInputRef = useRef<HTMLInputElement>(null);
   const withdrawInputRef = useRef<HTMLInputElement>(null);
+
+  const onWithdrawButtonClick = () => {
+    toast.promise(
+      withdraw({
+        amount: ethers.utils.parseUnits(
+          withdrawInputRef.current?.value || '0',
+          decimals
+        ),
+      }).then((tx) => tx?.wait()),
+      {
+        loading: 'Withdrawing...',
+        success: 'Withdrawn!',
+        error: (err) => {
+          console.error(err.message);
+
+          return 'Failed to withdraw';
+        },
+      }
+    );
+  };
 
   const onStakingApprove = () => {
     toast.promise(
@@ -34,8 +59,6 @@ const Staking = () => {
         loading: 'Approving...',
         success: 'Approved!',
         error: (err) => {
-          console.error(err.message);
-
           return 'Failed to approve';
         },
       }
@@ -57,6 +80,21 @@ const Staking = () => {
           console.error(err.message);
 
           return 'Failed to stake';
+        },
+      }
+    );
+  };
+
+  const onClaimButtonClick = () => {
+    toast.promise(
+      claimReward().then((tx) => tx?.wait()),
+      {
+        loading: 'Claiming...',
+        success: 'Claimed!',
+        error: (err) => {
+          console.error(err.message);
+
+          return 'Failed to claim';
         },
       }
     );
@@ -155,7 +193,34 @@ const Staking = () => {
               MAX
             </button>
           </div>
-          <button className="bg-gray-600 w-2/5 p-1">WITHDRAW</button>
+          <button
+            className="bg-gray-600 w-2/5 p-1"
+            onClick={onWithdrawButtonClick}
+          >
+            WITHDRAW
+          </button>
+        </div>
+        <div className="text-lg text-gray-500 font-semibold">
+          {unclaimedRewards ? (
+            <div className="flex flex-row gap-4 justify-between items-center">
+              <div className="flex flex-col">
+                <div className="text-lg text-gray-500 font-semibold">
+                  <span>Unclaimed Rewards</span>
+                  <div className="text-3xl font-bold">
+                    {ethers.utils.commify(
+                      ethers.utils.formatEther(unclaimedRewards)
+                    )}{' '}
+                    STRAW
+                  </div>
+                </div>
+              </div>
+              <Button variant="subtle" onClick={onClaimButtonClick}>
+                CLAIM
+              </Button>
+            </div>
+          ) : (
+            <BarLoader />
+          )}
         </div>
       </div>
 
@@ -176,9 +241,15 @@ const Staking = () => {
           </div>
         </div>
         <div className="flex flex-col px-8 py-8 gap-4 bg-slate-900">
-          <div className="text-3xl font-bold">
-            {APY ? `${APY}%` : <BarLoader />}
-          </div>
+          {APY && (
+            <div className="text-3xl font-bold">
+              {ethers.utils.commify(APY?.toString()) ? (
+                `${ethers.utils.commify(APY?.toString())}%`
+              ) : (
+                <BarLoader />
+              )}
+            </div>
+          )}
           <div className="text-xl font-bold text-gray-500">APY</div>
         </div>
         <div className="flex flex-col px-8 py-8 gap-4 bg-slate-900">
@@ -200,4 +271,6 @@ const Staking = () => {
   );
 };
 
-export default Staking;
+export default dynamic(() => Promise.resolve(Staking), {
+  ssr: false,
+});

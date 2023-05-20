@@ -8,13 +8,13 @@ const func: DeployFunction = async function ({
   // code here
   const { deploy, save } = deployments;
   const { deployer } = await getNamedAccounts();
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
+  const ONE_MONTH_IN_SECS = 30 * 24 * 60 * 60;
   const timeUnitInSecs = 60;
   const rewardRatio = {
     numerator: 1,
-    denominator: 10000,
+    denominator: 1000,
   };
-  const lockTime = ONE_YEAR_IN_SECS;
+  const lockTime = ONE_MONTH_IN_SECS;
 
   const stakingToken = await deployments.get('Strawberry');
   const rewardToken = await deployments.get('Strawberry');

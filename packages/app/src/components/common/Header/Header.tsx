@@ -1,24 +1,36 @@
-import { AppBar, Stack, Toolbar } from "@mui/material";
-import Link from "next/link";
-import { LoginModal } from "../LoginModal/LoginModal";
-import { ChangeNetwork } from "./ChangeNetwork";
-import style from "./Header.module.scss";
+import { Stack } from '@mui/material';
+import { ethers } from 'ethers';
+import Link from 'next/link';
+import { TbCoin } from 'react-icons/tb';
+import { useAccount } from 'wagmi';
+import { useStakingHook } from '../../containers/staking/useStaking';
+import { Button } from '../AppButton';
+import { LoginModal } from '../LoginModal/LoginModal';
+import { ChangeNetwork } from './ChangeNetwork';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
+import { useRouter } from 'next/router';
 
-type Props = {};
-
-function Header({}: Props) {
+function Header() {
+  const router = useRouter();
+  const { isConnected } = useAccount();
+  const { unclaimedRewards } = useStakingHook();
   const links = [
     {
-      name: "Home",
-      url: "/",
+      name: 'Home',
+      url: '/',
     },
     {
-      name: "IDOs",
-      url: "/ido-list",
+      name: 'IDOs',
+      url: '/ido-list',
     },
     {
-      name: "Staking",
-      url: "/staking",
+      name: 'Staking',
+      url: '/staking',
     },
   ];
 
@@ -40,9 +52,37 @@ function Header({}: Props) {
           </div>
         </div>
 
-        <LoginModal />
+        <div className="flex gap-2">
+          {isConnected && (
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button
+                    variant="outline"
+                    className="font-bold gap-0.5"
+                    onClick={() => {
+                      router.push('/staking');
+                    }}
+                  >
+                    <TbCoin />
+                    {ethers.utils.formatEther(unclaimedRewards || '0')} STRAW
+                  </Button>
+                </TooltipTrigger>
+
+                <TooltipContent>
+                  <p>
+                    Unclaimed Rewards:{' '}
+                    {ethers.utils.formatEther(unclaimedRewards || '0')} STRAW
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+
+          <LoginModal />
+        </div>
       </nav>
-      <Stack spacing={2} sx={{ position: "sticky", top: 0, zIndex: 100 }}>
+      <Stack spacing={2} sx={{ position: 'sticky', top: 0, zIndex: 100 }}>
         <ChangeNetwork />
       </Stack>
     </>

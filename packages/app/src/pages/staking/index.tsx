@@ -1,3 +1,16 @@
-import Staking from "../../components/containers/staking/Staking";
+import Head from 'next/head';
+import Staking from '../../components/containers/staking/Staking';
+import PageLayout from '../../components/templates/PageLayout';
 
-export default Staking;
+const WrappedStaking = () => {
+  return (
+    <PageLayout>
+      <Head>
+        <title>Staking</title>
+      </Head>
+      <Staking />
+    </PageLayout>
+  );
+};
+
+export default WrappedStaking;

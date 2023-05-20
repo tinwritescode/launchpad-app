@@ -12,6 +12,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return createOpenApiNextHandler({
     router: appRouter,
     createContext: createTRPCContext,
+    responseMeta: ({ data, errors, type }) => {
+      if (errors) {
+        if (errors.find((error) => error.code === 'UNAUTHORIZED')) {
+          return {
+            status: 401,
+          };
+        }
+
+        return {
+          status: 400,
+        };
+      }
+
+      return {};
+    },
   })(req, res);
 };
 
