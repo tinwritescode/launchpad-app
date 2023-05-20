@@ -23,6 +23,7 @@ const client = z.object({
   NEXT_PUBLIC_REWARD_TOKEN_ADDRESS: z.string(),
   NEXT_PUBLIC_IDO_TOKEN_ADDRESS: z.string(),
   NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS: z.string(),
+  NEXT_PUBLIC_BLOCKCHAIN_RPC: z.string().url(),
 
   NEXT_PUBLIC_CHAIN_ID: z.string(),
   NEXT_PUBLIC_PROJECT_NAME: z.string().default('Strawberry Launchpad'),
