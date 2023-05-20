@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import "@thirdweb-dev/contracts/extension/Staking20.sol";
-import "@thirdweb-dev/contracts/eip/interface/IERC20.sol";
-import "@thirdweb-dev/contracts/eip/interface/IERC20Metadata.sol";
-import "./interface/IStaking.sol";
+import '@thirdweb-dev/contracts/extension/Staking20.sol';
+import '@thirdweb-dev/contracts/eip/interface/IERC20.sol';
+import '@thirdweb-dev/contracts/eip/interface/IERC20Metadata.sol';
+import './interface/IStaking.sol';
 
 contract Staking is IStaking, Staking20 {
     // ERC20 Reward Token address. See {_mintRewards}.
@@ -86,13 +86,13 @@ contract Staking is IStaking, Staking20 {
     }
 
     function _claimRewards() internal override {
-        require(lockTimeOf[msg.sender] < block.timestamp, "Staking is locked");
+        require(lockTimeOf[msg.sender] < block.timestamp, 'Staking is locked');
 
         super._claimRewards();
     }
 
     function _withdraw(uint256 _amount) internal override {
-        require(lockTimeOf[msg.sender] < block.timestamp, "Staking is locked");
+        require(lockTimeOf[msg.sender] < block.timestamp, 'Staking is locked');
 
         super._withdraw(_amount);
     }

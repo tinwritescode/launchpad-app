@@ -17,12 +17,8 @@ export const PLATFORM_TOKEN_INFO = {
 async function main() {
   const signer = new NonceManager((await ethers.getSigners())[0]);
 
-  const {
-    stakingContract,
-    stakingTokenAddress,
-    rewardTokenAddress,
-    WETHAddress,
-  } = await deployStakingContract(signer, PLATFORM_TOKEN_INFO);
+  const { stakingContract, stakingTokenAddress, rewardTokenAddress } =
+    await deployStakingContract(signer, PLATFORM_TOKEN_INFO);
   const { idoToken } = await deployIDOToken(signer);
   const { dividendContract } = await deployDividendContract(signer);
 
