@@ -73,6 +73,12 @@
       "options": {
         "buildTarget": "dashboard:build"
       }
+    },
+    "prisma-generate": {
+      "executor": "@nx-tools/nx-prisma:generate",
+      "options": {
+        "schema": "prisma/schema.prisma"
+      }
     }
   },
   "tags": []
