@@ -4,6 +4,13 @@ import { BarLoader } from 'react-spinners';
 
 import Link from 'next/link';
 import { api } from '../../../../../utils/api';
+import Image from 'next/image';
+import {
+  FaFacebook,
+  FaTwitter,
+  FaTelegram,
+  FaFirefoxBrowser,
+} from 'react-icons/fa';
 
 const formatDate = (date: Date) => {
   const d = new Date(date);
@@ -15,9 +22,9 @@ const formatDate = (date: Date) => {
 
 const Column = [
   'Project Name',
-  'Token',
-  'CreateAt',
-  'Target Raise',
+  'Offical Website',
+  'Participants',
+  'Total Raise/Target Raise',
   'Status',
   'Action',
 ];
@@ -48,60 +55,114 @@ const IDOList = () => {
             {Column.map((item) => (
               <th
                 key={item}
-                className="px-6 py-3 font-semibold text-base bg-slate-300 text-gray-900 whitespace-nowrap "
+                className="px-6 py-3 font-semibold text-base bg-slate-300 text-gray-900 text-center whitespace-nowrap "
               >
                 {item}
               </th>
             ))}
           </thead>
           <tbody>
-            {data?.data?.map((item) => (
-              <tr
-                className="border-b border-gray-200 hover:bg-gray-100"
-                key={item}
-              >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0 w-10 h-10">
-                      <img
-                        className="w-full h-full rounded-full"
-                        src={'https://picsum.photos/200/300'}
-                        alt=""
-                      />
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        {item.name}
-                      </div>
-                      <div className="text-sm text-gray-500">{'straw'}</div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{<BarLoader />}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {item.createdAt && formatDate(item.createdAt)}
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                  {item?.targettedRaise &&
-                    ethers.utils.formatEther(item.targettedRaise)}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
-                  {item.status}
-                </td>
-                <td className="px-6 py-4 text-sm text-center font-medium underline whitespace-nowrap">
-                  <Link
-                    href={`/project/${item.id}`}
-                    className="text-indigo-600 hover:text-indigo-900"
+            {data?.data?.map(
+              (item: any) =>
+                item.status === 'ACTIVE' && (
+                  <tr
+                    className="px-6 py-2 border-b border-gray-200 hover:bg-gray-100"
+                    key={item.id}
                   >
-                    More
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                    <td className="min-h-[80px] whitespace-nowrap">
+                      <div className="flex items-center pl-4">
+                        <div className="flex-shrink-0 w-10 h-10">
+                          <img
+                            className="w-10 h-10 rounded-full"
+                            src={item.image}
+                            alt=""
+                          />
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {item.name}
+                          </div>
+                          <div className="text-sm font-semibold text-gray-500">
+                            {item.token.symbol || 'N/A'}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {item.token.name || 'N/A'}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="min-h-[80px] flex flex-row items-center">
+                      {item.websiteURL && (
+                        <Link
+                          href={item.websiteURL}
+                          className="text-cyan-400 hover:text-cyan-600 flex flex-1 items-center justify-center"
+                        >
+                          <FaFirefoxBrowser className="text-4xl" />
+                        </Link>
+                      )}
+                      {item.facebookURL && (
+                        <Link
+                          href={item.facebookURL}
+                          className="text-cyan-400 hover:text-cyan-600 flex flex-1 items-center justify-center"
+                        >
+                          <FaFacebook className="text-4xl" />
+                        </Link>
+                      )}
+                      {item.twitterURL && (
+                        <Link
+                          href={item.twitterURL}
+                          className="text-cyan-400 hover:text-cyan-600 flex flex-1 items-center justify-center"
+                        >
+                          <FaTwitter className="text-4xl" />
+                        </Link>
+                      )}
+
+                      {item.telegramURL && (
+                        <Link
+                          href={item.telegramURL}
+                          className="text-cyan-400 hover:text-cyan-600 flex flex-1 items-center justify-center"
+                        >
+                          <FaTelegram className="text-4xl" />
+                        </Link>
+                      )}
+                    </td>
+                    <td className="min-h-[80px] whitespace-nowrap">
+                      <div className="text-sm text-gray-900 text-center">
+                        {item.totalParticipants || 0}
+                      </div>
+                    </td>
+                    <td className="min-h-[80px] text-sm text-gray-500 whitespace-nowrap text-center">
+                      {item?.targettedRaise &&
+                        item?.totalRaised &&
+                        ethers.utils.formatEther(item.totalRaised) +
+                          '/' +
+                          ethers.utils.formatEther(item.targettedRaise)}
+                    </td>
+                    <td className="min-h-[80px] whitespace-nowrap text-center">
+                      <span
+                        className={
+                          'px-2 inline-flex text-sm leading-5 font-semibold rounded-full' +
+                          (item.saleStatus === 'CLOSE'
+                            ? ' bg-red-100 text-red-800'
+                            : item.saleStatus === 'OPEN'
+                            ? ' bg-green-100 text-green-800'
+                            : ' bg-yellow-100 text-yellow-800')
+                        }
+                      >
+                        {item.saleStatus}
+                      </span>
+                    </td>
+                    <td className="min-h-[80px] text-sm font-medium underline whitespace-nowrap text-center">
+                      <Link
+                        href={`/project/${item.id}`}
+                        className="text-indigo-600 hover:text-indigo-900"
+                      >
+                        More
+                      </Link>
+                    </td>
+                  </tr>
+                )
+            )}
           </tbody>
         </table>
         {data && data.meta && (
