@@ -7,10 +7,10 @@ import {
   ShowButton,
   UrlField,
   useTable,
-} from "@refinedev/antd";
-import { BaseRecord, IResourceComponentsProps } from "@refinedev/core";
-import { Space, Table, Typography } from "antd";
-import React from "react";
+} from '@refinedev/antd';
+import { BaseRecord, IResourceComponentsProps } from '@refinedev/core';
+import { Space, Table, Typography } from 'antd';
+import React from 'react';
 
 export const ProjectList: React.FC<IResourceComponentsProps> = () => {
   const { tableProps } = useTable({
@@ -27,7 +27,7 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
             <Typography.Text
               ellipsis={{ tooltip: value }}
               style={{
-                maxWidth: "100px",
+                maxWidth: '100px',
               }}
             >
               {value}
@@ -38,18 +38,54 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column
           dataIndex="comparisionContent"
           title="Comparision Content"
-        />
-        <Table.Column
-          dataIndex={["image"]}
-          title="Image"
           render={(value: any) => (
-            <ImageField style={{ maxWidth: "100px" }} value={value} />
+            <Typography.Text
+              ellipsis={{ tooltip: value }}
+              style={{
+                maxWidth: '160px',
+              }}
+            >
+              <div dangerouslySetInnerHTML={{ __html: value }} />
+            </Typography.Text>
           )}
         />
-        <Table.Column dataIndex="roadmapContent" title="Roadmap Content" />
-        <Table.Column dataIndex="summaryContent" title="Summary Content" />
         <Table.Column
-          dataIndex={["videoURL"]}
+          dataIndex={['image']}
+          title="Image"
+          render={(value: any) => (
+            <ImageField style={{ maxWidth: '100px' }} value={value} />
+          )}
+        />
+        <Table.Column
+          dataIndex="roadmapContent"
+          title="Roadmap Content"
+          render={(value: any) => (
+            <Typography.Text
+              ellipsis={{ tooltip: value }}
+              style={{
+                maxWidth: '160px',
+              }}
+            >
+              <div dangerouslySetInnerHTML={{ __html: value }} />
+            </Typography.Text>
+          )}
+        />
+        <Table.Column
+          dataIndex="summaryContent"
+          title="Summary Content"
+          render={(value: any) => (
+            <Typography.Text
+              ellipsis={{ tooltip: value }}
+              style={{
+                maxWidth: '160px',
+              }}
+            >
+              <div dangerouslySetInnerHTML={{ __html: value }} />
+            </Typography.Text>
+          )}
+        />
+        <Table.Column
+          dataIndex={['videoURL']}
           title="Video URL"
           render={(value: any) => <UrlField value={value} />}
         />
@@ -59,34 +95,34 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
           render={(value: any) => <TagField value={value} />}
         />
         <Table.Column
-          dataIndex={["createdAt"]}
+          dataIndex={['createdAt']}
           title="Created At"
           render={(value: any) => <DateField value={value} />}
           width={150}
         />
         <Table.Column
-          dataIndex={["updatedAt"]}
+          dataIndex={['updatedAt']}
           title="Updated At"
           render={(value: any) => <DateField value={value} />}
           width={150}
         />
         <Table.Column
-          dataIndex={["websiteURL"]}
+          dataIndex={['websiteURL']}
           title="Website"
           render={(value: any) => <UrlField value={value} />}
         />
         <Table.Column
-          dataIndex={["facebookURL"]}
+          dataIndex={['facebookURL']}
           title="Facebook Page"
           render={(value: any) => <UrlField value={value} />}
         />
         <Table.Column
-          dataIndex={["telegramURL"]}
+          dataIndex={['telegramURL']}
           title="Telegram Channel"
           render={(value: any) => <UrlField value={value} />}
         />
         <Table.Column
-          dataIndex={["twitterURL"]}
+          dataIndex={['twitterURL']}
           title="Twitter Page"
           render={(value: any) => <UrlField value={value} />}
         />

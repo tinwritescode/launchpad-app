@@ -41,13 +41,27 @@ export const ProjectShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Status</Title>
       <TextField value={record?.status} />
       <Title level={5}>Summary Content</Title>
-      <TextField value={record?.summaryContent} />
+      <TextField
+        value={
+          <div dangerouslySetInnerHTML={{ __html: record?.summaryContent }} />
+        }
+      />
       <Title level={5}>Video URL</Title>
       <UrlField value={record?.videoURL} />
       <Title level={5}>Comparision Content</Title>
-      <TextField value={record?.comparisionContent} />
+      <TextField
+        value={
+          <div
+            dangerouslySetInnerHTML={{ __html: record?.comparisionContent }}
+          />
+        }
+      />
       <Title level={5}>Roadmap Content</Title>
-      <TextField value={record?.roadmapContent} />
+      <TextField
+        value={
+          <div dangerouslySetInnerHTML={{ __html: record?.roadmapContent }} />
+        }
+      />
       <Title level={5}>Owner</Title>
       {ownerIsLoading ? (
         <>Loading...</>

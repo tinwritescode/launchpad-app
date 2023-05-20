@@ -26,6 +26,7 @@ import {
 } from 'antd';
 import { BigNumber as BigNumberJS } from 'bignumber.js';
 import React, { Fragment } from 'react';
+import TextQuill from '../../components/react-quill/TextQuill';
 
 const FULLFIL_DIVIDEND_URL = `http://localhost:3000/token-manager`;
 
@@ -217,7 +218,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           },
         ]}
       >
-        <Input />
+        <TextQuill />
       </Form.Item>
       <Form.Item
         label="Video URL"
@@ -239,7 +240,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           },
         ]}
       >
-        <Input />
+        <TextQuill />
       </Form.Item>
       <Form.Item
         label="Roadmap Content"
@@ -250,7 +251,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           },
         ]}
       >
-        <Input />
+        <TextQuill />
       </Form.Item>
       <Form.Item label="Website" name={['websiteURL']}>
         <Input />
