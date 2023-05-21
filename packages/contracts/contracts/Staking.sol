@@ -86,8 +86,6 @@ contract Staking is IStaking, Staking20 {
     }
 
     function _claimRewards() internal override {
-        require(lockTimeOf[msg.sender] < block.timestamp, 'Staking is locked');
-
         super._claimRewards();
     }
 
