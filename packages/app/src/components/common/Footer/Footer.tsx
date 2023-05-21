@@ -1,37 +1,34 @@
-import React from "react";
-import { FindUsInSocial } from "../../containers/project-list/components";
+import { FindUsInSocial } from '../../containers/project-list/components';
 
-type Props = {};
-
-function Footer({}: Props) {
+function Footer() {
   const links = [
     {
-      name: "Features",
-      url: "/features",
+      name: 'Features',
+      url: '/features',
     },
     {
-      name: "How it works",
-      url: "/how-it-works",
+      name: 'How it works',
+      url: '/how-it-works',
     },
     {
-      name: "Token info",
-      url: "/token-info",
+      name: 'Token info',
+      url: '/token-info',
     },
     {
-      name: "About us",
-      url: "/about-us",
+      name: 'About us',
+      url: '/about-us',
     },
     {
-      name: "Social media",
-      url: "/social-media",
+      name: 'Social media',
+      url: '/social-media',
     },
     {
-      name: "Terms of service",
-      url: "/terms-of-service",
+      name: 'Terms of service',
+      url: '/terms-of-service',
     },
     {
-      name: "Privacy policy",
-      url: "/privacy-policy",
+      name: 'Privacy policy',
+      url: '/privacy-policy',
     },
   ];
 
@@ -43,7 +40,7 @@ function Footer({}: Props) {
         <div className="flex justify-center">
           <h1 className="text-3xl font-mono">StrawBerry</h1>
         </div>
-        <div className="flex justify-center gap-6">
+        <div className="grid grid-cols-3 md:flex justify-center gap-6">
           {links.map((link) => (
             <a href={link.url} target="_blank" key={link.name}>
               {link.name}
