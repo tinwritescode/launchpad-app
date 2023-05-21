@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { ethers } from 'ethers';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
 import { Button } from '../components/common';
 import { Progress } from '../components/common/Progress';
@@ -17,9 +18,9 @@ import {
   TierKeys,
 } from '../server/api/routers/project/project.constant';
 import { cn } from '../utils/tailwind';
-import dynamic from 'next/dynamic';
 
 function Home() {
+  const router = useRouter();
   const { balanceOf } = useErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS);
   const { amountStaked } = useStakingHook();
   const { address: walletAddress, isConnected } = useAccount();
@@ -40,7 +41,9 @@ function Home() {
           height={150}
         />
       </div>
-      <p>Currently there is no projects</p>
+      <div className="flex justify-center">
+        <p>Currently there is no projects</p>
+      </div>
     </>
   );
   const idoTypes = [
@@ -125,34 +128,14 @@ function Home() {
             image:
               'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/86504dc60dc15916605e77946a862e4c193db2dd75b455fabe.png',
           },
-          {
-            projectName: 'iStep',
-            type: 'Land Sale',
-            participants: 500,
-            totalRaised: '1,500 BOX',
-            network: 'Binance Smart Chain',
-            price: '50 BUSD/BOX',
-            image:
-              'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/2639246d97a572d9b07cb7b57ffbe769dd89eaf6e3ebfd9d13.png',
-          },
-          {
-            projectName: 'DefiLand',
-            type: 'Land Sale',
-            participants: 102,
-            totalRaised: '3,800 BOX',
-            network: 'Binance Smart Chain',
-            price: '180 BUSD/BOX',
-            image:
-              'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/5623b8921f3142bb9073664a86c57da125ef532620ff23c0b1.png',
-          },
         ];
 
         return (
-          <table className="table-auto">
+          <table className="table-auto w-full">
             <thead>
               <tr className="bg-gray-100">
                 {header.map((item, index) => (
-                  <th key={index} className="px-4 py-4 w-52 text-center">
+                  <th key={index} className="px-4 py-4 text-center">
                     {item}
                   </th>
                 ))}
@@ -160,8 +143,8 @@ function Home() {
             </thead>
             <tbody>
               {mockData.map((item, index) => (
-                <tr key={index} className="hover:bg-gray-100">
-                  <td className="p-5 w-52 text-center">
+                <tr key={index} className="hover:bg-gray-100 whitespace-nowrap">
+                  <td className="p-5 text-center px-5">
                     <div className="flex items-center space-x-2">
                       <img
                         src={item.image}
@@ -171,15 +154,15 @@ function Home() {
                       <div>{item.projectName}</div>
                     </div>
                   </td>
-                  <td className="text-center">
-                    <span className="bg-yellow-100 p-1 text-yellow-600 text-xs px-4 rounded-2xl">
+                  <td className="text-center px-5">
+                    <div className="bg-yellow-100 p-1 text-yellow-600 text-xs px-4 rounded-2xl whitespace-nowrap">
                       {item.type}
-                    </span>
+                    </div>
                   </td>
-                  <td className="text-center">{item.participants}</td>
-                  <td className="text-center">{item.totalRaised}</td>
-                  <td className="text-center">{item.network}</td>
-                  <td className="text-center">{item.price}</td>
+                  <td className="text-center px-5">{item.participants}</td>
+                  <td className="text-center px-5">{item.totalRaised}</td>
+                  <td className="text-center px-5">{item.network}</td>
+                  <td className="text-center px-5">{item.price}</td>
                 </tr>
               ))}
             </tbody>
@@ -222,7 +205,11 @@ function Home() {
         )}
 
         <div className="space-x-2">
-          <Button size="lg" variant="outline">
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => router.push('/buy-straw')}
+          >
             Buy STRAW
           </Button>
           <Button size="lg">
@@ -254,7 +241,7 @@ function Home() {
           <Progress value={20 * userTierIndex} />
         )}
 
-        <div className="flex gap-10 items-center justify-center">
+        <div className="grid grid-cols-3 md:flex gap-10 items-center justify-center">
           {Object.keys(IDO_CONTRACT_STAKING_REQUIRED).map((_key) => {
             const key = _key as TierKeys;
             const value = IDO_CONTRACT_STAKING_REQUIRED[key];
@@ -287,9 +274,7 @@ function Home() {
             {idoType.label}
           </h2>
 
-          <div className="grid justify-center gap-4 items-center">
-            {idoType.render()}
-          </div>
+          <div className="w-full overflow-x-auto">{idoType.render()}</div>
         </section>
       ))}
     </PageLayout>

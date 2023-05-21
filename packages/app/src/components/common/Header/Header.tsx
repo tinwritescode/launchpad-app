@@ -48,7 +48,7 @@ function Header() {
               StrawBerry
             </h1>
           </Link>
-          <div className="flex gap-8">
+          <div className="gap-8 hidden md:flex">
             {links.map((link) => (
               <Link className="font-semibold" href={link.url} key={link.name}>
                 {link.name}
@@ -76,8 +76,7 @@ function Header() {
 
                 <TooltipContent>
                   <p>
-                    Unclaimed Rewards: {formattedUnclaimRewards || '0'}
-                    STRAW
+                    Unclaimed Rewards: {formattedUnclaimRewards || '0'} STRAW
                   </p>
                 </TooltipContent>
               </Tooltip>

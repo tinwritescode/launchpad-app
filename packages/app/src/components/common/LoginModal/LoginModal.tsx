@@ -87,7 +87,7 @@ function LoginModalInner() {
     >
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="px-16" id="login-button">
+          <Button className="md:px-16" id="login-button">
             {isConnected
               ? `Welcome ${formatWalletAddress(address as string)}`
               : 'Connect Wallet'}

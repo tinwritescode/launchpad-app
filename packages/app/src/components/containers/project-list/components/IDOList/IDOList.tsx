@@ -31,7 +31,11 @@ const IDOList = () => {
   });
 
   if (isLoading) {
-    return <BarLoader />;
+    return (
+      <div className="flex justify-center">
+        <BarLoader />
+      </div>
+    );
   }
 
   if (error) {

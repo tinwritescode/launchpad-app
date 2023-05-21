@@ -32,6 +32,12 @@ const config: HardhatUserConfig = {
       url: 'https://rpc.ankr.com/polygon_mumbai',
       chainId: 80001,
       accounts: accounts.map((account) => account.privateKey),
+      verify: {
+        etherscan: {
+          apiUrl: 'https://api-mumbai.polygonscan.com',
+          apiKey: '4ZB2AQMXBMWXIBCXFAB1JYTCKKNSU27ZRY',
+        },
+      },
     },
   },
   namedAccounts: {
