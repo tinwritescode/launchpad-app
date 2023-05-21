@@ -2489,8 +2489,8 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/packages/contracts/contracts/Staking.sol": {
-      "lastModificationDate": 1684596697892,
-      "contentHash": "117f47c880f89efd8d2106468539b88f",
+      "lastModificationDate": 1684634807355,
+      "contentHash": "3b1b5ecfe685889205278d7942c6c224",
       "sourceName": "contracts/Staking.sol",
       "solcConfig": {
         "version": "0.8.18",
