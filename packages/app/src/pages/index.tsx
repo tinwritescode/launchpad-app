@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { ethers } from 'ethers';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
 import { Button } from '../components/common';
 import { Progress } from '../components/common/Progress';
@@ -17,9 +18,9 @@ import {
   TierKeys,
 } from '../server/api/routers/project/project.constant';
 import { cn } from '../utils/tailwind';
-import dynamic from 'next/dynamic';
 
 function Home() {
+  const router = useRouter();
   const { balanceOf } = useErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS);
   const { amountStaked } = useStakingHook();
   const { address: walletAddress, isConnected } = useAccount();
@@ -204,7 +205,11 @@ function Home() {
         )}
 
         <div className="space-x-2">
-          <Button size="lg" variant="outline">
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={() => router.push('/buy-straw')}
+          >
             Buy STRAW
           </Button>
           <Button size="lg">

@@ -76,8 +76,7 @@ function Header() {
 
                 <TooltipContent>
                   <p>
-                    Unclaimed Rewards: {formattedUnclaimRewards || '0'}
-                    STRAW
+                    Unclaimed Rewards: {formattedUnclaimRewards || '0'} STRAW
                   </p>
                 </TooltipContent>
               </Tooltip>

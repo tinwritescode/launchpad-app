@@ -9,6 +9,12 @@ import StakingTabs from './components/stakingtabs/StakingTabs';
 import { useStakingHook } from './useStaking';
 import dynamic from 'next/dynamic';
 import { Button } from '../../common/index';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../../common/ui/tooltip';
 
 const Staking = () => {
   const { isConnected } = useAccount();
@@ -101,8 +107,8 @@ const Staking = () => {
   };
 
   return isConnected ? (
-    <div className="flex my-0 mx-auto gap-4  text-white ">
-      <div className="flex flex-col h-fit w-full px-8 py-8 bg-slate-900 gap-3 min-w-max">
+    <div className="grid md:grid-cols-3 my-0 mx-auto gap-4 text-white ">
+      <div className="col-span-2 flex flex-col h-fit w-full px-8 py-8 bg-slate-900 gap-3 min-w-max">
         <div className="text-2xl font-bold">Participate IDO Stake</div>
         <div className="text-lg font-bold">
           <span className="text-3xl font-bold">
@@ -242,15 +248,31 @@ const Staking = () => {
         </div>
         <div className="flex flex-col px-8 py-8 gap-4 bg-slate-900">
           {APY && (
-            <div className="text-3xl font-bold">
-              {ethers.utils.commify(APY?.toString()) ? (
-                `${ethers.utils.commify(APY?.toString())}%`
-              ) : (
-                <BarLoader />
-              )}
-            </div>
+            <>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="text-3xl font-bold flex items-center gap-1 tracking-wider">
+                      <span className="inline-block truncate md:max-w-[300px] max-w-xs">
+                        {ethers.utils.commify(APY?.toString())}
+                      </span>
+                      %
+                    </div>
+                  </TooltipTrigger>
+
+                  <TooltipContent>
+                    <div className="text-lg font-semibold items-center gap-1">
+                      <span className="inline-block">
+                        {ethers.utils.commify(APY?.toString())}
+                      </span>
+                      %
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <div className="text-xl font-bold text-gray-500">APY</div>
+            </>
           )}
-          <div className="text-xl font-bold text-gray-500">APY</div>
         </div>
         <div className="flex flex-col px-8 py-8 gap-4 bg-slate-900">
           <div className="text-3xl font-bold">

@@ -1,4 +1,12 @@
 import React from 'react';
+import { ethers } from 'ethers';
+import {
+  Tooltip,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../../../../common/ui/tooltip';
+import { TooltipContent } from '@radix-ui/react-tooltip';
+const { commify } = ethers.utils;
 
 type Props = {
   lockPeriod: string;
@@ -17,7 +25,6 @@ const TabPanel = (props: Props) => {
             Lock period:{' '}
             <span className="text-white font-semibold">{props.lockPeriod}</span>
           </div>
-          <div className="text-white text-lg">APY Rate</div>
         </div>
         <div className="flex flex-row flex-wrap justify-between">
           <div className="text-lg text-gray-500">
@@ -25,9 +32,6 @@ const TabPanel = (props: Props) => {
             <span className="text-white ">
               {props.reLocksOnRegistration ? 'Yes' : 'No'}
             </span>
-          </div>
-          <div className="text-2xl font-semibold text-green-500 truncate max-w-xs">
-            {props.apyRate}%
           </div>
         </div>
         {props.earlyUnstakeFee && (
