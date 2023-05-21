@@ -1,8 +1,7 @@
-import { Box } from "@mui/material";
-import React from "react";
-import { Footer, Header } from "../common";
-import * as S from "./PageLayout.style";
-import { cn } from "../../utils/tailwind";
+import React from 'react';
+import { cn } from '../../utils/tailwind';
+import { Footer, Header } from '../common';
+import * as S from './PageLayout.style';
 
 type Props = {
   children: React.ReactNode;
@@ -12,7 +11,7 @@ function PageLayout({ children, className, ...rest }: Props) {
   return (
     <main>
       <Header />
-      <S.Container className={cn("container", className)} {...rest}>
+      <S.Container className={cn('container', className)} {...rest}>
         {children}
       </S.Container>
       <Footer />

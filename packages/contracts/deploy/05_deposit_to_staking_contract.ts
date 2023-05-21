@@ -34,14 +34,12 @@ const func: DeployFunction = async function ({
     .then((tx) => tx.wait());
   await stakingTokenContract
     .connect(signer)
-    .transfer(stakingContract.address, rewardTokenAmount);
+    .transfer(stakingContract.address, rewardTokenAmount)
+    .then((tx) => tx.wait());
   await stakingContract
     .connect(signer)
     .stake(ethers.utils.parseEther('5000'))
     .then((tx) => tx.wait());
-
-  // add time to 10 days
-  await mine(60 * 60 * 24 * 10);
 };
 
 export default func;

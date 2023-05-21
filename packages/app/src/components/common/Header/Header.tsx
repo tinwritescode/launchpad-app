@@ -1,19 +1,20 @@
 import { Stack } from '@mui/material';
 import { ethers } from 'ethers';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { TbCoin } from 'react-icons/tb';
 import { useAccount } from 'wagmi';
 import { useStakingHook } from '../../containers/staking/useStaking';
 import { Button } from '../AppButton';
 import { LoginModal } from '../LoginModal/LoginModal';
-import { ChangeNetwork } from './ChangeNetwork';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip';
-import { useRouter } from 'next/router';
+import { ChangeNetwork } from './ChangeNetwork';
 
 function Header() {
   const router = useRouter();
@@ -93,4 +94,6 @@ function Header() {
   );
 }
 
-export default Header;
+export default dynamic(() => Promise.resolve(Header), {
+  ssr: false,
+});

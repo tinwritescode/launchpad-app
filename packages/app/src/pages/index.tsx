@@ -30,23 +30,6 @@ function Home() {
       enabled: !!walletAddress,
     }
   );
-  const links = useMemo(
-    () => [
-      {
-        href: '/ido-list',
-        label: 'IDO List screen',
-      },
-      {
-        href: '/farming',
-        label: 'Farming screen',
-      },
-      {
-        href: '/token-manager',
-        label: 'Token Manager',
-      },
-    ],
-    []
-  );
   const renderEmptyIdo = () => (
     <>
       <div className="flex justify-center">
@@ -309,14 +292,6 @@ function Home() {
           </div>
         </section>
       ))}
-
-      <div className="flex space-x-2 justify-center">
-        {links.map((link) => (
-          <Link href={link.href} key={link.href}>
-            <Button key={link.href}>{link.label}</Button>
-          </Link>
-        ))}
-      </div>
     </PageLayout>
   );
 }

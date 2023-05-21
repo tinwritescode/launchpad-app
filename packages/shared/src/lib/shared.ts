@@ -1,11 +1,11 @@
-import { localhost } from 'viem/chains';
-import { configureChains, createConfig, mainnet } from 'wagmi';
+import { localhost, polygonMumbai } from 'viem/chains';
+import { configureChains, createConfig } from 'wagmi';
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, publicClient } = configureChains(
-  [mainnet, localhost],
+  [polygonMumbai, localhost],
   [publicProvider()]
 );
 
