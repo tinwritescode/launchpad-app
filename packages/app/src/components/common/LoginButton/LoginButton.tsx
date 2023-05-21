@@ -1,27 +1,25 @@
-import React, { useCallback } from "react";
-import { toast } from "react-hot-toast";
-import { useAccount } from "wagmi";
-import { api } from "../../../utils/api";
-import { getSigner, isWalletInstalled } from "../../../utils/ethereum";
-import { Button } from "../AppButton";
-import { removeAccessToken, setAccessToken } from "./lib";
+import React, { useCallback } from 'react';
+import { toast } from 'react-hot-toast';
+import { useAccount } from 'wagmi';
+import { api } from '../../../utils/api';
+import { getSigner, isWalletInstalled } from '../../../utils/ethereum';
+import { Button } from '../AppButton';
+import { removeAccessToken, setAccessToken } from './lib';
 
-interface Props {}
-
-const LoginButton: React.FC<Props> = ({ ...props }) => {
+const LoginButton = () => {
   // trpc
   const utils = api.useContext();
   const userSession = api.auth.getSession.useQuery(undefined, {});
   const { mutateAsync } = api.auth.login.useMutation({
     onSuccess: () => {
-      toast.success("Login successful");
+      toast.success('Login successful');
       utils.auth.invalidate();
     },
   });
   const sessionMessage = api.auth.getMessage.useQuery();
   const logout = api.auth.logout.useMutation({
     onSettled: async () => {
-      toast.success("Logout successful");
+      toast.success('Logout successful');
       removeAccessToken();
       await utils.auth.invalidate();
     },
@@ -29,9 +27,9 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
 
   // callbacks
   const onLoginClicked = useCallback(() => {
-    if (!isWalletInstalled()) return toast.error("No wallet detected");
-    if (!sessionMessage.data) return toast.error("No session message");
-    if (userSession.data?.isLoggedIn) return toast.error("Already logged in");
+    if (!isWalletInstalled()) return toast.error('No wallet detected');
+    if (!sessionMessage.data) return toast.error('No session message');
+    if (userSession.data?.isLoggedIn) return toast.error('Already logged in');
 
     const signer = getSigner();
 
@@ -48,7 +46,7 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
         setAccessToken(jwtToken);
       })
       .catch((err) => {
-        toast.error("User denied signing");
+        toast.error('User denied signing');
       });
   }, [sessionMessage.data, userSession.data]);
 
@@ -57,12 +55,12 @@ const LoginButton: React.FC<Props> = ({ ...props }) => {
 
   return (
     <Button
-      style={{ width: "100%" }}
+      style={{ width: '100%' }}
       onClick={!isLoggedIn ? onLoginClicked : () => logout.mutateAsync()}
       disabled={!sessionMessage.data || logout.isLoading || !isConnected}
       size="lg"
     >
-      {isLoggedIn ? "Logout" : "Sign"}
+      {isLoggedIn ? 'Logout' : 'Sign'}
     </Button>
   );
 };
