@@ -10,6 +10,7 @@ Run `nx graph` to see a diagram of the dependencies of the projects.
 
 ## Techstacks
 
+- [Nx](https://nx.dev/)
 - [Turborepo](https://turbo.build/)
 - [Next.js](https://nextjs.org)
 - [Prisma](https://prisma.io)
@@ -79,12 +80,6 @@ yarn start dashboard
 
 ```bash
 yarn dev
-```
-
-But we have to deploy manually the contracts (will be fixed soon):{}
-
-```bash
-yarn start contracts:deploy
 ```
 
 ## Remote caching
