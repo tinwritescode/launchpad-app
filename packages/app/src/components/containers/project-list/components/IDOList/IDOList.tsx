@@ -3,22 +3,13 @@ import React from 'react';
 import { BarLoader } from 'react-spinners';
 
 import Link from 'next/link';
-import { api } from '../../../../../utils/api';
-import Image from 'next/image';
 import {
   FaFacebook,
-  FaTwitter,
-  FaTelegram,
   FaFirefoxBrowser,
+  FaTelegram,
+  FaTwitter,
 } from 'react-icons/fa';
-
-const formatDate = (date: Date) => {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = `0${d.getMonth() + 1}`.slice(-2);
-  const _date = `0${d.getDate()}`.slice(-2);
-  return `${_date}/${month}/${year}`;
-};
+import { api } from '../../../../../utils/api';
 
 const Column = [
   'Project Name',
@@ -55,7 +46,7 @@ const IDOList = () => {
             {Column.map((item) => (
               <th
                 key={item}
-                className="px-6 py-3 font-semibold text-base bg-slate-300 text-gray-900 text-center whitespace-nowrap "
+                className="px-6 py-3 font-semibold text-base bg-rose-50 text-gray-900 text-center whitespace-nowrap "
               >
                 {item}
               </th>

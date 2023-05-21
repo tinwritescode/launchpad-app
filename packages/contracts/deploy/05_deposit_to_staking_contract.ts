@@ -43,5 +43,5 @@ const func: DeployFunction = async function ({
 };
 
 export default func;
-func.tags = ['action'];
+func.tags = ['init'];
 func.dependencies = ['staking-contract'];
