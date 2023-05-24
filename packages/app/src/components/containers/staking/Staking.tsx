@@ -15,6 +15,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../../common/ui/tooltip';
+import {
+  getStakeValidationSchema,
+  getWithdrawValidationSchema,
+} from './validationSchema';
 
 const Staking = () => {
   const { isConnected } = useAccount();
@@ -35,7 +39,21 @@ const Staking = () => {
   const stakeInputRef = useRef<HTMLInputElement>(null);
   const withdrawInputRef = useRef<HTMLInputElement>(null);
 
+  const stakeSchema = getStakeValidationSchema(
+    +ethers.utils.formatEther(stakingTokenBalance || '0')
+  );
+  const withdrawSchema = getWithdrawValidationSchema(
+    +ethers.utils.formatEther(amountStaked || '0')
+  );
+
   const onWithdrawButtonClick = () => {
+    const withdrawInput = withdrawSchema.safeParse(
+      +(withdrawInputRef.current?.value || '0')
+    );
+    if (withdrawInput.success === false) {
+      toast.error(withdrawInput.error?.errors[0]?.message || 'Invalid amount');
+      return;
+    }
     toast.promise(
       withdraw({
         amount: ethers.utils.parseUnits(
@@ -72,6 +90,13 @@ const Staking = () => {
   };
 
   const onStakeButtonClick = () => {
+    const stakeInput = stakeSchema.safeParse(
+      +(stakeInputRef.current?.value || '0')
+    );
+    if (stakeInput.success === false) {
+      toast.error(stakeInput.error?.errors[0]?.message || 'Invalid amount');
+      return;
+    }
     toast.promise(
       stake({
         amount: ethers.utils.parseUnits(
@@ -111,11 +136,33 @@ const Staking = () => {
       <div className="col-span-2 flex flex-col h-fit w-full px-8 py-8 bg-slate-900 gap-3 min-w-max">
         <div className="text-2xl font-bold">Participate IDO Stake</div>
         <div className="text-lg font-bold">
-          <span className="text-3xl font-bold">
-            {ethers.utils.commify(
-              ethers.utils.formatEther(amountStaked || '0')
-            ) || <BarLoader />}
-          </span>{' '}
+          <>
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="text-3xl font-bold flex items-center gap-1 tracking-wider">
+                    <span className="inline-block truncate md:max-w-[300px] max-w-xs">
+                      {ethers.utils.commify(
+                        ethers.utils.formatEther(amountStaked || '0')
+                      )}
+                    </span>{' '}
+                    STRAW
+                  </div>
+                </TooltipTrigger>
+
+                <TooltipContent>
+                  <div className="text-lg font-semibold items-center gap-1">
+                    <span className="inline-block">
+                      {ethers.utils.commify(
+                        ethers.utils.formatEther(amountStaked || '0')
+                      )}
+                    </span>{' '}
+                    STRAW
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </>
           STRAW
         </div>
         <div className="text-xl font-bold text-gray-500">Total Stake</div>
@@ -124,12 +171,25 @@ const Staking = () => {
         <StakingTabs />
         <div className="h-1"></div>
         {stakingTokenBalance ? (
-          <div className="text-lg text-gray-500 font-semibold">
-            Balance:{' '}
-            {ethers.utils.commify(
-              ethers.utils.formatEther(stakingTokenBalance)
-            )}{' '}
-            STRAW
+          <div className="text-lg flex text-gray-500 font-semibold">
+            <span
+              className="truncate h-full inline-block max-w-[300px]"
+              title={
+                ethers.utils.commify(
+                  ethers.utils.formatEther(stakingTokenBalance || '0')
+                ).length > 20
+                  ? ethers.utils.commify(
+                      ethers.utils.formatEther(stakingTokenBalance || '0')
+                    )
+                  : ''
+              }
+            >
+              Balance:{' '}
+              {ethers.utils.commify(
+                ethers.utils.formatEther(stakingTokenBalance || '0')
+              ) || <BarLoader />}
+            </span>
+            {' STRAW'}
           </div>
         ) : (
           <div className="text-lg text-gray-500 font-semibold">
@@ -171,14 +231,24 @@ const Staking = () => {
             </button>
           )}
         </div>
-        <div className="text-lg text-gray-500 font-semibold">
-          {amountStaked ? (
-            `Staked: ${ethers.utils.commify(
-              ethers.utils.formatEther(amountStaked)
-            )} STRAW`
-          ) : (
-            <BarLoader />
-          )}
+        <div className="text-lg flex text-gray-500 font-semibold">
+          <span
+            className="truncate h-full inline-block max-w-[300px]"
+            title={
+              ethers.utils.commify(
+                ethers.utils.formatEther(amountStaked || '0')
+              ).length > 20
+                ? ethers.utils.commify(
+                    ethers.utils.formatEther(amountStaked || '0')
+                  )
+                : ''
+            }
+          >
+            {ethers.utils.commify(
+              ethers.utils.formatEther(amountStaked || '0')
+            ) || <BarLoader />}
+          </span>{' '}
+          STRAW
         </div>
         <div className="flex flex-row gap-4 h-16">
           <div className="flex flex-row w-3/5 border border-gray-500 p-2 focus-within:border-purple-500">
@@ -212,10 +282,23 @@ const Staking = () => {
               <div className="flex flex-col">
                 <div className="text-lg text-gray-500 font-semibold">
                   <span>Unclaimed Rewards</span>
-                  <div className="text-3xl font-bold">
-                    {ethers.utils.commify(
-                      ethers.utils.formatEther(unclaimedRewards)
-                    )}{' '}
+                  <div className="text-3xl flex font-bold">
+                    <span
+                      className="truncate h-full inline-block max-w-[300px]"
+                      title={
+                        ethers.utils.commify(
+                          ethers.utils.formatEther(unclaimedRewards || '0')
+                        ).length > 10
+                          ? ethers.utils.commify(
+                              ethers.utils.formatEther(unclaimedRewards || '0')
+                            )
+                          : ''
+                      }
+                    >
+                      {ethers.utils.commify(
+                        ethers.utils.formatEther(unclaimedRewards || '0')
+                      )}
+                    </span>{' '}
                     STRAW
                   </div>
                 </div>
@@ -233,14 +316,33 @@ const Staking = () => {
       <div className="flex flex-col h-fit w-full justify-start min-w-max gap-4">
         <div className="flex flex-col px-8 py-8 gap-4 bg-slate-900">
           <div className="text-3xl font-bold">
-            {totalStaked ? (
-              `$${ethers.utils.commify(
-                ethers.utils.formatEther(totalStaked || '0')
-              )}
-              `
-            ) : (
-              <BarLoader />
-            )}
+            <>
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <div className="text-3xl font-bold flex items-center gap-1 tracking-wider">
+                      <span className="inline-block truncate md:max-w-[300px] max-w-xs">
+                        {ethers.utils.commify(
+                          ethers.utils.formatEther(totalStaked || '0')
+                        )}
+                      </span>{' '}
+                      STRAW
+                    </div>
+                  </TooltipTrigger>
+
+                  <TooltipContent>
+                    <div className="text-lg font-semibold items-center gap-1">
+                      <span className="inline-block">
+                        {ethers.utils.commify(
+                          ethers.utils.formatEther(totalStaked || '0')
+                        )}
+                      </span>{' '}
+                      STRAW
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </>
           </div>
           <div className="text-xl font-bold text-gray-500">
             Total Value Locked
