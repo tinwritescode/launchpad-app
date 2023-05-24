@@ -163,7 +163,6 @@ const Staking = () => {
               </Tooltip>
             </TooltipProvider>
           </>
-          STRAW
         </div>
         <div className="text-xl font-bold text-gray-500">Total Stake</div>
         <hr className="border-gray-500" />
