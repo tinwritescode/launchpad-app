@@ -1,0 +1,897 @@
+/*================*** Header Section Start Here     ***===================*/
+
+.header-section {
+    @extend %p-rel;
+    z-index: 99;
+    background: $primary-color;
+
+
+
+    &.headerFixed {
+        position: fixed;
+        background-color: $body-color;
+        @extend %w-100;
+        top: 0;
+        left: 0;
+        animation: fadeInDown .5s;
+        -webkit-animation: fadeInDown .5s;
+        -moz-animation: fadeInDown .5s;
+        border-bottom: 1px solid rgba($white-color, $alpha: .10);
+        z-index: 999;
+        box-shadow: 0px 10px 10px 0px rgba($black-color, $alpha: .10);
+
+        .header-holder {
+            @extend %p-rel;
+        }
+
+    }
+
+}
+
+.header-top {
+    @extend %p-rel;
+    z-index: 2;
+    background-color: $theme-color;
+    border-bottom: 1px solid rgba($white-color, $alpha: .10);
+
+    * {
+        color: $white-color;
+    }
+
+    @include breakpoint(max-lg) {
+        display: none;
+    }
+}
+
+
+
+.header-top-area {
+    @extend %flex;
+    @extend %justify-between;
+    @extend %align-items-center;
+
+    .social-icons {
+        @extend %m-0;
+
+        li {
+            @extend %p-0;
+            @extend %p-rel;
+
+            &:not(:last-child) {
+                border-right: 1px solid rgba($white-color, $alpha: .30);
+            }
+
+
+
+
+
+            &:last-child {
+                @include breakpoint(max-lg) {
+                    &::after {
+                        display: none;
+                    }
+                }
+            }
+
+            a {
+                @extend %d-inline-block;
+                height: 50px;
+                line-height: 50px;
+                width: 50px;
+                background: transparent;
+                @extend %text-center;
+            }
+
+            p {
+                @extend %mb-0;
+            }
+        }
+    }
+
+    .left {
+        @extend %flex;
+        // margin: 0 -25px;
+        @extend %mb-0;
+
+        li {
+            padding: 13px 25px;
+
+            @include breakpoint(lg) {
+                &:not(:last-child) {
+                    border-right: 1px solid rgba($white-color, $alpha: .30);
+                }
+            }
+
+
+            i {
+                @extend %mr-5;
+            }
+        }
+    }
+
+    @include breakpoint(max-xl) {
+        .left {
+            li {
+                font-size: 14px;
+                padding: 9px 15px;
+            }
+        }
+
+        .social-icons {
+            li {
+                a {
+                    height: 46px;
+                    line-height: 46px;
+                    width: 46px;
+                }
+            }
+        }
+    }
+
+    @include breakpoint(max-lg) {
+        .left {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+            margin: 0;
+            border: 1px solid rgba($white-color, $alpha: .10);
+
+            li {
+                flex-grow: 1;
+                border-top: 1px solid rgba($white-color, $alpha: .10);
+                border-right: none;
+
+                &:first-child {
+                    border-top: none;
+                }
+            }
+        }
+
+        .social-icons {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+            margin: 0;
+            border-bottom: 1px solid rgba($white-color, $alpha: .10);
+
+            li {
+                flex-grow: 1;
+            }
+        }
+    }
+}
+
+.header-primary {
+    @extend %p-rel;
+}
+
+.header-wrapper {
+    padding-block: 10px;
+    @extend %w-100;
+    @extend %flex;
+    @extend %justify-between;
+    @extend %align-items-center;
+
+    @include breakpoint(sm) {
+        position: relative;
+    }
+
+    @include breakpoint(md) {
+        padding-block: 15px;
+    }
+
+    @include breakpoint(lg) {
+        width: auto;
+        padding-block: 20px;
+    }
+
+    .logo {
+        a {
+            @extend %d-block;
+
+            img {
+                max-width: 100%;
+            }
+        }
+
+        @include breakpoint(max-sm) {
+            width: 160px;
+        }
+
+        @include breakpoint(max-xl) {
+            @include breakpoint(lg) {
+                width: 200px;
+            }
+        }
+    }
+
+    .menu-area {
+        @extend %flex;
+        @extend %align-items-center;
+
+        .wallet-btn {
+            display: grid;
+            place-items: center;
+            padding: 0;
+            font-family: $title-font;
+            font-weight: 600;
+
+            &.custom-wallet-btn {
+                @include box(auto);
+                background-color: $theme-color;
+                color: $body-color;
+                display: inherit;
+                padding: .75rem 1.5rem;
+                border-radius: 5px;
+            }
+
+            span {
+                display: none;
+            }
+
+            svg {
+                @include font-size(24px);
+            }
+
+            @include breakpoint(md) {
+                @include box(auto);
+                background-color: $theme-color;
+                color: $body-color;
+                display: inherit;
+                padding: .75rem 1.5rem;
+                border-radius: 5px;
+
+                span {
+                    display: inherit;
+                }
+
+                svg {
+                    @include font-size(18px);
+                    margin-inline-start: 5px;
+                }
+            }
+        }
+    }
+}
+
+
+.menu {
+    @extend %flex;
+    font-family: $title-font;
+
+    @include breakpoint(lg) {
+        margin-right: 30px;
+        margin-bottom: 0;
+        gap: 10px;
+    }
+
+    >li {
+        >a {
+            @include font-size(18px);
+            color: $white-color;
+
+            font-weight: 600;
+            padding: 15px 22px;
+            text-transform: uppercase;
+
+            i {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    @include breakpoint(lg) {
+        li {
+            position: relative;
+
+            .submenu {
+                position: absolute;
+                top: calc(100%);
+                left: 0;
+                -webkit-transition: all ease 0.3s;
+                -moz-transition: all ease 0.3s;
+                transition: all ease 0.3s;
+                z-index: 9;
+                background: $primary-color;
+                width: 220px;
+                padding: 0;
+                -webkit-transform: translateY(35px);
+                -ms-transform: translateY(35px);
+                transform: translateY(35px);
+                opacity: 0;
+                visibility: hidden;
+                border: 1px solid rgba($theme-color, $alpha: .10);
+                border-radius: 5px;
+
+
+                li {
+                    padding: 0;
+
+                    a {
+                        padding: 10px 20px;
+                        text-transform: uppercase;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        font-size: 16px;
+                        color: $white-color;
+                        font-weight: 600;
+                        border-bottom: 1px solid rgba($theme-color, $alpha: .10);
+                        border-radius: 5px;
+
+                        &:hover,
+                        &.active {
+                            background: $theme-color;
+                            padding-left: 22px;
+                            color: $black-color;
+
+                            &::after,
+                            &::before {
+                                background: $body-color;
+                            }
+                        }
+                    }
+
+                    &:last-child {
+                        a {
+                            border-bottom: none;
+                        }
+                    }
+
+                    .submenu {
+                        left: 100%;
+                        top: 20px;
+                        border-left: 3px solid $theme-color;
+
+
+                    }
+                }
+            }
+
+            &:hover {
+                >.submenu {
+                    -webkit-transform: translateY(15px);
+                    -ms-transform: translateY(15px);
+                    transform: translateY(15px);
+                    opacity: 1;
+                    visibility: visible;
+
+                    a {
+                        &::before {
+                            right: 14px;
+                        }
+
+                        &::after {
+                            right: 10px;
+                        }
+
+                        &::after,
+                        &::before {
+                            background: $white-color;
+                        }
+                    }
+
+                    .submenu {
+                        transform: translateY(0px);
+
+                    }
+                }
+            }
+        }
+
+        @include breakpoint(max-xl) {
+            li {
+                a {
+                    padding: 10px 12px;
+                }
+            }
+        }
+    }
+
+    @include breakpoint(max-lg) {
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        overflow: auto;
+        max-height: 400px;
+        -webkit-transition: all ease 0.3s;
+        -moz-transition: all ease 0.3s;
+        transition: all ease 0.3s;
+        -webkit-transform: scaleY(0);
+        -ms-transform: scaleY(0);
+        transform: scaleY(0);
+        transform-origin: top;
+
+        //glassmorphism
+        background: rgba($primary-color, $alpha: .98);
+        backdrop-filter: blur(20.0px);
+        -webkit-backdrop-filter: blur(20.0px);
+
+        li {
+            width: 100%;
+            padding: 0;
+
+            a {
+                display: block;
+                padding: 10px 25px;
+                font-size: 15px;
+                font-weight: 700;
+                text-transform: capitalize;
+                border-top: 1px solid rgba($white-color, $alpha: .10);
+                color: $white-color;
+
+                &:hover {
+                    background: rgba($theme-color, $alpha: .60);
+                }
+            }
+
+            .submenu {
+                padding-left: 20px;
+                display: none;
+
+                li {
+                    width: 100%;
+
+                    a {
+                        font-size: 14px;
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+            }
+
+        }
+
+        li.open {
+            .submenu {
+                transition: all 0.3s ease;
+                // display: block;
+            }
+        }
+
+        &.active {
+            -webkit-transform: scaleY(1);
+            -ms-transform: scaleY(1);
+            transform: scaleY(1);
+        }
+    }
+}
+
+.header-bar {
+    @extend %p-rel;
+    cursor: pointer;
+    width: 25px;
+    height: 20px;
+    @extend %ml-30;
+    @extend %mr-10;
+
+    span {
+        @extend %p-abs;
+        @extend %d-inline-block;
+        @extend %w-100;
+        height: 3px;
+        @include add-prefix(transition, $transition);
+        background-color: $white-color;
+        left: 0;
+
+        &:first-child {
+            top: 0;
+        }
+
+        &:nth-child(2) {
+            top: 52%;
+            transform: translateY(-65%);
+        }
+
+        &:last-child {
+            bottom: 0;
+        }
+    }
+
+    &.active {
+        span {
+            &:first-child {
+                @include add-prefix(transform, rotate(45deg) translate(3px, 9px));
+            }
+
+            &:nth-child(2) {
+                opacity: 0;
+            }
+
+            &:last-child {
+                @include add-prefix(transform, rotate(-45deg) translate(3px, -9px));
+            }
+        }
+    }
+
+}
+
+.menu-item-has-children {
+    >a {
+        @extend %p-rel;
+        transition: all 0.3s ease;
+
+        &.active {
+
+            &::after,
+            &::before {
+                background-color: $white-color !important;
+            }
+        }
+
+        &::after {
+            @extend %p-abs;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 25px;
+            width: 10px;
+            height: 2px;
+            background-color: $white-color;
+        }
+
+        &::before {
+            @extend %p-abs;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 29px;
+            width: 2px;
+            height: 10px;
+            background-color: $white-color;
+            @include add-prefix(transition, $transition);
+        }
+
+        @include breakpoint(lg) {
+            &::after {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 0;
+                width: 10px;
+                height: 2px;
+                background-color: $white-color;
+            }
+
+            &::before {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 4px;
+                width: 2px;
+                height: 10px;
+                background-color: $white-color;
+                @include add-prefix(transition, $transition);
+            }
+        }
+    }
+
+    @include breakpoint(lg) {
+        &:hover {
+            >a {
+
+                &:before {
+                    transform: rotate(90deg);
+                    opacity: 0;
+                }
+            }
+        }
+    }
+
+    &.open {
+        >a {
+
+            &:before {
+                transform: rotate(90deg);
+                opacity: 0;
+            }
+        }
+    }
+}
+
+.header-form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    z-index: 999;
+    visibility: hidden;
+    @extend %flex;
+    justify-content: center;
+    align-items: center;
+    @include add-prefix(transition, $transition);
+
+    &.active {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    -color-lay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba($color: $white-color, $alpha:.8);
+
+        .cross {
+            position: absolute;
+            color: $white-color;
+            cursor: pointer;
+            right: 15px;
+            top: 15px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background: $theme-color;
+        }
+    }
+
+    .form-container {
+        margin: 15px;
+        max-width: 700px;
+        width: 100%;
+        @extend %flex;
+        padding: 30px;
+        background: transparent;
+        position: relative;
+        z-index: 1;
+
+        button {
+            width: 120px;
+            height: 60px;
+            background: $theme-color;
+            border: none;
+            outline: none;
+            font-weight: 700;
+            color: $white-color;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: calc(100% - 120px);
+            height: 60px;
+            border: none;
+            outline: none;
+            padding: 20px;
+        }
+
+        @include breakpoint(max-sm) {
+            padding: 1px;
+            margin: 10px;
+
+            button {
+                width: 100px;
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            input {
+                width: calc(100% - 100px);
+            }
+        }
+    }
+}
+
+/*================*** Header Section End Here     ***===================*/
+
+
+//**----------Section header
+
+.section-header {
+    @extend %p-rel;
+
+
+    &__subtitle {
+        @extend %mb-10;
+        @include font-size(24px);
+        text-transform: capitalize;
+        font-weight: 600;
+        color: $theme-color;
+        font-family: $title-font;
+    }
+
+    &--left {
+        @extend %mb-30;
+
+        @include breakpoint(lg) {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            &__content {
+                @extend %flex,
+                %justify-between,
+                %align-items-end;
+            }
+        }
+    }
+
+
+
+
+    &--middle {
+        max-inline-size: 500px;
+        margin: auto;
+        margin-bottom: 70px;
+        text-align: center;
+
+        @include breakpoint(lg) {
+            margin-bottom: 80px;
+        }
+
+        &:after {
+            @extend %p-abs;
+            @include background-cover;
+            @include add-prefix(transform, translateX(-50%));
+            bottom: -35px;
+            left: 50%;
+            width: 200px;
+            aspect-ratio: 7/1;
+            // background-image: url('/images/shape/header.svg');
+            background-image: url('/images/shape/header.svg');
+
+        }
+
+    }
+
+
+
+
+}
+
+
+//##Page header
+
+.page-header {
+    padding-block: 60px;
+
+    @include breakpoint(lg) {
+        padding-block: 100px;
+    }
+
+    @include breakpoint(xxl) {
+        padding-block: 120px;
+    }
+
+    .breadcrumb-item {
+
+        &:before,
+        &.active {
+            color: $white-color;
+            text-transform: capitalize;
+        }
+
+    }
+}
+
+
+
+/*============= wallet modal start=============*/
+
+.wallet-modal {
+    background-color: rgba($body-color, $alpha: .80);
+
+    .modal-content {
+        @extend %text-center;
+        background-color: $primary-color;
+        border: unset;
+    }
+
+    .modal-header {
+        @extend %p-rel,
+        %justify-center,
+        %mb-15;
+        border-bottom: none;
+
+        &::after {
+            @extend %p-abs;
+            @include add-prefix(transform, translateX(-50%));
+            width: 120px;
+            height: 20px;
+            // background-image: url('/images/shape/header.svg');
+            background-image: url('/images/shape/header.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            bottom: -10px;
+            left: 50%;
+
+        }
+
+        h4 {
+            color: $white-color;
+        }
+
+        .btn-close {
+            @extend %p-abs;
+            top: 0;
+            right: 0;
+            background-color: $theme-color;
+        }
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+
+        >p {
+            &:first-child {
+                @include font-size(18px);
+            }
+        }
+
+        a {
+            color: $theme-color;
+        }
+
+        .wallet-btns {
+            display: flex;
+            justify-content: center;
+            margin-block-start: 30px;
+
+            button {
+                margin-inline-start: 10px;
+
+                .icon {
+                    margin-inline-start: 5px;
+                }
+
+                @include breakpoint(max-md) {
+                    margin-inline-end: 5px;
+                }
+
+                &:last-child {
+                    margin-inline-end: 0;
+                }
+            }
+        }
+
+        .errors {
+            span {
+                display: block;
+                margin-block-start: 1rem;
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    .wallet__list {
+        @extend %flex,
+        %align-items-center,
+        %justify-between;
+        margin-block: 30px;
+
+        &-item {
+            a {
+                @extend %flex,
+                %justify-center,
+                %text-center;
+                @include add-prefix(transition, $transition);
+                flex-direction: column;
+                border: 3px solid rgba($theme-color, $alpha: .1);
+                border-radius: 50%;
+
+                span {
+                    @extend %d-inline-block,
+                    %text-center,
+                    %of-hidden;
+                    @include box(60px);
+                    border-radius: 50%;
+
+                    img {
+                        @extend %w-100;
+                    }
+                }
+            }
+
+            &:hover {
+                a {
+                    border-color: $theme-color;
+                }
+            }
+        }
+    }
+}
+
+/*============= wallet modal end=============*/

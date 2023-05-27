@@ -1,0 +1,226 @@
+.pro-details {
+    @extend %of-hidden;
+
+    &__block {
+        @extend %p-30;
+        background-color: $primary-color;
+        border-radius: 5px;
+
+        @include breakpoint(lg) {
+            padding: 40px;
+        }
+    }
+
+    &__item {
+        @extend %flex;
+        gap: 20px;
+
+        &-thumb {
+            @include box(90px);
+            border: 2px solid rgba($theme-color, $alpha: .10);
+            border-radius: 5px;
+
+            img {
+                border-radius: 4px;
+            }
+        }
+
+        &-content {
+            @include breakpoint(sm) {
+                width: calc(100% - 110px);
+            }
+        }
+    }
+
+    &__info {
+        @extend %p-20;
+        background-color: rgba($theme-color, $alpha: .20);
+        border-radius: 5px;
+
+        &-item {
+            @extend %p-10;
+            background-color: $primary-color;
+            border-radius: 5px;
+        }
+
+        &-name {
+            @include font-size(14px);
+            color: $theme-color;
+        }
+
+        &-value {
+            @extend %mb-0;
+            color: $white-color;
+            font-weight: 500;
+        }
+    }
+
+    &__token {
+        &-item {
+            @extend %p-20;
+            background-color: $primary-color;
+            border-radius: 5px;
+
+            p {
+                @extend %mb-0;
+                font-weight: 700;
+                @include font-size(18px);
+            }
+        }
+
+        &-title {
+            @extend %flex,
+            %align-items-center;
+            gap: 10px;
+
+            span {
+                @include box(30px);
+                background-color: $theme-color;
+                color: $body-color;
+                text-align: center;
+                line-height: 30px;
+                border-radius: 5px;
+            }
+
+            h6 {
+                @extend %mb-0;
+                @include font-size(16px);
+                color: $text-color;
+
+            }
+        }
+
+        &-value {
+            p {
+                color: $white-color;
+
+                sub {
+                    color: $theme-color;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+
+    &__desc {
+        aside {
+            position: sticky;
+            top: 150px;
+        }
+
+        &-nav {
+
+            .list-group {
+                background-color: $primary-color;
+
+                &-item {
+                    background-color: inherit;
+                    color: $white-color;
+                    font-family: $title-font;
+                    padding: .75rem 1.5rem;
+                    font-weight: 600;
+
+                    svg {
+                        @extend %mr-5;
+                    }
+
+                    &.active {
+                        background-color: $theme-color;
+                        color: $body-color;
+                        border: none;
+                    }
+                }
+            }
+        }
+
+        &-content {
+            section {
+                @extend %p-30;
+                background-color: rgba($primary-color, $alpha: .60);
+
+                &:not(:last-child) {
+                    @extend %mb-40;
+                }
+
+                h4 {
+                    @extend %mb-25;
+                    text-transform: capitalize;
+                }
+
+                h5 {
+                    @extend %mb-15;
+                    text-transform: capitalize;
+                }
+            }
+        }
+    }
+
+    &__links {
+        border-radius: 5px;
+        background-color: $primary-color;
+
+        &-item {
+            padding: 1.5rem;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid $body-color;
+            }
+        }
+
+        &-btn {
+            @extend %d-inline-block;
+            background-color: $body-color;
+            border: 1px solid rgba($theme-color, $alpha: .20);
+            padding: .5rem .75rem;
+            border-radius: 5px;
+
+            span {
+                @include box(25px);
+                @include font-size(14px);
+                border-radius: 4px;
+                display: inline-grid;
+                place-items: center;
+                background-color: $theme-color;
+                color: $body-color;
+                margin-inline-start: 5px;
+            }
+        }
+    }
+
+    &__tokenlist {
+        &-item {
+            svg {
+                @extend %mr-5;
+                color: $theme-color;
+            }
+
+            &:not(:last-child) {
+                @extend %mb-5;
+            }
+        }
+    }
+
+    &__img {
+        img {
+            @extend %w-100;
+            object-fit: cover;
+        }
+    }
+}
+
+.gap-20 {
+    gap: 15px;
+
+    @include breakpoint(sm) {
+        gap: 20px;
+    }
+}
+
+.gap-40 {
+    gap: 35px;
+
+    @include breakpoint(sm) {
+        gap: 40px;
+    }
+}

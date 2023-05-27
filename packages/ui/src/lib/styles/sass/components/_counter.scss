@@ -1,0 +1,37 @@
+.counter {
+    &__wrapper {
+        box-shadow: 0 18px 30px rgba($color: #00D0FF, $alpha: .14);
+        border: 1px solid $ash-color;
+        border-radius: 10px;
+        padding: 60px 30px;
+        background-color: $body-color;
+
+        @include breakpoint(lg) {
+            padding: 50px 65px;
+        }
+    }
+
+    &__item {
+        @extend %text-center;
+
+        h3 {
+            color: $theme-color
+        }
+
+        p {
+            @extend %mb-0;
+            @include font-size(18px);
+            text-transform: capitalize;
+            color: $white-color;
+
+        }
+    }
+
+    &__section {
+        &--uplift {
+            @extend %p-rel;
+            z-index: 1;
+            margin-top: -80px;
+        }
+    }
+}

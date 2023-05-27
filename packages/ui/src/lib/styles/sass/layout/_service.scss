@@ -1,0 +1,140 @@
+.service {
+    @extend %of-hidden;
+
+    &__item {
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+
+        &-inner {
+            @extend %flex;
+            gap: 20px;
+
+            &--reverse {
+                @include breakpoint(xl) {
+                    flex-direction: row-reverse;
+                    text-align: end
+                }
+            }
+        }
+
+        &-thumb {
+            @extend %mt-10;
+            @include box(75px);
+            @include font-size(24px);
+            display: grid;
+            place-items: center;
+            background-image: $theme-color;
+            border-radius: 50%;
+
+            &.line-1,
+            &.line-2,
+            &.line-3,
+            &.line-4 {
+
+                @extend %p-rel;
+
+                &:before,
+                &:after {
+                    @extend %p-abs;
+                    z-index: -1;
+
+                    @include breakpoint(max-xl) {
+                        display: none;
+                    }
+                }
+            }
+
+            &.line-1 {
+
+                &:before {
+                    width: 290px;
+                    border: 1px dashed lighten($theme-color, $amount: 30);
+                    left: 40px;
+                    top: 50%;
+                }
+
+                &:after {
+                    @include add-prefix(transform, rotate(35deg));
+                    width: 70px;
+                    border: 1px dashed lighten($theme-color, $amount: 30);
+                    left: 329px;
+                    top: 58px;
+
+                }
+            }
+
+            &.line-2 {
+                &:before {
+                    width: 370px;
+                    border: 1px dashed lighten($theme-color, $amount: 30);
+                    left: 40px;
+                    top: 50%;
+                }
+
+                &:after {
+                    @include add-prefix(transform, rotate(25deg));
+                    width: 105px;
+                    border: 1px dashed lighten($theme-color, $amount: 30);
+                    left: 410px;
+                    top: 61px;
+
+                }
+            }
+
+            &.line-3 {
+                &:before {
+                    width: 290px;
+                    border: 1px dashed lighten($theme-color, $amount: 30);
+                    right: 40px;
+                    top: 50%;
+                }
+
+                &:after {
+                    @include add-prefix(transform, rotate(-35deg));
+                    width: 70px;
+                    border: 1px dashed lighten($theme-color, $amount: 30);
+                    right: 329px;
+                    top: 58px;
+
+                }
+            }
+
+            &.line-4 {
+                &:before {
+                    width: 370px;
+                    border: 1px dashed lighten($theme-color, $amount: 30);
+                    right: 40px;
+                    top: 50%;
+                }
+
+                &:after {
+                    @include add-prefix(transform, rotate(-25deg));
+                    width: 105px;
+                    border: 1px dashed lighten($theme-color, $amount: 30);
+                    right: 410px;
+                    top: 61px;
+                }
+            }
+
+        }
+
+        &-content {
+            width: calc(100% - 95px);
+
+            h4 {
+                @extend %mb-10;
+
+                @include breakpoint(xl) {
+                    margin-bottom: 30px;
+                }
+            }
+        }
+
+        @include breakpoint(xl) {
+            &:not(:last-child) {
+                margin-bottom: 70px;
+            }
+        }
+    }
+}

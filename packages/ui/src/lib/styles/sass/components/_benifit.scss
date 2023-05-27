@@ -1,0 +1,23 @@
+.benifit {
+    @extend %of-hidden;
+
+    &__item {
+        @extend %text-center;
+
+        &-thumb {
+            @extend %mb-15;
+        }
+
+        &-content {
+            padding-inline: 1rem;
+
+            h4 {
+                @extend %mb-10;
+            }
+
+            p {
+                @extend %mb-0;
+            }
+        }
+    }
+}

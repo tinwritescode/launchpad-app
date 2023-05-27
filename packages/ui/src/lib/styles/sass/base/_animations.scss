@@ -1,0 +1,101 @@
+/*===== keyframes for banner img ====*/
+
+
+@include keyframes(floating) {
+    0% {
+        transform: translateY(0px);
+    }
+
+
+    100% {
+        transform: translateY(-50px);
+    }
+}
+
+@include keyframes(rotate) {
+
+    0% {
+        transform: rotateY(0deg);
+
+    }
+
+
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+@include keyframes(zoom) {
+    0% {
+        transform: scale(.8);
+    }
+
+    100% {
+        transform: scale(.2);
+    }
+}
+
+
+@include keyframes(left-right) {
+    0% {
+        transform: translateX(30px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+
+@include keyframes(fade) {
+    0% {
+        opacity: .2;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+//glitch animation
+
+@include keyframes(light) {
+
+    10%,
+    90% {
+        opacity: .5;
+    }
+
+    20%,
+    80% {
+        opacity: .7;
+    }
+
+    30%,
+    50%,
+    70% {
+        opacity: .9;
+    }
+
+    40%,
+    60% {
+        // transform: translate3d(4px, 0, 0);
+        opacity: 1;
+    }
+}
+
+
+
+// heart beat 
+@include keyframes(hearbeat) {
+
+    0% {
+        @include add-prefix(transform, scale(.9));
+    }
+
+
+
+    100% {
+        @include add-prefix(transform, scale(1));
+    }
+}

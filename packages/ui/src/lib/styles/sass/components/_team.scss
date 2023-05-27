@@ -1,0 +1,75 @@
+.team {
+    &__item {
+        @extend %of-hidden;
+        background-color: $primary-color;
+        border-radius: 5px;
+
+        &:hover {
+            .team__thumb {
+                img {
+                    @include add-prefix(transform, scale(1.06));
+                    filter: grayscale(0);
+                }
+            }
+
+            .team__content {
+                h4 {
+                    a {
+                        color: $theme-color;
+                    }
+                }
+            }
+        }
+
+        &--style2 {
+            @include add-prefix(transition, $transition);
+            border: 1px solid rgba($theme-color, $alpha: .40);
+
+            &:hover {
+                border-color: $theme-color;
+            }
+        }
+    }
+
+    &__thumb {
+        @extend %of-hidden;
+
+
+        img {
+            @extend %w-100;
+            @include add-prefix(transition, $transition);
+            object-fit: cover;
+            filter: grayscale(1);
+        }
+    }
+
+    &__content {
+        @extend %text-center,
+        %p-20;
+
+        h5,
+        p {
+            @extend %mb-0;
+        }
+
+        h4 {
+
+            a {
+                @include add-prefix(transition, $transition);
+                color: $white-color;
+            }
+        }
+    }
+
+    .social {
+        @extend %mt-15,
+        %mb-10,
+        %justify-center;
+    }
+}
+
+
+// Team member details
+.member {
+    @extend %of-hidden;
+}

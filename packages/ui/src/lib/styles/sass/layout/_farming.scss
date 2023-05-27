@@ -1,0 +1,149 @@
+.farming {
+    @extend %of-hidden;
+
+    &__item {
+        background-color: $primary-color;
+        border-radius: 10px;
+
+        &-header {
+            @extend %p-30;
+
+            cursor: pointer;
+
+            @include breakpoint(lg) {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            @include breakpoint(xl) {
+                padding: 40px;
+            }
+        }
+
+        &-body {
+            @extend %p-30;
+            display: none;
+            border-top: 1px solid rgba($theme-color, $alpha: .50);
+
+            @include breakpoint(xl) {
+                padding: 40px;
+
+            }
+        }
+    }
+
+    &__thumb {
+        @extend %mb-30;
+        @include box(90px);
+        border-radius: 5px;
+        border: 2px solid rgba($theme-color, $alpha: .90);
+
+        @include breakpoint(lg) {
+            margin-bottom: 0;
+        }
+
+        img {
+            border-radius: 4px;
+        }
+    }
+
+    &__content {
+        @include breakpoint(lg) {
+            width: calc(100% - 110px);
+        }
+
+
+        &-title {
+            @extend %mb-20;
+
+            h3 {
+                @extend %mb-10;
+            }
+
+            p {
+                @extend %mb-0;
+                text-transform: uppercase;
+            }
+        }
+
+        >p {
+            max-inline-size: 70ch;
+        }
+    }
+
+    &__list {
+        @extend %flex,
+        %justify-between,
+        %align-items-center,
+        %mt-40,
+        %w-100;
+        gap: 30px;
+
+        &-item {
+            @extend %text-center;
+
+            p {
+                @extend %mb-0;
+            }
+        }
+    }
+
+    &__deposit,
+    &__withdraw {
+        &-field {
+            label {
+                @include font-size($fs-h6);
+                color: $white-color;
+                font-weight: 700;
+            }
+
+            .input-group {
+                @include add-prefix(transition, $transition);
+                background-color: $body-color;
+                border: 1px solid rgba($theme-color, $alpha: .20);
+                border-radius: 5px;
+
+                &:focus-within {
+                    border-color: rgba($theme-color, $alpha: .50);
+                }
+
+                input,
+                .input-group-text {
+                    background-color: transparent;
+                    border-color: transparent;
+                }
+
+                input {
+                    color: $text-color;
+                    padding: 1rem;
+
+                    &:focus {
+                        box-shadow: none;
+                    }
+                }
+
+                .input-group-text {
+                    color: $text-color;
+                }
+            }
+
+            .default-btn {
+                margin-left: auto;
+            }
+        }
+    }
+
+    &__claim {
+        @extend %p-20;
+        border-radius: 5px;
+        background-color: rgba($body-color, $alpha: .40);
+
+        &-title {
+            h4 {
+                @extend %mb-20;
+                color: $theme-color;
+            }
+        }
+    }
+}

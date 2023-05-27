@@ -1,0 +1,69 @@
+.leaderboard {
+    &__table {
+        color: $white-color;
+        border-spacing: 0 10px;
+        border-collapse: separate;
+
+        thead {
+            background-color: $theme-color;
+            color: $body-color;
+        }
+
+        &:nth-col(3) {
+            background-color: red;
+        }
+
+        td,
+        th {
+            vertical-align: middle;
+            padding: 15px 25px;
+        }
+    }
+
+    &__item {
+        @extend %of-hidden;
+        background-color: $primary-color;
+        border-radius: 10px;
+        padding-inline: 1rem;
+
+    }
+
+
+    &--level {
+        &-freez {
+            color: $text-color;
+        }
+
+        &-up {
+            color: $success-color;
+        }
+
+        &-down {
+            color: $fail-color;
+        }
+    }
+}
+
+.lead-project {
+    @extend %flex,
+    %align-items-center;
+    gap: 15px;
+    min-inline-size: 270px;
+
+    &__thumb {
+        @extend %of-hidden;
+        @include box(60px);
+        border-radius: 5px;
+        border: 1px solid rgba($theme-color, $alpha: .10);
+    }
+
+    &__content {
+        h6 {
+            @extend %mb-0;
+
+            a {
+                color: $white-color;
+            }
+        }
+    }
+}

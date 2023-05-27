@@ -1,0 +1,55 @@
+.error {
+    &__wrapper {
+        img {
+            @extend %mb-50;
+        }
+
+        h2 {
+            @extend %mb-20;
+        }
+
+        p {
+            @extend %mb-30;
+            @include font-size(18px);
+            max-inline-size: 60ch;
+            margin-inline: auto;
+        }
+    }
+}
+
+
+//coming soon css
+.coming-soon {
+    @include background-cover;
+
+    &__wrapper {
+        @extend %w-100;
+        display: grid;
+        place-items: center;
+        height: 100vh;
+    }
+
+    &__content {
+        max-width: 600px;
+
+        h2 {
+            @extend %mb-15;
+        }
+    }
+
+    .mail-collect {
+        margin-block-start: 50px;
+        margin-block-end: 40px;
+
+        input {
+            background-color: $body-color;
+            border-color: rgba($theme-color, $alpha: .20);
+            color: $text-color;
+
+            &:focus {
+                box-shadow: none;
+                border-color: rgba($theme-color, $alpha: .60);
+            }
+        }
+    }
+}

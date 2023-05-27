@@ -1,0 +1,43 @@
+.work {
+    &__item {
+        &-inner {
+            @extend %text-center;
+        }
+
+        &-thumb {
+            @extend %mb-15;
+
+            img {
+                @include add-prefix(transition, $transition);
+            }
+        }
+
+        &-content {
+            h4 {
+                @extend %mb-15;
+                @include add-prefix(transition, $transition);
+            }
+
+            p {
+                max-inline-size: 35ch;
+                margin-inline: auto;
+            }
+        }
+
+        &:hover {
+            .work__item {
+                &-thumb {
+                    img {
+                        @include add-prefix(transform, scale(1.1));
+                    }
+                }
+
+                &-content {
+                    h4 {
+                        color: $theme-color;
+                    }
+                }
+            }
+        }
+    }
+}

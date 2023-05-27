@@ -1,0 +1,120 @@
+.banner {
+    @extend %of-hidden;
+    @include background-cover;
+    padding-block: 100px;
+
+    &__content {
+        h1 {
+            @extend %mb-15;
+        }
+
+        p {
+            @extend %mb-40;
+            @include font-size(18px);
+            color: $white-color;
+            max-inline-size: 50ch;
+        }
+    }
+
+    &__thumb {
+        @extend %p-rel,
+        %text-center;
+        z-index: 2;
+
+        .shape-1,
+        .shape-2,
+        .shape-3 {
+            @extend %p-abs;
+        }
+
+        .shape-2 {
+            bottom: -10%;
+            right: 10%;
+            width: 80%;
+            @include animation(fade 2s cubic-bezier(.46, .03, .52, .96) infinite alternate);
+            z-index: -2;
+            opacity: .2;
+
+            @include breakpoint(xl) {
+                width: auto;
+                bottom: -15%;
+                right: 0%;
+            }
+
+            @include breakpoint(xxl) {
+                width: auto;
+                bottom: -15%;
+                right: 1%;
+            }
+        }
+
+        .shape-3 {
+            right: 30px;
+            bottom: -120px;
+            z-index: -1;
+            @include animation(floating 6s linear infinite alternate);
+
+            @include breakpoint(sm) {
+                right: 60px;
+                bottom: -140px;
+                max-width: 80%;
+            }
+
+            @include breakpoint(md) {
+                right: 120px;
+                bottom: -150px;
+            }
+
+            @include breakpoint(lg) {
+                right: 25px;
+                bottom: -150px;
+                max-width: 100%;
+            }
+
+            @include breakpoint(xl) {
+                right: 50px;
+                bottom: -190px;
+            }
+
+            @include breakpoint(xxl) {
+                right: 90px;
+                bottom: -190px;
+            }
+        }
+
+        >img {
+            @include animation(floating 4s linear infinite alternate);
+
+            @include breakpoint(xl) {
+                max-width: inherit;
+            }
+        }
+    }
+
+    &--style2 {
+        padding-block-start: 120px;
+        padding-block-end: 200px;
+
+        @include breakpoint(xl) {
+            // padding-block: 220px;
+        }
+
+        .banner {
+
+            &__content {
+                p {
+                    @extend %mt-30;
+                    @include font-size(20px);
+                    color: $white-color;
+                    max-inline-size: 70ch;
+                    margin-inline: auto;
+                }
+
+                .default-btn {
+                    @include add-prefix(transform, none);
+                }
+            }
+        }
+    }
+
+}

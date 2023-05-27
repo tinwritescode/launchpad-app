@@ -1,0 +1,163 @@
+// .newsletter,
+.newsletter {
+    @extend %of-hidden;
+
+
+    &__wrapper {
+        margin: auto;
+        background-color: $primary-color;
+        padding-block-start: 70px;
+        padding-block-end: 80px;
+        border-radius: 5px;
+        padding-inline: 15px;
+
+        @include breakpoint(sm) {
+            padding-inline: 30px;
+        }
+
+        @include breakpoint(md) {
+            padding-inline: 50px;
+        }
+
+        @include breakpoint(lg) {
+            padding-inline: 30px;
+            padding-block: 100px;
+        }
+
+        &--bg-shapes {
+
+
+            @extend %p-rel;
+
+            &:before,
+            &:after {
+                @extend %p-abs;
+                height: 250px;
+                width: 22%;
+                bottom: 5%;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center center;
+                opacity: .25;
+
+                @include breakpoint(max-lg) {
+                    display: none;
+                }
+            }
+
+            &:before {
+                background-image: url('/images/newsletter/2.svg');
+                left: 0;
+            }
+
+            &:after {
+                background-image: url('/images/newsletter/1.svg');
+                right: 0
+            }
+        }
+    }
+
+    &__form {
+
+        form {
+            @extend %p-rel;
+        }
+
+        input {
+            @extend %p-15;
+            border-radius: 5px;
+            padding-inline-end: 30%;
+            background-color: $body-color;
+            color: $text-color;
+            border: 1px solid rgba($theme-color, $alpha: .10);
+
+            @include breakpoint(md) {
+                padding: 25px;
+            }
+
+            &:focus {
+                box-shadow: none;
+                background-color: $body-color;
+                color: $text-color;
+                border-color: rgba($theme-color, $alpha: .30);
+            }
+        }
+
+        button {
+            @extend %p-abs;
+            @extend %h-100;
+            right: 0;
+            border-radius: 5px;
+            top: 0;
+            background-color: $theme-color;
+            color: $body-color;
+            border: none;
+            padding-inline: 1.5rem;
+            font-family: $title-font;
+            font-weight: 600;
+
+            @include breakpoint(md) {
+                padding-inline: 3rem;
+            }
+
+        }
+    }
+}
+
+//cta section
+.cta {
+    &__wrapper {
+        margin: auto;
+        background-color: $primary-color;
+        border-radius: 15px;
+        padding-inline: 15px;
+        text-align: center;
+        @include background-cover;
+        border-left: 3px solid $theme-color;
+        border-right: 3px solid $theme-color;
+        padding-block: 50px;
+
+        @include breakpoint(lg) {
+            padding-block: 70px;
+        }
+
+        &--bg-shapes {
+            @extend %p-rel;
+
+            &:before,
+            &:after {
+                @extend %p-abs;
+                @extend %h-100;
+                width: 22%;
+                top: 0;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center center;
+
+                @include breakpoint(max-lg) {
+                    display: none;
+                }
+            }
+
+            &:before {
+                background-image: url(/images/newsletter/bg-1.svg);
+                left: 0
+            }
+
+            &:after {
+                background-image: url(/images/newsletter/bg-2.svg);
+                right: 0
+            }
+        }
+    }
+
+    &__content {
+        h2 {
+            @extend %mb-25;
+        }
+
+        .default-btn {
+            @include add-prefix(transform, none);
+        }
+    }
+}

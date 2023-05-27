@@ -1,0 +1,25 @@
+.social {
+    @extend %flex;
+    @extend %align-items-center;
+    gap: 10px;
+
+    &__link {
+        @include box(35px);
+        @include add-prefix(transition, $transition);
+        border: 1px solid rgba($theme-color, $alpha: .40);
+        display: inline-grid;
+        place-items: center;
+        border-radius: 5px;
+        background-color: $body-color;
+        color: $white-color;
+
+        svg {
+            color: inherit;
+        }
+
+        &:hover {
+            background-color: $theme-color;
+            color: $body-color;
+        }
+    }
+}

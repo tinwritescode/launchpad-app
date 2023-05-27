@@ -1,0 +1,221 @@
+.kyc {
+    &__form {
+        max-width: 500px;
+        background-color: $primary-color;
+        margin: 0 auto;
+        box-shadow: 0px 6px 18px rgb(0 0 0 / 9%);
+        border-radius: 12px;
+
+        .form-header {
+            padding: 40px;
+            gap: 5px;
+            text-align: center;
+            font-size: 1rem;
+            border-bottom: 2px solid $body-color;
+
+            .stepIndicator {
+                @extend %p-rel,
+                %pb-30;
+                @include add-prefix(transition, $transition);
+                flex: 1;
+
+
+                &::before {
+                    @extend %p-abs;
+                    @include add-prefix(transform, translateX(-50%));
+                    @include add-prefix(transition, $transition);
+                    @include box(20px);
+                    left: 50%;
+                    bottom: 0;
+                    z-index: 9;
+                    background-color: $body-color;
+                    border-radius: 5px;
+                    border: 2px solid rgba($theme-color, $alpha: .30);
+                }
+
+                &::after {
+                    @extend %p-abs,
+                    %w-100;
+                    @include add-prefix(transition, $transition);
+                    left: 50%;
+                    bottom: 8px;
+                    height: 3px;
+                    background-color: $body-color;
+                }
+
+                &:last-child:after {
+                    display: none;
+                }
+
+                &.active {
+                    font-weight: 600;
+                    color: $white-color;
+
+                    &::before {
+                        background-color: $theme-color;
+                        border: 2px solid rgba($theme-color, $alpha: .10);
+                    }
+
+                    &::after {
+                        background-color: rgba($theme-color, $alpha: .20);
+                    }
+                }
+
+                &.finish {
+                    font-weight: 600;
+                    color: $theme-color;
+
+                    &::before {
+                        background-color: $theme-color;
+                        border: 3px solid rgba($theme-color, $alpha: .10);
+                        content: "\f00c";
+                        color: $body-color;
+                        font-family: "Font Awesome 6 Free";
+                        font-size: 12px;
+                        line-height: 15px;
+                    }
+
+                    &::after {
+                        background-color: $theme-color;
+                    }
+                }
+            }
+        }
+
+        .form-group {
+            h6 {
+                @extend %mb-15;
+            }
+        }
+
+        .form-control,
+        .form-select {
+            @extend %w-100;
+            @include add-prefix(transition, $transition);
+            padding: 15px 20px;
+            border: 1px solid rgba($theme-color, $alpha: .30);
+            border-radius: 5px;
+            background-color: $body-color;
+            color: $text-color;
+
+            &:focus {
+                border-color: $theme-color;
+                outline: 0;
+                box-shadow: none;
+            }
+
+
+            &.invalid {
+                border: 1px solid #f7685d;
+            }
+        }
+
+        .form-check {
+            &:not(:last-child) {
+                @extend %mb-10;
+            }
+
+            &-input {
+                background-color: $body-color;
+                accent-color: $theme-color;
+
+                &:checked {
+                    border-color: $theme-color;
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+
+            a {
+                font-weight: 700;
+                color: $white-color;
+
+                &:hover {
+                    color: $theme-color;
+                }
+            }
+        }
+
+        .step {
+            @extend %p-30;
+            padding-block-end: 0;
+            display: none;
+
+            @include breakpoint(sm) {
+                padding: 40px;
+            }
+
+            h4 {
+                @extend %p-rel,
+                %mb-50;
+
+                &::after {
+                    @extend %p-abs;
+                    @include add-prefix(transform, translateX(-50%));
+                    height: 2px;
+                    width: 80px;
+                    background-color: $theme-color;
+                    bottom: -10px;
+                    left: 50%;
+                }
+            }
+        }
+
+        .form-footer {
+            padding: 40px;
+            padding-block-start: 0;
+            overflow: auto;
+            gap: 20px;
+
+            button {
+                @include add-prefix(transition, $transition);
+                background-color: $theme-color;
+                border: 1px solid $theme-color !important;
+                color: $body-color;
+                padding: 13px 30px;
+                font-size: 1em;
+                cursor: pointer;
+                border-radius: 5px;
+                flex: 1;
+                margin-top: 10px;
+
+                &:hover {
+                    background-color: darken($theme-color, $amount: 10);
+                }
+            }
+
+            #prevBtn {
+                background-color: transparent;
+                color: $theme-color;
+            }
+        }
+    }
+
+}
+
+
+.rules {
+    &__item {
+        color: rgba($text-color, $alpha: .30);
+
+        &:not(:last-child) {
+            @extend %mb-5;
+        }
+
+        span {
+            @extend %mr-5;
+        }
+
+        &--active {
+            color: $white-color;
+
+            span {
+                svg {
+                    color: $theme-color;
+                }
+            }
+        }
+    }
+}

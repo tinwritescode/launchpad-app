@@ -1,0 +1,32 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the footer of the site/application.
+// -----------------------------------------------------------------------------
+
+
+.footer {
+    @include background-cover;
+
+    &__content {
+        h3 {
+            @extend %mb-10;
+        }
+
+        p {
+            @include font-size(18px);
+            color: $white-color;
+            @extend %mb-20;
+        }
+    }
+
+    &__copyright {
+        border-top: 1px solid rgba($white-color, $alpha: .10);
+    }
+
+    .social {
+        &__link {
+            @include box(45px);
+            @include font-size(18px);
+        }
+    }
+
+}

@@ -1,0 +1,49 @@
+.contact {
+    background-color: $primary-color;
+
+
+
+    .form {
+        @extend %p-rel;
+        z-index: 1;
+
+        input,
+        textarea {
+            @extend %w-100;
+            @include add-prefix(transition, $transition);
+            @include add-prefix(border, 1px solid transparent);
+            @include add-prefix(border-radius, 2px);
+            background-color: $body-color;
+            color: $white-color;
+            padding: 20px 30px;
+            border-radius: 5px;
+
+            &::placeholder {
+                color: $white-color;
+            }
+
+            &:focus-within {
+                outline: none;
+                border-color: rgba($theme-color, $alpha: .60);
+            }
+        }
+
+        input {
+            @extend %mb-20;
+        }
+
+        textarea {
+            @extend %mb-40;
+            min-height: 250px;
+        }
+
+        .default-btn {
+            border: none;
+        }
+    }
+}
+
+.form-massage {
+    color: $white-color;
+    @extend %mt-10;
+}
