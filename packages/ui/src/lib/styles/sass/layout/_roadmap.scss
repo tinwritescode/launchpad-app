@@ -1,0 +1,254 @@
+.roadmap {
+  &__item {
+    @extend %text-center;
+
+    &-inner {
+      &--vertical-line {
+        @extend %p-rel;
+
+        &:before,
+        &:after {
+          @extend %p-abs;
+          @include add-prefix(transform, translateX(-50%));
+          left: 50%;
+        }
+
+        &:after {
+          width: 0;
+          border: 2px dashed $primary-color;
+          height: 100px;
+          bottom: -100px;
+        }
+
+        &:before {
+          @include box(10px);
+          border-radius: 2px;
+          background-color: $theme-color;
+          bottom: -58px;
+          z-index: 1;
+        }
+      }
+
+      &--horiz-line {
+        @extend %p-rel;
+
+        @include breakpoint(lg) {
+
+          &::before,
+          &::after {
+            position: absolute;
+            content: "";
+            border: 2px dashed $primary-color;
+            left: 50%;
+            @include add-prefix(transform, translateX(-50%));
+          }
+
+          &::after {
+            width: 715px;
+            height: 0;
+            top: -100px;
+
+            @include breakpoint(xl) {
+              width: 870px;
+            }
+          }
+
+          &::before {
+            width: 0;
+            height: 95px;
+            top: -95px;
+          }
+        }
+      }
+    }
+
+    &-year {
+      @extend %mb-30;
+
+      h4 {
+        @extend %mb-5;
+        font-weight: 500;
+      }
+    }
+
+    &-content {
+      border-radius: 5px;
+      background-color: $primary-color;
+      padding: 20px 35px;
+    }
+
+    &-icon {
+      @include box(50px);
+      line-height: 50px;
+      background-color: $theme-color;
+      border-radius: 5px;
+      margin: -45px auto 30px;
+      color: $body-color;
+      font-weight: 700;
+      @include font-size(20px);
+    }
+
+    &-text {
+      h6 {
+        @extend %mb-15;
+        font-weight: 600;
+      }
+
+      p {
+        @extend %mb-0;
+        font-weight: 300;
+      }
+    }
+  }
+
+  &__wrapper {
+    @extend %p-rel;
+    margin-bottom: 10px;
+  }
+
+  &__slider {
+    padding-block-end: 0px;
+    border-bottom: 3px dashed $primary-color;
+
+    &-prev,
+    &-next {
+      @extend %p-abs;
+      @include add-prefix(transition, $transition);
+      @include box(30px);
+      bottom: -13px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 2px;
+      background-color: $primary-color;
+      color: $text-color;
+      z-index: 1;
+
+      &:hover {
+        background-color: $theme-color;
+        color: $body-color;
+      }
+
+      &.swiper-button-disabled {
+        background: $body-color;
+        border: 1px solid $primary-color;
+        color: $primary-color;
+      }
+    }
+
+    &-prev {
+      left: 0;
+    }
+
+    &-next {
+      right: 0;
+    }
+  }
+
+  //roadmap style 2
+  &__wrapper2 {
+    @extend %p-rel,
+    %of-hidden;
+
+    &:after {
+      @include breakpoint(md) {
+        position: absolute;
+        content: "";
+        height: 50%;
+        width: 10px;
+        background-color: $theme-color;
+        border-radius: 2px;
+        top: 0;
+        left: 50%;
+        @include add-prefix(transform, translateX(-50%));
+      }
+    }
+
+    &:before {
+      @include breakpoint(md) {
+        position: absolute;
+        content: "";
+        height: 100%;
+        width: 20px;
+        background-color: $primary-color;
+        border-radius: 4px;
+        top: 0;
+        left: 50%;
+        @include add-prefix(transform, translateX(-50%));
+      }
+    }
+  }
+
+  .col-md-6 {
+    @include breakpoint(md) {
+      &:not(:first-child) {
+        .roadmap__item aos-init aos-animate aos-init aos-animate2 {
+          margin-top: -30px;
+        }
+      }
+    }
+  }
+
+  &__item2 {
+    @extend %p-rel;
+    background-color: $primary-color;
+    border-radius: 4px;
+
+    &:after {
+      @extend %p-abs;
+      @include box(100px);
+      @include add-prefix(transition, $transition);
+      background-image: url('/images/shape/logo.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      top: 0;
+      right: 0;
+      opacity: 0.05;
+    }
+
+    &-header {
+      @extend %flex,
+      %align-items-center,
+      %justify-between,
+      %mb-15;
+
+      h4,
+      p {
+        @extend %mb-0;
+        @include add-prefix(transition, $transition);
+      }
+
+      p {
+        @include font-size(24px);
+        font-weight: 700;
+        font-family: $title-font;
+        color: $theme-color;
+      }
+    }
+
+    &-content {
+      padding: 20px;
+
+      @include breakpoint(lg) {
+        padding: 40px;
+      }
+
+      p {
+        @extend %mb-0;
+      }
+    }
+
+    &:hover {
+      &:after {
+        opacity: 0.1;
+      }
+
+      .roadmap__item aos-init aos-animate aos-init aos-animate2-header {
+
+        h4,
+        p {
+          color: $theme-color;
+        }
+      }
+    }
+  }
+}

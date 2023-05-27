@@ -1,0 +1,80 @@
+.faq {
+    @extend %of-hidden;
+
+    &__tab {
+        @extend %justify-center;
+        gap: 20px;
+
+        .nav-link {
+            border: 1px solid $ash-color;
+            padding: 1rem 1.3rem;
+            border-radius: 5px;
+            color: $white-color;
+            font-weight: 500;
+            font-size: 1rem;
+
+            &:hover {
+                border-color: lighten($ash-color, $amount: 10);
+            }
+
+            &.active {
+                background-color: $theme-color;
+                color: $body-color;
+            }
+        }
+    }
+}
+
+.accordion {
+    &-item {
+        padding: 1rem 1.5rem;
+        background-color: $primary-color;
+        border-radius: 5px !important;
+        border: none;
+
+        &:not(:last-child) {
+            @extend %mb-20;
+        }
+    }
+
+    &-button {
+        background-color: $primary-color;
+        color: $white-color;
+        border-bottom: 1px solid transparent;
+        @include font-size($fs-h5);
+        font-weight: 500;
+        padding: 1rem 0;
+
+        &::after {
+            // background-image: url(/images/faq/icon-arrow.svg);
+            background-image: url('/images/faq/icon-arrow.svg');
+            background-size: 1rem;
+            @include box(1rem);
+
+        }
+
+        &:focus {
+            box-shadow: none;
+            outline: none;
+            border-bottom: 1px solid transparent;
+        }
+
+        &:not(.collapsed) {
+            background-color: $primary-color;
+            color: $white-color;
+            border-color: $ash-color;
+            box-shadow: none;
+
+            &::after {
+                transform: none;
+                // background-image: url(/images/faq/icon-minus.svg);
+                background-image: url('/images/faq/icon-minus.svg');
+            }
+        }
+    }
+
+    &-body {
+        padding: 2rem 0 1rem;
+        color: $text-color;
+    }
+}

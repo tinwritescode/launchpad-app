@@ -1,0 +1,93 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+
+//default button style
+.default-btn {
+    @extend %p-rel;
+    @extend %d-inline-block;
+    @extend %of-hidden;
+    @include font-size(16px);
+    @include add-prefix(border-radius, 5px);
+    @include add-prefix(transform, skew(-5deg));
+    text-decoration: none;
+    font-family: $title-font;
+    color: $black-color;
+    padding-inline: 1.25rem;
+    line-height: 40px;
+    transform-origin: right;
+    transition: $transition;
+    background: $theme-color;
+    border: 1px solid transparent;
+    font-weight: 600;
+
+
+    @include breakpoint(md) {
+        padding-inline: 2rem;
+        line-height: 56px;
+        @include font-size(18px);
+    }
+
+    span {
+        position: inherit;
+        z-index: 1;
+        text-transform: capitalize;
+        font-weight: inherit;
+
+        svg {
+            @extend %mr-5;
+        }
+    }
+
+    &--small {
+        line-height: 40px;
+        padding: 0 1.2rem;
+    }
+
+    &--secondary {
+        background-color: transparent;
+        border-color: $theme-color;
+        color: $theme-color;
+    }
+
+    &--rounded {
+        @include add-prefix(border-radius, 99px);
+    }
+
+    &:hover {
+        color: $theme-color;
+        transform: translateY(-3px);
+        background: transparent;
+        border-color: $theme-color;
+        box-shadow: 0 0 10px rgba($theme-color, $alpha: .40);
+    }
+
+    &.active {
+        background: $theme-color;
+    }
+}
+
+//text button 
+.text-btn {
+    display: inline-block;
+    color: $title-color;
+    font-weight: bold;
+
+    @include breakpoint(lg) {
+        @include font-size(20px);
+    }
+
+    svg {
+        @extend %ml-5;
+        @include add-prefix(transition, $transition);
+        vertical-align: middle;
+    }
+
+    &:hover {
+        color: $theme-color;
+
+        svg {
+            @include add-prefix(transform, translateX(5px));
+        }
+    }
+}

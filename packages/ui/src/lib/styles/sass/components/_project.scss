@@ -1,0 +1,437 @@
+.project {
+    &__item {
+        @extend %of-hidden;
+        @include add-prefix(transition, $transition);
+        background-color: $primary-color;
+        border-radius: 5px;
+
+        &--completed1 {
+            background-color: $body-color;
+
+            .project__item {
+                position: relative;
+
+                &-author {
+                    a {
+                        @extend %p-rel,
+                        %of-hidden;
+                        z-index: 1;
+                        border-radius: 50%;
+                    }
+
+                    h4 {
+                        margin-left: -5px;
+                        background-color: $body-color;
+
+                    }
+                }
+            }
+
+            .progress {
+                background-color: $primary-color !important;
+            }
+
+
+
+        }
+
+
+
+        &-thumb {
+            @extend %p-rel,
+            %of-hidden;
+            border-bottom: 2px solid rgba($theme-color, $alpha: .3);
+            border-radius: inherit;
+            position: relative !important;
+
+            img {
+                @extend %w-100;
+                @include add-prefix(transition, $transition);
+                object-fit: cover;
+                position: relative;
+            }
+
+            .badge {
+                @include box(35px);
+                @extend %p-abs;
+                border-radius: 50%;
+                border: 1px solid rgba($theme-color, $alpha: .3);
+                padding: 3px;
+                top: 10px;
+                right: 10px;
+                background-color: $primary-color;
+            }
+        }
+
+        &-content {
+            padding: 30px 25px;
+        }
+
+        &-top {
+            @extend %p-rel,
+            %mb-20;
+            margin-top: -65px;
+            z-index: 1;
+
+            @include breakpoint(lg) {
+                margin-top: -75px;
+            }
+        }
+
+        &-author {
+            @extend %flex,
+            %align-items-center;
+
+            a {
+                @include box(60px);
+                border: 2px solid rgba($theme-color, $alpha: .3);
+                border-radius: 5px;
+                background-color: $primary-color;
+
+                @include breakpoint(lg) {
+                    @include box(80px);
+                }
+
+                img {
+                    border-radius: 3px;
+                }
+            }
+
+            h4 {
+                @extend %mb-0,
+                %text-clamp-1;
+                width: calc(100% - 60px);
+                background-color: $primary-color;
+                padding: .3rem 1rem;
+                clip-path: polygon(0% 0%, 90% 0%, 100% 62%, 100% 100%, 0% 100%);
+                border: 2px solid rgba($theme-color, $alpha: .30);
+                border-left: none;
+                border-top: none;
+                font-weight: 600;
+
+                @include breakpoint(lg) {
+                    width: calc(100% - 80px);
+                }
+            }
+        }
+
+        &-currency {
+            @include box(40px);
+            border-radius: 50%;
+        }
+
+        &-bottom {
+            @extend %flex,
+            %justify-between,
+            %align-items-center;
+        }
+
+        &-amount {
+            @extend %mb-30;
+
+            p {
+                @extend %mb-5;
+            }
+
+            h6 {
+                font-weight: 600;
+            }
+
+            .progress {
+                background-color: rgba($body-color, $alpha: 1.0);
+                height: 12px;
+                border-radius: 3px;
+
+                .progress-bar {
+                    background-color: $theme-color;
+                }
+            }
+        }
+
+        &:hover {
+            @include add-prefix(transform, translateY(-5px));
+
+            .project__item {
+                &-thumb {
+                    >img {
+                        @include add-prefix(transform, scale(1.1));
+                    }
+                }
+            }
+        }
+    }
+
+    &__item2 {
+        @extend %p-25;
+        // @include add-prefix(transition, $transition !important);
+        background-color: $primary-color;
+        border-radius: 5px;
+        border: 1px solid transparent;
+
+        @include breakpoint(md) {
+            padding: 30px;
+        }
+
+        &-inner {
+            @extend %flex,
+            %align-items-center,
+            %justify-between;
+
+            column-gap: 20px;
+            row-gap: 30px;
+
+            p {
+                @extend %mb-0;
+            }
+        }
+
+        &-name {
+            @extend %flex,
+            %align-items-center;
+            gap: 20px;
+        }
+
+        &-chain {
+            @include box(40px);
+        }
+
+        &-time {
+            text-transform: capitalize;
+            color: $white-color;
+            font-weight: 500;
+        }
+
+        &-thumb {
+            border: 1px solid rgba($theme-color, $alpha: .50);
+            border-radius: 5px;
+
+            img {
+                border-radius: 4px;
+            }
+        }
+
+        &-content {
+            h4 {
+                a {
+                    color: $white-color;
+                }
+            }
+        }
+
+        .project__item-amount {
+            @extend %mb-0;
+            min-width: 250px;
+        }
+
+
+
+        &:hover {
+
+            border-color: rgba($theme-color, $alpha: .3);
+
+            .project__item2 {
+
+                &-content {
+                    h4 {
+                        a {
+                            color: $theme-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &__infolist {
+        @extend %mb-15;
+
+        &-item {
+            @extend %flex,
+            %justify-between,
+            %align-items-center;
+
+            p {
+                @extend %mb-0;
+            }
+
+            &:not(:last-child) {
+                @extend %mb-5;
+            }
+        }
+
+        &-data {
+            color: $theme-color;
+        }
+    }
+
+    //featured project css
+    &--featured {
+        .section-header__titlebar {
+            @extend %p-rel;
+
+            &:before {
+                @extend %p-abs;
+                width: 200px;
+                height: 200px;
+                background-image: url('/images/project/header-bg.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                left: 0;
+                top: 0;
+                z-index: -1;
+            }
+        }
+    }
+
+    //project completed slider (home 3)
+    &--completed2 {
+        &-slider {
+            height: 350px;
+
+            @include breakpoint(sm) {
+                height: 250px;
+            }
+
+            @include breakpoint(md) {
+                height: 280px;
+            }
+
+            @include breakpoint(lg) {
+                height: 350px;
+            }
+        }
+
+        .swiper-slide-active {
+            .project__item2 {
+                border: 1px solid rgba($theme-color, $alpha: .3);
+                box-shadow: 0 5px 5px rgba($theme-color, $alpha: .10);
+            }
+        }
+    }
+
+    &__slider2 {
+        &-nav {
+            @extend %flex,
+            %align-items-center,
+            %mt-40;
+            gap: 15px;
+        }
+
+        &-prev,
+        &-next {
+            @include box(45px);
+            @include add-prefix(transform, skew(-5deg));
+            @include add-prefix(transition, $transition);
+            display: inline-grid;
+            place-items: center;
+            border-radius: 4px;
+            background-color: $primary-color;
+            color: $theme-color;
+            border: 1px solid rgba($theme-color, $alpha: .10);
+            cursor: pointer;
+
+            &:hover {
+                background-color: $theme-color;
+                color: $body-color;
+            }
+        }
+    }
+}
+
+.gradient-bg--shade {
+    @extend %p-rel;
+
+    &::after {
+        @extend %p-abs,
+        %w-100;
+        height: 120px;
+        bottom: 0;
+        left: 0;
+        background-image: linear-gradient(0deg, rgba($body-color, $alpha:1) 0%, rgba(0, 0, 0, 0) 100%);
+        z-index: 1;
+    }
+}
+
+//home 3 bg image
+.bg-img {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    img {
+        @extend %w-100,
+        %h-100;
+        object-fit: cover;
+    }
+}
+
+//============ Apply for project css ===========
+.apply-project {
+    &__block {
+        background-color: $primary-color;
+        border-radius: 5px;
+
+        &-header {
+            @extend %p-rel,
+            %p-20;
+
+            &:after {
+                @extend %p-abs,
+                %w-100;
+                height: 1px;
+                background-image: linear-gradient(260deg, rgba(0, 0, 0, 0) 30%, $theme-color 100%);
+                left: 0;
+                bottom: 0;
+            }
+
+            h4 {
+                @extend %mb-0;
+            }
+        }
+
+        &-content {
+            padding: 40px 20px;
+
+            .application-type {
+                @extend %flex,
+                %align-items-center;
+                gap: 15px;
+            }
+
+            .form-floating {
+                textarea {
+                    min-height: 120px;
+                }
+
+                label {
+                    color: $text-color;
+                }
+
+                >.form-control,
+                .form-select {
+                    background-color: $body-color;
+                    color: $text-color;
+                    border: 1px solid rgba($theme-color, $alpha: .10);
+
+                    &:focus {
+                        box-shadow: none;
+                        border-color: rgba($theme-color, $alpha: .40);
+
+                        &~label {
+                            color: rgba($theme-color, $alpha: .50);
+                        }
+                    }
+                }
+
+
+            }
+
+
+
+            .outline-btn {
+                border: 1px solid $theme-color;
+                padding: .5rem 1rem;
+            }
+        }
+    }
+}

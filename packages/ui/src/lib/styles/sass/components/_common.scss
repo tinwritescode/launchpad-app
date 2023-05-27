@@ -1,0 +1,36 @@
+//=====Swiper pagination style
+.swiper-pagination-bullet {
+    @include add-prefix(transform, skew(-10deg));
+    @include box(15px);
+    border-radius: 2px;
+    background-color: $theme-color;
+}
+
+// scrollTop
+.scroll-to-top {
+    @include add-prefix(transition, $transition);
+    position: fixed;
+    // bottom: -20%;
+    bottom: 7%;
+    right: 5%;
+    z-index: 9;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: $theme-color!important;
+    text-align: center;
+    border-radius: 5px;
+    color: $body-color;
+
+    svg {
+        position: relative;
+        top: -3px;
+        width: 14px;
+        height: 16px;
+    }
+
+    &:hover {
+        @include add-prefix(transform, translateY(-5px));
+        color: $body-color;
+    }
+}

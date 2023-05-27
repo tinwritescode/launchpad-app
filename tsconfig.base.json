@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@strawberry/contracts": ["packages/contracts/src/index.ts"],
+      "@strawberry/ui": ["packages/ui/src/index.js"],
       "shared": ["packages/shared/src/index.ts"]
     }
   },

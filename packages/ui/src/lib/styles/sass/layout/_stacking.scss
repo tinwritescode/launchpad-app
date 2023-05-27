@@ -1,0 +1,179 @@
+.stacking {
+
+  &__project {
+    @extend %mb-40;
+
+    &-item {
+      @extend %p-40;
+      background-color: $primary-color;
+      border-radius: 5px;
+
+      p {
+        @extend %mb-0;
+      }
+    }
+  }
+
+  &__title {
+    @extend %p-30;
+    border-bottom: 2px solid $body-color;
+
+    @include breakpoint(lg) {
+      padding: 30px 40px;
+    }
+
+    h3 {
+      @extend %mb-0;
+    }
+  }
+
+  &__ammount {
+    @extend %mb-30;
+
+    p {
+      @extend %mb-0;
+    }
+
+    h4 {
+      color: $theme-color;
+    }
+  }
+
+  &__details {
+    background-color: $primary-color;
+    border-radius: 5px;
+  }
+
+  &__content {
+    @extend %p-30;
+
+    @include breakpoint(lg) {
+      padding: 40px;
+    }
+
+    .note-text {
+      @extend %mt-50;
+      @extend %mb-0;
+      max-inline-size: 50ch;
+
+      strong {
+        color: $theme-color;
+      }
+    }
+  }
+
+  &__period {
+    &-list {
+      @extend %mb-30;
+      gap: 15px;
+
+      .nav-link {
+        border: 1px solid rgba($theme-color, $alpha: 0.3);
+        border-radius: 5px;
+        padding: 1rem 1.25rem;
+        color: $theme-color;
+        font-weight: 700;
+        text-transform: uppercase;
+
+        &.active {
+          background-color: $theme-color;
+          color: $body-color;
+        }
+      }
+    }
+  }
+
+  &__info {
+    &-item {
+      &:not(:last-child) {
+        @extend %mb-10;
+      }
+
+      p {
+        @extend %mb-0;
+      }
+    }
+
+    &-value {
+      font-weight: 700;
+      color: $white-color;
+    }
+  }
+
+  &__apy {
+    p {
+      @extend %mb-5;
+    }
+
+    h3 {
+      color: $theme-color;
+    }
+  }
+
+  &__approve {
+    @include breakpoint(md) {
+      padding: 30px;
+      border-radius: 5px;
+      background-color: rgba($body-color, $alpha: 0.4);
+    }
+
+    .form-control {
+      background-color: $body-color;
+      border-color: $body-color;
+      padding: 15px 30px;
+      color: $text-color;
+      padding-inline-end: 10px;
+
+      ::placeholder {
+        color: $text-color;
+      }
+
+      &:focus {
+        box-shadow: none;
+        border-color: rgba($theme-color, $alpha: 0.2);
+      }
+    }
+
+    .form-label {
+      color: $white-color;
+      @include font-size(16px);
+      font-weight: 500;
+
+      span {
+        color: $text-color;
+      }
+    }
+
+    .input-group {
+      border: 1px solid rgba($theme-color, $alpha: 0.1);
+      border-radius: 5px;
+
+      &-text {
+        background-color: $body-color;
+        color: rgba($text-color, $alpha: 0.3);
+        border-color: $body-color;
+      }
+
+      &-btn {
+        @include add-prefix(transition, $transition);
+        background-color: $theme-color;
+        border: none;
+        padding-inline: 2rem;
+        color: $body-color;
+        font-weight: 700;
+        border: 1px solid transparent;
+
+        &.withdraw-btn {
+          background-color: rgba($theme-color, $alpha: 0.1);
+          color: $theme-color;
+          border-color: rgba($theme-color, $alpha: 0.6);
+
+          &:hover {
+            background-color: rgba($theme-color, $alpha: 1);
+            color: $body-color;
+          }
+        }
+      }
+    }
+  }
+}

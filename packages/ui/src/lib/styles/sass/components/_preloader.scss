@@ -1,0 +1,70 @@
+// preloader
+.preloader {
+    @extend %of-hidden,
+    %w-100,
+    %h-100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: $body-color;
+
+
+    &__inner {
+        @extend %p-abs;
+        top: 50%;
+        left: 50%;
+        @include add-prefix(transform, translate(-50%, -50%));
+
+    }
+
+
+    &__icon {
+        @include box(72px);
+        display: inline-block;
+        padding: 0px;
+
+        span {
+            @extend %p-abs,
+            %d-inline-block;
+            @include box(72px);
+            border-radius: 100%;
+            background: $theme-color;
+            -webkit-animation: preloader-fx 1.6s linear infinite;
+            animation: preloader-fx 1.6s linear infinite;
+
+            &:last-child {
+                animation-delay: -0.8s;
+                -webkit-animation-delay: -0.8s;
+            }
+        }
+    }
+
+
+}
+
+@keyframes preloader-fx {
+    0% {
+        -webkit-transform: scale(0, 0);
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+
+    100% {
+        -webkit-transform: scale(1, 1);
+        transform: scale(1, 1);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes preloader-fx {
+    0% {
+        -webkit-transform: scale(0, 0);
+        opacity: 0.5;
+    }
+
+    100% {
+        -webkit-transform: scale(1, 1);
+        opacity: 0;
+    }
+}

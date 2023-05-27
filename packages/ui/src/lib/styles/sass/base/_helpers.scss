@@ -1,0 +1,177 @@
+// -----------------------------------------------------------------------------
+// This file contains CSS helper classes.
+// -----------------------------------------------------------------------------
+
+/**
+ * Clear inner floats
+ */
+.clearfix::after {
+  clear: both;
+  content: '';
+  display: table;
+}
+
+
+/**
+ * Hide text while making it readable for screen readers
+ * 1. Needed in WebKit-based browsers because of an implementation bug;
+ *    See: https://code.google.com/p/chromium/issues/detail?id=457146
+ */
+.hide-text {
+  overflow: hidden;
+  padding: 0;
+  /* 1 */
+  text-indent: 101%;
+  white-space: nowrap;
+}
+
+/**
+ * Hide element while making it readable for screen readers
+ * Shamelessly borrowed from HTML5Boilerplate:
+ * https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css#L119-L133
+ */
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
+/*=-=-=-=-=-=====> utility classes start here <======= -=-=-=-=-=-=-=*/
+
+.color {
+  &--theme-color {
+    color: $theme-color !important;
+  }
+
+  &--white-color {
+    color: $white-color !important;
+  }
+}
+
+.bg {
+  &--theme-color {
+    background-color: $theme-color;
+  }
+
+  &--secondary-color {
+    background-color: $secondary-color
+  }
+
+  &--primary-color {
+    background-color: $primary-color;
+  }
+
+  &--black-color {
+    background-color: $black-color;
+  }
+
+  &--fixed {
+    background-attachment: fixed;
+  }
+
+  &--cover {
+    background-size: cover;
+  }
+}
+
+
+.underlined {
+  @extend %p-rel;
+
+  &:after {
+    @extend %p-abs;
+    width: 100%;
+    height: 2px;
+    background-color: $theme-color;
+    bottom: -5px;
+    right: -25px;
+  }
+}
+
+.padding-top {
+  padding-top: 90px;
+
+  @include breakpoint(lg) {
+    padding-top: 120px;
+  }
+}
+
+.padding-bottom {
+  padding-bottom: 90px;
+
+  @include breakpoint(lg) {
+    padding-bottom: 120px;
+  }
+}
+
+
+
+.gradient-bg {
+  background: linear-gradient(180deg, rgba(47, 47, 106, .40) 0%, rgba(8, 7, 27, 0) 100%);
+}
+
+.shape-1r {
+  @extend %p-rel;
+
+  @include breakpoint(xl) {
+    &:after {
+      position: absolute;
+      content: "";
+      background-image: url('/images/shape/graphic.svg');
+      background-size: contain;
+      width: 210px;
+      height: 250px;
+      top: 0;
+      right: 0;
+      @include animation(light 6s linear infinite alternate);
+    }
+
+    &:before {
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      content: "";
+      box-shadow: inset 0 0 30px rgba($theme-color, $alpha: .10);
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      @include animation(floating 6s linear infinite alternate);
+    }
+  }
+}
+
+.shape-fadeBlob {
+  &--left {
+    @extend %p-rel;
+
+    @include breakpoint(md) {
+      &:after {
+        position: absolute;
+        content: "";
+        background-image: url(/images/shape/theme-blob.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 6500px;
+        height: 650px;
+        bottom: 0;
+        left: 0;
+        opacity: .5;
+        @include animation(light 10s linear infinite alternate);
+      }
+    }
+  }
+}
+
+
+//uplift the components on above section
+.uplifted {
+  margin-top: -80px;
+}
+
+/*=-=-=-=-=-=====> utility classes end here <======= -=-=-=-=-=-=-=*/

@@ -1,0 +1,65 @@
+.tier {
+    &__inner {
+        @extend %text-center;
+        background-color: $primary-color;
+        border-radius: 4px;
+        @include add-prefix(transition, $transition);
+        border: 1px solid rgba($theme-color, $alpha: .02);
+
+        &:hover {
+            border-color: rgba($theme-color, $alpha: .4);
+        }
+    }
+
+    &__head {
+        h4 {
+            padding-block: 26px;
+            text-transform: uppercase;
+            @extend %mb-0;
+        }
+
+        p {
+            padding-block: 26px;
+            padding-inline: 30px;
+            @extend %mb-0;
+        }
+    }
+
+    &__body {
+        h4 {
+            color: $theme-color;
+            @extend %mb-0;
+            padding-block: 20px;
+            border-bottom: 1px solid rgba($title-color, $alpha: .1);
+        }
+
+        ul {
+            padding-inline: 15px;
+
+            li {
+                padding-block: 1rem;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid rgba($title-color, $alpha: .05);
+                }
+            }
+        }
+    }
+
+    &__title {
+        @extend %mb-5;
+    }
+
+    &__value {
+        @extend %mb-0;
+        @include font-size(18px);
+        color: $white-color;
+        font-weight: 600;
+    }
+
+    &__footer {
+        padding-bottom: 40px;
+        padding-top: 15px;
+    }
+
+}

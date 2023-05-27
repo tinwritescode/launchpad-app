@@ -1,0 +1,15 @@
+.rating {
+    @extend %list-none;
+    @extend %flex;
+    @extend %justify-center;
+    @extend %align-items-center;
+    @extend %pl-0;
+    gap: 2px;
+
+    &__star {
+        svg {
+            @include font-size(14px);
+            color: $theme-color;
+        }
+    }
+}

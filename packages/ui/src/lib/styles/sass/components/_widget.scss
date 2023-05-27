@@ -1,0 +1,439 @@
+// widget css start here
+.widget {
+    background-color: $primary-color;
+    margin-bottom: 40px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .widget__header {
+        @extend %p-20,
+        %p-rel;
+        background-color: $primary-color;
+
+        &:after {
+            @extend %p-abs,
+            %w-100;
+            height: 1px;
+            background-image: linear-gradient(260deg, rgba(0, 0, 0, 0) 30%, $theme-color 100%);
+            left: 0;
+            bottom: 0;
+        }
+
+        h5 {
+            @extend %mb-0;
+            @include font-size(20px);
+        }
+    }
+
+    &.widget-search {
+        @include breakpoint(max-lg) {
+            margin-top: 65px;
+        }
+
+        .widget-search-inner {
+            background-color: $primary-color;
+            padding: 30px;
+
+            .form-control {
+                background-color: $body-color;
+                border: 1px solid transparent;
+                padding: 1rem;
+                color: $text-color;
+
+                &:focus {
+                    box-shadow: none;
+                    border-color: rgba($theme-color, $alpha: .30);
+                }
+            }
+
+            .search-icon {
+                background-color: $theme-color;
+                color: $body-color;
+                padding-inline: 1rem;
+                border-color: transparent;
+            }
+        }
+    }
+
+    &.widget-category {
+        .widget-wrapper {
+            li {
+                border-bottom: 1px solid rgba($border-color, $alpha: .60);
+                padding: 20px 0;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            &.list-bg-none {
+                li {
+                    a {
+                        span {
+                            &:last-child {
+                                background-color: transparent;
+                            }
+                        }
+                    }
+                }
+            }
+
+            li {
+                padding: 0;
+
+                a {
+                    @include add-prefix(transition, $transition);
+                    @include font-size(18px);
+                    color: $text-color;
+                    font-family: $title-font;
+                    padding: 20px 30px;
+
+
+                    svg {
+                        margin-right: 8px;
+                    }
+
+                    &.active,
+                    &:hover {
+                        padding-left: 35px;
+                        color: $theme-color;
+
+                        span {
+                            &:last-child {
+                                color: $theme-color;
+                            }
+                        }
+                    }
+
+                    span {
+                        font-weight: 500;
+
+                        &:last-child {
+                            color: $text-color;
+                            text-align: center;
+                            @include add-prefix(transition, $transition);
+                        }
+                    }
+                }
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid $body-color;
+                }
+            }
+        }
+    }
+
+    &.widget-archive {
+        li {
+            border-bottom: 1px solid rgba($body-color, $alpha: .60);
+            padding: 20px 30px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            a {
+                color: $title-color;
+                font-weight: 500;
+
+                i {
+                    margin-right: 5px;
+                }
+
+                &.active,
+                &:hover {
+                    padding-left: 10px;
+                    color: $theme-color;
+                }
+            }
+        }
+    }
+
+    &.widget-post,
+    &.recent-product {
+        ul {
+            &.widget-wrapper {
+                padding: 0;
+
+                li {
+                    padding: 30px;
+
+                    &:not(:last-child) {
+                        border-bottom: 1px solid $body-color;
+                    }
+
+                    &.widget-post-item {
+                        @extend %flex,
+                        %align-items-center;
+                        gap: 20px;
+                    }
+
+                    .post-thumb {
+                        @include box(80px);
+                        @extend %of-hidden;
+
+                        a {
+                            display: inline-flex;
+                            height: 100%;
+
+                            img {
+                                width: 100%;
+                                @include add-prefix(transition, $transition);
+                                object-fit: cover;
+                            }
+                        }
+                    }
+
+                    .post-content {
+                        width: calc(100% - 100px);
+
+                        h6 {
+                            @include font-size(18px);
+                            line-height: 1.3;
+                            @extend %text-clamp-2;
+                            margin-bottom: 2px;
+                            font-weight: 600;
+
+                            &:hover {
+                                color: $theme-color;
+                            }
+                        }
+
+                        p {
+                            @include font-size(14px);
+                            margin: 0;
+                            color: $theme-color;
+                        }
+                    }
+
+                    &:hover {
+                        .post-thumb {
+                            img {
+                                @include add-prefix(transform, scale(1.05));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.recent-product {
+        ul {
+            &.widget-wrapper {
+                padding: 0;
+
+                li {
+
+                    .post-thumb {
+                        width: auto;
+                        height: auto;
+
+                        @include breakpoint(lg) {
+                            @include breakpoint(max-xl) {
+                                width: 80px;
+                                height: auto;
+                            }
+                        }
+                    }
+
+                    .post-content {
+                        .price {
+                            margin-top: 5px;
+                            font-weight: 700;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.widget-tags {
+        padding: 0;
+
+        ul {
+            &.widget-wrapper {
+                @extend %flex;
+                padding: 30px;
+                gap: 10px;
+
+                li {
+                    border: none;
+                    padding: 0;
+
+                    a {
+                        @extend %d-inline-block;
+                        @include add-prefix(transition, $transition);
+                        font-family: $title-font;
+                        padding: 7px 13px;
+                        border-radius: 4px;
+                        background-color: $primary-color;
+                        text-transform: capitalize;
+                        border: 1px solid rgba($theme-color, $alpha: .60);
+                        font-weight: 600;
+
+                        &.active,
+                        &:hover {
+                            background-color: $theme-color;
+                            color: $black-color;
+                            border-color: $theme-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //service page widget
+    &.widget-service {
+        .widget-service {
+            &__list {
+
+                &-item {
+                    a {
+                        @extend %flex,
+                        %align-items-center;
+                        @include add-prefix(transition, $transition);
+                        gap: 20px;
+                        padding-block: 1rem;
+                        padding-inline: 1.5rem;
+                        color: $text-color;
+                    }
+
+
+                    &:nth-child(2n) {
+                        background-color: $white-color;
+                    }
+
+                    p {
+                        @extend %mb-0;
+                        @include font-size(18px);
+                        font-weight: 700;
+                        font-family: $title-font;
+                    }
+
+                    &:hover,
+                    &.active {
+                        background-color: $secondary-color;
+
+                    }
+                }
+            }
+        }
+    }
+
+    //service brochure
+    &.widget-brochure {
+        .widget-brochure {
+            &__inner {
+                @extend %p-25;
+            }
+
+            &__thumb {
+                @extend %mb-25;
+
+                img {
+                    @extend %w-100;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+
+
+    //service info
+    &.widget-info {
+        .widget-info {
+            &__inner {
+                padding-inline: 25px;
+                padding-block-start: 30px;
+            }
+
+            &__list {
+                &-icon {
+                    @include box(40px);
+                }
+
+                &-item {
+                    @extend %flex,
+                    %align-items-center;
+                    gap: 20px;
+                    padding-block: 1.35rem;
+
+                    &:not(:last-child) {
+                        border-bottom: 1px solid $border-color;
+                    }
+                }
+
+                &-content {
+                    width: calc(100% - 60px);
+
+                    p {
+                        @extend %mb-5;
+                    }
+
+                    h6 {
+                        @extend %mb-0;
+                    }
+                }
+            }
+
+            &__thumb {
+
+                img {
+                    @extend %w-100;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+
+
+    //Case info/ Project info
+    &.widget-project {
+        .widget-project {
+            &__list {
+                padding-inline: 30px;
+
+                &-item {
+                    padding-block: 20px;
+
+                    p {
+                        @extend %mb-10;
+                    }
+
+                    h6 {
+                        @extend %mb-0;
+                        @include font-size(18px);
+                    }
+
+                    &:not(:last-child) {
+                        border-bottom: 1px solid $border-color;
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    //widget author
+    &.widget-author {
+        .widget-author {
+            &__inner {
+                @extend %p-30;
+            }
+
+            &__thumb {
+                @extend %mb-30;
+
+                img {
+                    @extend %w-100;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}

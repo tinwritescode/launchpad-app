@@ -1,0 +1,83 @@
+/*!
+Template Name: Torkgo
+Template URI: https: //themeforest.net/user/thetork
+Author: https: //themeforest.net/user/thetork
+Author URI: https: //themeforest.net/user/thetork
+Description: Torkgo is a Web 3 Metaverse IGO,
+ IDO Launchpad HTML Template
+Version: 1.0.0
+Text Domain: Torkgo
+Tags: crypto, IGO, IDO, Game launching, web 3,metaverse
+
+*/
+
+
+
+
+
+
+
+
+
+/*=====================================================================*/
+
+@charset "UTF-8";
+
+@import "bootstrap/scss/bootstrap";
+
+// 1. Configuration and helpers
+@import 'abstracts/variables',
+'abstracts/functions',
+'abstracts/mixins';
+
+// 2. Vendors
+@import 'vendors/normalize',
+'vendors/rfs';
+
+// 3. Base stuff
+@import 'base/fonts',
+'base/typography',
+'base/animations',
+'base/helpers';
+
+@import "abstracts/extend";
+
+// 4. Layout-related sections
+@import 'layout/header',
+'layout/banner',
+'layout/project-details',
+'layout/kyc',
+'layout/stacking',
+'layout/farming',
+'layout/faq',
+'layout/blog',
+'layout/roadmap',
+'layout/service',
+'layout/contact',
+'layout/account',
+'layout/leaderboard',
+'layout/error',
+'layout/footer';
+
+// 5. Components
+@import 'components/button',
+'components/project',
+'components/benifit',
+'components/work',
+'components/tier',
+'components/common',
+'components/social',
+'components/team',
+'components/counter',
+'components/token',
+'components/widget',
+'components/newsletter',
+'components/custom-upload',
+'components/preloader',
+'components/rating';
+
+// 6. Page-specific styles
+@import 'pages/home';
+
+// 7. Themes
+@import 'themes/default';

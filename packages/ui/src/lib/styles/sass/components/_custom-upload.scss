@@ -1,0 +1,58 @@
+.custom-upload {
+    @extend %p-rel,
+    %p-40,
+    %of-hidden;
+    @include add-prefix(transition, $transition);
+    border: 2px dashed rgba($theme-color, $alpha: .20);
+    border-radius: 5px;
+
+    &:has(.fileUp.invalid) {
+        border-color: #f7685d;
+    }
+
+    span {
+        svg {
+            @include font-size(24px);
+            @include add-prefix(transition, $transition);
+        }
+    }
+
+    input {
+        @extend %p-abs,
+        %w-100;
+        left: 0;
+        top: 0;
+        font-size: 120px;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    &:hover {
+        border-color: $theme-color;
+
+        span {
+            svg {
+                color: $theme-color;
+            }
+        }
+    }
+
+    &.invalid {
+        border-color: #f7685d;
+    }
+}
+
+.upload {
+    &__list {
+        @extend %flex,
+        %justify-between;
+        gap: 20px;
+    }
+
+    &__item {
+        >p {
+            @extend %mb-0,
+            %mt-10;
+        }
+    }
+}
