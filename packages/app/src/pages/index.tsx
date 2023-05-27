@@ -188,7 +188,7 @@ function Home() {
     });
 
   return (
-    <PageLayout>
+    <>
       <Head>
         <title>{env.NEXT_PUBLIC_PROJECT_NAME} - Home</title>
       </Head>
@@ -277,7 +277,7 @@ function Home() {
           <div className="w-full overflow-x-auto">{idoType.render()}</div>
         </section>
       ))}
-    </PageLayout>
+    </>
   );
 }
 
