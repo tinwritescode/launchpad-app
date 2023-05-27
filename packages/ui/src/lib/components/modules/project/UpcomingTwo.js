@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import React from 'react';
 
-const UpcommingTwo = () => {
+const UpcomingTwo = ({ data }) => {
   return (
     <div>
       {/* Completed Project 2 Section start Here */}
@@ -358,4 +358,4 @@ const UpcommingTwo = () => {
   );
 };
 
-export default UpcommingTwo;
+export default UpcomingTwo;
