@@ -125,130 +125,21 @@ function Header() {
                 </div>
                 <div className="menu-area">
                   <ul id="menu" className={menu ? 'menu active' : 'menu'}>
-                    <li id="pr-1" className="menu-item-has-children">
-                      <Link href="#" onClick={toggleActive}>
+                    <li id="pr-1">
+                      <Link href="/">
                         Home
                       </Link>
-                      <ul className="submenu">
-                        <li>
-                          {' '}
-                          <Link href="/">Home 1</Link>
-                        </li>
-                        <li>
-                          <Link href="/home2">Home 2</Link>
-                        </li>
-                        <li>
-                          <Link href="/home3">
-                            {' '}
-                            Home 3{' '}
-                            <span className="badge bg--secondary-color">
-                              {' '}
-                              New{' '}
-                            </span>
-                          </Link>
-                        </li>
-                      </ul>
                     </li>
-                    <li id="pr-2" className="menu-item-has-children">
-                      <Link href="#" onClick={toggleActive}>
+                    <li id="pr-2">
+                      <Link href="/">
                         Project
                       </Link>
-                      <ul className="submenu">
-                        <li>
-                          <Link href="/project">Project 1</Link>
-                        </li>
-                        <li>
-                          <Link href="/project2">Project 2</Link>
-                        </li>
-                        <li>
-                          <Link href="/projectdetails">Project Details</Link>
-                        </li>
-                        <li>
-                          {' '}
-                          <Link href="/apply-project">Apply for Project</Link>
-                        </li>
-                        <li>
-                          <Link href="/tokenomics">Tokenomics</Link>
-                        </li>
-                      </ul>
                     </li>
-                    <li id="pr-3" className="menu-item-has-children">
-                      <Link href="#" onClick={toggleActive}>
-                        Stacking
-                      </Link>
-                      <ul className="submenu">
-                        <li>
-                          <Link href="/stacking">Stacking</Link>
-                        </li>
-                        <li>
-                          {' '}
-                          <Link href="/farming">Farming</Link>
-                        </li>
-                      </ul>
+                    <li id="pr-3">
+                      <Link href="/stacking">Stacking</Link>
                     </li>
                     <li id="pr-4" className="menu-item-has-children">
-                      <Link href="#" onClick={toggleActive}>
-                        Pages
-                      </Link>
-                      <ul className="submenu">
-                        <li>
-                          <Link href="/roadmap">Roadmap</Link>
-                        </li>
-                        <li>
-                          {' '}
-                          <Link href="/roadmap2">Roadmap 2</Link>
-                        </li>
-                        <li>
-                          <Link href="/kyc">KYC</Link>
-                        </li>
-                        <li>
-                          <Link href="/tier">Tier</Link>
-                        </li>
-                        <li>
-                          <Link href="/faq">FAQ</Link>
-                        </li>
-                        <li>
-                          <Link href="/leaderboard">Leaderboard</Link>
-                        </li>
-                        <li id="pr-5" className="menu-item-has-children">
-                          <Link href="#" onClick={toggleActive}>
-                            Team
-                          </Link>
-                          <ul className="submenu">
-                            <li>
-                              <Link href="/team">Team</Link>
-                            </li>
-                            <li>
-                              <Link href="/team-member">Team Member</Link>
-                            </li>
-                          </ul>
-                        </li>
-                        <li id="pr-6" className="menu-item-has-children">
-                          <Link href="#" onClick={toggleActive}>
-                            Account
-                          </Link>
-                          <ul className="submenu">
-                            <li>
-                              <Link href="/signup">Sign Up</Link>
-                            </li>
-                            <li>
-                              <Link href="/login">Log In</Link>
-                            </li>
-                            <li>
-                              <Link href="/reset-password">Reset Pass</Link>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <Link href="/404">404</Link>
-                        </li>
-                        <li>
-                          <Link href="/coming-soon">Coming Soon</Link>
-                        </li>
-                      </ul>
-                    </li>
-                    <li id="pr-7" className="menu-item-has-children">
-                      <Link href="#" onClick={toggleActive}>
+                      <Link href="/" onClick={toggleActive}>
                         Blog
                       </Link>
                       <ul className="submenu">
@@ -263,7 +154,7 @@ function Header() {
                         </li>
                       </ul>
                     </li>
-                    <li>
+                    <li id="pr-5">
                       <Link href="/contact">Contact</Link>
                     </li>
                   </ul>
