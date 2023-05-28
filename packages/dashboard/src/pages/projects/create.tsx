@@ -47,8 +47,8 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Comparision Content"
-          name={['comparisionContent']}
+          label="Description Content"
+          name={['descriptionContent']}
           rules={[
             {
               required: true,
@@ -57,6 +57,40 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <TextQuill />
         </Form.Item>
+        <Form.Item
+          label="Backer Content"
+          name={['backerContent']}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <TextQuill />
+        </Form.Item>
+        <Form.Item
+          label="Token Details Content"
+          name={['tokenDetailsContent']}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <TextQuill />
+        </Form.Item>
+        <Form.Item
+          label="About Content"
+          name={['aboutContent']}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <TextQuill />
+        </Form.Item>
+
         <Form.Item label="Image">
           <Form.Item
             name="image"
@@ -79,28 +113,6 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
           </Form.Item>
-        </Form.Item>
-        <Form.Item
-          label="Roadmap Content"
-          name={['roadmapContent']}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <TextQuill />
-        </Form.Item>
-        <Form.Item
-          label="Summary Content"
-          name={['summaryContent']}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <TextQuill />
         </Form.Item>
         <Form.Item
           label="Video URL"

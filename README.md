@@ -82,6 +82,33 @@ yarn start dashboard
 yarn dev
 ```
 
+## Working with database:
+
+Prisma db push:
+
+```bash
+yarn nx prisma-push app
+```
+
+Prisma db studio:
+
+```bash
+yarn nx prisma-studio app
+```
+
+Prisma seed:
+
+```bash
+yarn nx prisma-seed app
+```
+
+Prisma reset:
+
+```bash
+yarn nx prisma-reset app
+```
+
+
 ## Remote caching
 
 Run `npx nx connect-to-nx-cloud` to enable [remote caching](https://nx.app) and make CI faster.

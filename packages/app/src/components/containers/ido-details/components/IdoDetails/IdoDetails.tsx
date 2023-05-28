@@ -16,7 +16,7 @@ const IdoDetail = () => {
 
   useEffect(() => {
     if (!isLoading && isError) {
-      router.push('/404');
+      // router.push('/404');
     }
   }, [isLoading, isError, router]);
 
@@ -37,4 +37,4 @@ const IdoDetail = () => {
   );
 };
 
-export default IdoDetail;
+export default Main;
