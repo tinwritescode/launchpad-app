@@ -38,10 +38,7 @@ import { calculateDividendPercent } from './project.util';
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
   name: true,
-  comparisionContent: true,
   image: true,
-  roadmapContent: true,
-  summaryContent: true,
   videoURL: true,
   status: true,
   createdAt: true,
@@ -57,6 +54,10 @@ const defaultProjectSelector: Prisma.ProjectSelect = {
     },
   },
   IDOContract: true,
+  aboutContent: true,
+  descriptionContent: true,
+  tokenDetailsContent: true,
+  backerContent: true,
 };
 
 export const projectRouter = createTRPCRouter({
@@ -326,7 +327,7 @@ export const projectRouter = createTRPCRouter({
     .output(z.any())
     .input(
       z.object({
-        id: z.string().uuid(),
+        id: z.string(),
       })
     )
     .query(async ({ input, ctx: { prisma, signer, session } }) => {
