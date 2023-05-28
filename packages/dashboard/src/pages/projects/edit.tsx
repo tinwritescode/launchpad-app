@@ -210,17 +210,6 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         </Select>
       </Form.Item>
       <Form.Item
-        label="Summary Content"
-        name={['summaryContent']}
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <TextQuill />
-      </Form.Item>
-      <Form.Item
         label="Video URL"
         name={['videoURL']}
         rules={[
@@ -232,8 +221,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         <Input />
       </Form.Item>
       <Form.Item
-        label="Comparision Content"
-        name={['comparisionContent']}
+        label="Description Content"
+        name={['descriptionContent']}
         rules={[
           {
             required: true,
@@ -243,8 +232,30 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         <TextQuill />
       </Form.Item>
       <Form.Item
-        label="Roadmap Content"
-        name={['roadmapContent']}
+        label="Backer Content"
+        name={['backerContent']}
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <TextQuill />
+      </Form.Item>
+      <Form.Item
+        label="Token Details Content"
+        name={['tokenDetailsContent']}
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <TextQuill />
+      </Form.Item>
+      <Form.Item
+        label="About Content"
+        name={['aboutContent']}
         rules={[
           {
             required: true,

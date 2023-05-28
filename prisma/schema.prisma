@@ -60,23 +60,26 @@ model Project {
   IDOContract IDOContract[]
 
   // Information fields
-  name               String
-  image              String
-  status             Status           @default(INACTIVE)
-  token              Token? // https://www.prisma.io/docs/concepts/components/prisma-schema/relations/one-to-one-relations
-  summaryContent     String
-  videoURL           String
-  ScheduleRound      ScheduleRound[]
-  comparisionContent String
-  TokenomicsItem     TokenomicsItem[]
-  roadmapContent     String
-  User               User?            @relation(fields: [ownerId], references: [id])
-  ownerId            String
-  targettedRaise     String
-  facebookURL        String?
-  telegramURL        String?
-  twitterURL         String?
-  websiteURL         String?
+  name           String
+  image          String
+  status         Status           @default(INACTIVE)
+  token          Token? // https://www.prisma.io/docs/concepts/components/prisma-schema/relations/one-to-one-relations
+  videoURL       String
+  ScheduleRound  ScheduleRound[]
+  TokenomicsItem TokenomicsItem[]
+  User           User?            @relation(fields: [ownerId], references: [id])
+  ownerId        String
+  targettedRaise String
+  facebookURL    String?
+  telegramURL    String?
+  twitterURL     String?
+  websiteURL     String?
+
+  // Description
+  descriptionContent  String?
+  backerContent       String?
+  tokenDetailsContent String?
+  aboutContent        String?
 }
 
 model IDOContract {
