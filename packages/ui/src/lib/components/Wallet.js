@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import { AppContext } from "../context/AppContext";
+import { useState } from "react";
 
 import { Modal } from "react-bootstrap";
 import { faClone, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
@@ -9,31 +8,6 @@ import { useAccount, useConnect, useDisconnect } from "wagmi";
 import Image from "next/image";
 
 const Wallet = ({ show, handleClose }) => {
-  const [copied, setIsCopied] = useState(false);
-  // const [isWalletDisconnect, setIsWalletDisconnect] = useState(false);
-  const { connectAsync, connectors, isLoading, pendingConnector } =
-    useConnect();
-  const { isConnected, address } = useAccount();
-  const { disconnectAsync } = useDisconnect();
-  const {
-    setAccountAfterDisconnectWallet,
-    // isMetaMaskInstalled,
-  } = useContext(AppContext);
-
-  const disconnectWallet = async () => {
-    disconnectAsync();
-    setAccountAfterDisconnectWallet();
-    localStorage.setItem("isWalletConnected", false);
-  };
-
-  // const connectMetamaskWallet = async () => {
-  //   if (isMetaMaskInstalled()) {
-  //     connectWalletHandle();
-  //     localStorage.setItem("isWalletConnected", true);
-  //   } else {
-  //     window.open("https://metamask.io/download/", "_blank");
-  //   }
-  // };
   const walletImages = [
     {
       name: "MetaMask",
@@ -44,6 +18,11 @@ const Wallet = ({ show, handleClose }) => {
       image: "/wallets/coinbase.svg",
     },
   ];
+
+  const [copied, setIsCopied] = useState(false);
+  const { connectAsync, connectors } = useConnect();
+  const { isConnected, address } = useAccount();
+  const { disconnectAsync } = useDisconnect();
 
   const copyToClipboard = async (value) => {
     try {
@@ -72,7 +51,7 @@ const Wallet = ({ show, handleClose }) => {
             </button>
             <button
               className="default-btn default-btn--small"
-              onClick={() => disconnectWallet()}
+              onClick={() => disconnectAsync()}
             >
               Disconnect{" "}
               <FontAwesomeIcon className="icon" icon={faRightToBracket} />
@@ -106,14 +85,6 @@ const Wallet = ({ show, handleClose }) => {
                     height={60}
                     alt={walletImages.at(index)?.name}
                   />
-                  {/* <button onClick={() => connectAsync(connector.name)}
-                      disabled={isLoading || pendingConnector === connector.name}
-                    > */}
-                  {/* {isLoading && pendingConnector === connector.name
-                    ? "Loading..."
-                    : `Connect ${connector.name}`} */}
-
-                  {/* </button> */}
                 </Link>
               </li>
             ))}
@@ -130,31 +101,3 @@ const Wallet = ({ show, handleClose }) => {
 };
 
 export default Wallet;
-
-{
-  /* <li className="wallet__list-item">
-<Link
-  // onClick={connectMetamaskWallet} 
-  href="#">
-  <span>
-    <Image
-      src="/images/wallet/metamask.svg"
-      width={60}
-      height={60}
-      alt="metamask"
-    />
-  </span>
-</Link>
-</li>
-<li className="wallet__list-item">
-<Link href="#">
-  <span>
-    <Image
-      src="/images/wallet/coinbase.svg"
-      width={60}
-      height={60}
-      alt="coinbase"
-    />
-  </span>
-</Link> */
-}
