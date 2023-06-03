@@ -1,11 +1,8 @@
 import React from "react";
-import TabItem from "./TabItem";
-import TabPanel from "./TabPanel";
 import { useStakingHook } from "../../useStaking";
+import TabPanel from "./TabPanel";
 
-type Props = {};
-
-const StakingTabs = (props: Props) => {
+const StakingTabs = () => {
   const { lockTime, APY } = useStakingHook();
   const [activeTab, setActiveTab] = React.useState<number>(0);
   const handleTabItemClick = (index: number) => {

@@ -1,9 +1,7 @@
 import React from "react";
 import { Button } from "../AppButton";
 
-type Props = {};
-
-function PleaseConnectYourWallet({}: Props) {
+function PleaseConnectYourWallet() {
   return (
     <div
       className="flex justify-center"

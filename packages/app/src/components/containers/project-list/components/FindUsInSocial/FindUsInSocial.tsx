@@ -1,16 +1,7 @@
+import { Facebook, Telegram, Twitter } from "@mui/icons-material";
 import React from "react";
-import * as S from "./FindUsInSocial.style";
-import {
-  Facebook,
-  Instagram,
-  Twitter,
-  Telegram,
-  Reddit,
-} from "@mui/icons-material";
 
-interface Props {}
-
-const FindUsInSocial: React.FC<Props> = () => {
+const FindUsInSocial: React.FC = () => {
   const socials = [
     {
       name: "Facebook",

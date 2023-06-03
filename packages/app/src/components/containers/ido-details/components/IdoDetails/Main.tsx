@@ -96,7 +96,7 @@ export function MainTest() {
                   "my-2"
                 )}
               >
-                {data?.summaryContent}
+                {data?.descriptionContent}
               </p>
             </div>
             {data?.websiteURL && (

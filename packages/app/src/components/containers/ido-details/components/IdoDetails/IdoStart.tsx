@@ -10,9 +10,7 @@ import useIdoStart from "./hooks/useIdoStart";
 import Spinner from "../../../../common/ui/spinner";
 import Link from "next/link";
 
-type Props = {};
-
-function IdoStart({}: Props) {
+function IdoStart() {
   const { query } = useRouter();
   const { address } = useAccount();
   const { data, isLoading } = api.project.getUserWhiteListInfo.useQuery({

@@ -6,9 +6,7 @@ import { Button } from "../../../../common";
 import { ArrowRightOutlined } from "@mui/icons-material";
 import { useRouter } from "next/router";
 
-type Props = {};
-
-export function StakingInfo({}: Props) {
+export function StakingInfo() {
   const { amountStaked } = useStakingHook();
   const router = useRouter();
 

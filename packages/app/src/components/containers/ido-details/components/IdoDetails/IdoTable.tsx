@@ -4,11 +4,9 @@ import { ScheduleTab } from "./ScheduleTab";
 import { YourAllocationTab } from "./YourAllocationTab";
 import { PoolDetailsTab } from "./PoolDetailsTab";
 
-type Props = {};
-
 const activeTabClass = "border-b-4 border-yellow-400 text-yellow-400 font-bold";
 
-const IdoTable = (props: Props) => {
+const IdoTable = () => {
   const [activeTab, setActiveTab] = React.useState(0);
   return (
     <>

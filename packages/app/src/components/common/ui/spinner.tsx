@@ -1,5 +1,5 @@
 import { cn } from "../../../utils/tailwind";
-type Props = {} & React.HTMLAttributes<HTMLOrSVGElement>;
+type Props = React.HTMLAttributes<HTMLOrSVGElement>;
 
 function Spinner({ className, ...rest }: Props) {
   return (

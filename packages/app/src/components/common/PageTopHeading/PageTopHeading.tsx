@@ -2,9 +2,7 @@ import React from "react";
 
 import * as S from "./PageTopHeading.style";
 
-interface Props {}
-
-const PageTopHeading: React.FC<Props> = () => {
+const PageTopHeading: React.FC = () => {
   return <S.Container>PageTopHeading</S.Container>;
 };
 
