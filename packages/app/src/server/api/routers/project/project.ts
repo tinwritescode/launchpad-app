@@ -364,6 +364,9 @@ export const projectRouter = createTRPCRouter({
                 .balanceOf(contract.address)
                 .then((res) => res.toString())
             );
+            const purchaseTokenSymbol = await new ERC20__factory(signer)
+              .attach(await idoContract.purchaseToken())
+              .symbol();
 
             let whitelistData: WhitelistDataProof | null = null;
 
@@ -393,6 +396,7 @@ export const projectRouter = createTRPCRouter({
               ).toString(),
               purchaseCap: (await idoContract.purchaseCap()).toString(),
               idoPrice: (await idoContract.idoPrice()).toString(),
+              purchaseTokenSymbol,
             };
           }) || []
         ),
@@ -401,6 +405,21 @@ export const projectRouter = createTRPCRouter({
           decimals: await erc20.decimals(),
           symbol: await erc20.symbol(),
           totalSupply: await erc20.totalSupply(),
+          totalRaised: await data?.IDOContract.reduce(async (acc, contract) => {
+            const idoContract = new IDOContract__factory(signer).attach(
+              contract.address
+            );
+            const erc20 = new ERC20__factory(signer).attach(
+              await idoContract.ido()
+            );
+            const fulfilledAmount = new BNjs(
+              await erc20
+                .balanceOf(contract.address)
+                .then((res) => res.toString())
+            );
+
+            return (await acc).plus(fulfilledAmount);
+          }, Promise.resolve(new BNjs(0))).then((res) => res.toString()),
         },
       };
     }),
