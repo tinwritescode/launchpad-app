@@ -1,23 +1,23 @@
-import { useQuery } from '@tanstack/react-query';
-import { ethers } from 'ethers';
-import dynamic from 'next/dynamic';
-import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useAccount } from 'wagmi';
-import { Button } from '../components/common';
-import { Progress } from '../components/common/Progress';
-import { useStakingHook } from '../components/containers/staking/useStaking';
-import PageLayout from '../components/templates/PageLayout';
-import { env } from '../env.mjs';
-import { useErc20Contract } from '../libs/blockchain';
+import { useQuery } from "@tanstack/react-query";
+import { ethers } from "ethers";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useAccount } from "wagmi";
+import { Button } from "../components/common";
+import { Progress } from "../components/common/Progress";
+import { useStakingHook } from "../components/containers/staking/useStaking";
+import PageLayout from "../components/templates/PageLayout";
+import { env } from "../env.mjs";
+import { useErc20Contract } from "../libs/blockchain";
 import {
   IDO_CONTRACT_STAKING_REQUIRED,
   IDO_CONTRACT_TAILWIND_COLORS,
   TierKeys,
-} from '../server/api/routers/project/project.constant';
-import { cn } from '../utils/tailwind';
+} from "../server/api/routers/project/project.constant";
+import { cn } from "../utils/tailwind";
 
 function Home() {
   const router = useRouter();
@@ -25,7 +25,7 @@ function Home() {
   const { amountStaked } = useStakingHook();
   const { address: walletAddress, isConnected } = useAccount();
   const balance = useQuery(
-    ['balance'],
+    ["balance"],
     () => balanceOf(walletAddress as string),
     {
       enabled: !!walletAddress,
@@ -48,92 +48,92 @@ function Home() {
   );
   const idoTypes = [
     {
-      label: 'Opening sales on Strawberry Launchpad',
+      label: "Opening sales on Strawberry Launchpad",
       render: () => renderEmptyIdo(),
     },
     {
-      label: 'Upcoming sales on Strawberry Launchpad',
+      label: "Upcoming sales on Strawberry Launchpad",
       render: () => renderEmptyIdo(),
     },
     {
-      label: 'Closed sales on Strawberry Launchpad',
+      label: "Closed sales on Strawberry Launchpad",
       render: () => {
         const header = [
-          'Project Name',
-          'Type',
-          'Participants',
-          'Total Raised',
-          'Network',
-          'Price',
+          "Project Name",
+          "Type",
+          "Participants",
+          "Total Raised",
+          "Network",
+          "Price",
         ];
 
         const mockData = [
           {
-            projectName: 'Crypcade City',
-            type: 'Land Sale',
+            projectName: "Crypcade City",
+            type: "Land Sale",
             participants: 6,
-            totalRaised: '2,000 BOX',
-            network: 'Binance Smart Chain',
-            price: '0.2 BNB/BOX',
+            totalRaised: "2,000 BOX",
+            network: "Binance Smart Chain",
+            price: "0.2 BNB/BOX",
             image:
-              'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/e53dd3b35f68872386d20038eb7396a4caeadd70cd6989e8ea.jpg',
+              "https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/e53dd3b35f68872386d20038eb7396a4caeadd70cd6989e8ea.jpg",
           },
           {
-            projectName: 'MetaDoge',
-            type: 'Land Sale',
+            projectName: "MetaDoge",
+            type: "Land Sale",
             participants: 75,
-            totalRaised: '1,280 BOX',
-            network: 'Binance Smart Chain',
-            price: '300 BUSD/BOX',
+            totalRaised: "1,280 BOX",
+            network: "Binance Smart Chain",
+            price: "300 BUSD/BOX",
             image:
-              'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/9ac9cd9af0cd342eafec15affed5dba6c885c85a71825b3fb5.png',
+              "https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/9ac9cd9af0cd342eafec15affed5dba6c885c85a71825b3fb5.png",
           },
           {
-            projectName: 'DRIVEZ',
-            type: 'Land Sale',
+            projectName: "DRIVEZ",
+            type: "Land Sale",
             participants: 0,
-            totalRaised: '300 BOX',
-            network: 'Binance Smart Chain',
-            price: '475 BUSD/BOX',
+            totalRaised: "300 BOX",
+            network: "Binance Smart Chain",
+            price: "475 BUSD/BOX",
             image:
-              'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/9124e0f1519a509bc11c39f9aadab76c6eb0f04fb12fd9ed54.png',
+              "https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/9124e0f1519a509bc11c39f9aadab76c6eb0f04fb12fd9ed54.png",
           },
           {
-            projectName: 'MCity',
-            type: 'Land Sale',
+            projectName: "MCity",
+            type: "Land Sale",
             participants: 13,
-            totalRaised: '1,000 BOX',
-            network: 'Binance Smart Chain',
-            price: '200 BUSD/BOX',
+            totalRaised: "1,000 BOX",
+            network: "Binance Smart Chain",
+            price: "200 BUSD/BOX",
             image:
-              'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/d4922a260fab23aa9e46f3c9788e33580287c60d10f22fa5f6.png',
+              "https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/d4922a260fab23aa9e46f3c9788e33580287c60d10f22fa5f6.png",
           },
           {
-            projectName: 'iStep - Phase 2',
-            type: 'Land Sale',
+            projectName: "iStep - Phase 2",
+            type: "Land Sale",
             participants: 145,
-            totalRaised: '1,000 BOX',
-            network: 'Binance Smart Chain',
-            price: '3500 ISTEP/BOX',
+            totalRaised: "1,000 BOX",
+            network: "Binance Smart Chain",
+            price: "3500 ISTEP/BOX",
             image:
-              'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/f2dedb80caa7a58f078911f222f5eefa530a4fffa4db240b68.jpg',
+              "https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/f2dedb80caa7a58f078911f222f5eefa530a4fffa4db240b68.jpg",
           },
           {
-            projectName: 'Bikearn',
-            type: 'Land Sale',
+            projectName: "Bikearn",
+            type: "Land Sale",
             participants: 242,
-            totalRaised: '2,250 BOX',
-            network: 'Binance Smart Chain',
-            price: '150 BUSD/BOX',
+            totalRaised: "2,250 BOX",
+            network: "Binance Smart Chain",
+            price: "150 BUSD/BOX",
             image:
-              'https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/86504dc60dc15916605e77946a862e4c193db2dd75b455fabe.png',
+              "https://s3-ap-southeast-1.amazonaws.com/bscstation.org/images/86504dc60dc15916605e77946a862e4c193db2dd75b455fabe.png",
           },
         ];
 
         return (
           <table className="table-auto w-full">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="bg-gray-700">
                 {header.map((item, index) => (
                   <th key={index} className="px-4 py-4 text-center">
                     {item}
@@ -181,14 +181,14 @@ function Home() {
           ethers.utils.parseEther(
             IDO_CONTRACT_STAKING_REQUIRED[
               Object.keys(IDO_CONTRACT_STAKING_REQUIRED)[index + 1] as TierKeys
-            ]?.toString() ?? '0'
+            ]?.toString() ?? "0"
           )
         )
       );
     });
 
   return (
-    <>
+    <PageLayout>
       <Head>
         <title>{env.NEXT_PUBLIC_PROJECT_NAME} - Home</title>
       </Head>
@@ -208,7 +208,7 @@ function Home() {
           <Button
             size="lg"
             variant="outline"
-            onClick={() => router.push('/buy-straw')}
+            onClick={() => router.push("/buy-straw")}
           >
             Buy STRAW
           </Button>
@@ -229,7 +229,7 @@ function Home() {
           <div>
             <p className="text-sm text-muted-foreground">Your staked amount:</p>
             <div className="font-semibold text-lg">
-              {ethers.utils.commify(ethers.utils.formatEther(amountStaked))}{' '}
+              {ethers.utils.commify(ethers.utils.formatEther(amountStaked))}{" "}
               STRAW
             </div>
           </div>
@@ -241,7 +241,7 @@ function Home() {
           <Progress value={20 * userTierIndex} />
         )}
 
-        <div className="grid grid-cols-3 md:flex gap-10 items-center justify-center">
+        <div className="grid grid-cols-3 md:flex gap-1 md:gap-10 items-center justify-center">
           {Object.keys(IDO_CONTRACT_STAKING_REQUIRED).map((_key) => {
             const key = _key as TierKeys;
             const value = IDO_CONTRACT_STAKING_REQUIRED[key];
@@ -250,7 +250,7 @@ function Home() {
               <div
                 key={key}
                 className={cn(
-                  'p-4 bg-gray-100 rounded-lg',
+                  "p-1 md:p-4 bg-gray-100 rounded-lg overflow-clip aspect-square flex items-center justify-center h-32",
                   IDO_CONTRACT_TAILWIND_COLORS[key] as string
                 )}
               >
@@ -277,7 +277,7 @@ function Home() {
           <div className="w-full overflow-x-auto">{idoType.render()}</div>
         </section>
       ))}
-    </>
+    </PageLayout>
   );
 }
 

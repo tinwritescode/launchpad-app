@@ -1,39 +1,39 @@
-import { NonceManager } from '@ethersproject/experimental';
-import { Prisma, PrismaClient, Status } from '@prisma/client';
+import { NonceManager } from "@ethersproject/experimental";
+import { Prisma, PrismaClient, Status } from "@prisma/client";
 import {
   Dividend__factory,
   ERC20__factory,
   IDOContract__factory,
-} from '@strawberry/contracts';
-import { TRPCError } from '@trpc/server';
-import BNjs from 'bignumber.js';
-import { BigNumber, ethers } from 'ethers';
-import PQueue from 'p-queue';
-import { z } from 'zod';
-import { env } from '../../../../env.mjs';
+} from "@strawberry/contracts";
+import { TRPCError } from "@trpc/server";
+import BNjs from "bignumber.js";
+import { BigNumber, ethers } from "ethers";
+import PQueue from "p-queue";
+import { z } from "zod";
+import { env } from "../../../../env.mjs";
 import {
   getErc20Contract,
   getIdoContract,
   getRpcProvider,
   getStakingContract,
-} from '../../../../libs/blockchain/index';
-import { adminProcedure, createTRPCRouter } from '../../../../server/api/trpc';
+} from "../../../../libs/blockchain/index";
+import { adminProcedure, createTRPCRouter } from "../../../../server/api/trpc";
 import {
   WhitelistData,
   WhitelistDataProof,
   WhitelistMerkleTree,
-} from '../../../../utils/whitelist_tree';
-import { IDOContract } from '../../../services/ido-contract';
-import { protectedProcedure, publicProcedure } from '../../trpc';
+} from "../../../../utils/whitelist_tree";
+import { IDOContract } from "../../../services/ido-contract";
+import { protectedProcedure, publicProcedure } from "../../trpc";
 import {
   NUMBER_OF_PEOPLE,
   TierKeys,
   buildContracts as buildContractPayloads,
   getContractDividendInPercent,
   getContractNameFromIndex,
-} from './project.constant';
-import { createIdoProjectInputSchema } from './project.schema';
-import { calculateDividendPercent } from './project.util';
+} from "./project.constant";
+import { createIdoProjectInputSchema } from "./project.schema";
+import { calculateDividendPercent } from "./project.util";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -57,6 +57,7 @@ const defaultProjectSelector: Prisma.ProjectSelect = {
   aboutContent: true,
   descriptionContent: true,
   tokenDetailsContent: true,
+  roadmapContent: true,
   backerContent: true,
 };
 
@@ -64,9 +65,9 @@ export const projectRouter = createTRPCRouter({
   getAll: publicProcedure
     .meta({
       openapi: {
-        method: 'GET',
-        path: '/projects',
-        tags: ['project'],
+        method: "GET",
+        path: "/projects",
+        tags: ["project"],
       },
     })
     .input(
@@ -87,7 +88,7 @@ export const projectRouter = createTRPCRouter({
               targettedRaise: true,
             },
             orderBy: {
-              createdAt: 'desc',
+              createdAt: "desc",
             },
           }),
 
@@ -96,8 +97,8 @@ export const projectRouter = createTRPCRouter({
 
         const fullData = await Promise.all(
           data.map(async (project: any) => {
-            let saleStatus: 'UNKNOWN' | 'UPCOMING' | 'OPEN' | 'CLOSED' =
-              'UNKNOWN';
+            let saleStatus: "UNKNOWN" | "UPCOMING" | "OPEN" | "CLOSED" =
+              "UNKNOWN";
             if (
               project.IDOContract.length === 0 ||
               project.status !== Status.ACTIVE
@@ -132,14 +133,14 @@ export const projectRouter = createTRPCRouter({
                 erc20TokenContract?.totalSupply(),
               ]);
 
-              if (saleStatus === 'UNKNOWN') {
+              if (saleStatus === "UNKNOWN") {
                 if (startTime.toNumber() > now) {
-                  saleStatus = 'UPCOMING';
+                  saleStatus = "UPCOMING";
                   break;
                 } else if (endTime.toNumber() < now) {
-                  saleStatus = 'CLOSED';
+                  saleStatus = "CLOSED";
                 } else {
-                  saleStatus = 'OPEN';
+                  saleStatus = "OPEN";
                 }
               }
 
@@ -161,7 +162,7 @@ export const projectRouter = createTRPCRouter({
                 totalSupply,
               },
               saleStatus,
-              ...((saleStatus === 'OPEN' || saleStatus === 'CLOSED') && {
+              ...((saleStatus === "OPEN" || saleStatus === "CLOSED") && {
                 totalRaised,
                 totalParticipants,
               }),
@@ -177,14 +178,14 @@ export const projectRouter = createTRPCRouter({
         };
       } catch (error: any) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
+          code: "INTERNAL_SERVER_ERROR",
           message: error?.message,
         });
       }
     }),
 
   createIdoProject: adminProcedure
-    .meta({ openapi: { method: 'POST', path: '/projects', tags: ['project'] } })
+    .meta({ openapi: { method: "POST", path: "/projects", tags: ["project"] } })
     .input(createIdoProjectInputSchema)
     .output(z.any())
     .mutation(async ({ ctx, input }) => {
@@ -199,7 +200,7 @@ export const projectRouter = createTRPCRouter({
       } = input;
 
       if (!ctx.session?.user?.isLoggedIn)
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
 
       const contracts = buildContractPayloads({
         // block chain timestamp is second-based
@@ -269,7 +270,7 @@ export const projectRouter = createTRPCRouter({
             )
             .catch((err) => {
               throw new TRPCError({
-                code: 'INTERNAL_SERVER_ERROR',
+                code: "INTERNAL_SERVER_ERROR",
                 message: err.message,
               });
             });
@@ -322,7 +323,7 @@ export const projectRouter = createTRPCRouter({
 
   getOne: publicProcedure
     .meta({
-      openapi: { method: 'GET', path: '/projects/{id}', tags: ['project'] },
+      openapi: { method: "GET", path: "/projects/{id}", tags: ["project"] },
     })
     .output(z.any())
     .input(
@@ -344,7 +345,7 @@ export const projectRouter = createTRPCRouter({
       });
 
       if (!data?.token?.address)
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Token not found' });
+        throw new TRPCError({ code: "NOT_FOUND", message: "Token not found" });
 
       const erc20 = getErc20Contract(data?.token?.address);
 
@@ -407,9 +408,9 @@ export const projectRouter = createTRPCRouter({
   getDividendContractInfo: publicProcedure
     .meta({
       openapi: {
-        method: 'GET',
-        path: '/projects/{id}/dividend',
-        tags: ['project'],
+        method: "GET",
+        path: "/projects/{id}/dividend",
+        tags: ["project"],
       },
     })
     .output(z.any())
@@ -424,7 +425,7 @@ export const projectRouter = createTRPCRouter({
 
   editIdoProject: adminProcedure
     .meta({
-      openapi: { method: 'PUT', path: '/projects/{id}', tags: ['project'] },
+      openapi: { method: "PUT", path: "/projects/{id}", tags: ["project"] },
     })
     .input(
       z.object({
@@ -462,7 +463,7 @@ export const projectRouter = createTRPCRouter({
 
   getMyProject: protectedProcedure
     .meta({
-      openapi: { method: 'GET', path: '/projects/me', tags: ['project'] },
+      openapi: { method: "GET", path: "/projects/me", tags: ["project"] },
     })
     .output(z.any())
     .input(
@@ -473,7 +474,7 @@ export const projectRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx: { prisma, session } }) => {
       if (!session?.user?.isLoggedIn)
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
 
       return await prisma.project.findMany({
         skip: input.offset,
@@ -490,9 +491,9 @@ export const projectRouter = createTRPCRouter({
   divideTokenForProjectContracts: adminProcedure
     .meta({
       openapi: {
-        method: 'POST',
-        path: '/projects/divide',
-        summary: 'Divide token for project contracts',
+        method: "POST",
+        path: "/projects/divide",
+        summary: "Divide token for project contracts",
         protect: true,
       },
     })
@@ -519,16 +520,16 @@ export const projectRouter = createTRPCRouter({
 
       if (isDistributed) {
         throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Dividend is already distributed',
+          code: "FORBIDDEN",
+          message: "Dividend is already distributed",
         });
       }
 
       if (!isDividendFulfilled) {
         throw new TRPCError({
-          code: 'FORBIDDEN',
+          code: "FORBIDDEN",
           message:
-            'Dividend is not fulfill, please ask IDO token owner to fulfill the dividend contract',
+            "Dividend is not fulfill, please ask IDO token owner to fulfill the dividend contract",
         });
       }
 
@@ -545,8 +546,8 @@ export const projectRouter = createTRPCRouter({
         })
         .catch((err) => {
           throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Project id you provided is not found',
+            code: "NOT_FOUND",
+            message: "Project id you provided is not found",
           });
         });
 
@@ -572,9 +573,9 @@ export const projectRouter = createTRPCRouter({
   getProjectOwner: publicProcedure
     .meta({
       openapi: {
-        method: 'GET',
-        path: '/owners/{id}',
-        tags: ['project'],
+        method: "GET",
+        path: "/owners/{id}",
+        tags: ["project"],
       },
     })
     .input(
@@ -599,13 +600,13 @@ export const projectRouter = createTRPCRouter({
     }),
 
   getAllOwners: adminProcedure
-    .meta({ openapi: { method: 'GET', path: '/owners', tags: ['project'] } })
+    .meta({ openapi: { method: "GET", path: "/owners", tags: ["project"] } })
     .input(
       z.object({
         offset: z.number().min(0).default(0),
         limit: z.number().positive().max(100).default(10),
         ids: z
-          .preprocess((ids: any) => ids.split(','), z.array(z.string().uuid()))
+          .preprocess((ids: any) => ids.split(","), z.array(z.string().uuid()))
           .optional(),
       })
     )
@@ -631,9 +632,9 @@ export const projectRouter = createTRPCRouter({
   startWhitelisting: adminProcedure
     .meta({
       openapi: {
-        method: 'POST',
-        path: '/projects/startWhitelisting',
-        summary: 'Start IDOs whitelisting',
+        method: "POST",
+        path: "/projects/startWhitelisting",
+        summary: "Start IDOs whitelisting",
         protect: true,
       },
     })
@@ -652,8 +653,8 @@ export const projectRouter = createTRPCRouter({
 
       if (idoContracts.length === 0) {
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'No IDO contract found for this project',
+          code: "NOT_FOUND",
+          message: "No IDO contract found for this project",
         });
       }
 
@@ -667,15 +668,15 @@ export const projectRouter = createTRPCRouter({
 
       if (!isDistributed) {
         throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Dividend is not distributed yet',
+          code: "FORBIDDEN",
+          message: "Dividend is not distributed yet",
         });
       }
 
       if (idoContracts.some((contract) => contract.whitelistDump !== null)) {
         throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Whitelist is already started',
+          code: "FORBIDDEN",
+          message: "Whitelist is already started",
         });
       }
 
@@ -764,9 +765,9 @@ export const projectRouter = createTRPCRouter({
   getUserWhiteListInfo: publicProcedure
     .meta({
       openapi: {
-        method: 'GET',
-        path: '/projects/whitelist/{id}',
-        summary: 'Get all whitelist address for an ido project id',
+        method: "GET",
+        path: "/projects/whitelist/{id}",
+        summary: "Get all whitelist address for an ido project id",
         protect: true,
       },
     })
@@ -790,8 +791,8 @@ export const projectRouter = createTRPCRouter({
 
       if (!project) {
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Project not found',
+          code: "NOT_FOUND",
+          message: "Project not found",
         });
       }
 
@@ -832,9 +833,9 @@ export const projectRouter = createTRPCRouter({
           _idoContract.claimedAmounts(input.walletAddress),
           provider.getLogs({
             fromBlock: 0,
-            toBlock: 'latest',
+            toBlock: "latest",
             address: _idoContract.address,
-            topics: [_idoContract.interface.getEventTopic('Claimed')],
+            topics: [_idoContract.interface.getEventTopic("Claimed")],
           }),
         ]);
 
@@ -878,9 +879,9 @@ export const projectRouter = createTRPCRouter({
   getWhitelistInfo: adminProcedure
     .meta({
       openapi: {
-        method: 'GET',
-        path: '/projects/{id}/whitelist',
-        summary: 'Get all whitelist address for an ido project id',
+        method: "GET",
+        path: "/projects/{id}/whitelist",
+        summary: "Get all whitelist address for an ido project id",
         protect: true,
       },
     })
@@ -903,13 +904,13 @@ export const projectRouter = createTRPCRouter({
 
       if (!project) {
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Project not found',
+          code: "NOT_FOUND",
+          message: "Project not found",
         });
       }
 
       return project.IDOContract.map((idoContract) => {
-        return JSON.parse(idoContract.whitelistDump ?? '{}')?.values ?? [];
+        return JSON.parse(idoContract.whitelistDump ?? "{}")?.values ?? [];
       })
         .flat()
         .map((item) => {
@@ -944,14 +945,14 @@ async function getDividendContractInfo(
 
   if (!data?.token?.address) {
     throw new TRPCError({
-      code: 'NOT_FOUND',
-      message: 'Token address not found',
+      code: "NOT_FOUND",
+      message: "Token address not found",
     });
   }
   if (!data?.IDOContract?.[0]?.address) {
     throw new TRPCError({
-      code: 'NOT_FOUND',
-      message: 'IDO contract address not found',
+      code: "NOT_FOUND",
+      message: "IDO contract address not found",
     });
   }
 
@@ -978,8 +979,8 @@ async function getDividendContractInfo(
 
   if (!avgRate) {
     throw new TRPCError({
-      code: 'INTERNAL_SERVER_ERROR',
-      message: 'Avg rate not found',
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Avg rate not found",
     });
   }
 
@@ -998,7 +999,7 @@ async function getDividendContractInfo(
   const distributeLogs = await dividendContract.queryFilter(
     dividendContract.filters.Received(null, data.token.address),
     0,
-    'latest'
+    "latest"
     // calculate sum
   );
   // if exist a filter ethers for distribute

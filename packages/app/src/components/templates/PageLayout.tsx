@@ -1,7 +1,4 @@
-import React from 'react';
-import { cn } from '../../utils/tailwind';
-import { Footer, Header } from '../common';
-import * as S from './PageLayout.style';
+import React from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -10,11 +7,7 @@ type Props = {
 function PageLayout({ children, className, ...rest }: Props) {
   return (
     <main>
-      <Header />
-      <S.Container className={cn('container', className)} {...rest}>
-        {children}
-      </S.Container>
-      <Footer />
+      <div className="container pt-4 md:pt-10">{children}</div>
     </main>
   );
 }
