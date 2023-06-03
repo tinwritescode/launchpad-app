@@ -1,12 +1,11 @@
-import Link from 'next/link';
-import { faWallet } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useEffect, useContext } from 'react';
-
-import Wallet from './Wallet';
-import { AppContext } from '../context/AppContext';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
+import { faWallet } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import Wallet from "./Wallet";
 
 function Header() {
   const [menu, setMenu] = useState(false);
@@ -15,28 +14,28 @@ function Header() {
 
   // ........header Sticky..................
   useEffect(() => {
-    window.addEventListener('scroll', isSticky);
-    router.events.on('routeChangeStart', removeActive);
+    window.addEventListener("scroll", isSticky);
+    router.events.on("routeChangeStart", removeActive);
 
     return () => {
-      window.removeEventListener('scroll', isSticky);
-      router.events.off('routeChangeStart', removeActive);
+      window.removeEventListener("scroll", isSticky);
+      router.events.off("routeChangeStart", removeActive);
     };
   });
 
   const isSticky = (e) => {
-    const header = document.querySelector('.header-section');
+    const header = document.querySelector(".header-section");
     const scrollTop = window.scrollY;
     scrollTop >= 250
-      ? header.classList.add('headerFixed')
-      : header.classList.remove('headerFixed');
+      ? header.classList.add("headerFixed")
+      : header.classList.remove("headerFixed");
   };
 
   function closeAllMenus() {
-    let elements = document.querySelectorAll('.menu-item-has-children.open');
+    let elements = document.querySelectorAll(".menu-item-has-children.open");
     elements.forEach((item) => {
-      item.classList.remove('open');
-      item.querySelector('.submenu').style.display = 'none';
+      item.classList.remove("open");
+      item.querySelector(".submenu").style.display = "none";
     });
   }
 
@@ -48,24 +47,24 @@ function Header() {
 
   //............submenu...............
   function removeActive() {
-    const element = document.getElementById('menu');
-    element.classList.remove('active');
-    const icon = document.getElementById('icon');
-    icon.classList.remove('active');
+    const element = document.getElementById("menu");
+    element.classList.remove("active");
+    const icon = document.getElementById("icon");
+    icon.classList.remove("active");
   }
 
   function toggleActive(event) {
     event.preventDefault();
-    const mediaQuery = window.matchMedia('(max-width: 991px)');
+    const mediaQuery = window.matchMedia("(max-width: 991px)");
 
     if (mediaQuery.matches) {
       // submenu open
-      event.currentTarget.parentElement.classList.toggle('open');
+      event.currentTarget.parentElement.classList.toggle("open");
       const submenu = event.currentTarget.nextElementSibling;
-      if (!submenu.style.display || submenu.style.display === 'none') {
-        submenu.style.display = 'block';
+      if (!submenu.style.display || submenu.style.display === "none") {
+        submenu.style.display = "block";
       } else {
-        submenu.style.display = 'none';
+        submenu.style.display = "none";
       }
     }
   }
@@ -78,20 +77,7 @@ function Header() {
     return str.length > n ? str.substr(0, n - 1) : str;
   };
 
-  const {
-    account,
-    isWalletConnected,
-    connectWalletHandle,
-    setAccountAfterDisconnectWallet,
-  } = useContext(AppContext);
-
-  useEffect(() => {
-    if (isWalletConnected() === true) {
-      connectWalletHandle();
-    } else {
-      setAccountAfterDisconnectWallet();
-    }
-  });
+  const { isConnected: isWalletConnected, address: account } = useAccount();
 
   return (
     <div>
@@ -113,7 +99,7 @@ function Header() {
               </div>
               <div className="header-wrapper justify-content-lg-end">
                 <div className="mobile-logo d-lg-none">
-                  {' '}
+                  {" "}
                   <Link href="/">
                     <Image
                       src="/images/logo/logo.png"
@@ -124,35 +110,15 @@ function Header() {
                   </Link>
                 </div>
                 <div className="menu-area">
-                  <ul id="menu" className={menu ? 'menu active' : 'menu'}>
+                  <ul id="menu" className={menu ? "menu active" : "menu"}>
                     <li id="pr-1">
-                      <Link href="/">
-                        Home
-                      </Link>
+                      <Link href="/">Home</Link>
                     </li>
                     <li id="pr-2">
-                      <Link href="/">
-                        Project
-                      </Link>
+                      <Link href="/ido-list">Project</Link>
                     </li>
                     <li id="pr-3">
-                      <Link href="/stacking">Stacking</Link>
-                    </li>
-                    <li id="pr-4" className="menu-item-has-children">
-                      <Link href="/" onClick={toggleActive}>
-                        Blog
-                      </Link>
-                      <ul className="submenu">
-                        <li>
-                          <Link href="/blog">Blog </Link>
-                        </li>
-                        <li>
-                          <Link href="/blog2">Blog 2</Link>
-                        </li>
-                        <li>
-                          <Link href="/blog-single">Blog Single</Link>
-                        </li>
-                      </ul>
+                      <Link href="/staking">Staking</Link>
                     </li>
                     <li id="pr-5">
                       <Link href="/contact">Contact</Link>
@@ -180,8 +146,8 @@ function Header() {
                     onClick={() => toggleMenu()}
                     className={
                       menu
-                        ? 'header-bar d-lg-none active'
-                        : 'header-bar d-lg-none'
+                        ? "header-bar d-lg-none active"
+                        : "header-bar d-lg-none"
                     }
                   >
                     <span />

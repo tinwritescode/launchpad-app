@@ -1,17 +1,17 @@
-import { LockOutlined } from '@ant-design/icons';
+import { LockOutlined } from "@ant-design/icons";
 import {
   Edit,
   SaveButton,
   getValueFromEvent,
   useSelect,
   useStepsForm,
-} from '@refinedev/antd';
+} from "@refinedev/antd";
 import {
   IResourceComponentsProps,
   useCustom,
   useCustomMutation,
   useInvalidate,
-} from '@refinedev/core';
+} from "@refinedev/core";
 import {
   Button,
   Col,
@@ -23,10 +23,10 @@ import {
   Table,
   Typography,
   Upload,
-} from 'antd';
-import { BigNumber as BigNumberJS } from 'bignumber.js';
-import React, { Fragment } from 'react';
-import TextQuill from '../../components/react-quill/TextQuill';
+} from "antd";
+import { BigNumber as BigNumberJS } from "bignumber.js";
+import React, { Fragment } from "react";
+import TextQuill from "../../components/react-quill/TextQuill";
 
 const FULLFIL_DIVIDEND_URL = `http://localhost:3000/token-manager`;
 
@@ -42,13 +42,13 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
   } = useStepsForm();
   const projectsData = queryResult?.data?.data;
   const { selectProps: ownerSelectProps } = useSelect({
-    resource: 'owners',
+    resource: "owners",
     defaultValue: projectsData?.ownerId,
-    optionLabel: 'walletAddress',
+    optionLabel: "walletAddress",
   });
   const { data, mutate } = useCustomMutation();
   const dividendInfo = useCustom({
-    method: 'get',
+    method: "get",
     url: `/projects/${projectsData?.id}/dividend`,
     queryOptions: {
       enabled: !!projectsData?.id,
@@ -56,7 +56,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
   });
 
   const whitelistInfo = useCustom({
-    method: 'get',
+    method: "get",
     url: `/projects/${projectsData?.id}/whitelist`,
     queryOptions: {
       enabled: !!projectsData?.id,
@@ -68,7 +68,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
 
     mutate(
       {
-        method: 'post',
+        method: "post",
         url: `/projects/startWhitelisting`,
         values: {
           projectId: projectsData?.id,
@@ -77,8 +77,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       {
         onSuccess: () => {
           invalidate({
-            resource: 'projects',
-            invalidates: ['all'],
+            resource: "projects",
+            invalidates: ["all"],
           });
 
           whitelistInfo.refetch();
@@ -90,26 +90,26 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
   const isDistributed = dividendInfo?.data?.data?.isDistributed;
   const statusList = [
     {
-      label: 'Active',
-      value: 'ACTIVE',
+      label: "Active",
+      value: "ACTIVE",
     },
     {
-      label: 'Inactive',
-      value: 'INACTIVE',
+      label: "Inactive",
+      value: "INACTIVE",
     },
     {
-      label: 'Deleted',
-      value: 'DELETED',
+      label: "Deleted",
+      value: "DELETED",
     },
   ];
   const columns = [
     {
-      title: 'Wallet Address',
-      dataIndex: 'address',
+      title: "Wallet Address",
+      dataIndex: "address",
     },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
+      title: "Amount",
+      dataIndex: "amount",
       render: (value: any) => {
         return <>{new BigNumberJS(value).div(1e18).toFormat(2)}</>;
       },
@@ -120,7 +120,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     <>
       <Form.Item
         label="Id"
-        name={['id']}
+        name={["id"]}
         rules={[
           {
             required: true,
@@ -159,7 +159,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       </Form.Item> */}
       <Form.Item
         label="Name"
-        name={['name']}
+        name={["name"]}
         rules={[
           {
             required: true,
@@ -193,7 +193,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       </Form.Item>
       <Form.Item
         label="Status"
-        name={['status']}
+        name={["status"]}
         rules={[
           {
             required: true,
@@ -211,7 +211,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       </Form.Item>
       <Form.Item
         label="Video URL"
-        name={['videoURL']}
+        name={["videoURL"]}
         rules={[
           {
             required: true,
@@ -222,7 +222,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       </Form.Item>
       <Form.Item
         label="Description Content"
-        name={['descriptionContent']}
+        name={["descriptionContent"]}
         rules={[
           {
             required: true,
@@ -233,7 +233,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       </Form.Item>
       <Form.Item
         label="Backer Content"
-        name={['backerContent']}
+        name={["backerContent"]}
         rules={[
           {
             required: true,
@@ -244,7 +244,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       </Form.Item>
       <Form.Item
         label="Token Details Content"
-        name={['tokenDetailsContent']}
+        name={["tokenDetailsContent"]}
         rules={[
           {
             required: true,
@@ -255,7 +255,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       </Form.Item>
       <Form.Item
         label="About Content"
-        name={['aboutContent']}
+        name={["aboutContent"]}
         rules={[
           {
             required: true,
@@ -264,21 +264,32 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       >
         <TextQuill />
       </Form.Item>
-      <Form.Item label="Website" name={['websiteURL']}>
+      <Form.Item
+        label="Roadmap Content"
+        name={["roadmapContent"]}
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <TextQuill />
+      </Form.Item>
+      <Form.Item label="Website" name={["websiteURL"]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Facebook Page" name={['facebookURL']}>
+      <Form.Item label="Facebook Page" name={["facebookURL"]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Telegram Channel" name={['telegramURL']}>
+      <Form.Item label="Telegram Channel" name={["telegramURL"]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Twitter Page" name={['twitterURL']}>
+      <Form.Item label="Twitter Page" name={["twitterURL"]}>
         <Input />
       </Form.Item>
       <Form.Item
         label="Owner"
-        name={'ownerId'}
+        name={"ownerId"}
         rules={[
           {
             required: true,
@@ -302,7 +313,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                           <Form.Item
                             {...field}
                             label="Name"
-                            name={[field.name, 'name']}
+                            name={[field.name, "name"]}
                           >
                             <Input disabled />
                           </Form.Item>
@@ -311,7 +322,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                           <Form.Item
                             {...field}
                             label="Distribution Amount"
-                            name={[field.name, 'dividendAmount']}
+                            name={[field.name, "dividendAmount"]}
                           >
                             <Input disabled />
                           </Form.Item>
@@ -320,7 +331,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                           <Form.Item
                             {...field}
                             label="Fulfilled Amount"
-                            name={[field.name, 'fulfilledAmount']}
+                            name={[field.name, "fulfilledAmount"]}
                           >
                             <Input disabled />
                           </Form.Item>
@@ -331,7 +342,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                 </Col>
               </Row>
               <Form.Item>
-                <div style={{ display: 'grid', gap: '0.5rem' }}>
+                <div style={{ display: "grid", gap: "0.5rem" }}>
                   <Button
                     size="large"
                     type="primary"
@@ -342,12 +353,12 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                     Distribute tokens
                   </Button>
                   {isDistributed ? (
-                    <Typography.Text style={{ fontSize: '1rem' }}>
+                    <Typography.Text style={{ fontSize: "1rem" }}>
                       ✅ Tokens have been distributed.
                     </Typography.Text>
                   ) : (
                     (!isDividendFulfilled && (
-                      <Typography.Text style={{ fontSize: '1rem' }}>
+                      <Typography.Text style={{ fontSize: "1rem" }}>
                         {`❌ You need to send ${BigNumberJS(
                           dividendInfo?.data?.data?.requiredBalance
                         )
@@ -358,17 +369,17 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
                           .dividedBy(10 ** 18)
                           .toFormat()}).`}
                         <br />
-                        💡 Send this link to the owner to fulfill the dividend:{' '}
+                        💡 Send this link to the owner to fulfill the dividend:{" "}
                         <Typography.Link
                           href={`${FULLFIL_DIVIDEND_URL}?projectId=${projectsData?.id}`}
                           target="_blank"
-                          style={{ fontSize: '16px' }}
+                          style={{ fontSize: "16px" }}
                         >
                           Fulfill dividend
                         </Typography.Link>
                       </Typography.Text>
                     )) || (
-                      <Typography.Text style={{ fontSize: '1rem' }}>
+                      <Typography.Text style={{ fontSize: "1rem" }}>
                         {`✅ Ready to distribute ${BigNumberJS(
                           dividendInfo?.data?.data?.dividendBalance
                         )
@@ -385,7 +396,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       </Form.List>
     </Form.Item>,
     <Fragment>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
           type="primary"
           onClick={() => onLockWhitelist()}
@@ -406,7 +417,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     mutate(
       {
         url: `projects/divide`,
-        method: 'post',
+        method: "post",
         values: {
           projectId: projectsData?.id,
         },
@@ -414,9 +425,9 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
       {
         onSuccess: () => {
           invalidate({
-            resource: 'projects',
+            resource: "projects",
             id: projectsData?.id,
-            invalidates: ['all'],
+            invalidates: ["all"],
           });
         },
       }
@@ -457,17 +468,17 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
         {...formProps}
         layout="vertical"
         style={{
-          display: 'grid',
-          gap: '2rem',
+          display: "grid",
+          gap: "2rem",
         }}
       >
         <Steps
           {...stepsProps}
           items={[
-            { title: 'About Project' },
-            { title: 'Distribute tokens' },
+            { title: "About Project" },
+            { title: "Distribute tokens" },
             {
-              title: 'Whitelist',
+              title: "Whitelist",
             },
           ]}
         />

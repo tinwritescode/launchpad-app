@@ -5,22 +5,22 @@ import {
   faLinkedinIn,
   faTwitch,
   faTwitter,
-} from '@fortawesome/free-brands-svg-icons';
+} from "@fortawesome/free-brands-svg-icons";
 import {
   faCloudArrowDown,
   faDiagramProject,
-  faDiceD6,
   faGlobe,
   faRoad,
   faUserAstronaut,
   faWindowRestore,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ApplyToLaunch, PageHeader } from '@strawberry/ui';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { api } from '../../../../../utils/api';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ApplyToLaunch, PageHeader } from "@strawberry/ui";
+import { Interweave } from "interweave";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { api } from "../../../../../utils/api";
 
 // export function MainTest() {
 //   const router = useRouter();
@@ -298,8 +298,6 @@ export function Main() {
   return (
     <>
       <PageHeader title="Project Details" text="project details" />
-      Project:
-      {JSON.stringify(project)}
       {/* ================> Project Details start here <================== */}
       <section className="pro-details padding-top padding-bottom">
         <div className="container">
@@ -322,13 +320,7 @@ export function Main() {
                         </div>
                         <div className="pro-details__item-content">
                           <h4>{project?.name}</h4>
-                          <p>
-                            Lorem ipsum dolor sit, amet consectetur adipisicing
-                            elit. Repellendus obcaecati quas ex, praesentium
-                            omnis cum, corrupti repudiandae placeat sapiente sit
-                            exercitationem mollitia veniam illum. Autem nobis
-                            aliquid provident illo ad.
-                          </p>
+                          <Interweave content={project?.descriptionContent} />
                         </div>
                       </div>
                       <div className="btn-group mt-4 d-flex flex-wrap gap-20">
@@ -338,12 +330,12 @@ export function Main() {
                         >
                           <span>Claim Token</span>
                         </Link>
-                        <Link
+                        {/* <Link
                           href="/signup"
                           className="default-btn default-btn--small default-btn--secondary"
                         >
                           <span>Register Now</span>
-                        </Link>
+                        </Link> */}
                       </div>
                     </div>
                   </div>
@@ -436,133 +428,23 @@ export function Main() {
                     >
                       {/* about */}
                       <section id="pro-details-about">
-                        <h4>About TorkGo</h4>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Optio animi, id ducimus eum tempora minus labore
-                          saepe fuga eius dolor non veritatis excepturi
-                          perferendis molestiae nulla quia officiis sunt soluta.
-                        </p>
-                        <p>
-                          Lorem ipsum, dolor sit amet consectetur adipisicing
-                          elit. Laborum dolores alias aliquid iusto eaque
-                          perferendis.
-                        </p>
-                        <div className="pro-details__img my-4">
-                          <Image
-                            src="/images/blog/single/01.jpg"
-                            alt="Project Image"
-                            width={800}
-                            height={400}
-                          />
-                        </div>
-                        <h5>Metaverse</h5>
-                        <p>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Soluta, debitis tenetur dolorem a ab voluptas
-                          dolore nesciunt saepe optio amet temporibus ipsum
-                          beatae est quisquam.
-                        </p>
-                        <div className="pro-details__img my-4">
-                          <Image
-                            src="/images/blog/single/02.jpg"
-                            alt="Project Image"
-                            width={800}
-                            height={400}
-                          />
-                        </div>
+                        <h4>About</h4>
+                        <Interweave content={project?.aboutContent} />
                       </section>
                       {/* token */}
                       <section id="pro-details-token">
-                        <h4> TorkGo Token Details</h4>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Optio animi, id ducimus eum tempora minus labore
-                          saepe fuga eius dolor non veritatis excepturi
-                          perferendis molestiae nulla quia officiis sunt soluta.
-                        </p>
-                        <p>
-                          Lorem ipsum, dolor sit amet consectetur adipisicing
-                          elit. Laborum dolores alias aliquid iusto eaque
-                          perferendis.
-                        </p>
-                        <div className="pro-details__token-info mt-4">
-                          <h5>Token Info</h5>
-                          <ul className="pro-details__tokenlist">
-                            <li className="pro-details__tokenlist-item">
-                              <FontAwesomeIcon icon={faDiceD6} />
-                              Lorem ipsum dolor sit amet.
-                            </li>
-                            <li className="pro-details__tokenlist-item">
-                              Opsum dolor sit amet.
-                            </li>
-                            <li className="pro-details__tokenlist-item">
-                              <FontAwesomeIcon icon={faDiceD6} />
-                              Dolor sit amet.
-                            </li>
-                            <li className="pro-details__tokenlist-item">
-                              <FontAwesomeIcon icon={faDiceD6} />
-                              Zit amet Lorem, ipsum.
-                            </li>
-                            <li className="pro-details__tokenlist-item">
-                              <FontAwesomeIcon icon={faDiceD6} />
-                              Xmet dio lor em.
-                            </li>
-                            <li className="pro-details__tokenlist-item">
-                              <FontAwesomeIcon icon={faDiceD6} />
-                              Elor sit amet.
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="pro-details__img my-4">
-                          <Image
-                            src="/images/blog/single/03.jpg"
-                            alt="Token Image"
-                            width={800}
-                            height={400}
-                          />
-                        </div>
+                        <h4>Token Details</h4>
+                        <Interweave content={project?.tokenDetailsContent} />
                       </section>
                       {/* Roadmap */}
                       <section id="pro-details-roadmap">
-                        <h4> TorkGo Roadmap</h4>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Optio animi, id ducimus eum tempora minus labore
-                          saepe fuga eius dolor non veritatis excepturi
-                          perferendis molestiae nulla quia officiis sunt soluta.
-                        </p>
-                        <p>
-                          Lorem ipsum, dolor sit amet consectetur adipisicing
-                          elit. Laborum dolores alias aliquid iusto eaque
-                          perferendis.
-                        </p>
-                        <div className="pro-details__img my-4">
-                          <Image
-                            width={800}
-                            height={400}
-                            src="/images/blog/single/04.jpg"
-                            alt="roadmap Image"
-                          />
-                        </div>
+                        <h4>Roadmap</h4>
+                        <Interweave content={project?.roadmapContent} />
                       </section>
                       {/* backers */}
                       <section id="pro-details-backers">
                         <h4> Our Backers</h4>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Optio animi, id ducimus eum tempora minus labore
-                          saepe fuga eius dolor non veritatis excepturi
-                          perferendis molestiae nulla quia officiis sunt soluta.
-                        </p>
-                        <div className="pro-details__img my-4">
-                          <Image
-                            src="/images/blog/single/05.jpg"
-                            alt="Project Image"
-                            height={400}
-                            width={800}
-                          />
-                        </div>
+                        <Interweave content={project?.backerContent} />
                       </section>
                     </div>
                   </div>
@@ -586,7 +468,7 @@ export function Main() {
                           className="list-group-item list-group-item-action"
                           href="#pro-details-token"
                         >
-                          {' '}
+                          {" "}
                           <FontAwesomeIcon icon={faDiagramProject} />
                           Token
                         </Link>
@@ -652,7 +534,7 @@ export function Main() {
                           </div>
                           <div className="pro-details__links-content">
                             <Link className="pro-details__links-btn" href="#">
-                              www.example.com{' '}
+                              www.example.com{" "}
                               <span>
                                 <FontAwesomeIcon icon={faGlobe} />
                               </span>
@@ -665,7 +547,7 @@ export function Main() {
                           </div>
                           <div className="pro-details__links-content">
                             <Link className="pro-details__links-btn" href="#">
-                              Whitepaper{' '}
+                              Whitepaper{" "}
                               <span>
                                 <FontAwesomeIcon icon={faCloudArrowDown} />
                               </span>

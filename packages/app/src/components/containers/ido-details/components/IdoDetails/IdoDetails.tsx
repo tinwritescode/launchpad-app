@@ -1,9 +1,10 @@
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import { env } from '../../../../../env.mjs';
-import { api } from '../../../../../utils/api';
-import { Main } from './Main';
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { env } from "../../../../../env.mjs";
+import { api } from "../../../../../utils/api";
+import { Main } from "./Main";
+import dynamic from "next/dynamic";
 
 const IdoDetail = () => {
   const { id } = useRouter().query as { id: string };
@@ -37,4 +38,6 @@ const IdoDetail = () => {
   );
 };
 
-export default Main;
+export default dynamic(() => Promise.resolve(IdoDetail), {
+  ssr: false,
+});

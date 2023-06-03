@@ -43,6 +43,7 @@
     "formik-mui": "^5.0.0-alpha.0",
     "hardhat": "^2.14.0",
     "i": "^0.3.7",
+    "interweave": "^13.1.0",
     "jsonwebtoken": "^9.0.0",
     "lucide-react": "^0.220.0",
     "moment": "^2.29.4",

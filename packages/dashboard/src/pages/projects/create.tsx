@@ -1,10 +1,10 @@
-import { Create, getValueFromEvent, useForm } from '@refinedev/antd';
-import { IResourceComponentsProps } from '@refinedev/core';
-import { DatePicker, Form, Input, InputNumber, Upload } from 'antd';
-import dayjs from 'dayjs';
-import React from 'react';
-import { env } from '../../env';
-import TextQuill from '../../components/react-quill/TextQuill';
+import { Create, getValueFromEvent, useForm } from "@refinedev/antd";
+import { IResourceComponentsProps } from "@refinedev/core";
+import { DatePicker, Form, Input, InputNumber, Upload } from "antd";
+import dayjs from "dayjs";
+import React from "react";
+import { env } from "../../env";
+import TextQuill from "../../components/react-quill/TextQuill";
 
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps } = useForm();
@@ -22,22 +22,25 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           purchaseCap: 100,
           idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
           // Fields that need to be filled
-          comparisionContent: 'lorem ipsum dolor',
-          image: 'https://picsum.photos/200/300',
-          roadmapContent: 'ipsum lorem',
-          summaryContent: 'lorem ipsum',
-          videoURL: 'https://www.youtube.com/watch?v=MNiGhWOMPJo',
+          image: "https://picsum.photos/200/300",
+          videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
           name: `IDO Project ${(Math.random() * 100).toFixed(0)}`,
-          targettedRaise: '1000000',
-          websiteURL: 'https://myidoproject.com',
-          facebookURL: 'https://facebook.com/myidoproject',
-          twitterURL: 'https://twitter.com/myidoproject',
-          telegramURL: 'https://t.me/myidoproject',
+          targettedRaise: "1000000",
+          websiteURL: "https://myidoproject.com",
+          facebookURL: "https://facebook.com/myidoproject",
+          twitterURL: "https://twitter.com/myidoproject",
+          telegramURL: "https://t.me/myidoproject",
+
+          descriptionContent: "Description Content",
+          backerContent: "Backer Content",
+          tokenDetailsContent: "Token Details Content",
+          aboutContent: "About Content",
+          roadmapContent: "Roadmap Content",
         }}
       >
         <Form.Item
           label="Name"
-          name={['name']}
+          name={["name"]}
           rules={[
             {
               required: true,
@@ -48,7 +51,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item
           label="Description Content"
-          name={['descriptionContent']}
+          name={["descriptionContent"]}
           rules={[
             {
               required: true,
@@ -59,7 +62,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item
           label="Backer Content"
-          name={['backerContent']}
+          name={["backerContent"]}
           rules={[
             {
               required: true,
@@ -70,7 +73,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item
           label="Token Details Content"
-          name={['tokenDetailsContent']}
+          name={["tokenDetailsContent"]}
           rules={[
             {
               required: true,
@@ -81,7 +84,18 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item
           label="About Content"
-          name={['aboutContent']}
+          name={["aboutContent"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <TextQuill />
+        </Form.Item>
+        <Form.Item
+          label="Roadmap Content"
+          name={["roadmapContent"]}
           rules={[
             {
               required: true,
@@ -116,7 +130,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item
           label="Video URL"
-          name={['videoURL']}
+          name={["videoURL"]}
           rules={[
             {
               required: true,
@@ -128,7 +142,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
 
         <Form.Item
           label="Start Time"
-          name={['startTime']}
+          name={["startTime"]}
           rules={[
             {
               required: true,
@@ -143,7 +157,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
 
         <Form.Item
           label="End Time"
-          name={['endTime']}
+          name={["endTime"]}
           rules={[
             {
               required: true,
@@ -158,7 +172,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
 
         <Form.Item
           label="IDO Price"
-          name={['idoPrice']}
+          name={["idoPrice"]}
           rules={[
             {
               required: true,
@@ -170,7 +184,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
 
         <Form.Item
           label="IDO Token Address"
-          name={['idoTokenAddress']}
+          name={["idoTokenAddress"]}
           rules={[
             {
               required: true,
@@ -182,7 +196,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
 
         <Form.Item
           label="Targetted Raise"
-          name={['targettedRaise']}
+          name={["targettedRaise"]}
           rules={[
             {
               required: true,
@@ -191,24 +205,24 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <InputNumber
             style={{
-              width: '100%',
+              width: "100%",
             }}
           />
         </Form.Item>
 
-        <Form.Item label="Website" name={['websiteURL']}>
+        <Form.Item label="Website" name={["websiteURL"]}>
           <Input />
         </Form.Item>
 
-        <Form.Item label="Facebook Page" name={['facebookURL']}>
+        <Form.Item label="Facebook Page" name={["facebookURL"]}>
           <Input />
         </Form.Item>
 
-        <Form.Item label="Telegram Channel" name={['telegramURL']}>
+        <Form.Item label="Telegram Channel" name={["telegramURL"]}>
           <Input />
         </Form.Item>
 
-        <Form.Item label="Twitter Page" name={['twitterURL']}>
+        <Form.Item label="Twitter Page" name={["twitterURL"]}>
           <Input />
         </Form.Item>
       </Form>
