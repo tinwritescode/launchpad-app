@@ -21,6 +21,7 @@ const Wallet = ({ show, handleClose }) => {
   } = useContext(AppContext);
 
   const disconnectWallet = async () => {
+    disconnectAsync();
     setAccountAfterDisconnectWallet();
     localStorage.setItem("isWalletConnected", false);
   };
@@ -35,12 +36,12 @@ const Wallet = ({ show, handleClose }) => {
   // };
   const walletImages = [
     {
-      name: 'MetaMask',
-      image: '/wallets/metamask.svg',
+      name: "MetaMask",
+      image: "/wallets/metamask.svg",
     },
     {
-      name: 'Coinbase',
-      image: '/wallets/coinbase.svg',
+      name: "Coinbase",
+      image: "/wallets/coinbase.svg",
     },
   ];
 
@@ -61,7 +62,7 @@ const Wallet = ({ show, handleClose }) => {
 
       {isConnected && address ? (
         <div className="modal-body">
-          <div> Already Connected</div>
+          <div>Already Connected</div>
           <div className="wallet-btns">
             <button
               className="default-btn default-btn--small"
@@ -86,13 +87,19 @@ const Wallet = ({ show, handleClose }) => {
       ) : (
         <div className="modal-body">
           <div>
-            Please select a wallet from below to connect for Launching
-            yourIDO&apos;s{" "}
+            Please select a wallet from below to connect for Launching your IDO
           </div>
           <ul className="wallet__list">
             {connectors.map((connector, index) => (
               <li className="wallet__list-item" key={connector.id}>
-                <Link href="#" onClick={() => connectAsync(connector.name)}>
+                <Link
+                  href="#"
+                  onClick={() => {
+                    connectAsync({
+                      connector,
+                    });
+                  }}
+                >
                   <Image
                     src={walletImages.at(index)?.image}
                     width={60}
@@ -106,10 +113,8 @@ const Wallet = ({ show, handleClose }) => {
                     ? "Loading..."
                     : `Connect ${connector.name}`} */}
 
-
                   {/* </button> */}
                 </Link>
-
               </li>
             ))}
           </ul>
@@ -119,17 +124,15 @@ const Wallet = ({ show, handleClose }) => {
             <Link href="#">Privacy Policy</Link> .
           </div>
         </div>
-      )
-      }
-    </Modal >
+      )}
+    </Modal>
   );
 };
 
 export default Wallet;
 
-
-
-{/* <li className="wallet__list-item">
+{
+  /* <li className="wallet__list-item">
 <Link
   // onClick={connectMetamaskWallet} 
   href="#">
@@ -153,4 +156,5 @@ export default Wallet;
       alt="coinbase"
     />
   </span>
-</Link> */}
+</Link> */
+}

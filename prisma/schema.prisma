@@ -80,6 +80,7 @@ model Project {
   backerContent       String?
   tokenDetailsContent String?
   aboutContent        String?
+  roadmapContent      String?
 }
 
 model IDOContract {

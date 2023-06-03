@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { z } from "zod";
 import {
   idoContractDto,
   parseStringToEthers,
-} from '../../../services/ido-contract/ido-contract.dto';
+} from "../../../services/ido-contract/ido-contract.dto";
 
 export const createIdoProjectInputSchema = z
   .object({
@@ -21,6 +21,7 @@ export const createIdoProjectInputSchema = z
     backerContent: z.string().optional(),
     tokenDetailsContent: z.string().optional(),
     aboutContent: z.string().optional(),
+    roadmapContent: z.string().optional(),
   })
   .merge(
     idoContractDto.pick({
