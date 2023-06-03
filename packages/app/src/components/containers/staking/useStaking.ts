@@ -1,14 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
-import { BigNumber } from 'ethers';
-import { useCallback } from 'react';
-import toast from 'react-hot-toast';
-import { useAccount } from 'wagmi';
-import { env } from '../../../env.mjs';
+import { useQuery } from "@tanstack/react-query";
+import { BigNumber } from "ethers";
+import { useCallback } from "react";
+import toast from "react-hot-toast";
+import { useAccount } from "wagmi";
+import { env } from "../../../env.mjs";
 import {
   getErc20Contract,
   getStakingContract,
-} from '../../../libs/blockchain/index';
-import { getSigner } from '../../../utils/ethereum';
+} from "../../../libs/blockchain/index";
+import { getSigner } from "../../../utils/ethereum";
 
 export class StakingHelper {
   static instance: StakingHelper;
@@ -50,18 +50,18 @@ export class StakingHelper {
 export const useStakingHook = () => {
   const { address } = useAccount();
   const { data: stakeInfo, isLoading: isLoadingStakeInfo } = useQuery(
-    ['stakeInfo'],
+    ["stakeInfo"],
     () => StakingHelper.getInstance().getStakeInfo(address as string),
     {
       enabled: !!address,
       refetchInterval: 10000,
     }
   );
-  const { data: stakingTokenName } = useQuery(['stakingTokenName'], () =>
+  const { data: stakingTokenName } = useQuery(["stakingTokenName"], () =>
     getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).symbol()
   );
   const { data: stakingTokenBalance } = useQuery(
-    ['stakingTokenBalance', address],
+    ["stakingTokenBalance", address],
     ({ queryKey }) =>
       getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).balanceOf(
         queryKey?.[1] as string
@@ -86,7 +86,7 @@ export const useStakingHook = () => {
     []
   );
   const approveAmount = useQuery(
-    ['approveAmount', address],
+    ["approveAmount", address],
     ({ queryKey }) =>
       getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).allowance(
         queryKey?.[1] as string,
@@ -98,13 +98,7 @@ export const useStakingHook = () => {
   );
   const stake = useCallback(async (payload: { amount: BigNumber }) => {
     const signer = getSigner();
-    try {
-      return await getStakingContract().connect(signer).stake(payload.amount);
-    } catch (e: any) {
-      const msg = e?.message?.split(` (`)[0];
-
-      toast.error(`Stake failed: ${msg}`);
-    }
+    return getStakingContract().connect(signer).stake(payload.amount);
   }, []);
   const claimReward = useCallback(async () => {
     const signer = getSigner();
@@ -131,7 +125,7 @@ export const useStakingHook = () => {
   }, []);
 
   const unlockTime = useQuery(
-    ['unlockTime', address],
+    ["unlockTime", address],
     ({ queryKey }) => getStakingContract().lockTimeOf(queryKey?.[1] as string),
     {
       enabled: !!address,
@@ -139,7 +133,7 @@ export const useStakingHook = () => {
   );
 
   const decimals = useQuery(
-    ['decimals', address],
+    ["decimals", address],
     ({ queryKey }) =>
       getErc20Contract(env.NEXT_PUBLIC_STAKING_TOKEN_ADDRESS).decimals(),
     {
@@ -148,7 +142,7 @@ export const useStakingHook = () => {
   );
 
   const totalStaked = useQuery(
-    ['totalStaked', address],
+    ["totalStaked", address],
     ({ queryKey }) => getStakingContract().stakingTokenBalance(),
     {
       enabled: !!address,
@@ -156,7 +150,7 @@ export const useStakingHook = () => {
   );
 
   const numberOfStakers = useQuery(
-    ['numberOfStakers', address],
+    ["numberOfStakers", address],
     ({ queryKey }) => getStakingContract().getStakersLength(),
     {
       enabled: !!address,
@@ -164,7 +158,7 @@ export const useStakingHook = () => {
   );
 
   const APY = useQuery(
-    ['APY', address],
+    ["APY", address],
     async ({ queryKey }) => {
       const [timeUnit, rewardRatio, rewardBalance] = await Promise.all([
         getStakingContract().getTimeUnit(),
@@ -186,7 +180,7 @@ export const useStakingHook = () => {
   );
 
   const lockTime = useQuery(
-    ['lockTime', address],
+    ["lockTime", address],
     ({ queryKey }) => getStakingContract().lockTime(),
     {
       enabled: !!address,
