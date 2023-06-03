@@ -9,7 +9,7 @@ const WrappedStaking = () => {
     //   <Head>
     //     <title>Staking</title>
     //   </Head>
-    //   <Staking />
+    // <Staking />
     // </PageLayout>
     <Stacking />
   );
