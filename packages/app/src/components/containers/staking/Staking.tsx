@@ -1,24 +1,24 @@
-import { ethers } from 'ethers';
-import { useRef } from 'react';
-import { toast } from 'react-hot-toast';
-import { BarLoader } from 'react-spinners';
-import { useAccount } from 'wagmi';
-import { env } from '../../../env.mjs';
-import PleaseConnectYourWallet from '../../common/PleaseConnectYourWallet';
-import StakingTabs from './components/stakingtabs/StakingTabs';
-import { useStakingHook } from './useStaking';
-import dynamic from 'next/dynamic';
-import { Button } from '../../common/index';
+import { ethers } from "ethers";
+import { useRef } from "react";
+import { toast } from "react-hot-toast";
+import { BarLoader } from "react-spinners";
+import { useAccount } from "wagmi";
+import { env } from "../../../env.mjs";
+import PleaseConnectYourWallet from "../../common/PleaseConnectYourWallet";
+import StakingTabs from "./components/stakingtabs/StakingTabs";
+import { useStakingHook } from "./useStaking";
+import dynamic from "next/dynamic";
+import { Button } from "../../common/index";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../../common/ui/tooltip';
+} from "../../common/ui/tooltip";
 import {
   getStakeValidationSchema,
   getWithdrawValidationSchema,
-} from './validationSchema';
+} from "./validationSchema";
 
 const Staking = () => {
   const { isConnected } = useAccount();
@@ -40,34 +40,34 @@ const Staking = () => {
   const withdrawInputRef = useRef<HTMLInputElement>(null);
 
   const stakeSchema = getStakeValidationSchema(
-    +ethers.utils.formatEther(stakingTokenBalance || '0')
+    +ethers.utils.formatEther(stakingTokenBalance || "0")
   );
   const withdrawSchema = getWithdrawValidationSchema(
-    +ethers.utils.formatEther(amountStaked || '0')
+    +ethers.utils.formatEther(amountStaked || "0")
   );
 
   const onWithdrawButtonClick = () => {
     const withdrawInput = withdrawSchema.safeParse(
-      +(withdrawInputRef.current?.value || '0')
+      +(withdrawInputRef.current?.value || "0")
     );
     if (withdrawInput.success === false) {
-      toast.error(withdrawInput.error?.errors[0]?.message || 'Invalid amount');
+      toast.error(withdrawInput.error?.errors[0]?.message || "Invalid amount");
       return;
     }
     toast.promise(
       withdraw({
         amount: ethers.utils.parseUnits(
-          withdrawInputRef.current?.value || '0',
+          withdrawInputRef.current?.value || "0",
           decimals
         ),
       }).then((tx) => tx?.wait()),
       {
-        loading: 'Withdrawing...',
-        success: 'Withdrawn!',
+        loading: "Withdrawing...",
+        success: "Withdrawn!",
         error: (err) => {
           console.error(err.message);
 
-          return 'Failed to withdraw';
+          return "Failed to withdraw";
         },
       }
     );
@@ -80,10 +80,10 @@ const Staking = () => {
         stakingAddress: env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS,
       }).then((tx) => tx?.wait()),
       {
-        loading: 'Approving...',
-        success: 'Approved!',
+        loading: "Approving...",
+        success: "Approved!",
         error: (err) => {
-          return 'Failed to approve';
+          return "Failed to approve";
         },
       }
     );
@@ -91,26 +91,26 @@ const Staking = () => {
 
   const onStakeButtonClick = () => {
     const stakeInput = stakeSchema.safeParse(
-      +(stakeInputRef.current?.value || '0')
+      +(stakeInputRef.current?.value || "0")
     );
     if (stakeInput.success === false) {
-      toast.error(stakeInput.error?.errors[0]?.message || 'Invalid amount');
+      toast.error(stakeInput.error?.errors[0]?.message || "Invalid amount");
       return;
     }
     toast.promise(
       stake({
         amount: ethers.utils.parseUnits(
-          stakeInputRef.current?.value || '0',
+          stakeInputRef.current?.value || "0",
           decimals
         ),
       }).then((tx) => tx?.wait()),
       {
-        loading: 'Staking...',
-        success: 'Staked!',
+        loading: "Staking...",
+        success: "Staked!",
         error: (err) => {
           console.error(err.message);
 
-          return 'Failed to stake';
+          return "Failed to stake";
         },
       }
     );
@@ -120,12 +120,12 @@ const Staking = () => {
     toast.promise(
       claimReward().then((tx) => tx?.wait()),
       {
-        loading: 'Claiming...',
-        success: 'Claimed!',
+        loading: "Claiming...",
+        success: "Claimed!",
         error: (err) => {
           console.error(err.message);
 
-          return 'Failed to claim';
+          return "Failed to claim";
         },
       }
     );
@@ -143,9 +143,9 @@ const Staking = () => {
                   <div className="text-3xl font-bold flex items-center gap-1 tracking-wider">
                     <span className="inline-block truncate md:max-w-[300px] max-w-xs">
                       {ethers.utils.commify(
-                        ethers.utils.formatEther(amountStaked || '0')
+                        ethers.utils.formatEther(amountStaked || "0")
                       )}
-                    </span>{' '}
+                    </span>{" "}
                     STRAW
                   </div>
                 </TooltipTrigger>
@@ -154,9 +154,9 @@ const Staking = () => {
                   <div className="text-lg font-semibold items-center gap-1">
                     <span className="inline-block">
                       {ethers.utils.commify(
-                        ethers.utils.formatEther(amountStaked || '0')
+                        ethers.utils.formatEther(amountStaked || "0")
                       )}
-                    </span>{' '}
+                    </span>{" "}
                     STRAW
                   </div>
                 </TooltipContent>
@@ -175,20 +175,20 @@ const Staking = () => {
               className="truncate h-full inline-block max-w-[300px]"
               title={
                 ethers.utils.commify(
-                  ethers.utils.formatEther(stakingTokenBalance || '0')
+                  ethers.utils.formatEther(stakingTokenBalance || "0")
                 ).length > 20
                   ? ethers.utils.commify(
-                      ethers.utils.formatEther(stakingTokenBalance || '0')
+                      ethers.utils.formatEther(stakingTokenBalance || "0")
                     )
-                  : ''
+                  : ""
               }
             >
-              Balance:{' '}
+              Balance:{" "}
               {ethers.utils.commify(
-                ethers.utils.formatEther(stakingTokenBalance || '0')
+                ethers.utils.formatEther(stakingTokenBalance || "0")
               ) || <BarLoader />}
             </span>
-            {' STRAW'}
+            {" STRAW"}
           </div>
         ) : (
           <div className="text-lg text-gray-500 font-semibold">
@@ -235,18 +235,18 @@ const Staking = () => {
             className="truncate h-full inline-block max-w-[300px]"
             title={
               ethers.utils.commify(
-                ethers.utils.formatEther(amountStaked || '0')
+                ethers.utils.formatEther(amountStaked || "0")
               ).length > 20
                 ? ethers.utils.commify(
-                    ethers.utils.formatEther(amountStaked || '0')
+                    ethers.utils.formatEther(amountStaked || "0")
                   )
-                : ''
+                : ""
             }
           >
             {ethers.utils.commify(
-              ethers.utils.formatEther(amountStaked || '0')
+              ethers.utils.formatEther(amountStaked || "0")
             ) || <BarLoader />}
-          </span>{' '}
+          </span>{" "}
           STRAW
         </div>
         <div className="flex flex-row gap-4 h-16">
@@ -286,18 +286,18 @@ const Staking = () => {
                       className="truncate h-full inline-block max-w-[300px]"
                       title={
                         ethers.utils.commify(
-                          ethers.utils.formatEther(unclaimedRewards || '0')
+                          ethers.utils.formatEther(unclaimedRewards || "0")
                         ).length > 10
                           ? ethers.utils.commify(
-                              ethers.utils.formatEther(unclaimedRewards || '0')
+                              ethers.utils.formatEther(unclaimedRewards || "0")
                             )
-                          : ''
+                          : ""
                       }
                     >
                       {ethers.utils.commify(
-                        ethers.utils.formatEther(unclaimedRewards || '0')
+                        ethers.utils.formatEther(unclaimedRewards || "0")
                       )}
-                    </span>{' '}
+                    </span>{" "}
                     STRAW
                   </div>
                 </div>
@@ -322,9 +322,9 @@ const Staking = () => {
                     <div className="text-3xl font-bold flex items-center gap-1 tracking-wider">
                       <span className="inline-block truncate md:max-w-[300px] max-w-xs">
                         {ethers.utils.commify(
-                          ethers.utils.formatEther(totalStaked || '0')
+                          ethers.utils.formatEther(totalStaked || "0")
                         )}
-                      </span>{' '}
+                      </span>{" "}
                       STRAW
                     </div>
                   </TooltipTrigger>
@@ -333,9 +333,9 @@ const Staking = () => {
                     <div className="text-lg font-semibold items-center gap-1">
                       <span className="inline-block">
                         {ethers.utils.commify(
-                          ethers.utils.formatEther(totalStaked || '0')
+                          ethers.utils.formatEther(totalStaked || "0")
                         )}
-                      </span>{' '}
+                      </span>{" "}
                       STRAW
                     </div>
                   </TooltipContent>

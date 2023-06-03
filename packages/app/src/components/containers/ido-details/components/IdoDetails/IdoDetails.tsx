@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { env } from "../../../../../env.mjs";
 import { api } from "../../../../../utils/api";
 import { Main } from "./Main";
@@ -12,12 +12,16 @@ const IdoDetail = () => {
     { id },
     { enabled: !!id, refetchOnWindowFocus: true, retry: 0 }
   );
-
   const router = useRouter();
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   useEffect(() => {
     if (!isLoading && isError) {
-      // router.push('/404');
+      router.push("/404");
     }
   }, [isLoading, isError, router]);
 
@@ -25,6 +29,8 @@ const IdoDetail = () => {
     return <div>Error</div>;
   }
   if (isLoading) return <div>Loading...</div>;
+
+  if (!isHydrated) return null;
 
   return (
     <>

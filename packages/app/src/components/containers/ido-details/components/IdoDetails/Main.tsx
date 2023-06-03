@@ -21,265 +21,294 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { api } from "../../../../../utils/api";
+import { ethers } from "ethers";
+import { Label } from "@mui/icons-material";
+import React, { useMemo, useEffect } from "react";
+import { AiOutlineCheck } from "react-icons/ai";
+import { useAccount } from "wagmi";
+import { cn } from "../../../../../utils/tailwind";
+import PleaseConnectYourWallet from "../../../../common/PleaseConnectYourWallet";
+import Claim from "./Claim";
+import IdoStart from "./IdoStart";
+import { StakingInfo } from "./StakingInfo";
+import WhitelistTable from "./WhitelistTable";
+import {
+  IoIosGlobe,
+  IoIosPaperPlane,
+  IoLogoLinkedin,
+  IoLogoInstagram,
+} from "react-icons/io";
+import { IoLogoFacebook, IoLogoTwitter } from "react-icons/io5";
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import Spinner from "../../../../common/ui/spinner";
+import { Card } from "../../../../common/ui/card";
 
-// export function MainTest() {
-//   const router = useRouter();
-//   const query = router.query;
-//   const { isConnected } = useAccount();
-//   const { data } = api.project.getOne.useQuery(
-//     { id: query?.id as string },
-//     {
-//       enabled: !!query?.id,
-//     }
-//   );
+const { formatEther, commify } = ethers.utils;
 
-//   /**
-//    * Xem thông tin dự án: tên dự án, giá IDO, giới thiệu ngắn
-//    * Xem team (logo, linkedin, twitter)
-//    * Xem rank của mình, các rank hiện có, nút staking để lên rank
-//    * Các mạng xã hội của dự án
-//    * Trạng thái dự án
-//    */
-//   const steps = useMemo(
-//     () => [
-//       {
-//         title: 'Project info',
-//         elements: [
-//           <div>
-//             <div className="flex gap-6 items-center">
-//               <img
-//                 src={data?.image}
-//                 className="w-20 h-20 rounded-full object-cover"
-//               />
-//               <div className="flex flex-col gap-1">
-//                 <div className="text-2xl font-bold">{data?.name}</div>
-//                 <div className="text-sm font-semibold text-gray-600">
-//                   ${data?.token?.symbol}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>,
-//           <div>
-//             <Label className="flex items-center gap-1">
-//               <IoMdInformationCircleOutline />
-//               Description:
-//             </Label>
-//             <p
-//               className={cn(
-//                 'text-sm text-gray-600',
-//                 'whitespace-pre-wrap',
-//                 'overflow-ellipsis overflow-hidden',
-//                 'my-2'
-//               )}
-//             >
-//               {data?.summaryContent}
-//             </p>
-//           </div>,
-//           data?.websiteURL && (
-//             <div>
-//               <Label className="flex items-center gap-1">
-//                 <IoIosGlobe color="#1DA1F2" />
-//                 Website:
-//               </Label>
-//               <a
-//                 href={data?.websiteURL}
-//                 target="_blank"
-//                 className="text-sm text-gray-600"
-//               >
-//                 {data?.websiteURL}
-//               </a>
-//             </div>
-//           ),
-//           data?.facebookURL && (
-//             <div>
-//               <Label className="flex items-center gap-1">
-//                 <IoLogoFacebook color="#4267B2" />
-//                 Facebook Page:
-//               </Label>
-//               <a
-//                 href={data?.facebookURL}
-//                 target="_blank"
-//                 className="text-sm text-gray-600"
-//               >
-//                 {data?.facebookURL}
-//               </a>
-//             </div>
-//           ),
-//           data?.telegramURL && (
-//             <div>
-//               <Label className="flex items-center gap-1">
-//                 <IoIosPaperPlane
-//                   style={{ borderRadius: '50%', background: '#1DA1F2' }}
-//                   color="#fff"
-//                 />
-//                 Telegram Channel:
-//               </Label>
-//               <a
-//                 href={data?.telegramURL}
-//                 target="_blank"
-//                 className="text-sm text-gray-600"
-//               >
-//                 {data?.telegramURL}
-//               </a>
-//             </div>
-//           ),
-//           data?.twitterURL && (
-//             <div>
-//               <Label className="flex items-center gap-1">
-//                 <IoLogoTwitter color="#1DA1F2" />
-//                 Twitter Page:
-//               </Label>
-//               <a
-//                 href={data?.twitterURL}
-//                 target="_blank"
-//                 className="text-sm text-gray-600"
-//               >
-//                 {data?.twitterURL}
-//               </a>
-//             </div>
-//           ),
-//         ] as React.ReactNode[],
-//         connectWalletRequired: false,
-//       },
-//       {
-//         title: 'Team',
-//         elements: [
-//           <div className="grid grid-cols-3 gap-4">
-//             {['John', 'Doe', 'Alice', 'Bob', 'Lan', 'Linh'].map((name) => (
-//               <Card className="flex flex-col items-center gap-1 p-4" key={name}>
-//                 <img
-//                   src="https://i.pravatar.cc/100"
-//                   className="w-20 h-20 rounded-full object-cover"
-//                 />
-//                 <div className="text-sm font-semibold">{name}</div>
-//                 <div className="text-xs text-gray-600">CEO</div>
+export function MainTest() {
+  const router = useRouter();
+  const query = router.query;
+  const { isConnected } = useAccount();
+  const { data } = api.project.getOne.useQuery(
+    { id: query?.id as string },
+    {
+      enabled: !!query?.id,
+    }
+  );
 
-//                 <div className="flex gap-2">
-//                   <a href="#" target="_blank">
-//                     <IoLogoLinkedin className="w-6 h-6" />
-//                   </a>
-//                   <a href="#" target="_blank">
-//                     <IoLogoTwitter className="w-6 h-6" />
-//                   </a>
-//                   <a href="#" target="_blank">
-//                     <IoLogoInstagram className="w-6 h-6" />
-//                   </a>
-//                 </div>
-//               </Card>
-//             ))}
-//           </div>,
-//         ] as React.ReactNode[],
-//         connectWalletRequired: false,
-//       },
-//       {
-//         title: 'Staking',
-//         elements: [<StakingInfo />] as React.ReactNode[],
-//         connectWalletRequired: true,
-//       },
-//       {
-//         title: 'Whitelist locked',
-//         elements: [<WhitelistTable />] as React.ReactNode[],
-//         connectWalletRequired: true,
-//       },
-//       {
-//         title: 'IDO start',
-//         elements: [<IdoStart />] as React.ReactNode[],
-//         connectWalletRequired: true,
-//       },
-//       {
-//         title: 'Claim',
-//         elements: [<Claim />] as React.ReactNode[],
-//         connectWalletRequired: true,
-//       },
-//       {
-//         title: 'History',
-//         elements: [] as React.ReactNode[],
-//         connectWalletRequired: true,
-//       },
-//     ],
-//     []
-//   );
+  /**
+   * Xem thông tin dự án: tên dự án, giá IDO, giới thiệu ngắn
+   * Xem team (logo, linkedin, twitter)
+   * Xem rank của mình, các rank hiện có, nút staking để lên rank
+   * Các mạng xã hội của dự án
+   * Trạng thái dự án
+   */
+  const steps = useMemo(
+    () => [
+      {
+        title: "Project info",
+        render: () => (
+          <>
+            <div>
+              <div className="flex gap-6 items-center">
+                <img
+                  src={data?.image}
+                  className="w-20 h-20 rounded-full object-cover"
+                />
+                <div className="flex flex-col gap-1">
+                  <div className="text-2xl font-bold">{data?.name}</div>
+                  <div className="text-sm font-semibold text-gray-600">
+                    ${data?.token?.symbol}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <Label className="flex items-center gap-1">
+                <IoMdInformationCircleOutline />
+                Description:
+              </Label>
+              <p
+                className={cn(
+                  "text-sm text-gray-600",
+                  "whitespace-pre-wrap",
+                  "overflow-ellipsis overflow-hidden",
+                  "my-2"
+                )}
+              >
+                {data?.summaryContent}
+              </p>
+            </div>
+            {data?.websiteURL && (
+              <div>
+                <Label className="flex items-center gap-1">
+                  <IoIosGlobe color="#1DA1F2" />
+                  Website:
+                </Label>
+                <a
+                  href={data?.websiteURL}
+                  target="_blank"
+                  className="text-sm text-gray-600"
+                >
+                  {data?.websiteURL}
+                </a>
+              </div>
+            )}
+            {data?.facebookURL && (
+              <div>
+                <Label className="flex items-center gap-1">
+                  <IoLogoFacebook color="#4267B2" />
+                  Facebook Page:
+                </Label>
+                <a
+                  href={data?.facebookURL}
+                  target="_blank"
+                  className="text-sm text-gray-600"
+                >
+                  {data?.facebookURL}
+                </a>
+              </div>
+            )}
+            {data?.telegramURL && (
+              <div>
+                <Label className="flex items-center gap-1">
+                  <IoIosPaperPlane
+                    style={{ borderRadius: "50%", background: "#1DA1F2" }}
+                    color="#fff"
+                  />
+                  Telegram Channel:
+                </Label>
+                <a
+                  href={data?.telegramURL}
+                  target="_blank"
+                  className="text-sm text-gray-600"
+                >
+                  {data?.telegramURL}
+                </a>
+              </div>
+            )}
+            {data?.twitterURL && (
+              <div>
+                <Label className="flex items-center gap-1">
+                  <IoLogoTwitter color="#1DA1F2" />
+                  Twitter Page:
+                </Label>
+                <a
+                  href={data?.twitterURL}
+                  target="_blank"
+                  className="text-sm text-gray-600"
+                >
+                  {data?.twitterURL}
+                </a>
+              </div>
+            )}
+          </>
+        ),
+        elements: [] as React.ReactNode[],
+        connectWalletRequired: false,
+      },
+      {
+        title: "Team",
+        render: () => (
+          <div className="grid grid-cols-3 gap-4">
+            {["John", "Doe", "Alice", "Bob", "Lan", "Linh"].map((name) => (
+              <Card
+                className="flex flex-col items-center gap-1 p-4 bg-gray-400"
+                key={name}
+              >
+                <img
+                  src="https://i.pravatar.cc/100"
+                  className="w-20 h-20 rounded-full object-cover"
+                />
+                <div className="text-sm font-semibold">{name}</div>
+                <div className="text-xs text-gray-600">CEO</div>
 
-//   const { address } = useAccount();
+                <div className="flex gap-2">
+                  <a href="#" target="_blank">
+                    <IoLogoLinkedin className="w-6 h-6" />
+                  </a>
+                  <a href="#" target="_blank">
+                    <IoLogoTwitter className="w-6 h-6" />
+                  </a>
+                  <a href="#" target="_blank">
+                    <IoLogoInstagram className="w-6 h-6" />
+                  </a>
+                </div>
+              </Card>
+            ))}
+          </div>
+        ),
+        connectWalletRequired: false,
+      },
+      {
+        title: "Staking",
+        render: () => <StakingInfo />,
+        connectWalletRequired: true,
+      },
+      {
+        title: "Whitelist locked",
+        render: () => <WhitelistTable />,
+        connectWalletRequired: true,
+      },
+      {
+        title: "IDO start",
+        render: () => <IdoStart />,
+        connectWalletRequired: true,
+      },
+      {
+        title: "Claim",
+        render: () => <Claim />,
+        connectWalletRequired: true,
+      },
+      {
+        title: "History",
+        render: () => <div></div>,
+        connectWalletRequired: true,
+      },
+    ],
+    []
+  );
 
-//   const { data: userWhiteListInfo } = api.project.getUserWhiteListInfo.useQuery(
-//     {
-//       id: query?.id as string,
-//       walletAddress: address as string,
-//     },
-//     {
-//       enabled: !!query?.id && !!address,
-//     }
-//   );
+  const { address } = useAccount();
 
-//   const [currentStep, setCurrentStep] = React.useState(0);
-//   const [maxStep, setMaxStep] = React.useState(4);
+  const { data: userWhiteListInfo } = api.project.getUserWhiteListInfo.useQuery(
+    {
+      id: query?.id as string,
+      walletAddress: address as string,
+    },
+    {
+      enabled: !!query?.id && !!address,
+    }
+  );
 
-//   useEffect(() => {
-//     if (!userWhiteListInfo?.isIdoStarted) {
-//       setMaxStep(4);
-//       setCurrentStep(4);
-//     }
+  const [currentStep, setCurrentStep] = React.useState(0);
+  const [maxStep, setMaxStep] = React.useState(4);
 
-//     if (userWhiteListInfo?.isIdoEnded) {
-//       setMaxStep(5);
-//       setCurrentStep(5);
-//     }
+  useEffect(() => {
+    if (!userWhiteListInfo?.isIdoStarted) {
+      setMaxStep(4);
+      setCurrentStep(4);
+    }
 
-//     if (userWhiteListInfo?.isClaimed) {
-//       setMaxStep(6);
-//       setCurrentStep(6);
-//     }
-//   }, [isConnected, userWhiteListInfo]);
+    if (userWhiteListInfo?.isIdoEnded) {
+      setMaxStep(5);
+      setCurrentStep(5);
+    }
 
-//   return (
-//     <div className="flex py-10 w-full items-center justify-center">
-//       <div className="aspect-square w-[600px] space-y-4 rounded-md border bg-gray-50 p-8 shadow-md">
-//         <div className="text-center text-2xl font-semibold">
-//           {steps[currentStep]?.title || <Spinner />}
-//         </div>
+    if (userWhiteListInfo?.isClaimed) {
+      setMaxStep(6);
+      setCurrentStep(6);
+    }
+  }, [isConnected, userWhiteListInfo]);
 
-//         <div className="overflow-x-auto py-4">
-//           <div className="flex w-[1000px] text-center">
-//             {steps.map((step, index) => (
-//               <div key={step.title} className="flex-1">
-//                 <button
-//                   onClick={() => {
-//                     if (index > maxStep) return;
-//                     return setCurrentStep(index);
-//                   }}
-//                 >
-//                   <div className="flex flex-col items-center justify-center space-y-1">
-//                     <div
-//                       className={cn(
-//                         'flex aspect-square w-14 items-center justify-center rounded-full bg-gray-800 p-4 font-bold text-white hover:opacity-80',
-//                         {
-//                           'bg-green-500': index < maxStep,
-//                         }
-//                       )}
-//                     >
-//                       {index < maxStep ? <AiOutlineCheck /> : index + 1}
-//                     </div>
-//                     <div className="text-sm font-semibold flex items-center whitespace-nowrap">
-//                       {index === maxStep && <Spinner className="w-4" />}
-//                       {step.title}
-//                     </div>
-//                   </div>
-//                 </button>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
+  return (
+    <div className="flex mb-10 w-full items-center justify-center">
+      <div className="aspect-square w-[600px] space-y-4 rounded-md bg-gray-800 p-8 shadow-md">
+        <div className="text-center text-2xl font-semibold">
+          {steps[currentStep]?.title || <Spinner />}
+        </div>
 
-//         {steps[currentStep]?.connectWalletRequired && !isConnected ? (
-//           <PleaseConnectYourWallet />
-//         ) : (
-//           <div className="space-y-3 py-4">{steps[currentStep]?.elements}</div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
+        <div className="overflow-x-auto py-4">
+          <div className="flex w-[1000px] text-center">
+            {steps.map((step, index) => (
+              <div key={step.title} className="flex-1">
+                <button
+                  onClick={() => {
+                    if (index > maxStep) return;
+                    return setCurrentStep(index);
+                  }}
+                >
+                  <div className="flex flex-col items-center justify-center space-y-1">
+                    <div
+                      className={cn(
+                        "flex aspect-square w-14 items-center justify-center rounded-full bg-gray-900 font-bold text-white hover:opacity-80",
+                        {
+                          "bg-green-500": index < maxStep,
+                        }
+                      )}
+                    >
+                      {index < maxStep ? <AiOutlineCheck /> : index + 1}
+                    </div>
+                    <div className="text-sm font-semibold flex items-center whitespace-nowrap">
+                      {index === maxStep && <Spinner className="w-4" />}
+                      {step.title}
+                    </div>
+                  </div>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {steps[currentStep]?.connectWalletRequired && !isConnected ? (
+          <PleaseConnectYourWallet />
+        ) : (
+          <div className="space-y-3 py-4">{steps[currentStep]?.render()}</div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function Main() {
   const router = useRouter();
@@ -323,20 +352,6 @@ export function Main() {
                           <Interweave content={project?.descriptionContent} />
                         </div>
                       </div>
-                      <div className="btn-group mt-4 d-flex flex-wrap gap-20">
-                        <Link
-                          href="/login"
-                          className="default-btn default-btn--small"
-                        >
-                          <span>Claim Token</span>
-                        </Link>
-                        {/* <Link
-                          href="/signup"
-                          className="default-btn default-btn--small default-btn--secondary"
-                        >
-                          <span>Register Now</span>
-                        </Link> */}
-                      </div>
                     </div>
                   </div>
                   <div className="col-lg-5">
@@ -345,17 +360,27 @@ export function Main() {
                         <div className="col-sm-6">
                           <div className="pro-details__info-item">
                             <h6 className="pro-details__info-name">
-                              Total Supply
+                              Targetted Raised
                             </h6>
                             <p className="pro-details__info-value">
-                              1,000,000,000 Bzon
+                              {commify(
+                                formatEther(project?.targettedRaise || 0)
+                              )}{" "}
+                              {project?.token.symbol}
                             </p>
                           </div>
                         </div>
                         <div className="col-sm-6">
                           <div className="pro-details__info-item">
-                            <h6 className="pro-details__info-name">FDV</h6>
-                            <p className="pro-details__info-value">30M USD</p>
+                            <h6 className="pro-details__info-name">
+                              Total Raised
+                            </h6>
+                            <p className="pro-details__info-value">
+                              {commify(
+                                formatEther(project?.token.totalRaised || 0)
+                              )}{" "}
+                              {project?.token.symbol}
+                            </p>
                           </div>
                         </div>
                         <div className="col-sm-6">
@@ -364,16 +389,11 @@ export function Main() {
                               Initial Supply
                             </h6>
                             <p className="pro-details__info-value">
-                              1,300,000,0 Bzon
+                              {commify(
+                                formatEther(project?.token.totalSupply || 0)
+                              )}{" "}
+                              {project?.token.symbol}
                             </p>
-                          </div>
-                        </div>
-                        <div className="col-sm-6">
-                          <div className="pro-details__info-item">
-                            <h6 className="pro-details__info-name">
-                              Initial Market Cap
-                            </h6>
-                            <p className="pro-details__info-value">6.48M USD</p>
                           </div>
                         </div>
                       </div>
@@ -389,17 +409,23 @@ export function Main() {
                   <div className="pro-details__token-item d-flex flex-wrap justify-content-between align-items-center gap-40">
                     <div className="pro-details__token-title">
                       <span>$</span>
-                      <h6>Token Price :</h6>
+                      <h6>Token Price:</h6>
                     </div>
                     <div className="pro-details__token-value">
                       <p>
-                        0.25 <sub>USD</sub>
+                        {commify(
+                          formatEther(project?.IDOContract[0].idoPrice || 0)
+                        )}{" "}
+                        <sub>
+                          {project?.token.symbol} /{" "}
+                          {project?.IDOContract[0].purchaseTokenSymbol}
+                        </sub>
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="col">
-                  <div className="pro-details__token-item d-flex flex-wrap justify-content-between align-items-center gap-40">
+                {/* <div className="col">
+                  <div className="pro-details__token-item d-flex flex-wrap justify-content-between align-items-center gap-40"> {project?.token.symbol}
                     <div className="pro-details__token-title">
                       <span>$</span>
                       <h6>Token Price :</h6>
@@ -410,7 +436,7 @@ export function Main() {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             {/* project description */}
@@ -426,6 +452,8 @@ export function Main() {
                       className="scrollspy-example"
                       tabIndex={0}
                     >
+                      <MainTest />
+
                       {/* about */}
                       <section id="pro-details-about">
                         <h4>About</h4>
