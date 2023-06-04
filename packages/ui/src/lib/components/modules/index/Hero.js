@@ -19,13 +19,14 @@ const Hero = () => {
                 <h1 className="text-uppercase">
                   WEB 3.0 <br />
                   Launchpad <br />
-                  for IDO &amp; INO
+                  for IDO projects
                 </h1>
                 <p>
-                  The next generation gaming ecosystem for IDO&apos;s and INO
+                  The next generation ecosystem for IDO
+                  <br />
                   launchpad web 3.0 platform
                 </p>
-                <DefaultButton text="ExploreIDO" />
+                <DefaultButton text="Explore IDO" />
               </div>
             </div>
             <div className="col-lg-6">

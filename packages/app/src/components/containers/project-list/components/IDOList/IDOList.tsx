@@ -1,23 +1,23 @@
-import { ethers } from 'ethers';
-import React from 'react';
-import { BarLoader } from 'react-spinners';
+import { ethers } from "ethers";
+import React from "react";
+import { BarLoader } from "react-spinners";
 
-import Link from 'next/link';
+import Link from "next/link";
 import {
   FaFacebook,
   FaFirefoxBrowser,
   FaTelegram,
   FaTwitter,
-} from 'react-icons/fa';
-import { api } from '../../../../../utils/api';
+} from "react-icons/fa";
+import { api } from "../../../../../utils/api";
 
 const Column = [
-  'Project Name',
-  'Offical Website',
-  'Participants',
-  'Total Raise/Target Raise',
-  'Status',
-  'Action',
+  "Project Name",
+  "Offical Website",
+  "Participants",
+  "Total Raise/Target Raise",
+  "Status",
+  "Action",
 ];
 
 const LIMIT_PAGE = 5;
@@ -59,7 +59,7 @@ const IDOList = () => {
           <tbody>
             {data?.data?.map(
               (item: any) =>
-                item.status === 'ACTIVE' && (
+                item.status === "ACTIVE" && (
                   <tr
                     className="px-6 py-2 border-b border-gray-200 hover:bg-gray-100"
                     key={item.id}
@@ -78,10 +78,10 @@ const IDOList = () => {
                             {item.name}
                           </div>
                           <div className="text-sm font-semibold text-gray-500">
-                            {item.token.symbol || 'N/A'}
+                            {item.token.symbol || "N/A"}
                           </div>
                           <div className="text-xs text-gray-500">
-                            {item.token.name || 'N/A'}
+                            {item.token.name || "N/A"}
                           </div>
                         </div>
                       </div>
@@ -130,21 +130,21 @@ const IDOList = () => {
                       {item?.targettedRaise &&
                         item?.totalRaised &&
                         ethers.utils.formatEther(item.totalRaised) +
-                          '/' +
+                          "/" +
                           ethers.utils.formatEther(item.targettedRaise)}
                     </td>
                     <td className="min-h-[80px] whitespace-nowrap text-center">
                       <span
                         className={
-                          'px-2 inline-flex text-sm leading-5 font-semibold rounded-full' +
-                          (item.saleStatus === 'CLOSE'
-                            ? ' bg-red-100 text-red-800'
-                            : item.saleStatus === 'OPEN'
-                            ? ' bg-green-100 text-green-800'
-                            : ' bg-yellow-100 text-yellow-800')
+                          "px-2 inline-flex text-sm leading-5 font-semibold rounded-full" +
+                          (item.sale.status === "CLOSE"
+                            ? " bg-red-100 text-red-800"
+                            : item.sale.status === "OPEN"
+                            ? " bg-green-100 text-green-800"
+                            : " bg-yellow-100 text-yellow-800")
                         }
                       >
-                        {item.saleStatus}
+                        {item.sale.status}
                       </span>
                     </td>
                     <td className="min-h-[80px] text-sm font-medium underline whitespace-nowrap text-center">
@@ -166,11 +166,11 @@ const IDOList = () => {
             aria-label="Table navigation"
           >
             <span className="text-sm font-normal text-gray-500 ">
-              Showing{' '}
+              Showing{" "}
               <span className="font-semibold text-gray-900 ">
-                {(page * LIMIT_PAGE || 1) + ' - ' + (page + 1) * LIMIT_PAGE}
-              </span>{' '}
-              of{' '}
+                {(page * LIMIT_PAGE || 1) + " - " + (page + 1) * LIMIT_PAGE}
+              </span>{" "}
+              of{" "}
               <span className="font-semibold text-gray-900 ">
                 {data.meta.total}
               </span>
@@ -204,7 +204,7 @@ const IDOList = () => {
                 <li key={item}>
                   <div
                     className={`block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 ${
-                      item === page ? 'font-semibold text-gray-900' : ''
+                      item === page ? "font-semibold text-gray-900" : ""
                     }`}
                     onClick={() => setPage(item)}
                   >

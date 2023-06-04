@@ -3,7 +3,7 @@ import React from "react";
 
 function DefaultButton({ text }) {
   return (
-    <Link href="/project" className="default-btn">
+    <Link href="/ido-list" className="default-btn">
       {text}
     </Link>
   );

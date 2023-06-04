@@ -1,8 +1,8 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-function Button({ text }) {
+function Button({ text, href = '#' }) {
   return (
-    <Link href="/projectdetails" className="default-btn default-btn--small">
+    <Link href={href} className="default-btn default-btn--small">
       {text}
     </Link>
   );
