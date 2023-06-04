@@ -1,11 +1,11 @@
-import DefaultButton from '../../../components/base/DefaultButton';
+import DefaultButton from "../../../components/base/DefaultButton";
 
 const Hero = () => {
   return (
     <section
       className="banner"
       id="home"
-      style={{ backgroundImage: 'url(images/banner/bg.png)' }}
+      style={{ backgroundImage: "url(images/banner/bg.png)" }}
     >
       <div className="container">
         <div className="banner__wrapper">

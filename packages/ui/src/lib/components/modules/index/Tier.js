@@ -1,4 +1,4 @@
-import Simple from '../../../components/base/Simple';
+import Simple from "../../../components/base/Simple";
 
 function Tier({ tierList, currentTier }) {
   return (
@@ -12,7 +12,7 @@ function Tier({ tierList, currentTier }) {
           </div>
         </div>
         <div className="section__wrapper">
-          <div className="row g-4 justify-content-center row-cols-xl-4 row-cols-lg-3 row-cols-sm-2 row-cols-1">
+          <div className="row g-4 justify-content-center row-cols-xl-6 row-cols-lg-3 row-cols-sm-2 row-cols-1">
             {tierList.map((tier, index) => (
               <div key={`tier-${index}`} className="col">
                 <div className="tier__item">

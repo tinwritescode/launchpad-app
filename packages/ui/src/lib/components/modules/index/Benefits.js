@@ -1,5 +1,4 @@
-import Simple from '../../../components/base/Simple';
-import DefaultButton from '../../../components/base/DefaultButton';
+import Simple from "../../../components/base/Simple";
 
 function Benefits() {
   return (

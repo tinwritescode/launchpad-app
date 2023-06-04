@@ -1,5 +1,5 @@
-import CountUp from 'react-countup';
-import { useRouter } from 'next/router';
+import CountUp from "react-countup";
+import { useRouter } from "next/router";
 const Counter = () => {
   const route = useRouter();
 

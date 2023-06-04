@@ -1,15 +1,15 @@
-import { ethers } from 'ethers';
-import { env } from '../../../../env.mjs';
+import { ethers } from "ethers";
+import { env } from "../../../../env.mjs";
 
 // - Tiers: Bronze: 1000, Silver: 2500, Gold:  5000, Platinum: 10000, Diamond: 250000, Blue Diamond: 750000
 
 export enum TierKeys {
-  BRONZE = 'BRONZE',
-  SILVER = 'SILVER',
-  GOLD = 'GOLD',
-  PLATINUM = 'PLATINUM',
-  DIAMOND = 'DIAMOND',
-  BLUE_DIAMOND = 'BLUE_DIAMOND',
+  BRONZE = "BRONZE",
+  SILVER = "SILVER",
+  GOLD = "GOLD",
+  PLATINUM = "PLATINUM",
+  DIAMOND = "DIAMOND",
+  BLUE_DIAMOND = "BLUE_DIAMOND",
 }
 
 export const NUMBER_OF_PEOPLE: Record<TierKeys, number> = {
@@ -78,21 +78,21 @@ export const buildContracts = ({
 };
 
 export const IDO_CONTRACT_TAILWIND_COLORS: Record<TierKeys, string> = {
-  BRONZE: 'bg-bronze',
-  SILVER: 'bg-silver',
-  GOLD: 'bg-gold',
-  PLATINUM: 'bg-platinum',
-  DIAMOND: 'bg-diamond',
-  BLUE_DIAMOND: 'bg-bluediamond',
+  BRONZE: "bg-bronze",
+  SILVER: "bg-silver",
+  GOLD: "bg-gold",
+  PLATINUM: "bg-platinum",
+  DIAMOND: "bg-diamond",
+  BLUE_DIAMOND: "bg-bluediamond",
 } as const;
 
 export const IDO_CONTRACT_ICON_PATHS: Record<TierKeys, string> = {
-  BRONZE: '/images/tier/bronze.svg',
-  SILVER: '/images/tier/silver.svg',
-  GOLD: '/images/tier/gold.svg',
-  PLATINUM: '/images/tier/platinum.svg',
-  DIAMOND: '/images/tier/diamond.svg',
-  BLUE_DIAMOND: '/images/tier/blue-diamond.svg',
+  BRONZE: "/images/tier/bronze.svg",
+  SILVER: "/images/tier/silver.svg",
+  GOLD: "/images/tier/gold.svg",
+  PLATINUM: "/images/tier/platinum.svg",
+  DIAMOND: "/images/tier/diamond.svg",
+  BLUE_DIAMOND: "/images/tier/blue-diamond.svg",
 } as const;
 
 /** Specs: 
@@ -117,8 +117,8 @@ export const getContractDividendInPercent = (
 
   // fast test: sum all and check if it's 1
   const sum = Object.values(dividend).reduce((acc, cur) => acc + cur, 0);
-  if (sum.toString().slice(0, 3) !== '100') {
-    throw new Error('Dividend sum is not 100%');
+  if (sum.toString().slice(0, 3) !== "100") {
+    throw new Error("Dividend sum is not 100%");
   }
 
   return dividend[contractName] as number;
