@@ -114,30 +114,31 @@ export const projectRouter = createTRPCRouter({
             let symbol = null;
             let decimals = null;
             let totalSupply = null;
+            let startTime = null;
+            let endTime = null;
 
             for (const idoContract of project.IDOContract) {
               const contract = getIdoContract(idoContract.address);
               const erc20TokenContract = getErc20Contract(
                 project.token.address
               );
-              const now = new Date().getTime();
-              const [startTime, endTime] = await Promise.all([
-                contract.startTime(),
-                contract.endTime(),
-              ]);
-
-              [name, symbol, decimals, totalSupply] = await Promise.all([
-                erc20TokenContract?.name(),
-                erc20TokenContract?.symbol(),
-                erc20TokenContract?.decimals(),
-                erc20TokenContract?.totalSupply(),
-              ]);
 
               if (saleStatus === "UNKNOWN") {
-                if (startTime.toNumber() > now) {
+                const now = new Date().getTime();
+                startTime = (await contract.startTime()).toNumber() * 1000;
+                endTime = (await contract.endTime()).toNumber() * 1000;
+
+                [name, symbol, decimals, totalSupply] = await Promise.all([
+                  erc20TokenContract?.name(),
+                  erc20TokenContract?.symbol(),
+                  erc20TokenContract?.decimals(),
+                  erc20TokenContract?.totalSupply(),
+                ]);
+
+                if (startTime > now) {
                   saleStatus = "UPCOMING";
                   break;
-                } else if (endTime.toNumber() < now) {
+                } else if (endTime < now) {
                   saleStatus = "CLOSED";
                 } else {
                   saleStatus = "OPEN";
@@ -161,11 +162,13 @@ export const projectRouter = createTRPCRouter({
                 decimals,
                 totalSupply,
               },
-              saleStatus,
-              ...((saleStatus === "OPEN" || saleStatus === "CLOSED") && {
+              sale: {
+                status: saleStatus,
+                startTime,
+                endTime,
                 totalRaised,
                 totalParticipants,
-              }),
+              },
             };
           })
         );

@@ -1,5 +1,5 @@
-import React from 'react';
-import { IResourceComponentsProps, BaseRecord } from '@refinedev/core';
+import React from "react";
+import { IResourceComponentsProps, BaseRecord } from "@refinedev/core";
 import {
   useTable,
   List,
@@ -9,9 +9,9 @@ import {
   UrlField,
   TagField,
   DateField,
-} from '@refinedev/antd';
-import { Table, Space } from 'antd';
-import { ethers } from 'ethers';
+} from "@refinedev/antd";
+import { Table, Space } from "antd";
+import { ethers } from "ethers";
 
 const { formatEther, commify } = ethers.utils;
 
@@ -26,45 +26,45 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column dataIndex="id" title="Id" />
         <Table.Column dataIndex="name" title="Name" />
         <Table.Column
-          dataIndex={['image']}
+          dataIndex={["image"]}
           title="Image"
           render={(value: any) => (
-            <ImageField style={{ maxWidth: '100px' }} value={value} />
+            <ImageField style={{ maxWidth: "100px" }} value={value} />
           )}
         />
         <Table.Column
-          dataIndex={['videoURL']}
+          dataIndex={["videoURL"]}
           title="Video URL"
           render={(value: any) => <UrlField value={value} />}
         />
         <Table.Column dataIndex="status" title="Status" />
         <Table.Column
-          dataIndex={['createdAt']}
+          dataIndex={["createdAt"]}
           title="Created At"
           render={(value: any) => <DateField value={value} />}
         />
         <Table.Column
-          dataIndex={['updatedAt']}
+          dataIndex={["updatedAt"]}
           title="Updated At"
           render={(value: any) => <DateField value={value} />}
         />
         <Table.Column
-          dataIndex={['websiteURL']}
+          dataIndex={["websiteURL"]}
           title="Website URL"
           render={(value: any) => <UrlField value={value} />}
         />
         <Table.Column
-          dataIndex={['facebookURL']}
+          dataIndex={["facebookURL"]}
           title="Facebook URL"
           render={(value: any) => <UrlField value={value} />}
         />
         <Table.Column
-          dataIndex={['telegramURL']}
+          dataIndex={["telegramURL"]}
           title="Telegram URL"
           render={(value: any) => <UrlField value={value} />}
         />
         <Table.Column
-          dataIndex={['twitterURL']}
+          dataIndex={["twitterURL"]}
           title="Twitter URL"
           render={(value: any) => <UrlField value={value} />}
         />
@@ -85,7 +85,11 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
           title="Targetted Raise"
           render={(value: any) => commify(formatEther(value))}
         />
-        <Table.Column dataIndex="saleStatus" title="Sale Status" />
+        <Table.Column
+          dataIndex="sale"
+          title="Sale Status"
+          render={(item) => item.status}
+        />
         <Table.Column
           title="Actions"
           dataIndex="actions"

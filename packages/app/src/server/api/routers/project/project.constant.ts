@@ -78,12 +78,21 @@ export const buildContracts = ({
 };
 
 export const IDO_CONTRACT_TAILWIND_COLORS: Record<TierKeys, string> = {
-  BRONZE: "bg-yellow-100",
-  SILVER: "bg-gray-100",
-  GOLD: "bg-yellow-100",
-  PLATINUM: "bg-gray-100",
-  DIAMOND: "bg-blue-100",
-  BLUE_DIAMOND: "bg-blue-100",
+  BRONZE: "bg-bronze",
+  SILVER: "bg-silver",
+  GOLD: "bg-gold",
+  PLATINUM: "bg-platinum",
+  DIAMOND: "bg-diamond",
+  BLUE_DIAMOND: "bg-bluediamond",
+} as const;
+
+export const IDO_CONTRACT_ICON_PATHS: Record<TierKeys, string> = {
+  BRONZE: "/images/tier/bronze.svg",
+  SILVER: "/images/tier/silver.svg",
+  GOLD: "/images/tier/gold.svg",
+  PLATINUM: "/images/tier/platinum.svg",
+  DIAMOND: "/images/tier/diamond.svg",
+  BLUE_DIAMOND: "/images/tier/blue-diamond.svg",
 } as const;
 
 /** Specs: 

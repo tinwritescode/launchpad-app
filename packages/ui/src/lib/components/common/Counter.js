@@ -1,12 +1,11 @@
 import CountUp from "react-countup";
 import { useRouter } from "next/router";
 const Counter = () => {
-
-  const route = useRouter()
+  const route = useRouter();
 
   return (
     <div className="counter__section counter__section--uplift">
-      <div className="container padding-top">
+      <div className="container padding-top padding-bottom">
         <div
           className="counter__wrapper aos-init aos-animate"
           data-aos="fade-up"
@@ -68,7 +67,6 @@ const Counter = () => {
                     className="purecounter"
                   >
                     <CountUp end={65} duration={5} />
-
                   </span>
                   M
                 </h3>
