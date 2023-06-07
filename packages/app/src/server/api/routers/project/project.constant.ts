@@ -87,12 +87,12 @@ export const IDO_CONTRACT_TAILWIND_COLORS: Record<TierKeys, string> = {
 } as const;
 
 export const IDO_CONTRACT_ICON_PATHS: Record<TierKeys, string> = {
-  BRONZE: "/images/tier/bronze.svg",
-  SILVER: "/images/tier/silver.svg",
-  GOLD: "/images/tier/gold.svg",
-  PLATINUM: "/images/tier/platinum.svg",
-  DIAMOND: "/images/tier/diamond.svg",
-  BLUE_DIAMOND: "/images/tier/blue-diamond.svg",
+  BRONZE: "/images/tier/01.png",
+  SILVER: "/images/tier/02.png",
+  GOLD: "/images/tier/03.png",
+  PLATINUM: "/images/tier/03.png",
+  DIAMOND: "/images/tier/04.png",
+  BLUE_DIAMOND: "/images/tier/04.png",
 } as const;
 
 /** Specs: 
@@ -103,23 +103,27 @@ export const IDO_CONTRACT_ICON_PATHS: Record<TierKeys, string> = {
 - Diamond tier: 30% (3000 tokens)
 - Blue Diamond tier: 10% (1000 tokens)
    */
+
+export const IDO_CONTRACT_DIVIDEND_PERCENTAGE: Record<TierKeys, number> = {
+  BRONZE: 5,
+  SILVER: 10,
+  GOLD: 20,
+  PLATINUM: 25,
+  DIAMOND: 30,
+  BLUE_DIAMOND: 10,
+} as const;
+
 export const getContractDividendInPercent = (
   contractName: keyof typeof IDO_CONTRACT_STAKING_REQUIRED
 ): number => {
-  const dividend: Record<keyof typeof IDO_CONTRACT_STAKING_REQUIRED, number> = {
-    BRONZE: 5,
-    SILVER: 10,
-    GOLD: 20,
-    PLATINUM: 25,
-    DIAMOND: 30,
-    BLUE_DIAMOND: 10,
-  };
-
   // fast test: sum all and check if it's 1
-  const sum = Object.values(dividend).reduce((acc, cur) => acc + cur, 0);
+  const sum = Object.values(IDO_CONTRACT_DIVIDEND_PERCENTAGE).reduce(
+    (acc, cur) => acc + cur,
+    0
+  );
   if (sum.toString().slice(0, 3) !== "100") {
     throw new Error("Dividend sum is not 100%");
   }
 
-  return dividend[contractName] as number;
+  return IDO_CONTRACT_DIVIDEND_PERCENTAGE[contractName] as number;
 };

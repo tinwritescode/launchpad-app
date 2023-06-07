@@ -115,7 +115,7 @@ function Header() {
                       <Link href="/">Home</Link>
                     </li>
                     <li id="pr-2">
-                      <Link href="/ido-list">Project</Link>
+                      <Link href="/ido-list">Projects</Link>
                     </li>
                     <li id="pr-3">
                       <Link href="/staking">Staking</Link>

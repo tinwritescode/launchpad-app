@@ -59,10 +59,10 @@ const myTeam = [
     img: "/images/team/2.png",
     name: "John Doe",
     role: "CEO & Founder",
-    facebook: null,
-    twitter: null,
-    linkedin: null,
-    instagram: null,
+    facebook: "#",
+    twitter: "#",
+    linkedin: "#",
+    instagram: "#",
   },
 ];
 
