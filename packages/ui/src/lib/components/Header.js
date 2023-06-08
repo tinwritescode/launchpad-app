@@ -128,15 +128,16 @@ function Header() {
                     <Link
                       onClick={() => handleShow()}
                       className="wallet-btn custom-wallet-btn"
-                      href="#"
+                      href=""
                     >
                       {substr(account.toString(), 8)}
                     </Link>
                   ) : (
                     <Link
+                      id="connect-wallet"
                       onClick={() => handleShow()}
                       className="wallet-btn"
-                      href="#"
+                      href=""
                     >
                       <span>Connect </span> <FontAwesomeIcon icon={faWallet} />
                     </Link>
@@ -149,11 +150,7 @@ function Header() {
                         ? "header-bar d-lg-none active"
                         : "header-bar d-lg-none"
                     }
-                  >
-                    <span />
-                    <span />
-                    <span />
-                  </div>
+                  ></div>
                 </div>
               </div>
             </div>

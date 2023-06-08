@@ -1,20 +1,20 @@
-import { Stack } from '@mui/material';
-import { ethers } from 'ethers';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { TbCoin } from 'react-icons/tb';
-import { useAccount } from 'wagmi';
-import { useStakingHook } from '../../containers/staking/useStaking';
-import { Button } from '../AppButton';
-import { LoginModal } from '../LoginModal/LoginModal';
+import { Stack } from "@mui/material";
+import { ethers } from "ethers";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { TbCoin } from "react-icons/tb";
+import { useAccount } from "wagmi";
+import { useStakingHook } from "../../containers/staking/useStaking";
+import { Button } from "../AppButton";
+import { LoginModal } from "../LoginModal/LoginModal";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip';
-import { ChangeNetwork } from './ChangeNetwork';
+} from "../ui/tooltip";
+import { ChangeNetwork } from "./ChangeNetwork";
 
 function Header() {
   const router = useRouter();
@@ -22,21 +22,21 @@ function Header() {
   const { unclaimedRewards } = useStakingHook();
   const links = [
     {
-      name: 'Home',
-      url: '/',
+      name: "Home",
+      url: "/",
     },
     {
-      name: 'IDOs',
-      url: '/ido-list',
+      name: "IDOs",
+      url: "/ido-list",
     },
     {
-      name: 'Staking',
-      url: '/staking',
+      name: "Staking",
+      url: "/staking",
     },
   ];
 
   const formattedUnclaimRewards = Number(
-    ethers.utils.formatEther(unclaimedRewards || '0')
+    ethers.utils.formatEther(unclaimedRewards || "0")
   ).toFixed(2);
 
   return (
@@ -66,17 +66,17 @@ function Header() {
                     variant="outline"
                     className="font-bold gap-0.5"
                     onClick={() => {
-                      router.push('/staking');
+                      router.push("/staking");
                     }}
                   >
                     <TbCoin />
-                    {formattedUnclaimRewards || '0'} STRAW
+                    {formattedUnclaimRewards || "0"} STRAW
                   </Button>
                 </TooltipTrigger>
 
                 <TooltipContent>
                   <p>
-                    Unclaimed Rewards: {formattedUnclaimRewards || '0'} STRAW
+                    Unclaimed Rewards: {formattedUnclaimRewards || "0"} STRAW
                   </p>
                 </TooltipContent>
               </Tooltip>

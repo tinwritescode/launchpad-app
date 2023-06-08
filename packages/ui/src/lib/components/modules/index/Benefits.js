@@ -24,10 +24,12 @@ function Benefits() {
                     />
                   </div>
                   <div className="benifit__item-content">
-                    <h4>Cross Chain</h4>
+                    <h4>Access to a Wide Investor Community</h4>
                     <p>
-                      Lorem ipsum dolor, sit amet consec tetur adipisicing elit.
-                      Provident eius eaque aspernatur amet
+                      By launching your project on our IDO launchpad, you gain
+                      access to a large and diverse investor community,
+                      increasing your chances of attracting potential investors
+                      and raising funds for your project.
                     </p>
                   </div>
                 </div>
@@ -44,10 +46,13 @@ function Benefits() {
                     />
                   </div>
                   <div className="benifit__item-content">
-                    <h4>Stack Pad</h4>
+                    <h4>Credibility and Trust</h4>
                     <p>
-                      Lorem ipsum dolor, sit amet consec tetur adipisicing elit.
-                      Provident eius eaque aspernatur amet
+                      Our platform is known for its credibility and
+                      trustworthiness in the crypto space. By choosing our
+                      launchpad, your project benefits from our established
+                      reputation, which can enhance investor confidence and
+                      attract more participation.
                     </p>
                   </div>
                 </div>
@@ -64,10 +69,13 @@ function Benefits() {
                     />
                   </div>
                   <div className="benifit__item-content">
-                    <h4>Multi Layer</h4>
+                    <h4>Technical Support and Expertise</h4>
                     <p>
-                      Lorem ipsum dolor, sit amet consec tetur adipisicing elit.
-                      Provident eius eaque aspernatur amet
+                      Our experienced team provides comprehensive technical
+                      support throughout the IDO launch process. We assist with
+                      token creation, smart contract audits, token distribution,
+                      and other technical aspects, ensuring a smooth and secure
+                      launch for your project.
                     </p>
                   </div>
                 </div>
@@ -84,10 +92,13 @@ function Benefits() {
                     />
                   </div>
                   <div className="benifit__item-content">
-                    <h4>Elite Projects</h4>
+                    <h4>Marketing Exposure</h4>
                     <p>
-                      Lorem ipsum dolor, sit amet consec tetur adipisicing elit.
-                      Provident eius eaque aspernatur amet
+                      We actively promote IDOs on our platform, leveraging our
+                      marketing channels and community outreach. By launching
+                      through our platform, your project gains visibility and
+                      exposure to a wider audience, helping to generate interest
+                      and attract potential investors.
                     </p>
                   </div>
                 </div>

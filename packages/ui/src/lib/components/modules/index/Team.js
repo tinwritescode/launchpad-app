@@ -8,39 +8,31 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
+import Image from "next/image";
 
 const myTeam = [
   {
-    img: "/images/team/1.png",
-    name: "John Doe",
-    role: "CEO & Founder",
+    img: "/images/team/2.jpg",
+    name: "Tin Nguyen",
+    role: "Founder & Chief Executive Officer",
     facebook: "#",
     twitter: "#",
     linkedin: "#",
     instagram: "#",
   },
   {
-    img: "/images/team/2.png",
-    name: "John Doe",
-    role: "CEO & Founder",
+    img: "/images/team/6.jpg",
+    name: "Vy Ho",
+    role: "Co-Founder & Chief Marketing Officer",
     facebook: "#",
     twitter: "#",
     linkedin: "#",
     instagram: "#",
   },
   {
-    img: "/images/team/1.png",
-    name: "John Doe",
-    role: "CEO & Founder",
-    facebook: "#",
-    twitter: "#",
-    linkedin: "#",
-    instagram: "#",
-  },
-  {
-    img: "/images/team/2.png",
-    name: "John Doe",
-    role: "CEO & Founder",
+    img: "/images/team/5.png",
+    name: "Toan Tran",
+    role: "CEO & Co-Founder",
     facebook: "#",
     twitter: "#",
     linkedin: "#",
@@ -48,17 +40,26 @@ const myTeam = [
   },
   {
     img: "/images/team/1.png",
-    name: "John Doe",
-    role: "CEO & Founder",
+    name: "Phat Nguyen",
+    role: "CEO",
     facebook: "#",
     twitter: "#",
     linkedin: "#",
     instagram: "#",
   },
   {
-    img: "/images/team/2.png",
-    name: "John Doe",
-    role: "CEO & Founder",
+    img: "/images/team/3.jpg",
+    name: "Kien Nguyen",
+    role: "CEO",
+    facebook: "#",
+    twitter: "#",
+    linkedin: "#",
+    instagram: "#",
+  },
+  {
+    img: "/images/team/4.png",
+    name: "Thieu Dang",
+    role: "CEO",
     facebook: "#",
     twitter: "#",
     linkedin: "#",
@@ -87,8 +88,10 @@ function Team({ team = myTeam }) {
                   data-aos-duration={800}
                 >
                   <div className="team__thumb">
-                    <img
-                      width="auto"
+                    <Image
+                      style={{ width: "350px", height: "250px" }}
+                      width={250}
+                      height={250}
                       src={member.img}
                       alt="Team Member Image"
                     />

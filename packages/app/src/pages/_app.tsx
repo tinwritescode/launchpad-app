@@ -8,7 +8,6 @@ import { Toaster } from "react-hot-toast";
 import { wagmiClient } from "shared";
 import { WagmiConfig } from "wagmi";
 import { Providers } from "../components/providers";
-import "../styles/globals.css";
 import { api } from "../utils/api";
 import { theme } from "../utils/theme";
 
