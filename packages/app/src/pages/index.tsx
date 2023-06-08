@@ -10,6 +10,7 @@ import {
   IDO_CONTRACT_STAKING_REQUIRED,
   IDO_CONTRACT_TAILWIND_COLORS,
   IDO_CONTRACT_ICON_PATHS,
+  IDO_CONTRACT_DIVIDEND_PERCENTAGE,
   TierKeys,
 } from "../server/api/routers/project/project.constant";
 
@@ -57,6 +58,7 @@ function Home() {
       stakingRequired: IDO_CONTRACT_STAKING_REQUIRED[key as TierKeys],
       color: IDO_CONTRACT_TAILWIND_COLORS[key as TierKeys],
       img: IDO_CONTRACT_ICON_PATHS[key as TierKeys],
+      percentage: IDO_CONTRACT_DIVIDEND_PERCENTAGE[key as TierKeys],
     };
   });
 

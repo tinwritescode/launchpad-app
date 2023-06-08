@@ -95,7 +95,7 @@ const Completed = ({ data, isLoading }) => {
             data-aos-duration={800}
           >
             <Link href="/ido-list#closed" className="default-btn">
-              "View More"
+              View More
             </Link>
           </div>
         </div>
