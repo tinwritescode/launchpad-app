@@ -39,7 +39,19 @@ function Work({ stepNum }) {
               <div className="col-lg-4 col-sm-6" key={`work-step-${index}`}>
                 <div className="work__item">
                   <div className="work__item-inner">
-                    <Link href={step.link}>
+                    <Link
+                      href={step.link}
+                      className={`work__item-link ${
+                        stepNum > index ? "active" : ""
+                      }`}
+                      onClick={(e) => {
+                        // if stepNum === 0 then connect wallet not redirect to /# but open modal
+                        if (stepNum === 0) {
+                          e.preventDefault();
+                          document.getElementById("connect-wallet").click();
+                        }
+                      }}
+                    >
                       <div className="work__item-thumb">
                         <img
                           width="auto"
@@ -58,7 +70,16 @@ function Work({ stepNum }) {
             ))}
           </div>
           <div className="text-center mt-5">
-            <Link href={Steps[stepNum].link} className="default-btn">
+            <Link
+              href={Steps[stepNum].link}
+              className="default-btn"
+              onClick={(e) => {
+                if (stepNum === 0) {
+                  e.preventDefault();
+                  document.getElementById("connect-wallet").click();
+                }
+              }}
+            >
               {Steps[stepNum].title}
             </Link>
           </div>

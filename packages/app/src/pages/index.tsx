@@ -1,31 +1,28 @@
 // import { useQuery } from '@tanstack/react-query';
 import { ethers } from "ethers";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-import { useAccount, useQuery } from "wagmi";
+import { useAccount } from "wagmi";
 import { useStakingHook } from "../components/containers/staking/useStaking";
-import { env } from "../env.mjs";
-import { useErc20Contract } from "../libs/blockchain";
 import {
+  IDO_CONTRACT_DIVIDEND_PERCENTAGE,
+  IDO_CONTRACT_ICON_PATHS,
   IDO_CONTRACT_STAKING_REQUIRED,
   IDO_CONTRACT_TAILWIND_COLORS,
-  IDO_CONTRACT_ICON_PATHS,
-  IDO_CONTRACT_DIVIDEND_PERCENTAGE,
   TierKeys,
 } from "../server/api/routers/project/project.constant";
 
+import { Counter } from "@strawberry/ui";
 import {
-  Work,
+  Benefits,
+  Completed,
   Hero,
+  Opening,
   Team,
   Tier,
-  Benefits,
   Upcoming,
-  Opening,
-  Completed,
+  Work,
 } from "packages/ui/src/lib/components/modules/index/index.js";
 import { api } from "../utils/api";
-import { Counter } from "@strawberry/ui";
 
 function Home() {
   const { amountStaked } = useStakingHook();

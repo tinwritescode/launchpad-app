@@ -28,7 +28,9 @@ function Tier({ tierList, currentTier }) {
                       <ul>
                         <li>
                           <p className="tier__title">Staking Requirements</p>
-                          <p className="tier__value">{tier.stakingRequired}</p>
+                          <p className="tier__value">
+                            {tier.stakingRequired.toLocaleString("en-US")}
+                          </p>
                         </li>
                         <li>
                           <p className="tier__title">Token Allocation</p>
