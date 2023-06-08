@@ -96,16 +96,15 @@ export const projectRouter = createTRPCRouter({
         ]);
 
         const fullData = await Promise.all(
-          data.map(async (project: any) => {
+          data.map(async (project) => {
             let saleStatus: "UNKNOWN" | "UPCOMING" | "OPEN" | "CLOSED" =
               "UNKNOWN";
-            if (
-              project.IDOContract.length === 0 ||
-              project.status !== Status.ACTIVE
-            ) {
+            if (!project.IDOContract || project.status !== Status.ACTIVE) {
               return {
                 ...project,
-                saleStatus,
+                sale: {
+                  status: saleStatus,
+                },
               };
             }
             let totalRaised = BigNumber.from(0);
@@ -119,6 +118,12 @@ export const projectRouter = createTRPCRouter({
 
             for (const idoContract of project.IDOContract) {
               const contract = getIdoContract(idoContract.address);
+              if (!project.token) {
+                throw new TRPCError({
+                  code: "INTERNAL_SERVER_ERROR",
+                  message: "Project token not found",
+                });
+              }
               const erc20TokenContract = getErc20Contract(
                 project.token.address
               );
