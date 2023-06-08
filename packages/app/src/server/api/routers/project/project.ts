@@ -884,6 +884,12 @@ export const projectRouter = createTRPCRouter({
               timestamp: parsedLog.args.timestamp.toNumber(),
             };
           }),
+          idoEndTime: await _idoContract
+            .endTime()
+            .then((time) => time.toNumber() * 1000),
+          idoStartTime: await _idoContract
+            .startTime()
+            .then((time) => time.toNumber() * 1000),
         };
       }
 

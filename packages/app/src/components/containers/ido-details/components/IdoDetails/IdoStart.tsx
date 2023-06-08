@@ -87,7 +87,17 @@ function IdoStart() {
       {!data?.isIdoStarted ? (
         <p>❌ IDO has not started yet. Please wait until the IDO starts.</p>
       ) : (
-        <p>✅ IDO has started. You can purchase now.</p>
+        <>
+          <p>✅ IDO has started. You can purchase now.</p>
+          <p>
+            ⏳ IDO will end at{" "}
+            {data?.idoEndTime && (
+              <span className="font-semibold">
+                {new Date(data?.idoEndTime).toLocaleString()}
+              </span>
+            )}
+          </p>
+        </>
       )}
 
       <div className="flex justify-center">
@@ -99,10 +109,12 @@ function IdoStart() {
           }}
           disabled={!data?.isIdoStarted}
         >
-          {!data?.isIdoStarted ? (
+          {!data?.isIdoStarted && data?.idoStartTime ? (
             <>
               <Spinner className="mr-2 w-4" color="green" />
-              <span>IDO has not started yet</span>
+              <span>
+                IDO start in {new Date(data?.idoStartTime).toLocaleString()}
+              </span>
             </>
           ) : (
             "Purchase"

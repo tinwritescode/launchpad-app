@@ -25,7 +25,7 @@ const LIMIT_PAGE = 5;
 const IDOList = () => {
   const [page, setPage] = React.useState(0);
 
-  const { data, isLoading, error, refetch } = api.project.getAll.useQuery({
+  const { data, isLoading, error } = api.project.getAll.useQuery({
     offset: page * LIMIT_PAGE,
     limit: LIMIT_PAGE,
   });

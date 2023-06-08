@@ -16,32 +16,33 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ApplyToLaunch, PageHeader } from "@strawberry/ui";
+import BNjs from "bignumber.js";
+import { ethers } from "ethers";
 import { Interweave } from "interweave";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { api } from "../../../../../utils/api";
-import { ethers } from "ethers";
-import { Label } from "@mui/icons-material";
-import React, { useMemo, useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
+import {
+  IoIosGlobe,
+  IoIosPaperPlane,
+  IoLogoInstagram,
+  IoLogoLinkedin,
+  IoMdInformationCircleOutline,
+} from "react-icons/io";
+import { IoLogoFacebook, IoLogoTwitter } from "react-icons/io5";
 import { useAccount } from "wagmi";
+import { api } from "../../../../../utils/api";
 import { cn } from "../../../../../utils/tailwind";
 import PleaseConnectYourWallet from "../../../../common/PleaseConnectYourWallet";
+import { Card } from "../../../../common/ui/card";
+import Spinner from "../../../../common/ui/spinner";
 import Claim from "./Claim";
 import IdoStart from "./IdoStart";
 import { StakingInfo } from "./StakingInfo";
 import WhitelistTable from "./WhitelistTable";
-import {
-  IoIosGlobe,
-  IoIosPaperPlane,
-  IoLogoLinkedin,
-  IoLogoInstagram,
-} from "react-icons/io";
-import { IoLogoFacebook, IoLogoTwitter } from "react-icons/io5";
-import { IoMdInformationCircleOutline } from "react-icons/io";
-import Spinner from "../../../../common/ui/spinner";
-import { Card } from "../../../../common/ui/card";
+import { Label } from "../../../../common/ui/label";
 
 const { formatEther, commify } = ethers.utils;
 
@@ -90,50 +91,51 @@ export function MainTest() {
               </Label>
               <p
                 className={cn(
-                  "text-sm text-gray-600",
+                  "text-sm text-gray-200",
                   "whitespace-pre-wrap",
                   "overflow-ellipsis overflow-hidden",
                   "my-2"
                 )}
               >
-                {data?.descriptionContent}
+                <Interweave content={data?.descriptionContent} />
               </p>
             </div>
             {data?.websiteURL && (
-              <div>
+              <div className="flex items-center gap-1">
                 <Label className="flex items-center gap-1">
-                  <IoIosGlobe color="#1DA1F2" />
+                  <IoIosGlobe size={24} color="#1DA1F2" />
                   Website:
                 </Label>
                 <a
                   href={data?.websiteURL}
                   target="_blank"
-                  className="text-sm text-gray-600"
+                  className="text-sm text-gray-200"
                 >
                   {data?.websiteURL}
                 </a>
               </div>
             )}
             {data?.facebookURL && (
-              <div>
+              <div className="flex items-center gap-1">
                 <Label className="flex items-center gap-1">
-                  <IoLogoFacebook color="#4267B2" />
+                  <IoLogoFacebook size={24} />
                   Facebook Page:
                 </Label>
                 <a
                   href={data?.facebookURL}
                   target="_blank"
-                  className="text-sm text-gray-600"
+                  className="text-sm text-gray-200"
                 >
                   {data?.facebookURL}
                 </a>
               </div>
             )}
             {data?.telegramURL && (
-              <div>
+              <div className="flex items-center gap-1">
                 <Label className="flex items-center gap-1">
                   <IoIosPaperPlane
                     style={{ borderRadius: "50%", background: "#1DA1F2" }}
+                    size={24}
                     color="#fff"
                   />
                   Telegram Channel:
@@ -141,22 +143,22 @@ export function MainTest() {
                 <a
                   href={data?.telegramURL}
                   target="_blank"
-                  className="text-sm text-gray-600"
+                  className="text-sm text-gray-200"
                 >
                   {data?.telegramURL}
                 </a>
               </div>
             )}
             {data?.twitterURL && (
-              <div>
+              <div className="flex items-center gap-1">
                 <Label className="flex items-center gap-1">
-                  <IoLogoTwitter color="#1DA1F2" />
+                  <IoLogoTwitter color="#1DA1F2" size={24} />
                   Twitter Page:
                 </Label>
                 <a
                   href={data?.twitterURL}
                   target="_blank"
-                  className="text-sm text-gray-600"
+                  className="text-sm text-gray-200"
                 >
                   {data?.twitterURL}
                 </a>
@@ -173,7 +175,7 @@ export function MainTest() {
           <div className="grid grid-cols-3 gap-4">
             {["John", "Doe", "Alice", "Bob", "Lan", "Linh"].map((name) => (
               <Card
-                className="flex flex-col items-center gap-1 p-4 bg-gray-400"
+                className="flex flex-col items-center gap-1 p-4 bg-gray-200 text-gray-800"
                 key={name}
               >
                 <img
@@ -226,7 +228,16 @@ export function MainTest() {
         connectWalletRequired: true,
       },
     ],
-    []
+    [
+      data?.descriptionContent,
+      data?.facebookURL,
+      data?.image,
+      data?.name,
+      data?.telegramURL,
+      data?.token?.symbol,
+      data?.twitterURL,
+      data?.websiteURL,
+    ]
   );
 
   const { address } = useAccount();
@@ -262,7 +273,7 @@ export function MainTest() {
   }, [isConnected, userWhiteListInfo]);
 
   return (
-    <div className="flex mb-10 w-full items-center justify-center">
+    <div className="flex mb-10 w-full items-center justify-center text-gray-200">
       <div className="aspect-square w-[600px] space-y-4 rounded-md bg-gray-800 p-8 shadow-md">
         <div className="text-center text-2xl font-semibold">
           {steps[currentStep]?.title || <Spinner />}
@@ -364,7 +375,9 @@ export function Main() {
                             </h6>
                             <p className="pro-details__info-value">
                               {commify(
-                                formatEther(project?.targettedRaise || 0)
+                                formatEther(
+                                  BNjs(project?.targettedRaise || 0).toFixed(0)
+                                )
                               )}{" "}
                               {project?.token.symbol}
                             </p>
@@ -377,7 +390,11 @@ export function Main() {
                             </h6>
                             <p className="pro-details__info-value">
                               {commify(
-                                formatEther(project?.token.totalRaised || 0)
+                                formatEther(
+                                  BNjs(
+                                    project?.token.totalRaised || 0
+                                  ).toFixed()
+                                )
                               )}{" "}
                               {project?.token.symbol}
                             </p>

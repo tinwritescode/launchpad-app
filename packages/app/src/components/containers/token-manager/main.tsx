@@ -1,24 +1,24 @@
-import { Dividend__factory } from '@strawberry/contracts';
-import { useQuery } from '@tanstack/react-query';
-import { BigNumber as BigNumberJS } from 'bignumber.js';
-import { ethers } from 'ethers';
-import moment from 'moment';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
-import { toast } from 'react-hot-toast';
-import { AiOutlineCheck } from 'react-icons/ai';
-import { FaHourglassEnd } from 'react-icons/fa';
-import { useAccount } from 'wagmi';
-import { getErc20Contract, getRpcProvider } from '../../../libs/blockchain';
-import { api } from '../../../utils/api';
-import { getSigner } from '../../../utils/ethereum';
-import { cn } from '../../../utils/tailwind';
-import { Button } from '../../common';
-import PleaseConnectYourWallet from '../../common/PleaseConnectYourWallet';
-import { Input } from '../../common/ui/input';
-import { Label } from '../../common/ui/label';
-import Spinner from '../../common/ui/spinner';
+import { Dividend__factory } from "@strawberry/contracts";
+import { useQuery } from "@tanstack/react-query";
+import { BigNumber as BigNumberJS } from "bignumber.js";
+import { ethers } from "ethers";
+import moment from "moment";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
+import { toast } from "react-hot-toast";
+import { AiOutlineCheck } from "react-icons/ai";
+import { FaHourglassEnd } from "react-icons/fa";
+import { useAccount } from "wagmi";
+import { getErc20Contract, getRpcProvider } from "../../../libs/blockchain";
+import { api } from "../../../utils/api";
+import { getSigner } from "../../../utils/ethereum";
+import { cn } from "../../../utils/tailwind";
+import { Button } from "../../common";
+import PleaseConnectYourWallet from "../../common/PleaseConnectYourWallet";
+import { Input } from "../../common/ui/input";
+import { Label } from "../../common/ui/label";
+import Spinner from "../../common/ui/spinner";
 
 const formatEtherAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -41,7 +41,7 @@ export function Inside() {
   const erc20Contract =
     dividendInfo && getErc20Contract(dividendInfo?.tokenAddress);
   const { data: distributeInfo, refetch: refetchDistributeInfo } = useQuery(
-    ['distribute', query?.projectId],
+    ["distribute", query?.projectId],
     async () => {
       if (!dividendInfo) {
         return null;
@@ -93,7 +93,7 @@ export function Inside() {
 
   const steps = [
     {
-      title: 'Send token',
+      title: "Send token",
       elements: [
         <div key={1}>
           <Label>Token name</Label>
@@ -123,7 +123,7 @@ export function Inside() {
                   ? ethers.utils.formatEther(
                       BigNumberJS(dividendInfo?.dividendBalance).toFixed(0)
                     )
-                  : 'Loading...'
+                  : "Loading..."
               }
               disabled
             />
@@ -139,7 +139,7 @@ export function Inside() {
                 ? ethers.utils.formatEther(
                     BigNumberJS(dividendInfo?.requiredBalance).toFixed(0)
                   )
-                : 'Loading...'
+                : "Loading..."
             }
             disabled
           />
@@ -154,12 +154,12 @@ export function Inside() {
                 BigNumberJS(dividendInfo?.dividendBalance).gt(
                   dividendInfo?.requiredBalance
                 )
-                  ? '0'
+                  ? "0"
                   : ethers.utils.formatEther(
                       BigNumberJS(dividendInfo.requiredBalance)
                         .minus(BigNumberJS(dividendInfo.dividendBalance))
                         .toFixed(0)
-                    ) || 'Loading...'
+                    ) || "Loading..."
               }
               disabled
             />
@@ -191,12 +191,12 @@ export function Inside() {
                   )
                   .then((tx) => tx.wait()),
                 {
-                  loading: 'Sending...',
+                  loading: "Sending...",
                   success: (e) => {
                     refetchDistributeInfo();
-                    return 'Sent!';
+                    return "Sent!";
                   },
-                  error: 'Failed to send',
+                  error: "Failed to send",
                 }
               );
             }}
@@ -213,7 +213,7 @@ export function Inside() {
       ] as React.ReactNode[],
     },
     {
-      title: 'Wait for distributing',
+      title: "Wait for distributing",
       elements: [
         (distributeInfo?.length === 0 && (
           <div className="my-10">
@@ -241,7 +241,7 @@ export function Inside() {
                 <tr key={`${info.address}_${info.timestamp}`}>
                   <td>{formatEtherAddress(info.address)}</td>
                   <td>{ethers.utils.formatEther(info.amount.toString())}</td>
-                  <td>{moment(info.timestamp).format('YYYY/MM/DD - HH:mm')}</td>
+                  <td>{moment(info.timestamp).format("YYYY/MM/DD - HH:mm")}</td>
                 </tr>
               ))}
             </tbody>
@@ -250,30 +250,30 @@ export function Inside() {
       ] as React.ReactNode[],
     },
     {
-      title: 'IDO ready',
+      title: "IDO ready",
       elements: [
         <div key={1}>
           <AiOutlineCheck className="inline-block mr-2" /> Ready to start IDO
         </div>,
         <div key={2}>
-          <AiOutlineCheck className="inline-block mr-2" /> IDO start date:{' '}
+          <AiOutlineCheck className="inline-block mr-2" /> IDO start date:{" "}
           {moment(
-            BigNumberJS(dividendInfo?.idoStartIn.toString() || '0')
+            BigNumberJS(dividendInfo?.idoStartIn.toString() || "0")
               .multipliedBy(1000)
               .toNumber()
-          ).format('YYYY/MM/DD - HH:mm')}
+          ).format("YYYY/MM/DD - HH:mm")}
         </div>,
       ] as React.ReactNode[],
     },
     {
-      title: 'IDO finished',
+      title: "IDO finished",
       elements: [],
     },
   ];
 
   return (
     <div className="flex py-10 w-full items-center justify-center">
-      <div className="aspect-square w-[600px] space-y-4 rounded-md border bg-gray-50 p-8 shadow-md">
+      <div className="aspect-square w-[600px] space-y-4 rounded-md text-gray-800 border bg-gray-50 p-8 shadow-md">
         <div className="text-center text-2xl font-semibold">IDO Controller</div>
 
         {isConnected ? (
@@ -296,9 +296,9 @@ export function Inside() {
                     >
                       <div
                         className={cn(
-                          'flex aspect-square w-14 items-center justify-center rounded-full bg-gray-800 p-4 font-bold text-white hover:opacity-80',
+                          "flex aspect-square w-14 items-center justify-center rounded-full bg-gray-800 font-bold text-white hover:opacity-80",
                           {
-                            'bg-green-500': index < maxStep,
+                            "bg-green-500": index < maxStep,
                           }
                         )}
                       >
