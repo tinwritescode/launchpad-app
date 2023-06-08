@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
-const ItemSlider = ({ project }) => (
+const ProjectItem = ({ project }) => (
   <div className="swiper-slide">
     <div className="project__item">
       <div className="project__item-inner">
@@ -97,44 +97,51 @@ function Upcoming({ data, isLoading }) {
         </div>
 
         <div className="project__wrapper">
-          <div className="swiper project__slider py-2">
-            <div className="swiper-wrapper">
-              <Swiper
-                spaceBetween={30}
-                slidesPerView={3}
-                speed={1200}
-                autoplay={{ delay: 3500, disableOnInteraction: false }}
-                pagination={{
-                  el: ".project__slider-pagination",
-                  clickable: true,
-                }}
-                navigation={{
-                  nextEl: ".project__slider2-next",
-                  prevEl: ".project__slider2-prev",
-                }}
-                loop={true}
-                breakpoints={{
-                  0: {
-                    slidesPerView: 1,
-                  },
-                  768: {
-                    slidesPerView: 2,
-                  },
-                  992: {
-                    slidesPerView: 3,
-                  },
-                }}
-              >
-                {!isLoading &&
-                  data?.map((item, index) => (
-                    <SwiperSlide key={`project-${index}`}>
-                      <ItemSlider project={item} />
-                    </SwiperSlide>
-                  ))}
-              </Swiper>
-            </div>
-            <div className="project__slider-pagination mt-4 text-center" />
-          </div>
+          {!isLoading &&
+            data &&
+            (data.length > 0 ? (
+              <div className="swiper project__slider py-2">
+                <div className="swiper-wrapper">
+                  <Swiper
+                    spaceBetween={30}
+                    slidesPerView={3}
+                    speed={1200}
+                    autoplay={{ delay: 3500, disableOnInteraction: false }}
+                    pagination={{
+                      el: ".project__slider-pagination",
+                      clickable: true,
+                    }}
+                    navigation={{
+                      nextEl: ".project__slider2-next",
+                      prevEl: ".project__slider2-prev",
+                    }}
+                    loop={true}
+                    breakpoints={{
+                      0: {
+                        slidesPerView: 1,
+                      },
+                      768: {
+                        slidesPerView: 2,
+                      },
+                      992: {
+                        slidesPerView: 3,
+                      },
+                    }}
+                  >
+                    {data.map((item, index) => (
+                      <SwiperSlide>
+                        <ProjectItem project={item} />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
+                <div className="project__slider-pagination mt-4 text-center" />
+              </div>
+            ) : (
+              <div className="text-center">
+                <h2>No Upcoming Projects</h2>
+              </div>
+            ))}
         </div>
       </div>
     </section>

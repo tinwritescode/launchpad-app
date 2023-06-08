@@ -45,10 +45,10 @@ const ProjectItem = ({ project }) => (
           <h6>
             <span className="color--theme-color">
               {ethers.utils.formatEther(project.sale.totalRaised)}
-            </span>
+            </span>{" "}
+            /{" "}
             <span>
-              {" "}
-              / {ethers.utils.formatEther(project.targettedRaise)} STRAW
+              {ethers.utils.formatEther(project.targettedRaise)} STRAW
             </span>
           </h6>
           <div className="progress">
@@ -56,7 +56,10 @@ const ProjectItem = ({ project }) => (
               className="progress-bar"
               role="progressbar"
               style={{
-                width: "25%",
+                width: `${ethers.BigNumber.from(project.sale.totalRaised)
+                  .mul(100)
+                  .div(project.targettedRaise)
+                  .toNumber()}%`,
               }}
               aria-valuenow={25}
               aria-valuemin={0}
@@ -69,11 +72,11 @@ const ProjectItem = ({ project }) => (
   </div>
 );
 
-const Completed = ({ data, isLoading }) => {
+function Completed({ data, isLoading }) {
   return (
-    <section className="project padding-bottom project--completed2">
+    <section className="project padding-top padding-bottom project--completed2">
       <div className="container">
-        <div className="section-header section-header--middle">
+        <div className="section-header section-header--left">
           <div className="section-header__content">
             <div className="section-header__titlebar">
               <Simple subTitle="Previous" title="Completed Projects" />
@@ -81,14 +84,19 @@ const Completed = ({ data, isLoading }) => {
           </div>
         </div>
         <div className="project__wrapper">
-          <div className="row g-4">
-            {!isLoading &&
-              data
-                ?.slice(0, 5)
-                .map((project) => (
-                  <ProjectItem key={project.id} project={project} />
+          {!isLoading &&
+            data &&
+            (data.length > 0 ? (
+              <div className="row g-4">
+                {data.slice(0, 5).map((project) => (
+                  <ProjectItem project={project} />
                 ))}
-          </div>
+              </div>
+            ) : (
+              <div className="text-center">
+                <h2>No Completed Projects Yet</h2>
+              </div>
+            ))}
           <div
             className="text-center mt-5 aos-init aos-animate"
             data-aos="fade-up"
@@ -102,6 +110,6 @@ const Completed = ({ data, isLoading }) => {
       </div>
     </section>
   );
-};
+}
 
 export default Completed;

@@ -46,7 +46,7 @@ function Benefits() {
                     />
                   </div>
                   <div className="benifit__item-content">
-                    <h4>Credibility and Trust</h4>
+                    <h4>Credibility and Trust in the Crypto Space</h4>
                     <p>
                       Our platform is known for its credibility and
                       trustworthiness in the crypto space. By choosing our
@@ -92,7 +92,7 @@ function Benefits() {
                     />
                   </div>
                   <div className="benifit__item-content">
-                    <h4>Marketing Exposure</h4>
+                    <h4>Marketing Exposure and Visibility</h4>
                     <p>
                       We actively promote IDOs on our platform, leveraging our
                       marketing channels and community outreach. By launching
