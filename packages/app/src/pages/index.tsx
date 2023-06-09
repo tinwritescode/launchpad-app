@@ -68,7 +68,10 @@ function Home() {
         data={data?.data?.filter((item) => item.sale.status === "UPCOMING")}
         isLoading={isLoading}
       />
-      <Opening />
+      <Opening
+        data={data?.data?.filter((item) => item.sale.status === "OPEN")}
+        isLoading={isLoading}
+      />
       <Completed
         data={data?.data?.filter((item) => item.sale.status === "CLOSED")}
         isLoading={isLoading}
