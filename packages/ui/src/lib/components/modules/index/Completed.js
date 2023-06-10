@@ -39,6 +39,9 @@ const ProjectItem = ({ project }) => (
           <p>
             Completed on {new Date(project.sale.endTime).toLocaleDateString()}
           </p>
+          <p className="color--theme-color">
+            {project.sale.totalParticipants} Participants
+          </p>
         </div>
         <div className="project__item-amount">
           <div>Raised Amount</div>
@@ -79,7 +82,7 @@ function Completed({ data, isLoading }) {
         <div className="section-header section-header--left">
           <div className="section-header__content">
             <div className="section-header__titlebar">
-              <Simple subTitle="Previous" title="Completed Projects" />
+              <Simple subTitle="Completed" title="Previous Projects" />
             </div>
           </div>
         </div>
@@ -88,8 +91,8 @@ function Completed({ data, isLoading }) {
             data &&
             (data.length > 0 ? (
               <div className="row g-4">
-                {data.slice(0, 5).map((project) => (
-                  <ProjectItem project={project} />
+                {data.slice(0, 5).map((project, index) => (
+                  <ProjectItem project={project} key={index} />
                 ))}
               </div>
             ) : (

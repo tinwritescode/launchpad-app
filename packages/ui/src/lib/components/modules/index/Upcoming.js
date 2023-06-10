@@ -84,8 +84,8 @@ function Upcoming({ data, isLoading }) {
         <div className="section-header section-header--left">
           <div className="section-header__content">
             <div className="section-header__titlebar">
-              <div className="section-header__subtitle">IDO Project</div>
-              <h2 className="section__header__title">Upcoming IDO</h2>
+              <div className="section-header__subtitle">Upcoming</div>
+              <h2 className="section__header__title">Next Projects</h2>
             </div>
             <Link
               href="/ido-list#upcoming"
@@ -130,7 +130,7 @@ function Upcoming({ data, isLoading }) {
                   >
                     {data.map((item, index) => (
                       <SwiperSlide>
-                        <ProjectItem project={item} />
+                        <ProjectItem project={item} key={index} />
                       </SwiperSlide>
                     ))}
                   </Swiper>
