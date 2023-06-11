@@ -1,6 +1,7 @@
-import { ethers } from "ethers";
+import React from "react";
 import { usePagination } from "../../partials/Pagination2";
 import Link from "next/link";
+import { ethers } from "ethers";
 
 const ProjectItem = ({ project }) => (
   <div className="col-lg-4 col-md-6">
@@ -40,7 +41,7 @@ const ProjectItem = ({ project }) => (
               <li className="project__infolist-item">
                 <p className="project__infolist-name">Project End</p>
                 <p className="project__infolist-data">
-                  {new Date(project.sale.endTime).toLocaleString()}
+                  {new Date(project.sale.endTime).toLocaleDateString()}
                 </p>
               </li>
               <li className="project__infolist-item">
@@ -92,14 +93,14 @@ const ProjectItem = ({ project }) => (
   </div>
 );
 
-function Opening({ data, isLoading }) {
+const Opening = ({ data, isLoading }) => {
   const pagination = usePagination({ data, perPage: 6 });
 
   return (
-    <div>
-      {/* ==========>> Opening Project Section start Here <<==========  */}
+    <div id="opening">
+      {/* ==========>> Completed Project Section start Here <<==========  */}
       <section
-        className="project bg--primary-color"
+        className="project padding-top padding-bottom"
         style={{
           backgroundImage: "url(images/project/bg.png)",
           backgroundSize: "cover",
@@ -114,12 +115,6 @@ function Opening({ data, isLoading }) {
                 <p className="section-header__subtitle">Opening</p>
                 <h2 className="section__header__title">Ongoing Projects</h2>
               </div>
-              <Link
-                href="/ido-list#opening"
-                className="default-btn default-btn--small"
-              >
-                View All
-              </Link>
             </div>
           </div>
           <div className="project__wrapper">
@@ -145,6 +140,6 @@ function Opening({ data, isLoading }) {
       {/* ==========>> Completed Project Section Ends Here <<==========  */}
     </div>
   );
-}
+};
 
 export default Opening;

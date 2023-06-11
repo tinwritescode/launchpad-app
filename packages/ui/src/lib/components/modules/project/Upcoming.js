@@ -1,79 +1,116 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Autoplay, Navigation, Pagination } from 'swiper';
-import CustomSlider from '../../../components/partials/Slider';
-import Link from 'next/link';
+import React from "react";
+import { usePagination } from "../../partials/Pagination2";
+import Link from "next/link";
+import { ethers } from "ethers";
 
-SwiperCore.use([Autoplay, Navigation, Pagination]);
+const ProjectItem = ({ project }) => (
+  <div className="col-lg-4 col-md-6">
+    <div className="project__item">
+      <div className="project__item-inner">
+        <div className="project__item-thumb">
+          <img width="auto" src="/images/igo/item/01.jpg" alt="IGO cover" />
+          <span className="badge">
+            <img
+              width="auto"
+              src="/images/chain/binance.png"
+              alt="chain logo"
+            />
+          </span>
+        </div>
+        <div className="project__item-content">
+          <div className="project__item-top">
+            <div className="project__item-author">
+              <Link href="#">
+                <img
+                  width="auto"
+                  src="/images/igo/author/5.png"
+                  alt="author image"
+                />
+              </Link>
+              <h4>{project.name}</h4>
+            </div>
+          </div>
+          <div className="project__item-middle">
+            <ul className="project__infolist">
+              <li className="project__infolist-item">
+                <p className="project__infolist-name">Token</p>
+                <p className="project__infolist-data">
+                  {project.token.name} ({project.token.symbol})
+                </p>
+              </li>
+              <li className="project__infolist-item">
+                <p className="project__infolist-name">Project Start</p>
+                <p className="project__infolist-data">
+                  {new Date(project.sale.endTime).toLocaleString()}
+                </p>
+              </li>
+              <li className="project__infolist-item">
+                <p className="project__infolist-name">Project End</p>
+                <p className="project__infolist-data">
+                  {new Date(project.sale.endTime).toLocaleString()}
+                </p>
+              </li>
+              <li className="project__infolist-item">
+                <p className="project__infolist-name">Targetted Raise:</p>
+                <p className="project__infolist-data">
+                  {ethers.utils.formatEther(project.targettedRaise)} STRAW
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div className="project__item-bottom">
+            <Link
+              href={`/project/${project.id}`}
+              className="default-btn default-btn--small"
+            >
+              View Details
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
-function Upcoming({ data }) {
+const Upcoming = ({ data, isLoading }) => {
+  const pagination = usePagination({ data, perPage: 6 });
+
   return (
-    data && (
-      <section className="project padding-top padding-bottom">
+    <div id="upcoming">
+      {/* ==========>> Completed Project Section start Here <<==========  */}
+      <section className="project padding-top padding-bottom bg--primary-color">
         <div className="container">
-          <div className="section-header section-header--left">
+          <div className="section-header section-header--middle">
             <div className="section-header__content">
               <div className="section-header__titlebar">
-                <div className="section-header__subtitle">IDO Project</div>
-                <h2 className="section__header__title">Upcoming IDO</h2>
+                <p className="section-header__subtitle">Upcoming</p>
+                <h2 className="section__header__title">Next Projects</h2>
               </div>
-              <Link
-                href="/leaderboard"
-                className="default-btn default-btn--small"
-              >
-                View Rank
-              </Link>
             </div>
           </div>
           <div className="project__wrapper">
-            <div className="swiper project__slider py-2">
-              <div className="swiper-wrapper">
-                <Swiper
-                  spaceBetween={30}
-                  slidesPerView={3}
-                  speed={1200}
-                  autoplay={{ delay: 3500, disableOnInteraction: false }}
-                  pagination={{
-                    el: '.project__slider-pagination',
-                    clickable: true,
-                  }}
-                  navigation={{
-                    nextEl: '.project__slider2-next',
-                    prevEl: '.project__slider2-prev',
-                  }}
-                  loop={true}
-                  breakpoints={{
-                    0: {
-                      slidesPerView: 1,
-                    },
-                    768: {
-                      slidesPerView: 2,
-                    },
-                    992: {
-                      slidesPerView: 3,
-                    },
-                  }}
-                >
-                  {data.map((item) => {
-                    return (
-                      <SwiperSlide key={item.id}>
-                        <CustomSlider
-                          img1Src={item.img1Src}
-                          img2Src={item.img2Src}
-                          img3Src={item.img3Src}
-                          title={item.title}
-                        />
-                      </SwiperSlide>
-                    );
-                  })}
-                </Swiper>
-              </div>
-              <div className="project__slider-pagination mt-4 text-center" />
-            </div>
+            {!isLoading &&
+              data &&
+              (data.length > 0 ? (
+                <div className="row g-4">
+                  {pagination.displayItems().map((project, index) => (
+                    <ProjectItem project={project} key={index} />
+                  ))}
+                  <ul className="pagination mt-5 justify-content-center">
+                    <pagination.Pagination />
+                  </ul>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <h2>No Upcoming Projects</h2>
+                </div>
+              ))}
           </div>
         </div>
       </section>
-    )
+      {/* ==========>> Completed Project Section Ends Here <<==========  */}
+    </div>
   );
-}
+};
 
 export default Upcoming;

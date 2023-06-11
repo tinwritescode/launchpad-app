@@ -69,7 +69,10 @@ const myTeam = [
 
 function Team({ team = myTeam }) {
   return (
-    <section className="team padding-bottom shape-1r" id="team">
+    <section
+      className="team padding-bottom shape-1r bg--primary-color"
+      id="team"
+    >
       <div className="container">
         <div className="section-header section-header--middle">
           <div className="section-header__content">
