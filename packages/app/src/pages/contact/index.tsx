@@ -1,15 +1,12 @@
-import { Counter, PageHeader, Project } from "@strawberry/ui";
-import { type NextPage } from "next";
+import { ApplyToLaunchTwo, PageHeader } from "@strawberry/ui";
 
-const Home: NextPage = () => {
+const Contact = () => {
   return (
     <>
-      <PageHeader title="Projects" text="projects" />
-      <Project.Upcoming data={null} />
-      <Counter />
-      <Project.UpcomingTwo data={null} />
+      <PageHeader title="Contact Us" text="Contact" />
+      <ApplyToLaunchTwo />
     </>
   );
 };
 
-export default Home;
+export default Contact;
