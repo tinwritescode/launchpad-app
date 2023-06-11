@@ -9,8 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Link from "next/link";
-import Image from 'next/image';
-
+import Image from "next/image";
 
 function Footer() {
   return (
@@ -23,9 +22,10 @@ function Footer() {
           <div className="container">
             <div className="footer__content text-center">
               <Link className="mb-4 d-inline-block" href="/">
-                <Image src="/images/logo/logo.png"
-                  width={150}
-                  height={55}
+                <Image
+                  src="/images/logo/logo.png"
+                  width={40}
+                  height={40}
                   alt="Logo"
                 />
               </Link>
