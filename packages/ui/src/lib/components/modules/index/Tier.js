@@ -1,4 +1,5 @@
 import Simple from "../../../components/base/Simple";
+import { commify } from "ethers/lib/utils";
 
 function Tier({ tierList, currentTier }) {
   return (
@@ -12,7 +13,7 @@ function Tier({ tierList, currentTier }) {
           </div>
         </div>
         <div className="section__wrapper">
-          <div className="row g-4 justify-content-center row-cols-xl-4 row-cols-lg-3 row-cols-sm-2 row-cols-1">
+          <div className="row g-4 justify-content-center row-cols-xl-6 row-cols-lg-3 row-cols-sm-2 row-cols-1">
             {tierList.map((tier, index) => (
               <div key={`tier-${index}`} className="col">
                 <div className="tier__item">
@@ -24,12 +25,12 @@ function Tier({ tierList, currentTier }) {
                       </div>
                     </div>
                     <div className="tier__body">
-                      <h4 className={tier.color}>{tier.name}</h4>
+                      <h4>{tier.name}</h4>
                       <ul>
                         <li>
                           <p className="tier__title">Staking Requirements</p>
                           <p className="tier__value">
-                            {tier.stakingRequired.toLocaleString("en-US")}
+                            {commify(tier.stakingRequired)}
                           </p>
                         </li>
                         <li>

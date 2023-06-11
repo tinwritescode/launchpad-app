@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Autoplay, Navigation, Pagination } from "swiper";
 import Link from "next/link";
 import Button from "../../../components/base/Button";
-import { ethers } from "ethers";
+import { formatEther, commify } from "ethers/lib/utils";
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -63,7 +63,7 @@ const ProjectItem = ({ project }) => (
               <li className="project__infolist-item">
                 <p className="project__infolist-name">Targetted Raise:</p>
                 <p className="project__infolist-data">
-                  {ethers.utils.formatEther(project.targettedRaise)} STRAW
+                  {commify(formatEther(project.targettedRaise))} STRAW
                 </p>
               </li>
             </ul>

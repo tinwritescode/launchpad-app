@@ -34,6 +34,7 @@ import {
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
 import { calculateDividendPercent } from "./project.util";
+import { mine } from "viem/dist/types/actions/test/mine";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -109,6 +110,8 @@ export const projectRouter = createTRPCRouter({
             }
             let totalRaised = BigNumber.from(0);
             let totalParticipants = 0;
+            let eligibleStakers = 0;
+            let whitelistedUsers = 0;
             let name = null;
             let symbol = null;
             let decimals = null;
@@ -116,8 +119,8 @@ export const projectRouter = createTRPCRouter({
             let startTime = null;
             let endTime = null;
 
-            for (const idoContract of project.IDOContract) {
-              const contract = getIdoContract(idoContract.address);
+            {
+              const contract = getIdoContract(project.IDOContract[0].address);
               if (!project.token) {
                 throw new TRPCError({
                   code: "INTERNAL_SERVER_ERROR",
@@ -142,20 +145,59 @@ export const projectRouter = createTRPCRouter({
 
                 if (startTime > now) {
                   saleStatus = "UPCOMING";
-                  break;
-                } else if (endTime < now) {
-                  saleStatus = "CLOSED";
-                } else {
+                } else if (now < endTime) {
                   saleStatus = "OPEN";
+                } else {
+                  saleStatus = "CLOSED";
                 }
               }
+            }
 
-              const purchaseHistory = await contract.purchaseHistory();
-              totalParticipants += purchaseHistory.length;
-              totalRaised = purchaseHistory.reduce(
-                (acc, curr) => acc.add(curr.amount),
-                totalRaised
-              );
+            if (saleStatus === "OPEN") {
+              let minStakedAmount = BigNumber.from(2).pow(256).sub(1);
+              for (const idoContract of project.IDOContract) {
+                let contractMinStaked = await getIdoContract(
+                  idoContract.address
+                ).minStakingRequired();
+                if (contractMinStaked.lt(minStakedAmount)) {
+                  minStakedAmount = contractMinStaked;
+                }
+              }
+              const stakingContract = getStakingContract();
+              const stakersLength = await stakingContract.getStakersLength();
+              for (let i = 0; i < stakersLength.toNumber(); i++) {
+                const staker = await stakingContract.getStakerAtIndex(i);
+                const [amount, reward] = await stakingContract.getStakeInfo(
+                  staker
+                );
+                const [stakingTokenAddr, rewardTokenAddr] = await Promise.all([
+                  stakingContract.stakingToken(),
+                  stakingContract.rewardToken(),
+                ]);
+                const total = amount;
+
+                if (stakingTokenAddr === rewardTokenAddr) {
+                  total.add(reward);
+                }
+
+                if (total.gte(minStakedAmount)) {
+                  eligibleStakers++;
+                }
+              }
+            } else if (saleStatus === "CLOSED") {
+              for (const idoContract of project.IDOContract) {
+                whitelistedUsers += (
+                  JSON.parse(idoContract.whitelistDump ?? "{}")?.values ?? []
+                ).length;
+
+                const contract = getIdoContract(idoContract.address);
+                const purchaseHistory = await contract.purchaseHistory();
+                totalParticipants += purchaseHistory.length;
+                totalRaised = purchaseHistory.reduce(
+                  (acc, curr) => acc.add(curr.amount),
+                  totalRaised
+                );
+              }
             }
 
             return {
@@ -169,6 +211,8 @@ export const projectRouter = createTRPCRouter({
               },
               sale: {
                 status: saleStatus,
+                eligibleStakers,
+                whitelistedUsers,
                 startTime,
                 endTime,
                 totalRaised,

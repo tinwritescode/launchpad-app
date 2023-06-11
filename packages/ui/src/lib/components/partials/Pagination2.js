@@ -14,18 +14,15 @@ export const usePagination = ({ data, perPage }) => {
   }, [data]);
 
   const handleNext = (e) => {
-    e.preventDefault();
     if (page < totalPage) setPage((page) => page + 1);
   };
 
   const handlePrev = (e) => {
-    e.preventDefault();
     if (page > 1) setPage((page) => page - 1);
   };
 
   const handlePage = (e) => {
-    e.preventDefault();
-    setPage(e.target.text);
+    setPage(e.target.innerText);
   };
 
   const displayItems = () => {
@@ -56,9 +53,7 @@ export const usePagination = ({ data, perPage }) => {
             onClick={handlePage}
             key={i}
           >
-            <Link className="page-link" href={"#"}>
-              {i}
-            </Link>
+            <span className="page-link">{i}</span>
           </li>
         );
       }

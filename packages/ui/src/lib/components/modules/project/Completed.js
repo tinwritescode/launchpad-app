@@ -1,7 +1,8 @@
 import React from "react";
 import { usePagination } from "../../partials/Pagination2";
 import Link from "next/link";
-import { ethers } from "ethers";
+import { formatEther, commify } from "ethers/lib/utils";
+import { BigNumber } from "ethers";
 
 const ProjectItem = ({ project }) => (
   <div className="col-lg-4 col-md-6">
@@ -45,39 +46,45 @@ const ProjectItem = ({ project }) => (
                 </p>
               </li>
               <li className="project__infolist-item">
-                <p className="project__infolist-name">Participants</p>
+                <p className="project__infolist-name">Purchasers</p>
                 <p className="project__infolist-data">
                   {project.sale.totalParticipants}
                 </p>
               </li>
-              <div className="project__item-amount">
-                <p>Raised Amount</p>
-                <h6>
-                  <span className="color--theme-color">
-                    {ethers.utils.formatEther(project.sale.totalRaised)}
-                  </span>{" "}
-                  /{" "}
-                  <span>
-                    {ethers.utils.formatEther(project.targettedRaise)} STRAW
-                  </span>
-                </h6>
-                <div className="progress">
-                  <div
-                    className="progress-bar"
-                    role="progressbar"
-                    style={{
-                      width: `${ethers.BigNumber.from(project.sale.totalRaised)
-                        .mul(100)
-                        .div(project.targettedRaise)
-                        .toNumber()}%`,
-                    }}
-                    aria-valuenow="25"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-              </div>
+              <li className="project__infolist-item">
+                <p className="project__infolist-name">Whitelisted Users</p>
+                <p className="project__infolist-data">
+                  {project.sale.whitelistedUsers}
+                </p>
+              </li>
             </ul>
+            <div className="project__item-amount">
+              <p>Raised Amount</p>
+              <h6>
+                <span className="color--theme-color">
+                  {commify(formatEther(project.sale.totalRaised))}
+                </span>{" "}
+                /{" "}
+                <span>
+                  {commify(formatEther(project.targettedRaise))} STRAW
+                </span>
+              </h6>
+              <div className="progress">
+                <div
+                  className="progress-bar"
+                  role="progressbar"
+                  style={{
+                    width: `${BigNumber.from(project.sale.totalRaised)
+                      .mul(100)
+                      .div(project.targettedRaise)
+                      .toNumber()}%`,
+                  }}
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
           </div>
           <div className="project__item-bottom">
             <Link

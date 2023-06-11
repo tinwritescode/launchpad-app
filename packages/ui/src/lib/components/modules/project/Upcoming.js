@@ -1,11 +1,11 @@
 import React from "react";
 import { usePagination } from "../../partials/Pagination2";
 import Link from "next/link";
-import { ethers } from "ethers";
+import { formatEther, commify } from "ethers/lib/utils";
 
 const ProjectItem = ({ project }) => (
   <div className="col-lg-4 col-md-6">
-    <div className="project__item">
+    <div className="project__item project__item--completed1">
       <div className="project__item-inner">
         <div className="project__item-thumb">
           <img width="auto" src="/images/igo/item/01.jpg" alt="IGO cover" />
@@ -53,7 +53,7 @@ const ProjectItem = ({ project }) => (
               <li className="project__infolist-item">
                 <p className="project__infolist-name">Targetted Raise:</p>
                 <p className="project__infolist-data">
-                  {ethers.utils.formatEther(project.targettedRaise)} STRAW
+                  {commify(formatEther(project.targettedRaise))} STRAW
                 </p>
               </li>
             </ul>
