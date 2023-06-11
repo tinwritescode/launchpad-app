@@ -534,7 +534,7 @@ export function Main() {
                       </div>
                       {/* pro details link */}
                       <div className="pro-details__links">
-                        <div className="pro-details__links-item">
+                        {/* <div className="pro-details__links-item">
                           <div className="pro-details__links-title">
                             <h6>Social Media</h6>
                           </div>
@@ -572,7 +572,7 @@ export function Main() {
                               </li>
                             </ul>
                           </div>
-                        </div>
+                        </div> */}
                         <div className="pro-details__links-item">
                           <div className="pro-details__links-title">
                             <h6>Website Link</h6>

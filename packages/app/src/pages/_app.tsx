@@ -10,6 +10,7 @@ import { WagmiConfig } from "wagmi";
 import { Providers } from "../components/providers";
 import { api } from "../utils/api";
 import { theme } from "../utils/theme";
+import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const [isHydrated, setIsHydrated] = useState(false);
