@@ -1,26 +1,26 @@
-import { ApplyToLaunch } from '@strawberry/ui';
-import { PageHeader } from '@strawberry/ui';
-import CountUp from 'react-countup';
-import { useStakingHook } from './useStaking';
-import { env } from '../../../env.mjs';
-import { ethers } from 'ethers';
-import { Button } from '../../common/index';
+import { ApplyToLaunch } from "@strawberry/ui";
+import { PageHeader } from "@strawberry/ui";
+import CountUp from "react-countup";
+import { useStakingHook } from "./useStaking";
+import { env } from "../../../env.mjs";
+import { ethers } from "ethers";
+import { Button } from "../../common/index";
 
 import {
   getStakeValidationSchema,
   getWithdrawValidationSchema,
-} from './validationSchema';
-import { BarLoader } from 'react-spinners';
+} from "./validationSchema";
+import { BarLoader } from "react-spinners";
 
-import { useAccount } from 'wagmi';
-import { useRef } from 'react';
-import toast from 'react-hot-toast';
+import { useAccount } from "wagmi";
+import { useRef } from "react";
+import toast from "react-hot-toast";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@radix-ui/react-tooltip';
+} from "@radix-ui/react-tooltip";
 
 const Stacking = () => {
   const { isConnected } = useAccount();
@@ -36,43 +36,44 @@ const Stacking = () => {
     numberOfStakers,
     APY,
     unclaimedRewards,
+    unlockTime,
     claimReward,
   } = useStakingHook();
 
-  console.log('stakingTokenBalance', stakingTokenBalance);
+  const isLocked = Number(unlockTime || 0) > Date.now() / 1000;
+
   const stakeInputRef = useRef<HTMLInputElement>(null);
   const withdrawInputRef = useRef<HTMLInputElement>(null);
-  const unclaimedRewardsInputRef = useRef<HTMLInputElement>(null);
 
   const stakeSchema = getStakeValidationSchema(
-    +ethers.utils.formatEther(stakingTokenBalance || '0')
+    +ethers.utils.formatEther(stakingTokenBalance || "0")
   );
   const withdrawSchema = getWithdrawValidationSchema(
-    +ethers.utils.formatEther(amountStaked || '0')
+    +ethers.utils.formatEther(amountStaked || "0")
   );
 
   const onWithdrawButtonClick = () => {
     const withdrawInput = withdrawSchema.safeParse(
-      +(withdrawInputRef.current?.value || '0')
+      +(withdrawInputRef.current?.value || "0")
     );
     if (withdrawInput.success === false) {
-      toast.error(withdrawInput.error?.errors[0]?.message || 'Invalid amount');
+      toast.error(withdrawInput.error?.errors[0]?.message || "Invalid amount");
       return;
     }
     toast.promise(
       withdraw({
         amount: ethers.utils.parseUnits(
-          withdrawInputRef.current?.value || '0',
+          withdrawInputRef.current?.value || "0",
           decimals
         ),
       }).then((tx) => tx?.wait()),
       {
-        loading: 'Withdrawing...',
-        success: 'Withdrawn!',
+        loading: "Withdrawing...",
+        success: "Withdrawn!",
         error: (err) => {
           console.error(err.message);
 
-          return 'Failed to withdraw';
+          return "Failed to withdraw";
         },
       }
     );
@@ -85,10 +86,10 @@ const Stacking = () => {
         stakingAddress: env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS,
       }).then((tx) => tx?.wait()),
       {
-        loading: 'Approving...',
-        success: 'Approved!',
+        loading: "Approving...",
+        success: "Approved!",
         error: (err) => {
-          return 'Failed to approve';
+          return "Failed to approve";
         },
       }
     );
@@ -96,26 +97,26 @@ const Stacking = () => {
 
   const onStakeButtonClick = () => {
     const stakeInput = stakeSchema.safeParse(
-      +(stakeInputRef.current?.value || '0')
+      +(stakeInputRef.current?.value || "0")
     );
     if (stakeInput.success === false) {
-      toast.error(stakeInput.error?.errors[0]?.message || 'Invalid amount');
+      toast.error(stakeInput.error?.errors[0]?.message || "Invalid amount");
       return;
     }
     toast.promise(
       stake({
         amount: ethers.utils.parseUnits(
-          stakeInputRef.current?.value || '0',
+          stakeInputRef.current?.value || "0",
           decimals
         ),
       }).then((tx) => tx?.wait()),
       {
-        loading: 'Staking...',
-        success: 'Staked!',
+        loading: "Staking...",
+        success: "Staked!",
         error: (err) => {
           console.error(err.message);
 
-          return 'Failed to stake';
+          return "Failed to stake";
         },
       }
     );
@@ -125,12 +126,12 @@ const Stacking = () => {
     toast.promise(
       claimReward().then((tx) => tx?.wait()),
       {
-        loading: 'Claiming...',
-        success: 'Claimed!',
+        loading: "Claiming...",
+        success: "Claimed!",
         error: (err) => {
           console.error(err.message);
 
-          return 'Failed to claim';
+          return "Failed to claim";
         },
       }
     );
@@ -155,13 +156,13 @@ const Stacking = () => {
                               <TooltipTrigger>
                                 <div className="text-3xl font-bold flex items-center gap-1 tracking-wider">
                                   <span className="inline-block truncate md:max-w-[300px] max-w-xs">
-                                    {'$ ' +
+                                    {"$ " +
                                       ethers.utils.commify(
                                         ethers.utils.formatEther(
-                                          totalStaked || '0'
+                                          totalStaked || "0"
                                         )
                                       )}
-                                  </span>{' '}
+                                  </span>{" "}
                                   STRAW
                                 </div>
                               </TooltipTrigger>
@@ -171,16 +172,16 @@ const Stacking = () => {
                                   <span className="inline-block">
                                     {ethers.utils.commify(
                                       ethers.utils.formatEther(
-                                        totalStaked || '0'
+                                        totalStaked || "0"
                                       )
                                     )}
-                                  </span>{' '}
+                                  </span>{" "}
                                   STRAW
                                 </div>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-                        </>{' '}
+                        </>{" "}
                       </h3>
                       <p>Total Value Locked</p>
                     </div>
@@ -235,7 +236,7 @@ const Stacking = () => {
                             end={numberOfStakers?.toNumber() || 0}
                             duration={5}
                           />
-                        </span>{' '}
+                        </span>{" "}
                       </h3>
                       <p>Number of Stakers</p>
                     </div>
@@ -261,10 +262,10 @@ const Stacking = () => {
                                   <span className="inline-block truncate md:max-w-[300px] max-w-xs">
                                     {ethers.utils.commify(
                                       ethers.utils.formatEther(
-                                        amountStaked || '0'
+                                        amountStaked || "0"
                                       )
                                     )}
-                                  </span>{' '}
+                                  </span>{" "}
                                   STRAW
                                 </div>
                               </TooltipTrigger>
@@ -274,10 +275,10 @@ const Stacking = () => {
                                   <span className="inline-block">
                                     {ethers.utils.commify(
                                       ethers.utils.formatEther(
-                                        amountStaked || '0'
+                                        amountStaked || "0"
                                       )
                                     )}
-                                  </span>{' '}
+                                  </span>{" "}
                                   STRAW
                                 </div>
                               </TooltipContent>
@@ -293,7 +294,7 @@ const Stacking = () => {
                           <ul className="stacking__info-list">
                             <li className="stacking__info-item">
                               <p className="stacking__info-name">
-                                Lock Period:
+                                Lock Period:{" "}
                                 <span className="stacking__info-value">
                                   30 Days
                                 </span>
@@ -301,10 +302,8 @@ const Stacking = () => {
                             </li>
                             <li className="stacking__info-item">
                               <p className="stacking__info-name">
-                                Re-locks on registration:
-                                <span className="stacking__info-value">
-                                  Yes
-                                </span>
+                                Re-locks on registration:{" "}
+                                <span className="stacking__info-value">No</span>
                               </p>
                             </li>
                             {/* <li className="stacking__info-item">
@@ -317,9 +316,9 @@ const Stacking = () => {
                             </li> */}
                             <li className="stacking__info-item">
                               <p className="stacking__info-name">
-                                Status:
+                                Status:{" "}
                                 <span className="stacking__info-value">
-                                  Unlocked
+                                  {isLocked ? "Locked" : "Unlocked"}
                                 </span>
                               </p>
                             </li>
@@ -373,23 +372,23 @@ const Stacking = () => {
                                 title={
                                   ethers.utils.commify(
                                     ethers.utils.formatEther(
-                                      stakingTokenBalance || '0'
+                                      stakingTokenBalance || "0"
                                     )
                                   ).length > 20
                                     ? ethers.utils.commify(
                                         ethers.utils.formatEther(
-                                          stakingTokenBalance || '0'
+                                          stakingTokenBalance || "0"
                                         )
-                                      ) + ' STRAW'
-                                    : ''
+                                      ) + " STRAW"
+                                    : ""
                                 }
                               >
-                                <span className="text-white">Balance</span>:{' '}
+                                <span className="text-white">Balance</span>:{" "}
                                 {ethers.utils.commify(
                                   ethers.utils.formatEther(
-                                    stakingTokenBalance || '0'
+                                    stakingTokenBalance || "0"
                                   )
-                                ) + ' STRAW' || <BarLoader />}
+                                ) + " STRAW" || <BarLoader />}
                               </span>
                             </div>
                           ) : (
@@ -437,21 +436,21 @@ const Stacking = () => {
                             className="truncate h-full inline-block max-w-[300px]"
                             title={
                               ethers.utils.commify(
-                                ethers.utils.formatEther(amountStaked || '0')
+                                ethers.utils.formatEther(amountStaked || "0")
                               ).length > 20
                                 ? ethers.utils.commify(
                                     ethers.utils.formatEther(
-                                      amountStaked || '0'
+                                      amountStaked || "0"
                                     )
-                                  ) + ' STRAW'
-                                : ''
+                                  ) + " STRAW"
+                                : ""
                             }
                           >
-                            <span className="text-white">Staked: </span>:{' '}
+                            <span className="text-white">Staked: </span>:{" "}
                             {ethers.utils.commify(
-                              ethers.utils.formatEther(amountStaked || '0')
-                            ) + ' STRAW' || <BarLoader />}
-                          </span>{' '}
+                              ethers.utils.formatEther(amountStaked || "0")
+                            ) + " STRAW" || <BarLoader />}
+                          </span>{" "}
                         </label>
                         <div className="input-group">
                           <input
@@ -494,22 +493,22 @@ const Stacking = () => {
                                     title={
                                       ethers.utils.commify(
                                         ethers.utils.formatEther(
-                                          unclaimedRewards || '0'
+                                          unclaimedRewards || "0"
                                         )
                                       ).length > 10
                                         ? ethers.utils.commify(
                                             ethers.utils.formatEther(
-                                              unclaimedRewards || '0'
+                                              unclaimedRewards || "0"
                                             )
                                           )
-                                        : ''
+                                        : ""
                                     }
                                   >
                                     {ethers.utils.commify(
                                       ethers.utils.formatEther(
-                                        unclaimedRewards || '0'
+                                        unclaimedRewards || "0"
                                       )
-                                    ) + ' STRAW' || <BarLoader />}
+                                    ) + " STRAW" || <BarLoader />}
                                   </span>
                                 </div>
                               </div>
@@ -529,9 +528,7 @@ const Stacking = () => {
                   </div>
                 </div>
                 <p className="note-text">
-                  <strong>Note:</strong> Lorem ipsum dolor sit, amet consectetur
-                  adipisicing elit. Molestiae expedita error quod! Eaque,
-                  laudantium hic.
+                  <strong>Note:</strong> Unstaking will take 30 days to process.
                 </p>
               </div>
             </div>
