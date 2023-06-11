@@ -22,7 +22,7 @@ function ApplyToLaunchTwo() {
               </button>
             )}
             {show && (
-              <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe_Dc07s9iaZZAz_Gs9ueo5PqYu_sBAw7ejWqbkjbexZ_JqqA/viewform?embedded=true" width="720" height="1825" frameborder="0" marginheight="0" marginwidth="0">Đang tải…</iframe>
+              <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe_Dc07s9iaZZAz_Gs9ueo5PqYu_sBAw7ejWqbkjbexZ_JqqA/viewform?embedded=true" width="720" height="1825" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
             )}
           </div>
         </div>
