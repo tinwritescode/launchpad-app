@@ -39,14 +39,18 @@ function IdoStart() {
             <Label className="flex items-center gap-1">
               Purchase cap:{" "}
               {ethers.utils.commify(
-                ethers.utils.formatEther(data?.purchaseCap)
+                parseFloat(ethers.utils.formatEther(data?.purchaseCap)).toFixed(
+                  2
+                )
               )}
             </Label>
             {purchaseAmount.data && (
               <Label className="flex items-center gap-1">
                 Purchase amount:{" "}
                 {ethers.utils.commify(
-                  ethers.utils.formatEther(purchaseAmount.data)
+                  parseFloat(
+                    ethers.utils.formatEther(purchaseAmount.data)
+                  ).toFixed(2)
                 )}
               </Label>
             )}

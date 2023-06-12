@@ -848,10 +848,10 @@ export const projectRouter = createTRPCRouter({
         ] = await Promise.all([
           _idoContract
             .startTime()
-            .then((time) => time.toNumber() < Date.now() / 1000),
+            .then((time) => time?.toNumber() < Date.now() / 1000),
           _idoContract
             .endTime()
-            .then((time) => time.toNumber() < Date.now() / 1000),
+            .then((time) => time?.toNumber() < Date.now() / 1000),
           _idoContract
             .claimedAmounts(input.walletAddress)
             .then((amount) => amount.gt(0)),
@@ -881,15 +881,24 @@ export const projectRouter = createTRPCRouter({
             const parsedLog = _idoContract.interface.parseLog(log);
             return {
               amount: parsedLog.args.amount.toString(),
-              timestamp: parsedLog.args.timestamp.toNumber(),
+              timestamp: parsedLog.args.timestamp?.toNumber(),
             };
           }),
           idoEndTime: await _idoContract
             .endTime()
-            .then((time) => time.toNumber() * 1000),
+            .then((time) => time?.toNumber() * 1000),
           idoStartTime: await _idoContract
             .startTime()
-            .then((time) => time.toNumber() * 1000),
+            .then((time) => time?.toNumber() * 1000),
+          claimableAmount: await _idoContract
+            .purchasedAmounts(input.walletAddress)
+            .then(async (amount) =>
+              Promise.resolve(
+                amount
+                  .sub(await _idoContract.claimedAmounts(input.walletAddress))
+                  .toString()
+              )
+            ),
         };
       }
 
@@ -905,6 +914,9 @@ export const projectRouter = createTRPCRouter({
         purchasedAmount: null,
         claimedAmounts: null,
         purchaseHistory: null,
+        // idoEndTime: null,
+        // idoStartTime: null,
+        // claimableAmount: null,
       };
     }),
 
@@ -1019,9 +1031,9 @@ async function getDividendContractInfo(
 
   avgRate = avgRate.dividedBy(data.IDOContract.length);
 
-  const requiredBalance = new BNjs(data.targettedRaise)
-    .dividedBy(avgRate)
-    .multipliedBy(new BNjs(10).pow(18));
+  const requiredBalance = new BNjs(data.targettedRaise);
+  // .dividedBy(avgRate)
+  // .multipliedBy(new BNjs(10).pow(18));
 
   const isDividendFulfilled = dividendBalance.gte(requiredBalance);
 

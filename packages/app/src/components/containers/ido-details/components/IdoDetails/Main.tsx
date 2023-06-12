@@ -224,7 +224,7 @@ export function MainTest() {
       },
       {
         title: "History",
-        render: () => <div></div>,
+        render: () => <ClaimHistory />,
         connectWalletRequired: true,
       },
     ],

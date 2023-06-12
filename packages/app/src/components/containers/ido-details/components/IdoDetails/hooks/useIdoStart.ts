@@ -1,13 +1,14 @@
-import { IDOContract__factory } from '@strawberry/contracts';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { ethers } from 'ethers';
-import { Logger } from 'ethers/lib/utils.js';
-import { useMemo } from 'react';
-import { toast } from 'react-hot-toast';
-import { useAccount } from 'wagmi';
-import { getErc20Contract } from '../../../../../../libs/blockchain';
-import { api } from '../../../../../../utils/api';
-import { getSigner } from '../../../../../../utils/ethereum';
+import { IDOContract__factory } from "@strawberry/contracts";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { ethers } from "ethers";
+import { Logger } from "ethers/lib/utils.js";
+import { useMemo } from "react";
+import { toast } from "react-hot-toast";
+import { useAccount } from "wagmi";
+import { getErc20Contract } from "../../../../../../libs/blockchain";
+import { api } from "../../../../../../utils/api";
+import { getSigner } from "../../../../../../utils/ethereum";
+import { message } from "antd";
 
 type Props = {
   idoContractAddress?: string | null;
@@ -27,10 +28,10 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
 
   const purchase = useMutation(
     async ({ amount: _amount }: { amount: string }) => {
-      if (!contractFactory) throw new Error('No contract factory');
-      if (!proof) throw new Error('No proof');
-      if (!stakedAmount) throw new Error('No staked amount');
-      if (!idoContractAddress) throw new Error('No ido contract address');
+      if (!contractFactory) throw new Error("No contract factory");
+      if (!proof) throw new Error("No proof");
+      if (!stakedAmount) throw new Error("No staked amount");
+      if (!idoContractAddress) throw new Error("No ido contract address");
 
       const amount = ethers.utils.parseEther(_amount);
 
@@ -61,22 +62,22 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
           // Error: VM Exception while processing transaction: reverted with reason string
           const reason: string = error?.reason;
 
-          if (reason.includes('SALE_NOT_STARTED')) {
-            toast.error('Sale not started');
-          } else if (reason.includes('INVALID_PROOF')) {
-            toast.error('Invalid proof');
-          } else if (reason.includes('INSUFFICIENT_SELL_BALANCE')) {
-            toast.error('Insufficient sell balance');
-          } else if (reason.includes('INSUFFICIENT_FUNDS')) {
-            toast.error('Insufficient funds');
-          } else if (reason.includes('PURCHASE_CAP_EXCEEDED')) {
-            toast.error('Purchase cap exceeded');
-          } else if (reason.includes('SALE_ALREADY_ENDED')) {
-            toast.error('Sale already ended');
-          } else if (reason.includes('PURCHASE_AMOUNT_INVALID')) {
-            toast.error('Purchase amount invalid');
+          if (reason.includes("SALE_NOT_STARTED")) {
+            toast.error("Sale not started");
+          } else if (reason.includes("INVALID_PROOF")) {
+            toast.error("Invalid proof");
+          } else if (reason.includes("INSUFFICIENT_SELL_BALANCE")) {
+            toast.error("Insufficient sell balance");
+          } else if (reason.includes("INSUFFICIENT_FUNDS")) {
+            toast.error("Insufficient funds");
+          } else if (reason.includes("PURCHASE_CAP_EXCEEDED")) {
+            toast.error("Purchase cap exceeded");
+          } else if (reason.includes("SALE_ALREADY_ENDED")) {
+            toast.error("Sale already ended");
+          } else if (reason.includes("PURCHASE_AMOUNT_INVALID")) {
+            toast.error("Purchase amount invalid");
           } else {
-            toast.error('Transaction failed');
+            toast.error("Transaction failed");
           }
         }
       },
@@ -85,31 +86,32 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
 
   const claim = useMutation(
     async ({ amount }: { amount: string }) => {
-      if (!contractFactory) throw new Error('No contract factory');
-      if (!idoContractAddress) throw new Error('No ido contract address');
+      if (!contractFactory) throw new Error("No contract factory");
+      if (!idoContractAddress) throw new Error("No ido contract address");
 
       return contractFactory
         .connect(getSigner())
-        .claim(amount)
+        .claim(ethers.utils.parseEther(amount))
         .then((tx) => tx.wait());
     },
     {
       onSuccess: () => {
         invalidate();
+        message.success("Claimed successfully");
       },
       onError: (error: any) => {
         if (error?.code === Logger.errors.UNPREDICTABLE_GAS_LIMIT) {
           // Error: VM Exception while processing transaction: reverted with reason string
           const reason: string = error?.reason;
 
-          if (reason.includes('SALE_NOT_ENDED')) {
-            toast.error('Sale not ended');
-          } else if (reason.includes('CLAIM_AMOUNT_INVALID')) {
-            toast.error('Claim amount invalid');
-          } else if (reason.includes('CLAIM_AMOUNT_EXCEEDED')) {
-            toast.error('Claim amount exceeded');
+          if (reason.includes("SALE_NOT_ENDED")) {
+            toast.error("Sale not ended");
+          } else if (reason.includes("CLAIM_AMOUNT_INVALID")) {
+            toast.error("Claim amount invalid");
+          } else if (reason.includes("CLAIM_AMOUNT_EXCEEDED")) {
+            toast.error("Claim amount exceeded");
           } else {
-            toast.error('Transaction failed');
+            toast.error("Transaction failed");
           }
         }
       },
@@ -117,16 +119,16 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
   );
 
   const purchaseHistory = useQuery(
-    ['purchaseHistory', { idoContractAddress, address }],
+    ["purchaseHistory", { idoContractAddress, address }],
     async () => {
-      if (!contractFactory) throw new Error('No contract factory');
-      if (!idoContractAddress) throw new Error('No ido contract address');
-      if (!address) throw new Error('No address');
+      if (!contractFactory) throw new Error("No contract factory");
+      if (!idoContractAddress) throw new Error("No ido contract address");
+      if (!address) throw new Error("No address");
 
       const queryFilter = await contractFactory.queryFilter(
         contractFactory.filters.Purchased(address),
         0,
-        'latest'
+        "latest"
       );
 
       return Promise.all(
@@ -153,10 +155,10 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
   );
 
   const purchaseAmount = useQuery(
-    ['purchaseAmount', { idoContractAddress, address }],
+    ["purchaseAmount", { idoContractAddress, address }],
     async () => {
-      if (!contractFactory) throw new Error('No contract factory');
-      if (!idoContractAddress) throw new Error('No ido contract address');
+      if (!contractFactory) throw new Error("No contract factory");
+      if (!idoContractAddress) throw new Error("No ido contract address");
 
       return contractFactory
         .connect(getSigner())

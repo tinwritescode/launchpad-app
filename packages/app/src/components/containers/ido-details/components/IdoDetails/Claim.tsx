@@ -1,13 +1,16 @@
-import { BigNumber } from 'ethers';
-import { useRouter } from 'next/router';
-import { useRef } from 'react';
-import { useAccount } from 'wagmi';
-import { api } from '../../../../../utils/api';
-import { Button } from '../../../../common';
-import { Input } from '../../../../common/ui/input';
-import { Label } from '../../../../common/ui/label';
-import useIdoStart from './hooks/useIdoStart';
-import Spinner from '../../../../common/ui/spinner';
+import { BigNumber } from "ethers";
+import { useRouter } from "next/router";
+import { useRef } from "react";
+import { useAccount } from "wagmi";
+import { api } from "../../../../../utils/api";
+import { Button } from "../../../../common";
+import { Input } from "../../../../common/ui/input";
+import { Label } from "../../../../common/ui/label";
+import useIdoStart from "./hooks/useIdoStart";
+import Spinner from "../../../../common/ui/spinner";
+import { ethers } from "ethers";
+
+const { commify, formatEther } = ethers.utils;
 
 function Claim() {
   const { query } = useRouter();
@@ -23,7 +26,7 @@ function Claim() {
   });
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const percentButtons = ['25', '50', '75', '100'];
+  const percentButtons = ["25", "50", "75", "100"];
 
   if (!isLoading && !data?.isWhiteListed) {
     <p>❌ You are not whitelisted</p>;
@@ -34,7 +37,19 @@ function Claim() {
       <div className="flex justify-between">
         <Label className="mb-2 font-semibold">Amount</Label>
         <Label className="flex items-center gap-1">
-          Claim amount: {data?.claimedAmounts}
+          Claimable:{" "}
+          {commify(
+            parseFloat(formatEther(data?.claimableAmount || 0)).toFixed(2)
+          )}
+        </Label>
+      </div>
+      <div className="flex justify-between">
+        <Label className="mb-2 font-semibold">Amount</Label>
+        <Label className="flex items-center gap-1">
+          Claimed:{" "}
+          {commify(
+            parseFloat(formatEther(data?.claimedAmounts || 0)).toFixed(2)
+          )}
         </Label>
       </div>
 
@@ -52,9 +67,10 @@ function Claim() {
               if (!data?.claimedAmounts) return;
               if (!inputRef.current) return;
 
-              inputRef.current.value = BigNumber.from(data?.claimedAmounts)
+              inputRef.current.value = BigNumber.from(data?.claimableAmount)
                 .mul(percent)
                 .div(100)
+                .div(BigNumber.from(10).pow(18))
                 .toString();
             }}
           >
@@ -87,7 +103,7 @@ function Claim() {
               <span>IDO has not ended yet</span>
             </>
           ) : (
-            'Claim'
+            "Claim"
           )}
         </Button>
       </div>
