@@ -77,7 +77,7 @@ function Home() {
         isLoading={isLoading}
       />
       <Benefits />
-      <Tier tierList={tierList} currentTier={isConnected} />
+      <Tier tierList={tierList} currentTier={userTierIndex} />
       <Team />
     </>
   );
