@@ -1,7 +1,7 @@
 import Simple from "../../../components/base/Simple";
-import DefaultButton from "../../../components/base/DefaultButton";
 import Link from "next/link";
-import { ethers } from "ethers";
+import { formatEther, commify } from "ethers/lib/utils";
+import { BigNumber } from "ethers";
 
 const ProjectItem = ({ project }) => (
   <div className="col-12">
@@ -40,26 +40,24 @@ const ProjectItem = ({ project }) => (
             Completed on {new Date(project.sale.endTime).toLocaleDateString()}
           </p>
           <p className="color--theme-color">
-            {project.sale.totalParticipants} Participants
+            {project.sale.totalParticipants} Purchasers (
+            {project.sale.whitelistedUsers} Whitelisted Users)
           </p>
         </div>
         <div className="project__item-amount">
           <div>Raised Amount</div>
           <h6>
             <span className="color--theme-color">
-              {ethers.utils.formatEther(project.sale.totalRaised)}
+              {commify(formatEther(project.sale.totalRaised))}
             </span>{" "}
-            /{" "}
-            <span>
-              {ethers.utils.formatEther(project.targettedRaise)} STRAW
-            </span>
+            / <span>{commify(formatEther(project.targettedRaise))} STRAW</span>
           </h6>
           <div className="progress">
             <div
               className="progress-bar"
               role="progressbar"
               style={{
-                width: `${ethers.BigNumber.from(project.sale.totalRaised)
+                width: `${BigNumber.from(project.sale.totalRaised)
                   .mul(100)
                   .div(project.targettedRaise)
                   .toNumber()}%`,

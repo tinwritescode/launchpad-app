@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { formatEther, commify } from "ethers/lib/utils";
 import { usePagination } from "../../partials/Pagination2";
 import Link from "next/link";
 
@@ -44,38 +44,17 @@ const ProjectItem = ({ project }) => (
                 </p>
               </li>
               <li className="project__infolist-item">
-                <p className="project__infolist-name">Participants</p>
+                <p className="project__infolist-name">Qualified Stakers</p>
                 <p className="project__infolist-data">
-                  {project.sale.totalParticipants}
+                  {project.sale.eligibleStakers}
                 </p>
               </li>
-              <div className="project__item-amount">
-                <p>Raised Amount</p>
-                <h6>
-                  <span className="color--theme-color">
-                    {ethers.utils.formatEther(project.sale.totalRaised)}
-                  </span>{" "}
-                  /{" "}
-                  <span>
-                    {ethers.utils.formatEther(project.targettedRaise)} STRAW
-                  </span>
-                </h6>
-                <div className="progress">
-                  <div
-                    className="progress-bar"
-                    role="progressbar"
-                    style={{
-                      width: `${ethers.BigNumber.from(project.sale.totalRaised)
-                        .mul(100)
-                        .div(project.targettedRaise)
-                        .toNumber()}%`,
-                    }}
-                    aria-valuenow="25"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-              </div>
+              <li className="project__infolist-item">
+                <p className="project__infolist-name">Targetted Raise:</p>
+                <p className="project__infolist-data">
+                  {commify(formatEther(project.targettedRaise))} STRAW
+                </p>
+              </li>
             </ul>
           </div>
           <div className="project__item-bottom">
@@ -93,7 +72,7 @@ const ProjectItem = ({ project }) => (
 );
 
 function Opening({ data, isLoading }) {
-  const pagination = usePagination({ data, perPage: 6 });
+  const pagination = usePagination({ data, perPage: 3 });
 
   return (
     <div>
