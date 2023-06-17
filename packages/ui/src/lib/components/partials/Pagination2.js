@@ -1,28 +1,31 @@
-import React from "react";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export const usePagination = ({ data, perPage }) => {
-  const [page, setPage] = React.useState(1);
-  const [totalPage, setTotalPage] = React.useState(1);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setTotalPage(Math.ceil(data.length / perPage));
     }
-  }, [data]);
+  }, [data, page, perPage]);
 
-  const handleNext = (e) => {
-    if (page < totalPage) setPage((page) => page + 1);
+  const handleNext = () => {
+    if (page < totalPage) {
+      setPage((page) => page + 1);
+    }
   };
 
-  const handlePrev = (e) => {
-    if (page > 1) setPage((page) => page - 1);
+  const handlePrev = () => {
+    if (page > 1) {
+      setPage((page) => page - 1);
+    }
   };
 
   const handlePage = (e) => {
-    setPage(e.target.innerText);
+    setPage(parseInt(e.target.innerText));
   };
 
   const displayItems = () => {

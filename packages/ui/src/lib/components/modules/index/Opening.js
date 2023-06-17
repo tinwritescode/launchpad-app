@@ -72,7 +72,7 @@ const ProjectItem = ({ project }) => (
 );
 
 function Opening({ data, isLoading }) {
-  const pagination = usePagination({ data, perPage: 6 });
+  const pagination = usePagination({ data, perPage: 3 });
 
   return (
     <div>
