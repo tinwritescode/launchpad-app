@@ -17,7 +17,11 @@ function Tier({ tierList, currentTier }) {
             {tierList.map((tier, index) => (
               <div key={`tier-${index}`} className="col">
                 <div className="tier__item">
-                  <div className="tier__inner">
+                  <div
+                    className={`tier__inner ${
+                      parseInt(currentTier) + 1 === index ? "tier__rainbow" : ""
+                    }`}
+                  >
                     <div className="tier__head">
                       <h4>Tier {index + 1}</h4>
                       <div className="tier__thumb">

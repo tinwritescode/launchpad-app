@@ -24,9 +24,9 @@ function Footer() {
               <Link className="mb-4 d-inline-block" href="/">
                 <Image
                   src="/images/logo/logo.png"
-                  width={40}
-                  height={40}
-                  alt="Logo"
+                  width={142}
+                  height={30}
+                  alt="logo"
                 />
               </Link>
               <ul className="social justify-content-center">

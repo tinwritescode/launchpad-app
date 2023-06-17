@@ -1,65 +1,99 @@
 .tier {
-    &__inner {
-        @extend %text-center;
-        background-color: $primary-color;
-        border-radius: 4px;
-        @include add-prefix(transition, $transition);
-        border: 1px solid rgba($theme-color, $alpha: .02);
+  &__inner {
+    @extend %text-center;
+    background-color: $primary-color;
+    border-radius: 4px;
+    @include add-prefix(transition, $transition);
+    border: 1px solid rgba($theme-color, $alpha: 0.02);
 
-        &:hover {
-            border-color: rgba($theme-color, $alpha: .4);
+    &:hover {
+      border-color: rgba($theme-color, $alpha: 0.4);
+    }
+  }
+
+  &__head {
+    h4 {
+      padding-block: 26px;
+      text-transform: uppercase;
+      @extend %mb-0;
+    }
+
+    p {
+      padding-block: 26px;
+      padding-inline: 30px;
+      @extend %mb-0;
+    }
+  }
+
+  &__body {
+    h4 {
+      color: $theme-color;
+      @extend %mb-0;
+      padding-block: 20px;
+      border-bottom: 1px solid rgba($title-color, $alpha: 0.1);
+    }
+
+    ul {
+      padding-inline: 15px;
+
+      li {
+        padding-block: 1rem;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid rgba($title-color, $alpha: 0.05);
         }
+      }
     }
+  }
 
-    &__head {
-        h4 {
-            padding-block: 26px;
-            text-transform: uppercase;
-            @extend %mb-0;
-        }
+  &__title {
+    @extend %mb-5;
+  }
 
-        p {
-            padding-block: 26px;
-            padding-inline: 30px;
-            @extend %mb-0;
-        }
+  &__value {
+    @extend %mb-0;
+    @include font-size(18px);
+    color: $white-color;
+    font-weight: 600;
+  }
+
+  &__footer {
+    padding-bottom: 40px;
+    padding-top: 15px;
+  }
+
+  &__rainbow {
+    border-radius: 10px;
+    --border-size: 0.3rem;
+    border: var(--border-size) solid transparent;
+
+    /* Paint an image in the border */
+    border-image: conic-gradient(
+        from var(--angle),
+        #d53e33 0deg 90deg,
+        #fbb300 90deg 180deg,
+        #377af5 180deg 270deg,
+        #399953 270deg 360deg
+      )
+      1 stretch;
+  }
+}
+
+/* Animate when Houdini is available */
+@supports (background: paint(houdini)) {
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes rotate {
+    to {
+      --angle: 360deg;
     }
+  }
 
-    &__body {
-        h4 {
-            color: $theme-color;
-            @extend %mb-0;
-            padding-block: 20px;
-            border-bottom: 1px solid rgba($title-color, $alpha: .1);
-        }
-
-        ul {
-            padding-inline: 15px;
-
-            li {
-                padding-block: 1rem;
-
-                &:not(:last-child) {
-                    border-bottom: 1px solid rgba($title-color, $alpha: .05);
-                }
-            }
-        }
-    }
-
-    &__title {
-        @extend %mb-5;
-    }
-
-    &__value {
-        @extend %mb-0;
-        @include font-size(18px);
-        color: $white-color;
-        font-weight: 600;
-    }
-
-    &__footer {
-        padding-bottom: 40px;
-        padding-top: 15px;
-    }
-
+  .tier__rainbow {
+    animation: rotate 4s linear infinite, 3s infinite alternate;
+  }
 }
