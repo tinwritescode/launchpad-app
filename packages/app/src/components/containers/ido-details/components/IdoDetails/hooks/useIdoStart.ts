@@ -1,6 +1,7 @@
 import { IDOContract__factory } from "@strawberry/contracts";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ethers } from "ethers";
+import { message } from "antd";
+import { BigNumber, ethers } from "ethers";
 import { Logger } from "ethers/lib/utils.js";
 import { useMemo } from "react";
 import { toast } from "react-hot-toast";
@@ -8,7 +9,6 @@ import { useAccount } from "wagmi";
 import { getErc20Contract } from "../../../../../../libs/blockchain";
 import { api } from "../../../../../../utils/api";
 import { getSigner } from "../../../../../../utils/ethereum";
-import { message } from "antd";
 
 type Props = {
   idoContractAddress?: string | null;
@@ -46,7 +46,10 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
 
       if (allowance.lt(amount)) {
         await erc20Contract
-          .approve(idoContractAddress, amount.mul(idoPrice).div(1e18))
+          .approve(
+            idoContractAddress,
+            amount.mul(idoPrice).div(BigNumber.from(10).pow(18))
+          )
           .then((tx) => tx.wait());
       }
 

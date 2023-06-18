@@ -1,6 +1,6 @@
 import { BigNumber, ethers } from "ethers";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import { api } from "../../../../../utils/api";
 import { Button } from "../../../../common";
@@ -27,6 +27,7 @@ function IdoStart() {
     stakedAmount: data?.proof?.stakedAmount,
   });
   const inputRef = useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState(0);
 
   const percentButtons = ["25", "50", "75", "100"];
 
@@ -60,31 +61,20 @@ function IdoStart() {
                   )}{" "}
                   {projectData?.token.symbol}
                 </Label>
-                <Label className="flex items-center gap-1">
-                  Cost in {projectData?.IDOContract[0].purchaseTokenSymbol}:{" "}
-                  {ethers.utils.commify(
-                    parseFloat(
-                      ethers.utils.formatEther(
-                        BNjs(purchaseAmount?.data.toString())
-                          .multipliedBy(
-                            BNjs(
-                              projectData?.IDOContract[0].idoPrice.toString()
-                            )
-                          )
-                          .dividedBy(10 ** 18)
-                          .toFixed(0)
-                      )
-                    ).toFixed(2)
-                  )}{" "}
-                  {projectData?.token.symbol}
-                </Label>
               </>
             )}
           </div>
         </div>
       )}
 
-      <Input ref={inputRef} disabled={!data?.isIdoStarted} />
+      <Input
+        ref={inputRef}
+        disabled={!data?.isIdoStarted}
+        onChange={(e) => {
+          setValue(parseFloat(e.target.value));
+          console.log(e.target.value);
+        }}
+      />
 
       <div className="flex gap-1">
         {percentButtons.map((percent) => (
@@ -98,18 +88,40 @@ function IdoStart() {
               if (!data?.purchaseCap) return;
               if (!inputRef.current) return;
 
-              inputRef.current.value = BigNumber.from(data?.purchaseCap)
+              const value = BigNumber.from(data?.purchaseCap)
                 .sub(purchaseAmount.data || 0)
                 .mul(percent)
                 .div(100)
                 .div(BigNumber.from(10).pow(18))
                 .toString();
+              inputRef.current.value = value;
+
+              setValue(parseFloat(value));
             }}
           >
             {percent}%
           </Button>
         ))}
       </div>
+      {projectData?.IDOContract[0].idoPrice && (
+        <div>
+          <Label className="flex items-center gap-1">
+            Cost in {projectData?.IDOContract[0].purchaseTokenSymbol}:{" "}
+            {ethers.utils.commify(
+              parseFloat(
+                ethers.utils.formatEther(
+                  BNjs(value.toString())
+                    .multipliedBy(
+                      BNjs(projectData?.IDOContract[0].idoPrice.toString())
+                    )
+                    .toFixed(0)
+                )
+              ).toFixed(2)
+            )}{" "}
+            {projectData?.token.symbol}
+          </Label>
+        </div>
+      )}
 
       <div className="h-4"></div>
 
