@@ -70,7 +70,7 @@ export const ProjectList: React.FC<IResourceComponentsProps> = () => {
 
         <Table.Column
           dataIndex="targettedRaise"
-          title="Targetted Raise"
+          title="Targetted Raise (in STRAW)"
           render={(value: any) => commify(formatEther(value))}
         />
         <Table.Column

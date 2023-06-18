@@ -173,6 +173,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="IDO Price"
           name={["idoPrice"]}
+          help="How many IDO tokens will be sold for 1 STRAW token"
           rules={[
             {
               required: true,
@@ -196,6 +197,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
 
         <Form.Item
           label="Targetted Raise"
+          help="How much money do you want to raise in STRAW"
           name={["targettedRaise"]}
           rules={[
             {

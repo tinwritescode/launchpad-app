@@ -34,7 +34,6 @@ import {
 } from "./project.constant";
 import { createIdoProjectInputSchema } from "./project.schema";
 import { calculateDividendPercent } from "./project.util";
-import { mine } from "viem/dist/types/actions/test/mine";
 
 const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
@@ -156,7 +155,7 @@ export const projectRouter = createTRPCRouter({
             if (saleStatus === "OPEN") {
               let minStakedAmount = BigNumber.from(2).pow(256).sub(1);
               for (const idoContract of project.IDOContract) {
-                let contractMinStaked = await getIdoContract(
+                const contractMinStaked = await getIdoContract(
                   idoContract.address
                 ).minStakingRequired();
                 if (contractMinStaked.lt(minStakedAmount)) {
@@ -287,6 +286,10 @@ export const projectRouter = createTRPCRouter({
             },
           });
 
+          const targettedRaiseInIdoToken = BigNumber.from(targettedRaise)
+            .div(idoPrice.toFixed(0))
+            .mul(BigNumber.from(10).pow(18));
+
           const deployedContracts = await queue
             .addAll(
               contracts.map((contract) => {
@@ -296,18 +299,20 @@ export const projectRouter = createTRPCRouter({
                   const dividendPercent = getContractDividendInPercent(
                     contract.name as TierKeys
                   );
-                  const purchaseCap = new BNjs(
+                  const purchaseCapInIdoToken = new BNjs(
                     calculateDividendPercent(
-                      BigNumber.from(targettedRaise),
+                      BigNumber.from(targettedRaiseInIdoToken.toBigInt()),
                       dividendPercent
                     )
-                  ).dividedBy(new BNjs(numberOfPeople));
+                  )
+                    .dividedBy(new BNjs(numberOfPeople))
+                    .toFixed();
 
                   return instance.deployIDOContract(
                     {
                       ...contract,
                       purchaseCap: ethers.utils.parseEther(
-                        purchaseCap.toString()
+                        purchaseCapInIdoToken.toString()
                       ),
                       idoPrice: ethers.utils.parseEther(idoPrice.toString()),
                       minStakingRequired:
@@ -436,8 +441,9 @@ export const projectRouter = createTRPCRouter({
                 getContractDividendInPercent(contract.name as TierKeys)
               )
                 .multipliedBy(data.targettedRaise)
+                .dividedBy((await idoContract.idoPrice()).toString())
                 .dividedBy(100)
-                .dividedBy(new BNjs(10 ** 18))
+                // .dividedBy(new BNjs(10 ** 18))
                 .toString(),
               fulfilledAmount: fulfilledAmount.dividedBy(new BNjs(10 ** 18)),
               minStakedAmount: (
@@ -1079,7 +1085,11 @@ async function getDividendContractInfo(
   // .dividedBy(avgRate)
   // .multipliedBy(new BNjs(10).pow(18));
 
-  const isDividendFulfilled = dividendBalance.gte(requiredBalance);
+  const requiredBalanceInIDOToken = requiredBalance
+    .dividedBy(avgRate)
+    .multipliedBy(new BNjs(10).pow(18));
+
+  const isDividendFulfilled = dividendBalance.gte(requiredBalanceInIDOToken);
 
   const dividendContract = new Dividend__factory(signer).attach(
     env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS
@@ -1098,7 +1108,7 @@ async function getDividendContractInfo(
       (acc, cur) => acc.plus(cur.args?.amount.toString() || 0),
       new BNjs(0)
     )
-    .gte(requiredBalance.toFixed(0));
+    .gte(requiredBalanceInIDOToken.toFixed(0));
 
   const firstIdoContract = new IDOContract__factory(signer).attach(
     data.IDOContract[0].address
@@ -1113,7 +1123,7 @@ async function getDividendContractInfo(
   return {
     isDividendFulfilled,
     avgRate: avgRate.toString(),
-    requiredBalance: requiredBalance,
+    requiredBalance: requiredBalanceInIDOToken,
     dividendBalance: dividendBalance,
     contractAddress: env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS,
     tokenAddress: data.token.address,
