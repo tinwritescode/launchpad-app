@@ -9,6 +9,7 @@ import { Label } from "../../../../common/ui/label";
 import useIdoStart from "./hooks/useIdoStart";
 import Spinner from "../../../../common/ui/spinner";
 import Link from "next/link";
+import BNjs from "bignumber.js";
 
 function IdoStart() {
   const { query } = useRouter();
@@ -16,6 +17,9 @@ function IdoStart() {
   const { data, isLoading } = api.project.getUserWhiteListInfo.useQuery({
     id: query?.id as string,
     walletAddress: address as string,
+  });
+  const { data: projectData } = api.project.getOne.useQuery({
+    id: query?.id as string,
   });
   const { purchase, purchaseHistory, purchaseAmount } = useIdoStart({
     idoContractAddress: data?.idoContractAddress,
@@ -42,17 +46,39 @@ function IdoStart() {
                 parseFloat(ethers.utils.formatEther(data?.purchaseCap)).toFixed(
                   2
                 )
-              )}
+              )}{" "}
+              {projectData?.token.symbol}
             </Label>
-            {purchaseAmount.data && (
-              <Label className="flex items-center gap-1">
-                Purchase amount:{" "}
-                {ethers.utils.commify(
-                  parseFloat(
-                    ethers.utils.formatEther(purchaseAmount.data)
-                  ).toFixed(2)
-                )}
-              </Label>
+            {purchaseAmount.data && projectData?.IDOContract[0].idoPrice && (
+              <>
+                <Label className="flex items-center gap-1">
+                  Purchase amount:{" "}
+                  {ethers.utils.commify(
+                    parseFloat(
+                      ethers.utils.formatEther(purchaseAmount.data)
+                    ).toFixed(2)
+                  )}{" "}
+                  {projectData?.token.symbol}
+                </Label>
+                <Label className="flex items-center gap-1">
+                  Cost in {projectData?.IDOContract[0].purchaseTokenSymbol}:{" "}
+                  {ethers.utils.commify(
+                    parseFloat(
+                      ethers.utils.formatEther(
+                        BNjs(purchaseAmount?.data.toString())
+                          .multipliedBy(
+                            BNjs(
+                              projectData?.IDOContract[0].idoPrice.toString()
+                            )
+                          )
+                          .dividedBy(10 ** 18)
+                          .toFixed(0)
+                      )
+                    ).toFixed(2)
+                  )}{" "}
+                  {projectData?.token.symbol}
+                </Label>
+              </>
             )}
           </div>
         </div>

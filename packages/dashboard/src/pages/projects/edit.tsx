@@ -55,6 +55,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     },
   });
 
+  console.log(dividendInfo.data?.data);
+
   const whitelistInfo = useCustom({
     method: "get",
     url: `/projects/${projectsData?.id}/whitelist`,
@@ -434,6 +436,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     );
   };
   const isDividendFulfilled = dividendInfo?.data?.data?.isDividendFulfilled;
+
+  console.log("isDividendFulfilled", dividendInfo.data?.data);
 
   return (
     <Edit

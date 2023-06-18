@@ -42,9 +42,11 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
         getSigner().getAddress(),
         idoContractAddress
       );
+      const idoPrice = await contractFactory.idoPrice();
+
       if (allowance.lt(amount)) {
         await erc20Contract
-          .approve(idoContractAddress, amount)
+          .approve(idoContractAddress, amount.mul(idoPrice).div(1e18))
           .then((tx) => tx.wait());
       }
 
@@ -154,6 +156,42 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
     }
   );
 
+  const claimHistory = useQuery(
+    ["claimHistory", { idoContractAddress, address }],
+    async () => {
+      if (!contractFactory) throw new Error("No contract factory");
+      if (!idoContractAddress) throw new Error("No ido contract address");
+      if (!address) throw new Error("No address");
+
+      const queryFilter = await contractFactory.queryFilter(
+        contractFactory.filters.Claimed(address, null),
+        0,
+        "latest"
+      );
+
+      return Promise.all(
+        queryFilter.map(async (event) => {
+          const { args, blockHash, blockNumber, transactionHash, getBlock } =
+            event;
+
+          const timestamp = await getBlock().then((block) => block.timestamp);
+          const { amount, sender } = args;
+          return {
+            amount,
+            sender,
+            blockHash,
+            blockNumber,
+            transactionHash,
+            timestamp,
+          };
+        })
+      );
+    },
+    {
+      enabled: !!idoContractAddress && !!address,
+    }
+  );
+
   const purchaseAmount = useQuery(
     ["purchaseAmount", { idoContractAddress, address }],
     async () => {
@@ -169,7 +207,7 @@ function useIdoStart({ idoContractAddress, proof, stakedAmount }: Props) {
     }
   );
 
-  return { purchase, claim, purchaseHistory, purchaseAmount };
+  return { purchase, claim, purchaseHistory, purchaseAmount, claimHistory };
 }
 
 export default useIdoStart;

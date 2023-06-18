@@ -43,6 +43,7 @@ import IdoStart from "./IdoStart";
 import { StakingInfo } from "./StakingInfo";
 import WhitelistTable from "./WhitelistTable";
 import { Label } from "../../../../common/ui/label";
+import ClaimHistory from "./ClaimHistory";
 
 const { formatEther, commify } = ethers.utils;
 

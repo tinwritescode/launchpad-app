@@ -13,7 +13,7 @@ function ClaimHistory() {
     id: query?.id as string,
     walletAddress: address as string,
   });
-  const { purchaseHistory } = useIdoStart({
+  const { claimHistory } = useIdoStart({
     idoContractAddress: data?.idoContractAddress,
     proof: data?.proof?.proof,
     stakedAmount: data?.proof?.stakedAmount,
@@ -26,7 +26,7 @@ function ClaimHistory() {
   return (
     <div className="space-y-4">
       {/* Update this */}
-      <Label className="font-semibold">Purchase History</Label>
+      <Label className="font-semibold">Claim History</Label>
       <table className="table-auto w-full">
         <thead>
           <tr>
@@ -36,7 +36,7 @@ function ClaimHistory() {
           </tr>
         </thead>
         <tbody>
-          {purchaseHistory.data?.map((purchase, index) => (
+          {claimHistory.data?.map((purchase, index) => (
             <tr key={index}>
               <td className="border px-4 py-2">
                 <Link

@@ -1091,6 +1091,7 @@ async function getDividendContractInfo(
     "latest"
     // calculate sum
   );
+
   // if exist a filter ethers for distribute
   const isDistributed = distributeLogs
     .reduce(
