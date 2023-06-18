@@ -1089,7 +1089,9 @@ async function getDividendContractInfo(
     .dividedBy(avgRate)
     .multipliedBy(new BNjs(10).pow(18));
 
-  const isDividendFulfilled = dividendBalance.gte(requiredBalanceInIDOToken);
+  const isDividendFulfilled = BNjs(dividendBalance.toFixed(0)).gte(
+    BNjs(requiredBalanceInIDOToken.toFixed(0))
+  );
 
   const dividendContract = new Dividend__factory(signer).attach(
     env.NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS
@@ -1109,6 +1111,14 @@ async function getDividendContractInfo(
       new BNjs(0)
     )
     .gte(requiredBalanceInIDOToken.toFixed(0));
+
+  console.log(
+    "isDistributed",
+    distributeLogs.reduce(
+      (acc, cur) => acc.plus(cur.args?.amount.toString() || 0),
+      new BNjs(0)
+    )
+  );
 
   const firstIdoContract = new IDOContract__factory(signer).attach(
     data.IDOContract[0].address
