@@ -98,7 +98,7 @@ model Token {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  address   String
+  address   String   @unique
   Project   Project  @relation(fields: [projectId], references: [id])
   projectId String   @unique
 }
