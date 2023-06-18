@@ -78,6 +78,15 @@ const ProjectItem = ({ project }) => (
 );
 
 function Upcoming({ data, isLoading }) {
+  if (data && data.length > 0) {
+    //  fill empty object into data array to make it 3
+    if (data.length < 3) {
+      for (let i = data.length; i < 3; i++) {
+        data.push(undefined);
+      }
+    }
+  }
+
   return (
     <section className="project padding-top padding-bottom">
       <div className="container">
@@ -128,11 +137,15 @@ function Upcoming({ data, isLoading }) {
                       },
                     }}
                   >
-                    {data.map((item, index) => (
-                      <SwiperSlide>
-                        <ProjectItem project={item} key={index} />
-                      </SwiperSlide>
-                    ))}
+                    {data.map((item, index) =>
+                      item ? (
+                        <SwiperSlide>
+                          <ProjectItem project={item} key={index} />
+                        </SwiperSlide>
+                      ) : (
+                        <SwiperSlide></SwiperSlide>
+                      )
+                    )}
                   </Swiper>
                 </div>
                 <div className="project__slider-pagination mt-4 text-center" />
