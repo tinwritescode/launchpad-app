@@ -311,9 +311,7 @@ export const projectRouter = createTRPCRouter({
                   return instance.deployIDOContract(
                     {
                       ...contract,
-                      purchaseCap: ethers.utils.parseEther(
-                        purchaseCapInIdoToken.toString()
-                      ),
+                      purchaseCap: BigNumber.from(purchaseCapInIdoToken),
                       idoPrice: ethers.utils.parseEther(idoPrice.toString()),
                       minStakingRequired:
                         contract.minStakingRequired.toString(),

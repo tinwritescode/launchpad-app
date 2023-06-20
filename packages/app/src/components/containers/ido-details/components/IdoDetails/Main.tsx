@@ -580,14 +580,14 @@ export function Main() {
                           </div>
                           <div className="pro-details__links-content">
                             <Link className="pro-details__links-btn" href="#">
-                              www.example.com{" "}
+                              {project?.websiteURL}
                               <span>
                                 <FontAwesomeIcon icon={faGlobe} />
                               </span>
                             </Link>
                           </div>
                         </div>
-                        <div className="pro-details__links-item">
+                        {/* <div className="pro-details__links-item">
                           <div className="pro-details__links-title">
                             <h6>Download Whitepaper</h6>
                           </div>
@@ -599,7 +599,7 @@ export function Main() {
                               </span>
                             </Link>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </aside>

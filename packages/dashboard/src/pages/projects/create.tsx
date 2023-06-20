@@ -17,7 +17,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         initialValues={{
           // generate all random values (mock)
           startTime: new Date().getTime() + 1000 * 60 * 2, // 2 minutes from now
-          endTime: new Date().getTime() + 1000 * 60 * 60 * 24 * 10, // 10 days from now
+          endTime: new Date().getTime() + 1000 * 60 * 5, // 5 minutes from now
           idoPrice: 1,
           purchaseCap: 100,
           idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
@@ -173,7 +173,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="IDO Price"
           name={["idoPrice"]}
-          help="How many IDO tokens will be sold for 1 STRAW token"
+          help="How many STRAW tokens users have to pay for 1 IDO token"
           rules={[
             {
               required: true,

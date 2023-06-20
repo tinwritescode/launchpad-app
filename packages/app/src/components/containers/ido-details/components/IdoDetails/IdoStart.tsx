@@ -42,7 +42,7 @@ function IdoStart() {
           <Label className="mb-2 font-semibold">Amount</Label>
           <div className="space-y-2">
             <Label className="flex items-center gap-1">
-              Purchase cap:{" "}
+              Purchase cap:
               {ethers.utils.commify(
                 parseFloat(ethers.utils.formatEther(data?.purchaseCap)).toFixed(
                   2
@@ -106,7 +106,7 @@ function IdoStart() {
       {projectData?.IDOContract[0].idoPrice && (
         <div>
           <Label className="flex items-center gap-1">
-            Cost in {projectData?.IDOContract[0].purchaseTokenSymbol}:{" "}
+            Cost:{" "}
             {ethers.utils.commify(
               parseFloat(
                 ethers.utils.formatEther(
@@ -118,7 +118,7 @@ function IdoStart() {
                 )
               ).toFixed(2)
             )}{" "}
-            {projectData?.token.symbol}
+            {projectData?.IDOContract[0].purchaseTokenSymbol}
           </Label>
         </div>
       )}
