@@ -33,21 +33,25 @@ function Home() {
     limit: 100,
   });
 
-  const userTierIndex =
-    isConnected &&
-    amountStaked &&
-    Object.values(IDO_CONTRACT_STAKING_REQUIRED).findIndex((value, index) => {
-      return (
-        amountStaked.gte(ethers.utils.parseEther(value.toString())) &&
-        amountStaked.lt(
-          ethers.utils.parseEther(
-            IDO_CONTRACT_STAKING_REQUIRED[
-              Object.keys(IDO_CONTRACT_STAKING_REQUIRED)[index + 1] as TierKeys
-            ]?.toString() ?? "0"
+  let userTierIndex: number | null = null;
+  if (isConnected && amountStaked) {
+    userTierIndex = Object.values(IDO_CONTRACT_STAKING_REQUIRED).findIndex(
+      (value, index) => {
+        return (
+          amountStaked.gte(ethers.utils.parseEther(value.toString())) &&
+          amountStaked.lt(
+            ethers.utils.parseEther(
+              IDO_CONTRACT_STAKING_REQUIRED[
+                Object.keys(IDO_CONTRACT_STAKING_REQUIRED)[
+                  index + 1
+                ] as TierKeys
+              ]?.toString() ?? "0"
+            )
           )
-        )
-      );
-    });
+        );
+      }
+    );
+  }
 
   const tierList = Object.keys(TierKeys).map((key) => {
     return {
