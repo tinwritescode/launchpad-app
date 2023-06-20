@@ -70,10 +70,10 @@
     /* Paint an image in the border */
     border-image: conic-gradient(
         from var(--angle),
-        #d53e33 0deg 90deg,
-        #fbb300 90deg 180deg,
-        #377af5 180deg 270deg,
-        #399953 270deg 360deg
+        #000 0deg,
+        #d400d4 180deg,
+        #000 180deg,
+        #00ccff 360deg
       )
       1 stretch;
   }
