@@ -11,15 +11,11 @@ const ProjectItem = ({ project }) => (
     <div className="project__item">
       <div className="project__item-inner">
         <div className="project__item-thumb">
-          <img
-            width="auto"
-            src={"/images/igo/item/01.jpg"}
-            alt="project logo"
-          />
+          <img width="auto" src={project.bannerImage} alt="project logo" />
 
           <span className="badge">
             <img
-              src={"/images/chain/aval.png"}
+              src={"/images/chain/metic.png"}
               width={500}
               height={500}
               alt="token icon"
@@ -31,7 +27,7 @@ const ProjectItem = ({ project }) => (
             <div className="project__item-author">
               <Link href="#">
                 <img
-                  src={"/images/igo/author/1.png"}
+                  src={project.image}
                   width={500}
                   height={500}
                   alt="project image"

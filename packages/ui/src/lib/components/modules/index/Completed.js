@@ -13,11 +13,7 @@ const ProjectItem = ({ project }) => (
       <div className="project__item2-inner">
         <div className="project__item2-name">
           <div className="project__item2-thumb">
-            <img
-              width="auto"
-              src="/images/igo/author/5.png"
-              alt="Project Image"
-            />
+            <img width="auto" src={project.image} alt="Project Image" />
           </div>
           <div className="project__item2-content">
             <h4>
