@@ -2,11 +2,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 function ContactCard() {
-
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = data => {
-  }
-
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const onSubmit = (data) => {};
 
   return (
     <section className="contact padding-top padding-bottom">
@@ -24,19 +27,43 @@ function ContactCard() {
               <form onSubmit={handleSubmit(onSubmit)} className="form">
                 <div className="row">
                   <div className="col-md-6">
-                    <input  {...register("name")} type="text" placeholder="Your Name*" required="" />
+                    <input
+                      {...register("name")}
+                      type="text"
+                      placeholder="Your Name*"
+                      required=""
+                    />
                   </div>
                   <div className="col-md-6">
-                    <input {...register("email")} type="email" placeholder="Your Email*" required="" />
+                    <input
+                      {...register("email")}
+                      type="email"
+                      placeholder="Your Email*"
+                      required=""
+                    />
                   </div>
                   <div className="col-md-6">
-                    <input {...register("phone")} type="tel" placeholder="Your No*" required="" />
+                    <input
+                      {...register("phone")}
+                      type="tel"
+                      placeholder="Your No*"
+                      required=""
+                    />
                   </div>
                   <div className="col-md-6">
-                    <input {...register("Subject")} type="text" placeholder="Subject*" required="" />
+                    <input
+                      {...register("Subject")}
+                      type="text"
+                      placeholder="Subject*"
+                      required=""
+                    />
                   </div>
                   <div className="col-12">
-                    <textarea {...register("Your Message")} placeholder="Your Message" defaultValue={""} />
+                    <textarea
+                      {...register("Your Message")}
+                      placeholder="Your Message"
+                      defaultValue={""}
+                    />
                   </div>
                 </div>
                 <div className="text-center">

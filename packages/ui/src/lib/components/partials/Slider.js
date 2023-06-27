@@ -1,10 +1,9 @@
-
+import Image from "next/image";
+import Link from "next/link";
 import SwiperCore, { Autoplay, Navigation, Pagination } from "swiper";
-SwiperCore.use([Autoplay, Navigation, Pagination]);
 import Button from "../base/Button";
 import ProgressBar from "../base/ProgressBar";
-import Link from "next/link";
-import Image from 'next/image';
+SwiperCore.use([Autoplay, Navigation, Pagination]);
 
 const CustomSlider = ({ img1Src, img2Src, img3Src, title }) => {
   return (
@@ -15,22 +14,14 @@ const CustomSlider = ({ img1Src, img2Src, img3Src, title }) => {
             <img width="auto" src={img1Src} alt="" />
 
             <span className="badge">
-              <Image src={img2Src}
-                width={500}
-                height={500}
-                alt="logo"
-              />
+              <Image src={img2Src} width={500} height={500} alt="logo" />
             </span>
           </div>
           <div className="project__item-content">
             <div className="project__item-top">
               <div className="project__item-author">
                 <Link href="#">
-                  <Image src={img3Src}
-                    width={500}
-                    height={500}
-                    alt="logo"
-                  />
+                  <Image src={img3Src} width={500} height={500} alt="logo" />
                 </Link>
                 <h4>{title}</h4>
               </div>

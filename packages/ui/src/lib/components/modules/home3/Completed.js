@@ -1,10 +1,8 @@
-SwiperCore.use([Autoplay, Navigation, Pagination]);
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Autoplay, Navigation, Pagination } from "swiper";
+import Image from "next/image";
 import Link from "next/link";
-import Image from 'next/image';
-
-
+import SwiperCore, { Autoplay, Navigation, Pagination } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+SwiperCore.use([Autoplay, Navigation, Pagination]);
 
 function Completed({ completed }) {
   return (
@@ -32,7 +30,8 @@ function Completed({ completed }) {
                           {/* project name */}
                           <div className="project__item2-name">
                             <div className="project__item2-thumb">
-                              <Image src={item.img1Src}
+                              <Image
+                                src={item.img1Src}
                                 width={90}
                                 height={90}
                                 alt="Project Image"
@@ -52,7 +51,8 @@ function Completed({ completed }) {
                           </div>
                           {/* projct chain */}
                           <div className="project__item2-chain">
-                            <Image src={item.img2Src}
+                            <Image
+                              src={item.img2Src}
                               width={40}
                               height={40}
                               alt="chain icon"

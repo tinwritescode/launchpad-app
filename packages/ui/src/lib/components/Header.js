@@ -1,15 +1,16 @@
 import { faWallet } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAccountModal, useConnectModal } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import Wallet from "./Wallet";
 
 function Header() {
   const [menu, setMenu] = useState(false);
-  const [show, setShow] = useState(false);
+  const { openConnectModal, connectModalOpen } = useConnectModal();
+  const { openAccountModal } = useAccountModal();
   const router = useRouter();
 
   // ........header Sticky..................
@@ -70,8 +71,7 @@ function Header() {
   }
 
   // ..............modal....................
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => openConnectModal();
 
   const substr = (str, n) => {
     return str.length > n ? str.substr(0, n - 1) : str;
@@ -126,9 +126,9 @@ function Header() {
                   </ul>
                   {isWalletConnected && account ? (
                     <Link
-                      onClick={() => handleShow()}
-                      className="wallet-btn custom-wallet-btn"
                       href=""
+                      onClick={() => openAccountModal()}
+                      className="wallet-btn custom-wallet-btn"
                     >
                       {substr(account.toString(), 8)}
                     </Link>
@@ -157,7 +157,7 @@ function Header() {
           </div>
         </div>
       </header>
-      <Wallet show={show} handleClose={handleClose}></Wallet>
+      {/* <Wallet show={show} handleClose={handleClose}></Wallet> */}
     </div>
   );
 }

@@ -1,8 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useState } from "react";
+import { useAccount } from "wagmi";
 
 export const AppContext = createContext();
 
-const { ethereum } = typeof window !== 'undefined' ? window : {};
+const { ethereum } = typeof window !== "undefined" ? window : {};
 
 const AppProvider = ({ children }) => {
   const [visibility, setVisibility] = useState(false);
@@ -10,7 +11,7 @@ const AppProvider = ({ children }) => {
   const [shareModalVisibility, setShareModalvisibility] = useState(false);
   const [metamaskModalVisibility, setMetamaskModalVisibility] = useState(false);
   const [connectWalletModal, setConnectWalletModal] = useState(false);
-  const [account, setAccount] = useState('');
+  const { address: account } = useAccount();
 
   const isMetaMaskInstalled = () => {
     if (ethereum) {
@@ -21,7 +22,7 @@ const AppProvider = ({ children }) => {
   };
 
   const isWalletConnected = () => {
-    if (localStorage.getItem('isWalletConnected') === 'true') {
+    if (localStorage.getItem("isWalletConnected") === "true") {
       return true;
     }
 
@@ -49,25 +50,15 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  const connectWalletHandle = async () => {
-    if (isMetaMaskInstalled()) {
-      const accounts = await ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-      setAccount(accounts);
-      setModalvisibility(!walletModalvisibility);
-    }
-  };
-
   const isWalletAlreadyConnected = async () => {
     if (isWalletConnected()) {
-      const accounts = await connectWallet();
-      setAccount(accounts);
+      // const accounts = await connectWallet();
+      // setAccount(accounts);
     }
   };
 
   const setAccountAfterDisconnectWallet = async () => {
-    setAccount('');
+    // setAccount("");
   };
 
   return (
@@ -83,7 +74,9 @@ const AppProvider = ({ children }) => {
         metamaskModalVisibility,
         metamaskModalHandle,
         account,
-        connectWalletHandle,
+        connectWalletHandle: () => {
+          console.log("hello");
+        },
         isWalletAlreadyConnected,
         setAccountAfterDisconnectWallet,
         connectWalletModalHanlde,
