@@ -465,16 +465,13 @@ export const projectRouter = createTRPCRouter({
             const idoContract = new IDOContract__factory(signer).attach(
               contract.address
             );
-            const erc20 = new ERC20__factory(signer).attach(
-              await idoContract.ido()
-            );
-            const fulfilledAmount = new BNjs(
-              await erc20
-                .balanceOf(contract.address)
+            const total = new BNjs(
+              await idoContract
+                .totalPurchasedAmount()
                 .then((res) => res.toString())
-            );
+            ).plus(await acc);
 
-            return (await acc).plus(fulfilledAmount);
+            return total;
           }, Promise.resolve(new BNjs(0))).then((res) => res.toString()),
         },
       };
