@@ -800,7 +800,7 @@ export const projectRouter = createTRPCRouter({
         }
 
         const ido = idosData.find(
-          (ido) => ido.minStaking.lte(total) && ido.maxStaking.gte(total)
+          (ido) => ido.minStaking.lte(total) && ido.maxStaking.gt(total)
         );
         if (ido) {
           ido.whitelist.push(new WhitelistData(staker, total.toString()));
