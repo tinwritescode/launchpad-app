@@ -39,6 +39,7 @@ const defaultProjectSelector: Prisma.ProjectSelect = {
   id: true,
   name: true,
   image: true,
+  bannerImage: true,
   videoURL: true,
   status: true,
   createdAt: true,
@@ -98,7 +99,7 @@ export const projectRouter = createTRPCRouter({
         const fullData = await Promise.all(
           data.map(async (project) => {
             let saleStatus: "UNKNOWN" | "UPCOMING" | "OPEN" | "CLOSED" =
-              "CLOSED";
+              "UNKNOWN";
             if (!project.IDOContract || project.status !== Status.ACTIVE) {
               return {
                 ...project,
@@ -512,6 +513,7 @@ export const projectRouter = createTRPCRouter({
         name: z.string().optional(),
         comparisionContent: z.string().optional(),
         image: z.string().optional(),
+        bannerImage: z.string().optional(),
         roadmapContent: z.string().optional(),
         summaryContent: z.string().optional(),
         videoURL: z.string().optional(),

@@ -193,6 +193,29 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           </Upload.Dragger>
         </Form.Item>
       </Form.Item>
+      <Form.Item label="Image">
+        <Form.Item
+          name="bannerImage"
+          getValueProps={(value: any) => ({
+            fileList: [{ url: value, name: value, uid: value }],
+          })}
+          getValueFromEvent={getValueFromEvent}
+          noStyle
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Upload.Dragger
+            capture={false}
+            listType="picture"
+            beforeUpload={() => false}
+          >
+            <p className="ant-upload-text">Drag & drop a file in this area</p>
+          </Upload.Dragger>
+        </Form.Item>
+      </Form.Item>
       <Form.Item
         label="Status"
         name={["status"]}

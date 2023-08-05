@@ -7,7 +7,7 @@ const ProjectItem = ({ project }) => (
     <div className="project__item project__item--completed1">
       <div className="project__item-inner">
         <div className="project__item-thumb">
-          <img width="auto" src="/images/igo/item/01.jpg" alt="IGO cover" />
+          <img width="auto" src={project.bannerImage} alt="IGO cover" />
           <span className="badge">
             <img
               width="auto"
@@ -20,11 +20,7 @@ const ProjectItem = ({ project }) => (
           <div className="project__item-top">
             <div className="project__item-author">
               <Link href="#">
-                <img
-                  width="auto"
-                  src="/images/igo/author/5.png"
-                  alt="author image"
-                />
+                <img width="auto" src={project.image} alt="author image" />
               </Link>
               <h4>{project.name}</h4>
             </div>

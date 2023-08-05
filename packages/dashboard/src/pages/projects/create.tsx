@@ -22,7 +22,8 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           purchaseCap: 100,
           idoTokenAddress: env.NEXT_PUBLIC_IDO_TOKEN_ADDRESS,
           // Fields that need to be filled
-          image: "https://picsum.photos/200/300",
+          image: "https://picsum.photos/90/90",
+          bannerImage: "https://picsum.photos/550/280",
           videoURL: "https://www.youtube.com/watch?v=MNiGhWOMPJo",
           name: `IDO Project ${(Math.random() * 100).toFixed(0)}`,
           targettedRaise: "1000000",
@@ -108,6 +109,29 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Image">
           <Form.Item
             name="image"
+            getValueProps={(value: any) => ({
+              fileList: [{ url: value, name: value, uid: value }],
+            })}
+            getValueFromEvent={getValueFromEvent}
+            noStyle
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Upload.Dragger
+              capture={false}
+              listType="picture"
+              beforeUpload={() => false}
+            >
+              <p className="ant-upload-text">Drag & drop a file in this area</p>
+            </Upload.Dragger>
+          </Form.Item>
+        </Form.Item>
+        <Form.Item label="Banner Image">
+          <Form.Item
+            name="bannerImage"
             getValueProps={(value: any) => ({
               fileList: [{ url: value, name: value, uid: value }],
             })}

@@ -62,6 +62,7 @@ model Project {
   // Information fields
   name           String
   image          String
+  bannerImage    String
   status         Status           @default(INACTIVE)
   token          Token? // https://www.prisma.io/docs/concepts/components/prisma-schema/relations/one-to-one-relations
   videoURL       String
