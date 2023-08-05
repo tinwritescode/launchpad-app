@@ -374,6 +374,13 @@ contract IDOContract is
         );
 
         emit Purchased(_msgSender(), amount);
+
+        for (uint256 i = 0; i < _whitelistedUsers.length; i++) {
+            if (_whitelistedUsers[i] == _msgSender()) {
+                return;
+            }
+        }
+        _whitelistedUsers.push(_msgSender());
     }
 
     /**
