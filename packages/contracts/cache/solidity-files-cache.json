@@ -91,8 +91,8 @@
       ]
     },
     "/Users/tinpoko/Coding/side-projects/launchpad-app/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1685752007359,
-      "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
+      "lastModificationDate": 1691198525648,
+      "contentHash": "896f68942c3a20e9ae3c3c5bfd3add54",
       "sourceName": "hardhat/console.sol",
       "solcConfig": {
         "version": "0.8.18",
@@ -126,7 +126,7 @@
       },
       "imports": [],
       "versionPragmas": [
-        ">= 0.4.22 <0.9.0"
+        ">=0.4.22 <0.9.0"
       ],
       "artifacts": [
         "console"

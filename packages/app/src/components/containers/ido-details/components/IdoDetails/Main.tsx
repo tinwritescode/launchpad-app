@@ -432,11 +432,11 @@ export function Main() {
                     <div className="pro-details__token-value">
                       <p>
                         {commify(
-                          formatEther(project?.IDOContract[0].idoPrice || 0)
+                          formatEther(project?.IDOContract[0]?.idoPrice || 0)
                         )}{" "}
                         <sub>
                           {project?.token.symbol} /{" "}
-                          {project?.IDOContract[0].purchaseTokenSymbol}
+                          {project?.IDOContract[0]?.purchaseTokenSymbol}
                         </sub>
                       </p>
                     </div>

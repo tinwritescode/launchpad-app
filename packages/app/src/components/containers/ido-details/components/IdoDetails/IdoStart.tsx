@@ -103,7 +103,7 @@ function IdoStart() {
           </Button>
         ))}
       </div>
-      {projectData?.IDOContract[0].idoPrice && (
+      {projectData?.IDOContract[0]?.idoPrice && (
         <div>
           <Label className="flex items-center gap-1">
             Cost:{" "}

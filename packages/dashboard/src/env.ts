@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { contractInfo } from '@strawberry/contracts';
+import { z } from "zod";
+import { contractInfo } from "@strawberry/contracts";
 
 const envSchema = z.object({
   NEXT_PUBLIC_BASE_API_URL: z.string().url(),
@@ -21,7 +21,7 @@ export const env = envSchema.parse({
   NEXT_PUBLIC_REWARD_TOKEN_ADDRESS:
     contractInfo.default.contracts.RewardToken.address,
   NEXT_PUBLIC_IDO_TOKEN_ADDRESS:
-    contractInfo.default.contracts.IdoToken.address,
+    contractInfo.default.contracts.IDO_MTDU.address,
   NEXT_PUBLIC_DIVIDEND_CONTRACT_ADDRESS:
     contractInfo.default.contracts.Dividend.address,
 });

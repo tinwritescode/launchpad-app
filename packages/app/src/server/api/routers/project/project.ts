@@ -98,7 +98,7 @@ export const projectRouter = createTRPCRouter({
         const fullData = await Promise.all(
           data.map(async (project) => {
             let saleStatus: "UNKNOWN" | "UPCOMING" | "OPEN" | "CLOSED" =
-              "UNKNOWN";
+              "CLOSED";
             if (!project.IDOContract || project.status !== Status.ACTIVE) {
               return {
                 ...project,
@@ -119,7 +119,10 @@ export const projectRouter = createTRPCRouter({
             let endTime = null;
 
             {
-              const contract = getIdoContract(project.IDOContract[0].address);
+              const contract =
+                project?.IDOContract[0]?.address &&
+                getIdoContract(project.IDOContract[0]?.address);
+
               if (!project.token) {
                 throw new TRPCError({
                   code: "INTERNAL_SERVER_ERROR",
@@ -130,7 +133,7 @@ export const projectRouter = createTRPCRouter({
                 project.token.address
               );
 
-              if (saleStatus === "UNKNOWN") {
+              if (contract && saleStatus === "UNKNOWN") {
                 const now = new Date().getTime();
                 startTime = (await contract.startTime()).toNumber() * 1000;
                 endTime = (await contract.endTime()).toNumber() * 1000;
@@ -228,6 +231,7 @@ export const projectRouter = createTRPCRouter({
           },
         };
       } catch (error: any) {
+        console.log(error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: error?.message,

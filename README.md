@@ -76,7 +76,7 @@ For the dashboard:
 yarn start dashboard
 ```
 
-## Run development faster with `concurrently`
+## Run development faster 
 
 ```bash
 yarn dev

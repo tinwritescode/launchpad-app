@@ -1,5 +1,5 @@
-import { DeployFunction } from 'hardhat-deploy/types';
-import { HardhatRuntimeEnvironment } from 'hardhat/types';
+import { DeployFunction } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -16,14 +16,14 @@ const func: DeployFunction = async function ({
   };
   const lockTime = ONE_MONTH_IN_SECS;
 
-  const stakingToken = await deployments.get('Strawberry');
-  const rewardToken = await deployments.get('Strawberry');
-  const WETH = await deployments.get('WETH');
+  const stakingToken = await deployments.get("Strawberry");
+  const rewardToken = await deployments.get("Strawberry");
+  const WETH = await deployments.get("WETH");
 
-  await save('RewardToken', rewardToken);
-  await save('StakingToken', stakingToken);
+  await save("RewardToken", rewardToken);
+  await save("StakingToken", stakingToken);
 
-  await deploy('Staking', {
+  await deploy("Staking", {
     args: [
       timeUnitInSecs,
       rewardRatio.numerator,
@@ -39,5 +39,5 @@ const func: DeployFunction = async function ({
 };
 
 export default func;
-func.tags = ['init', 'staking-contract'];
-func.dependencies = ['platform-token', 'weth'];
+func.tags = ["init", "staking-contract"];
+func.dependencies = ["platform-token", "weth"];
