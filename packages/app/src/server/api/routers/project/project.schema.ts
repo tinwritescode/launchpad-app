@@ -9,6 +9,7 @@ export const createIdoProjectInputSchema = z
     // prisma required fields
     name: z.string(),
     image: z.string().url(),
+    bannerImage: z.string().url(),
     videoURL: z.string().url(),
     targettedRaise: parseStringToEthers,
     // optional fields
