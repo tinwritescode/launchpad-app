@@ -22,6 +22,8 @@ import {
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
 
+import moment from "moment";
+
 const Stacking = () => {
   const { isConnected } = useAccount();
   const {
@@ -41,6 +43,14 @@ const Stacking = () => {
   } = useStakingHook();
 
   const isLocked = Number(unlockTime || 0) > Date.now() / 1000;
+
+  // countdown day to unlock staking
+  const unlockTimeMoment = moment.unix(Number(unlockTime || 0));
+  const now = moment();
+  const remainingTime = moment.duration(unlockTimeMoment.diff(now));
+  const days = remainingTime.days();
+  const hours = remainingTime.hours();
+  const minutes = remainingTime.minutes();
 
   const stakeInputRef = useRef<HTMLInputElement>(null);
   const withdrawInputRef = useRef<HTMLInputElement>(null);
@@ -297,6 +307,14 @@ const Stacking = () => {
                                 Lock Period:{" "}
                                 <span className="stacking__info-value">
                                   30 Days
+                                </span>
+                              </p>
+                            </li>
+                            <li className="stacking__info-item">
+                              <p className="stacking__info-name">
+                                Remaining Time:{" "}
+                                <span className="stacking__info-value">
+                                  {`${days}d ${hours}h ${minutes}m`}
                                 </span>
                               </p>
                             </li>
