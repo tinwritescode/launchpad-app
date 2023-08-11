@@ -310,14 +310,16 @@ const Stacking = () => {
                                 </span>
                               </p>
                             </li>
-                            <li className="stacking__info-item">
-                              <p className="stacking__info-name">
-                                Remaining Time:{" "}
-                                <span className="stacking__info-value">
-                                  {`${days}d ${hours}h ${minutes}m`}
-                                </span>
-                              </p>
-                            </li>
+                            {days >= 0 && (
+                              <li className="stacking__info-item">
+                                <p className="stacking__info-name">
+                                  Remaining Time:{" "}
+                                  <span className="stacking__info-value">
+                                    {`${days}d ${hours}h ${minutes}m `}
+                                  </span>
+                                </p>
+                              </li>
+                            )}
                             <li className="stacking__info-item">
                               <p className="stacking__info-name">
                                 Re-locks on registration:{" "}

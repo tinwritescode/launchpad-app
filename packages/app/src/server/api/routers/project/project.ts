@@ -889,6 +889,7 @@ export const projectRouter = createTRPCRouter({
         );
 
         const proof = merkle.getWhitelistDataWithProof(input.walletAddress);
+        if (!proof) continue;
         const provider = signer.provider;
 
         const [
